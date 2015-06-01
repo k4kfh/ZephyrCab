@@ -2,9 +2,10 @@
 <head>
     <script src="websockets.js"></script>
     <script src="infohandler.js"></script>
-    <script src="page.js"></script>
+    <script src="ui.js"></script>
     <script src="decoder.js"></script>
     <script src="jmri-core.js"></script>
+    <script src="protoEngine.js"></script>
     <title>LocoThrottleJS</title>
     
 </head>
@@ -17,10 +18,19 @@
         
         </form>
         <div class="lococtl">
-        <button onclick='engine("start")'>Start Engine</button>
-        <button onclick='engine("stop")'>Stop Engine</button>
-        <button onclick='sound_notch("up")'>Notch Up</button>
-        <button onclick='sound_notch("down")'>Notch Down</button>
+            <button onclick='setEngine(true)'>Start Engine</button>
+            <button onclick='setEngine(false)'>Stop Engine</button>
+            <button onclick='sound_notch("up")'>Notch Up</button>
+            <button onclick='sound_notch("down")'>Notch Down</button>
+            <button onclick='setCompressor(true)'>Start Compressor</button>
+            <button onclick='setCompressor(false)'>Stop Compressor</button>
+            <p></p>
+            <button onclick='setHorn(true)'>Airhorn on</button>
+            <button onclick='setHorn(false)'>Airhorn off</button>
+            <p></p>
+            <button onclick='setBell(true)'>Air bell on</button>
+            <button onclick='setBell(false)'>Air bell off</button>
+            
         
         
         </div>

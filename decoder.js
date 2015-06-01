@@ -7,6 +7,8 @@
 //sound_notch(up or down) - This should be callable by the higher level notching system (Which is decoder-agnostic) and should have the option to notch up or down. It should also have a function that makes the system wait between notches, so a user can't go from notch 1 to 8 in 5 seconds. An example of this can be seen in the function below.
 //It's VERY important that the function has a proper return system! If the notch is successful and allowed, return 0. if the notch is not allowed, return string "notAllowed"
 
+//engine("start" or "stop") - This doesn't have to return anything,it's very simple
+
 
 //notching system
 var notchAllowed //this tells if the engine can safely go up a notch. Of course, the HO loco is electric, so it doesn't really matter, but we're shooting for realism here, and it's not really realistic to go from notch 0 to notch 8 in 1 second :P
@@ -40,15 +42,56 @@ function sound_notch(direction) {
 }
 
 
-//engine start/stop
-function engine(dowhat) {
-    if (dowhat == "start") {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":true, "throttle":"' + throttleName + '"}}')
-        console.log("Started engine on EMD 567 ESU LokSound bad-to-the-bone decoder! :D")
+//engine start/stop, call with either true or false
+function setEngine(dowhat) {
+    if (dowhat == true) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":true, "throttle":"' + throttleName + '"}}');
+        console.log("Started engine on EMD 567 ESU LokSound bad-to-the-bone decoder! :D This decoder.js file written by K4KFH");
+        engine = true
     }
-    if (dowhat == "stop") {
+    else if (dowhat == false) {
         //add if(notch == 0) statement here later
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":false, "throttle":"' + throttleName + '"}}')
-        console.log("Stopped engine on EMD 567 ESU LokSound bad-to-the-bone decoder! D:")
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":false, "throttle":"' + throttleName + '"}}');
+        console.log("Stopped engine on EMD 567 ESU LokSound bad-to-the-bone decoder! D:");
+        engine = false
     }
 }
+
+//compressor and all other sounds (unless otherwise specified) are called with setSoundNameChosen(true/false)
+//compressor
+function setCompressor(dowhat) {
+    if (dowhat == true) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":true, "throttle":"' + throttleName + '"}}');
+        compressor = true
+    }
+    if (dowhat == false) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":false, "throttle":"' + throttleName + '"}}');
+        compressor = false
+    }
+}
+
+
+//air bell
+function setBell(dowhat) {
+    if (dowhat == true) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":true, "throttle":"' + throttleName + '"}}');
+        bell = true
+    }
+    else if (dowhat == false) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":false, "throttle":"' + throttleName + '"}}');
+        bell = false
+    }
+}
+
+//air horn
+function setHorn(dowhat) {
+    if (dowhat == true) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":true, "throttle":"' + throttleName + '"}}');
+        horn = true
+    }
+    if (dowhat == false) {
+        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":false, "throttle":"' + throttleName + '"}}');
+        horn = false
+    }
+}
+    
