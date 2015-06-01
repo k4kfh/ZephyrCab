@@ -19,18 +19,18 @@ function sound_notch(direction) {
             notchSuccess = true
             //send commands to the decoder to make the prime mover sound "notch up"
             setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 500)
-    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command")},  1850)
+    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command")},  1750)
             //after this long (in ms) allow notch change again
-            setTimeout(function() {notchAllowed = true}, 2000)
+            setTimeout(function() {notchAllowed = true}, 7000)
         }
         else if (direction == "down") {
             notchSuccess = true
             //send commands to notch down
             setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 500)
 
-    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 1850)
+    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 1750)
             //after this long (in ms) allow notch change again
-            setTimeout(function() {notchAllowed = true}, 2000)
+            setTimeout(function() {notchAllowed = true}, 7000)
             
         }
     }

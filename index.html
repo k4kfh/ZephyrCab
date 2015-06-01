@@ -12,10 +12,8 @@
         <p id="wsstatus">WebSockets: DISCONNECTED</p>
         <button onclick="connect('10.10.39.85', 12080)">Connect</button>
         <button onclick='trkpower("toggle")'>Toggle Track Power</button>
-        
-        <form id="getThrottleForm">
-        DCC Address: <input type="text" name="dccaddress"><br>
-        Refer to Throttle as: <input type="text" name="throttleName" value="Throttle1"><br>
+        <p></p>
+            <button onclick="getThrottle(2, 'CBQ2')">Get Throttle for CBQ2 (DCC address #02)</button>
         
         </form>
         <div class="lococtl">
