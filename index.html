@@ -1,0 +1,41 @@
+<html>
+<head>
+    <script src="websockets.js"></script>
+    <script src="infohandler.js"></script>
+    <script src="page.js"></script>
+    <script src="decoder.js"></script>
+    <script src="jmri-core.js"></script>
+    <title>LocoThrottleJS</title>
+    
+</head>
+    <body onload="init()">
+        <p id="wsstatus">WebSockets: DISCONNECTED</p>
+        <button onclick="connect('10.10.39.85', 12080)">Connect</button>
+        <button onclick='trkpower("toggle")'>Toggle Track Power</button>
+        
+        <form id="getThrottleForm">
+        DCC Address: <input type="text" name="dccaddress"><br>
+        Refer to Throttle as: <input type="text" name="throttleName" value="Throttle1"><br>
+        
+        </form>
+        <div class="lococtl">
+        <button onclick='engine("start")'>Start Engine</button>
+        <button onclick='engine("stop")'>Stop Engine</button>
+        <button onclick='sound_notch("up")'>Notch Up</button>
+        <button onclick='sound_notch("down")'>Notch Down</button>
+        
+        
+        </div>
+    
+    
+    
+    
+    
+    
+    </body>
+
+
+
+
+
+</html>
