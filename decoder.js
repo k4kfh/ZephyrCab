@@ -45,15 +45,25 @@ function sound_notch(direction) {
 //engine start/stop, call with either true or false
 function setEngine(dowhat) {
     if (dowhat == true) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":true, "throttle":"' + throttleName + '"}}');
-        console.log("Started engine on EMD 567 ESU LokSound bad-to-the-bone decoder! :D This decoder.js file written by K4KFH");
-        engine = true
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":true, "throttle":"' + throttleName + '"}}');
+            console.log("Started engine on EMD 567 ESU LokSound bad-to-the-bone decoder! :D This decoder.js file written by K4KFH");
+            engine = true
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
     else if (dowhat == false) {
-        //add if(notch == 0) statement here later
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":false, "throttle":"' + throttleName + '"}}');
-        console.log("Stopped engine on EMD 567 ESU LokSound bad-to-the-bone decoder! D:");
-        engine = false
+        if (locoAddress != undefined) {
+            //add if(notch == 0) statement here later
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":false, "throttle":"' + throttleName + '"}}');
+            console.log("Stopped engine on EMD 567 ESU LokSound bad-to-the-bone decoder! D:");
+            engine = false
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
 }
 
@@ -61,12 +71,22 @@ function setEngine(dowhat) {
 //compressor
 function setCompressor(dowhat) {
     if (dowhat == true) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":true, "throttle":"' + throttleName + '"}}');
-        compressor = true
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":true, "throttle":"' + throttleName + '"}}');
+            compressor = true
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
     if (dowhat == false) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":false, "throttle":"' + throttleName + '"}}');
-        compressor = false
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":false, "throttle":"' + throttleName + '"}}');
+            compressor = false
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
 }
 
@@ -74,24 +94,46 @@ function setCompressor(dowhat) {
 //air bell
 function setBell(dowhat) {
     if (dowhat == true) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":true, "throttle":"' + throttleName + '"}}');
-        bell = true
+        //this if statement makes sure we're actually connected to a locomotive and if we're not it alerts the user
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":true, "throttle":"' + throttleName + '"}}');
+            bell = true
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
     else if (dowhat == false) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":false, "throttle":"' + throttleName + '"}}');
-        bell = false
+        //this if statement makes sure we're actually connected to a locomotive and if we're not it alerts the user
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":false, "throttle":"' + throttleName + '"}}');
+            bell = false
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
 }
 
 //air horn
 function setHorn(dowhat) {
     if (dowhat == true) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":true, "throttle":"' + throttleName + '"}}');
-        horn = true
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":true, "throttle":"' + throttleName + '"}}');
+            horn = true
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
     if (dowhat == false) {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":false, "throttle":"' + throttleName + '"}}');
-        horn = false
+        if (locoAddress != undefined) {
+            sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":false, "throttle":"' + throttleName + '"}}');
+            horn = false
+        }
+        else {
+            alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        }
     }
 }
 
