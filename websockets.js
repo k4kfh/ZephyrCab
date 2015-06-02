@@ -47,6 +47,7 @@ function heartbeats() {
 
 //this takes in a server's message and sends it out to the correct parts of the program to be handled
 function processReply(ev) {
+    latestMsg = ev
     if (ev.type == "pong") {
         //just ignore these
     }
@@ -57,6 +58,7 @@ function processReply(ev) {
     }
     else if (ev.type == "throttle") {
         //send to throttle info handler
+        JSONhandleType_throttle(ev)
     }
     else if (ev.type == "sensor") {
         //send to sensor info handler

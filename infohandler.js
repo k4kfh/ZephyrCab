@@ -21,3 +21,10 @@ function JSONhandleType_power(string) {
 function setListeners() {
     sendcmd('{"type":"power","data":{}}')
 }
+
+function JSONhandleType_throttle(json) {
+    var throttleData = json.data
+    //since function numbers vary among decoders, we will pass off this data to a function in decoder.js called JSONhandleType_throttle_functions
+    JSONhandleType_throttle_functions(throttleData)
+    //direction stuff happens here
+}

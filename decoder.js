@@ -94,4 +94,21 @@ function setHorn(dowhat) {
         horn = false
     }
 }
+
+function JSONhandleType_throttle_functions(json) {
+    bell = json.F1
+    horn = json.F2
+    engine = json.F8
+    compressor = json.F20
+    
+    
+//the reverser gets complicated...
+    if (json.forward == true) {
+        reverser = "forward"
+    }
+    else if (json.forward == false) {
+        reverser = "reverse"
+    }
+    
+}
     

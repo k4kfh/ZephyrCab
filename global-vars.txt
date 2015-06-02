@@ -1,0 +1,5 @@
+locoAddress = locomotive's DCC #
+throttleName = name given to throttle requested
+reverser = direction locomotive should be in (neutral, forward, or reverse),
+JMRIhellomsg =  initial websockets hello message
+layoutRailroadName = the name of the railroad as set in JMRI prefs, only checked on initial connect
