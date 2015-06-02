@@ -11,29 +11,35 @@
 
 
 //notching system
-var notchAllowed //this tells if the engine can safely go up a notch. Of course, the HO loco is electric, so it doesn't really matter, but we're shooting for realism here, and it's not really realistic to go from notch 0 to notch 8 in 1 second :P
+
+var locoSoundNotchMinTime = 2000 //THIS IS SUPER IMPORTANT: LISTEN UP DEVELOPERS
+//if you don't set this, NOTCHING WILL NOT EVER WORK RIGHT
+//locoNotchMinTime is the minimum time required for the locomotive's decoder to wait between notches. This is not supposed to be prototypical, higher level stuff handles that, this is simply the min. amount of time you have to wait between calling the sound_notch() function for your decoder to notch correctly. DO NOT FORGET TO SET THIS. DO NOT SET IT TO ZERO. If you don't think there is a min. time, set it to 500ms. If you set it to 0, notching will create a loop that slowly eats all your CPU. DONT. SET. THIS. TO. ZERO.
+//this has been a PSA
 function sound_notch(direction) {
+    var soundNotchAllowed //this tells if the engine can safely go up a notch. Of course, the HO loco is electric, so it doesn't really matter, but we're shooting for realism here, and it's not really realistic to go from notch 0 to notch 8 in 1 second :P this isn't global because the global version of this variable is prototypical timing, so we don't need it global
+    
     if (locoAddress != undefined) {
     notchSuccess = false
-    if (notchAllowed != false) {
+    if (soundNotchAllowed != false) {
         //don't allow another notch change for however long
-        notchAllowed = false
+        soundNotchAllowed = false
         if (direction == "up") {
             notchSuccess = true
             //send commands to the decoder to make the prime mover sound "notch up"
-            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 500)
-    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command")},  1750)
+            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command to soundNotch up")}, 500)
+    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F9":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command to soundNotch up")},  1750)
             //after this long (in ms) allow notch change again
-            setTimeout(function() {notchAllowed = true}, 7000)
+            setTimeout(function() {soundNotchAllowed = true}, locoSoundNotchMinTime)
         }
         else if (direction == "down") {
             notchSuccess = true
             //send commands to notch down
-            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 500)
+            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command to soundNotch down")}, 500)
 
-    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command")}, 1750)
+    setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("Sent command to soundNotch down")}, 1750)
             //after this long (in ms) allow notch change again
-            setTimeout(function() {notchAllowed = true}, 7000)
+            setTimeout(function() {soundNotchAllowed = true}, locoSoundNotchMinTime)
             
         }
     }
@@ -68,10 +74,12 @@ function setCompressor(dowhat) {
     if (dowhat == true) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":true, "throttle":"' + throttleName + '"}}');
             compressor = true
+            console.log("Compressor started.")
     }
     if (dowhat == false) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":false, "throttle":"' + throttleName + '"}}');
             compressor = false
+            console.log("Compressor stoppped.")
     }
 }
 
@@ -95,10 +103,12 @@ function setHorn(dowhat) {
     if (dowhat == true) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":true, "throttle":"' + throttleName + '"}}');
             horn = true
+            console.log("Horn on.")
         }
     if (dowhat == false) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F2":false, "throttle":"' + throttleName + '"}}');
             horn = false
+            console.log("Horn off.")
     }
 }
 
