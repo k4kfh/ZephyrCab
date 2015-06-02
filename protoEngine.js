@@ -3,6 +3,8 @@
 //call this with setReverser([either forward, reverse, or neutral, as a string], [true ONLY if you want the reverser to ignore whether or not the engine is idling to change speed. Do this only in special circumstances. not inputting anything for ignoreNotch sets it to false.])
 //setReverser returns true if the reverser was able to be set as specified, and false if otherwise
 function setReverser(direction, ignoreNotch) {
+    //this if statement replaces the sendcmd function, since its more effective to do custom code here
+    if (locoAddress != undefined) {
     var pastReverser = reverser
     var reverserSet = false
     //causes the "ignore the current notch" parameter to default to false, in case a dev forgets it
@@ -64,4 +66,8 @@ function setReverser(direction, ignoreNotch) {
         
     }
     return reverserSet
+    }
+    else {
+        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+    }
 }
