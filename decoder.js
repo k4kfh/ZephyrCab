@@ -101,14 +101,5 @@ function JSONhandleType_throttle_functions(json) {
     engine = json.F8
     compressor = json.F20
     
-    
-//the reverser gets complicated...
-    if (json.forward == true) {
-        reverser = "forward"
-    }
-    else if (json.forward == false) {
-        reverser = "reverse"
-    }
-    
 }
     

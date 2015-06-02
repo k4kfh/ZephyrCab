@@ -1,6 +1,7 @@
 //this file contains all the variables and info about the layout and the locomotive, plus the functions to keep them up to date
 
 var layoutTrackPower_state
+var reverser
 
 
 //takes in string of type power and uses it to update power info
@@ -26,5 +27,13 @@ function JSONhandleType_throttle(json) {
     var throttleData = json.data
     //since function numbers vary among decoders, we will pass off this data to a function in decoder.js called JSONhandleType_throttle_functions
     JSONhandleType_throttle_functions(throttleData)
-    //direction stuff happens here
+    
+    //the reverser gets a bit cumbersome...PLEASE do not change this across decoders!
+    //this is decoder agnostic and works fine so don't fiddle with it if you can avoid it
+    if (json.data.forward == true) {
+        setReverser("forward", true)
+    }
+    else if (json.data.forward == false) {
+        setReverser("reverse", true)
+    }
 }
