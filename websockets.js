@@ -92,6 +92,15 @@ function sendcmd(command) {
     }
 }
 
+function sendcmdLoco(command) {
+    if (locoAddress != undefined) {
+        return sendcmd(command)
+    }
+    else {
+        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+    }
+}
+
 
 
 function disconnnect() {
