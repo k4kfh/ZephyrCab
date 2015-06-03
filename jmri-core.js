@@ -9,6 +9,8 @@ function getThrottle(address, name) {
     console.log("Requested throttle " + name + " for locomotive #" + address)
     locoAddress = address
     throttleName = name
+    //this runs the init() function, and this sort of thing is why you HAVE to at least define them :P they don't have to do anything at all, just define them
+    init("throttleacquired")
     
 }
 

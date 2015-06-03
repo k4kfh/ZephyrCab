@@ -194,3 +194,33 @@ function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, A
 }
     return newLocoSpeed
 }
+
+
+
+
+
+
+//moved this to protoEngine.js for simplicity's sake, because it's such an important part of the engine, it's less of a low level network function and more of a high level Engine function
+//this function is used for sending any SPEED RELATED commands to a locomotive (handled only by ProtoEngine() ). It's what handles the reverser's weird hard-to-deal-with NEUTRAL setting
+function sendcmdLocoSpeed(speed) {
+    if(reverser != "neutral") {
+        sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
+    }
+    else{
+        console.log("Reverser is set to neutral, so we aren't sending the requested speed command to the engine.")
+    }
+    
+    
+}
+
+
+
+function disconnnect() {
+    if(wsStatus == true) {
+        
+        
+    }
+    else {
+        alert("It's near impossible to disconnect when you're not connected in the first place...")
+    }
+}

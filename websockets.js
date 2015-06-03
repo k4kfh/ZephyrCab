@@ -104,26 +104,3 @@ function sendcmdLoco(command) {
     }
 }
 
-//this function is used for sending any SPEED RELATED commands to a locomotive (handled only by ProtoEngine() ). It's what handles the reverser's weird hard-to-deal-with NEUTRAL setting
-function sendcmdLocoSpeed(speed) {
-    if(reverser != "neutral") {
-        sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
-    }
-    else{
-        console.log("Reverser is set to neutral, so we aren't sending the requested speed command to the engine.")
-    }
-    
-    
-}
-
-
-
-function disconnnect() {
-    if(wsStatus == true) {
-        
-        
-    }
-    else {
-        alert("It's near impossible to disconnect when you're not connected in the first place...")
-    }
-}
