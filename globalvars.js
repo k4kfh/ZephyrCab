@@ -11,4 +11,4 @@ var notchAllowed = true //this is set to true because the program assumes the lo
 var protoEngineNotchWait = 5000
 
 var locoMaxNotch = 8 //this is really just in case you have a weird 16 notcher or something, or you want to only allow up to a certain notch. It MUST be set though, if it's undefined the notching system will cease to function!
-var locoMaxSpeedSteps = 100 //if your locomotive's speed step system isn't really prototypical (you know, that one locomotive you have where 100 speed steps is like breaking the sound barrier?) 
+var locoMaxSpeed = 80 //if your locomotive's speed step system isn't really prototypical (you know, that one locomotive you have where 100 speed steps is like breaking the sound barrier?) 

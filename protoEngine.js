@@ -182,7 +182,7 @@ function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, A
      
      
      //this is it, this is the speed finding equation
-     var newLocoSpeed = ARGnotch/locoMaxNotch
+     var newLocoSpeed = ((ARGnotch/locoMaxNotch) * locoMaxSpeed) / 100
      //this function is decoder agnostic and is used for speed stuff because its got momentum and crap like that
      //if you're wondering it's in websockets.js
      sendcmdLocoSpeed(newLocoSpeed)
@@ -214,9 +214,10 @@ function sendcmdLocoSpeed(speed) {
 }
 
 
-
+//still in development, need to make it where when it closes it stops the heartbeats but im doing other things
 function disconnnect() {
     if(wsStatus == true) {
+        sendcmd('{"type":"goodbye"}')
         
         
     }
