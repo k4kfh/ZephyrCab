@@ -13,35 +13,50 @@
     <body onload="init('pageload')">
         <p id="wsstatus">WebSockets: DISCONNECTED</p>
         <button onclick="connect('10.10.39.85', 12080)">Connect</button>
-        <button onclick='trkpower("toggle")'>Toggle Track Power</button>
+        <button id = "trkpower-button" onclick='trkpower("toggle")' style="background-color: lightgray;">Toggle Track Power</button>
         <p></p>
-            <button onclick="getThrottle(2, 'CBQ2')">Get Throttle for CBQ2 (DCC address #02)</button>
+        Locomotive DCC Address:<input type="text" id="dccAddress"></input>
+        <button onclick='getThrottle(document.getElementById("dccAddress").value, "Throttle1")'>Get Throttle</button>
         
         </form>
         <div class="lococtl">
-            <button onclick='setEngine(true)'>Start Engine</button>
-            <button onclick='setEngine(false)'>Stop Engine</button>
-            <p>
-            <div class="notching" style="background-color: gray">
+            <div class="prime-mover" style="background-color: gray">
+                <p>
+                <button onclick='setEngine(true)'>Start Engine</button>
+                <button onclick='setEngine(false)'>Stop Engine</button>
+                <p>
                 <p id="notchindicator">Current Notch: 0 (Idling)</p>
                 <button onclick='setNotch("up")'>Notch Up</button>
                 <button onclick='setNotch("down")'>Notch Down</button>
                 <button onclick='setNotch("reset")'>RESET PRIME MOVER</button>
             </div>
-            <p>
-            <button onclick='setCompressor(true)'>Start Compressor</button>
-            <button onclick='setCompressor(false)'>Stop Compressor</button>
-            <p></p>
-            <button onmousedown='setHorn(true)' onmouseup='setHorn(false)'>Airhorn (momentary)</button>
-            <p></p>
-            <button onclick='setBell(true)'>Air bell on</button>
-            <button onclick='setBell(false)'>Air bell off</button>
+            
+            <!--This is where everything to do with brakes is in my HTMLcab-->
+            <div class = "braking">
+                <p>
+                
+                    Locomotive Air Brake: <br> <input type="number" id="locoBrakeInput"> <br>
+                    <button onclick='setLocoBrake(document.getElementById("locoBrakeInput").value)'>Set Loco Brake</button>
+                    <a>Current Locomotive Air Brake Setting:</a>
+                    <a id="locoBrakeIndicator"></a>
+                
+                
+            </div>
+                <p>
+                <button onclick='setCompressor(true)'>Start Compressor</button>
+                <button onclick='setCompressor(false)'>Stop Compressor</button>
+                <p></p>
+                <button onmousedown='setHorn(true)' onmouseup='setHorn(false)'>Airhorn (momentary)</button>
+                <p></p>
+                <button onclick='setBell(true)'>Air bell on</button>
+                <button onclick='setBell(false)'>Air bell off</button>
             
             <div class="reverser" style="background-color: grey;">
                 <p>Reverser:
                 <button onclick='setReverser("forward")'>Forward</button>
                 <button onclick='setReverser("neutral")'>Neutral</button>
                 <button onclick='setReverser("reverse")'>Reverse</button>
+                <a style="color: white;" id="reverserIndicator"></a>
                 </p>
             
             

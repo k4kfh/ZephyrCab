@@ -20,6 +20,7 @@ function setReverser(direction, ignoreNotch) {
             }
             console.log("Set reverser to FORWARD")
             reverserSet = true
+            updateHTML("reverser")
         }
         else if (ignoreNotch == true) {
             reverser = "forward"
@@ -28,6 +29,7 @@ function setReverser(direction, ignoreNotch) {
             }
             console.log("Set reverser to FORWARD")
             reverserSet = true
+            updateHTML("reverser")
             }
         
     }
@@ -39,6 +41,7 @@ function setReverser(direction, ignoreNotch) {
             }
             console.log("Set reverser to REVERSE")
             reverserSet = true
+            updateHTML("reverser")
         }
         else if (ignoreNotch == true) {
             reverser = "reverse"
@@ -47,6 +50,7 @@ function setReverser(direction, ignoreNotch) {
             }
             console.log("Set reverser to REVERSE")
             reverserSet = true
+            updateHTML("reverser")
             }
         
     }
@@ -56,11 +60,13 @@ function setReverser(direction, ignoreNotch) {
             reverser = "neutral"
             console.log("Set reverser to NEUTRAL")
             reverserSet = true
+            updateHTML("reverser")
         }
         else if (ignoreNotch == true) {
             reverser = "neutral"
             console.log("Set reverser to NEUTRAL")
             reverserSet = true
+            updateHTML("reverser")
             }
         
         
@@ -69,7 +75,17 @@ function setReverser(direction, ignoreNotch) {
     }
     else {
         alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        return false
     }
+}
+
+//this is used to set the locomotive brake. The number is used as a percent, so brakeSetting needs to be from 0 to 100. How you feed that to it is up to you.
+//it, too, calls updateHTML("locoBrake") so you can have your HTMLcab display the current brake setting
+function setLocoBrake(brakeSetting) {
+    locoBrake = brakeSetting
+    updateHTML("locoBrake")
+    ProtoEngine_Speed(notch, locoBrake)
+    console.log("Set locomotive air brake to " + locoBrake + "%")
 }
 
 
@@ -95,7 +111,7 @@ function setNotch(dowhat) {
                 notch++
                 sound_notch("up")
                 //call that function from ui.js that can be customized to fit your specific HTML code
-                updateNotchHTML(notch)
+                updateHTML("notch")
                 //reset the timing wait system of the notch thing
                 notchTiming("reset")
                 //PROTOENGINE COMMAND HERE
@@ -108,7 +124,7 @@ function setNotch(dowhat) {
                 //notch the sound down, adjust the notch variable
                 notch--
                 sound_notch("down")
-                updateNotchHTML(notch)
+                updateHTML("notch")
                 notchTiming("reset")
                 //PROTOENGINE COMMAND HERE
                 ProtoEngine_Speed(notch)
@@ -119,7 +135,7 @@ function setNotch(dowhat) {
             console.log("Full notching reset by setNotch() BEGIN")
             sound_notch("reset")
             notch = 0
-            updateNotchHTML(0)
+            updateHTML("notch")
             //PROTOENGINE COMMAND HERE
             ProtoEngine_Speed(0)
         }
@@ -182,7 +198,8 @@ function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, A
      
      
      //this is it, this is the speed finding equation
-     var newLocoSpeed = ((ARGnotch/locoMaxNotch) * locoMaxSpeed) / 100
+     var newLocoSpeedNoBrakes = (((ARGnotch/locoMaxNotch) * locoMaxSpeed) / 100)
+     var newLocoSpeed = newLocoSpeedNoBrakes - (newLocoSpeedNoBrakes * (ARGlocoBrake / 100))
      //this function is decoder agnostic and is used for speed stuff because its got momentum and crap like that
      //if you're wondering it's in websockets.js
      sendcmdLocoSpeed(newLocoSpeed)

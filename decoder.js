@@ -73,6 +73,8 @@ function sound_notch(direction) {
 
 //engine start/stop, call with either true or false
 function setEngine(dowhat) {
+    //on my LokSound decoder, the engine doesn't play the shutoff sound unless you have it in idle (and i assume you cant shut off a real one unless its idling)
+    if (notch == 0) {
     if (dowhat == true) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":true, "throttle":"' + throttleName + '"}}');
             console.log("Started engine on EMD 567 ESU LokSound bad-to-the-bone decoder! :D This decoder.js file written by K4KFH");
@@ -83,6 +85,7 @@ function setEngine(dowhat) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":false, "throttle":"' + throttleName + '"}}');
             console.log("Stopped engine on EMD 567 ESU LokSound bad-to-the-bone decoder! D:");
             engine = false
+    }
     }
 }
 

@@ -11,4 +11,18 @@ var notchAllowed = true //this is set to true because the program assumes the lo
 var protoEngineNotchWait = 5000
 
 var locoMaxNotch = 8 //this is really just in case you have a weird 16 notcher or something, or you want to only allow up to a certain notch. It MUST be set though, if it's undefined the notching system will cease to function!
-var locoMaxSpeed = 80 //if your locomotive's speed step system isn't really prototypical (you know, that one locomotive you have where 100 speed steps is like breaking the sound barrier?) 
+var locoMaxSpeed = 100 //if your locomotive's speed step system isn't really prototypical (you know, that one locomotive you have where 100 speed steps is like breaking the sound barrier?)
+
+var layoutTrackPower_state //this is true if track power is on, false if it's off. When it's updated, updateHTML("layoutTrackPower_state") is called, which is an HTMLcab specific script inside ui.js
+
+
+
+
+//ALL LOCOMOTIVE PROTOTYPE SPECIFIC VARIABLES
+//these variables help ProtoEngine accurately represent the behavior of the prototype
+var prototypeHorsepower = 1350
+var prototypeTopSpeed = 70
+var prototypeMinRPM = 275
+var prototypeMaxRPM = 800
+var prototypeMinAmps = 0 //amperage basically set in perecent because I have no idea right now
+var prototypeMaxAmps = 100 //^^^

@@ -21,10 +21,12 @@ function trkpower(option) {
     if (option == "on") {
         sendcmd('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
+        updateHTML("layoutTrackPower_state")
     }
     else if (option == "off") {
         sendcmd('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
+        updateHTML("layoutTrackPower_state")
     }
     
     else if (option == "toggle") {
@@ -32,11 +34,13 @@ function trkpower(option) {
         if (layoutTrackPower_state == true) {
             sendcmd('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
+        updateHTML("layoutTrackPower_state")
         }
         //if its currently off, turn it on
         else if (layoutTrackPower_state == false) {
             sendcmd('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
+        updateHTML("layoutTrackPower_state")
         }
     }
 }

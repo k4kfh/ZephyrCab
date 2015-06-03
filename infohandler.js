@@ -10,10 +10,12 @@ function JSONhandleType_power(string) {
     if (json.data.state == 2) {
         layoutTrackPower_state = true
         console.log("Updated layout track power status to TRUE")
+        updateHTML("layoutTrackPower_state")
     }
     else if (json.data.state == 4) {
         layoutTrackPower_state = false
         console.log("Updated layout track power status to FALSE")
+        updateHTML("layoutTrackPower_state")
     }
     
 }
