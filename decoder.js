@@ -16,14 +16,23 @@ var locoSoundNotchMinTime = 2000 //THIS IS SUPER IMPORTANT: LISTEN UP DEVELOPERS
 //if you don't set this, NOTCHING WILL NOT EVER WORK RIGHT
 //locoNotchMinTime is the minimum time required for the locomotive's decoder to wait between notches. This is not supposed to be prototypical, higher level stuff handles that, this is simply the min. amount of time you have to wait between calling the sound_notch() function for your decoder to notch correctly. DO NOT FORGET TO SET THIS. DO NOT SET IT TO ZERO. If you don't think there is a min. time, set it to 500ms. If you set it to 0, notching will create a loop that slowly eats all your CPU. DONT. SET. THIS. TO. ZERO.
 //this has been a PSA
+
+//this function should be callable with the following:
+//sound_notch("up") - notches one up
+//sound_notch("down") - notches one down
+//sound_notch("reset") - resets the sound notch to 0, in my example simply by keeping the "notch down" function on for a long time, which worked for me on my LokSound decoder used in testing
 function sound_notch(direction) {
     var soundNotchAllowed //this tells if the engine can safely go up a notch. Of course, the HO loco is electric, so it doesn't really matter, but we're shooting for realism here, and it's not really realistic to go from notch 0 to notch 8 in 1 second :P this isn't global because the global version of this variable is prototypical timing, so we don't need it global
     
     if (locoAddress != undefined) {
+        
     notchSuccess = false
+    
     if (soundNotchAllowed != false) {
+        
         //don't allow another notch change for however long
         soundNotchAllowed = false
+        
         if (direction == "up") {
             notchSuccess = true
             //send commands to the decoder to make the prime mover sound "notch up"
@@ -42,11 +51,20 @@ function sound_notch(direction) {
             setTimeout(function() {soundNotchAllowed = true}, locoSoundNotchMinTime)
             
         }
+        else if (direction == "reset") {
+            //hold down "notch down" button for 15 seconds to make sure we get to 0
+            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command to soundNotch down-RESETTING NOTCH TO 0")}, 500)
+            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("NOTCH RESET COMPLETE"); setNotch(0, "resetmode");}, 15000)
+            //shut engine off
+            setTimeout(function() {setEngine(false)}, 16000)
+            notchSuccess = true
+            
+        }
     }
-    else {
-    }
+        //this returns true if we were allowed to notch, false if we were not allowed to notch. you MUST have this return that, higher level ProtoEngine functions rely on it!
     return notchSuccess;
     }
+    //self explanatory alert system :P
     else {
         alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
     }
@@ -79,7 +97,7 @@ function setCompressor(dowhat) {
     if (dowhat == false) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":false, "throttle":"' + throttleName + '"}}');
             compressor = false
-            console.log("Compressor stoppped.")
+            console.log("Compressor stopped.")
     }
 }
 
@@ -115,10 +133,10 @@ function setHorn(dowhat) {
 
 
 function JSONhandleType_throttle_functions(json) {
-    bell = json.F1
-    horn = json.F2
-    engine = json.F8
-    compressor = json.F20
+    setBell(json.F1)
+    setHorn(json.F2)
+    setEngine(json.F8)
+    setCompressor(json.F20)
     
     }
     

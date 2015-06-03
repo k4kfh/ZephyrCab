@@ -72,21 +72,34 @@ function setReverser(direction, ignoreNotch) {
     }
 }
 
+
+
+
+
+
 //this is the high level notching system. ANYTHING that adjusts the notch should ALWAYS use this. It is decoder agnostic because it calls functions from decoder.js, which behave the same across decoders, but the code inside is decoder specific. This allows a simple, unified approach to make the higher level function below work with all decoders that there exists a decoder.js for
 //setnotch is called with setnotch(up or down) and it returns the new notch as a number
+
+
 function setNotch(dowhat) {
     //this if statement takes the place of sendcmdLoco(), since we may be sending several commands within setNotch(). Don't want to make anyone throw their computer out the window because of 6 billion alert() functions!
     if (locoAddress != undefined) {
-        //this if else if... statement checks if we're notching up, down, setting a notch as a number, or resetting the notching.
-        //reset not implemented yet
+        if (notchAllowed == true) {
+        
+        //this if else if... statement checks if we're notching up, down, setting a notch as a number, or resetting the notching. //setting as a number not done yet
         
         if (dowhat == "up") {
             //be sure notches stay within acceptable range
-            if(notch < 8) {
+            if(notch < locoMaxNotch) {
                 //notch the sound up, adjust the notch variable
                 notch++
                 sound_notch("up")
+                //call that function from ui.js that can be customized to fit your specific HTML code
                 updateNotchHTML(notch)
+                //reset the timing wait system of the notch thing
+                notchTiming("reset")
+                //PROTOENGINE COMMAND HERE
+                ProtoEngine_Speed(notch)
             }
         }
         else if (dowhat == "down") {
@@ -96,72 +109,88 @@ function setNotch(dowhat) {
                 notch--
                 sound_notch("down")
                 updateNotchHTML(notch)
+                notchTiming("reset")
+                //PROTOENGINE COMMAND HERE
+                ProtoEngine_Speed(notch)
             }
+        }
+        else if (dowhat == "reset") {
+            //this calls all the notching resetting functions, including resetting the sound notch if the locomotive has those
+            console.log("Full notching reset by setNotch() BEGIN")
+            sound_notch("reset")
+            notch = 0
+            updateNotchHTML(0)
+            //PROTOENGINE COMMAND HERE
+            ProtoEngine_Speed(0)
+        }
+            
+        }
+        //if notch isn't allowed, then
+        else {
+            //if the notch request isnt allowed because of ProtoEngine's timing settings, then run the notchDisallowed()
+            notchDisallowed("timing")
         }
         
-        //setnotch as number-STILL BEING DEVELOPED-DO NOT USE (however you are welcome to contribute to the source of this, it's giving me headaches as a bit of a JS newbie)
-        else if (dowhat >= 0) {
-            //this is a weird chain of if statements, but it sorts out bogus number requests
-            //(obviously we can't do setNotch(42), so we have this lovely disorganized code
-            if (dowhat <= 8) {
-             //this is where the code runs to actually set the notch to a number
-                
-                //this figures out what we have to do to get to the notch we want (for example, 7-8 here means we need to decrease it by 1)
-                notchChange = dowhat - notch
-                //do we need to INCREASE it? or do we need to DECREASE it? lets find out
-                if (notchChange > 0) {
-                    //we need to increase it
-                    notch = notch + notchChange
-                }
-                else if (notchChange < 0) {
-                    notchChange = Math.abs(notchChange)
-                    //we need to decrease it
-                    notch = notch - notchChange
-                    console.log("Need to decrease the notch by: " + notchChange)
-                    
-                    //2nd notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTime)
-                    }
-                    var locoSoundNotchMinTimeTMP = locoSoundNotchMinTime * 2
-                    //3rd notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTimeTMP)
-                    }
-                    locoSoundNotchMinTimeTMP = locoSoundNotchMinTime * 3
-                    //4th notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTimeTMP)
-                    }
-                    locoSoundNotchMinTimeTMP = locoSoundNotchMinTime * 4
-                    //5th notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTimeTMP)
-                    }
-                    locoSoundNotchMinTimeTMP = locoSoundNotchMinTime * 5
-                    //6th notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTimeTMP)
-                    }
-                    locoSoundNotchMinTimeTMP = locoSoundNotchMinTime * 6
-                    //7th notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTimeTMP)
-                    }
-                    locoSoundNotchMinTimeTMP = locoSoundNotchMinTime * 7
-                    //8th notch
-                    if(notchChange != 0) {
-                        setTimeout(sound_notch("down"), locoSoundNotchMinTimeTMP)
-                    }
-                    
-                    
-                    
-                }
-            }
-        }
     }
     else {
         alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
     }
 return notch;
+}
+
+
+
+//this can be called with "reset" every time the notch is changed so that it disallows the notch to be changed for protoEngineNotchWait's time
+function notchTiming(args) {
+    //first IF statement to be sure we're actually throttling a locomotive here
+     if (locoAddress != undefined) {
+         if(args == "reset") {
+          notchAllowed = false
+          setTimeout(function() {notchAllowed = true}, protoEngineNotchWait)
+          setTimeout(function() {console.log("Notching allowed again!")}, protoEngineNotchWait)
+         }
+         else if (args == "allow") {
+             notchAllowed = true
+         }
+         else if (args == "disallow") {
+             notchAllowed = false
+         }
+        
+     }
+    //more of failsafe loco check system
+    else {
+        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+    }
+}
+
+
+
+//this is what calculates the speed for the locomotive
+//this is basically where it all goes down
+
+//the reason all the variables have ARG in front of them is so that inside the function, we can still access global variables that have been set for information about the various things
+//basically to prevent 2 variables in different scopes with the same name
+
+function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, ARGreverser) {
+ if (locoAddress != undefined) {
+     //actual code can run
+     //the reverser function handles setting the direction itself, because that's so simple, except for one thing:
+     //NEUTRAL
+     //if the reverser is in neutral, we dont need to send ANY speed commands to the locomotive
+     //so for any speed related commands, we use the function sendcmdLocoSpeed(command) which only actually sends the command if the reverser is in either fwd or rev.
+     //saves time
+     
+     
+     //this is it, this is the speed finding equation
+     var newLocoSpeed = ARGnotch/locoMaxNotch
+     //this function is decoder agnostic and is used for speed stuff because its got momentum and crap like that
+     //if you're wondering it's in websockets.js
+     sendcmdLocoSpeed(newLocoSpeed)
+     
+ }
+    else {
+        alert("You haven't requested a throttle yet. We can't do squat. Wait. How did you even manage to...never mind")
+    
+}
+    return newLocoSpeed
 }

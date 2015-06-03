@@ -16,6 +16,7 @@ function connect(ip, port) {
         var heartbeatInterval = setInterval(heartbeats, 1350)
         console.log("Beginning heartbeats.")
         setListeners()
+        init("connect")
     }
     
     ws.onmessage = function(event) {
@@ -92,6 +93,8 @@ function sendcmd(command) {
     }
 }
 
+
+//this is used for any command sent to a locomotive, since it provides an alert if we haven't requested a throttle yet.
 function sendcmdLoco(command) {
     if (locoAddress != undefined) {
         return sendcmd(command)
@@ -99,6 +102,18 @@ function sendcmdLoco(command) {
     else {
         alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
     }
+}
+
+//this function is used for sending any SPEED RELATED commands to a locomotive (handled only by ProtoEngine() ). It's what handles the reverser's weird hard-to-deal-with NEUTRAL setting
+function sendcmdLocoSpeed(speed) {
+    if(reverser != "neutral") {
+        sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
+    }
+    else{
+        console.log("Reverser is set to neutral, so we aren't sending the requested speed command to the engine.")
+    }
+    
+    
 }
 
 

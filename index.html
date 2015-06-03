@@ -10,7 +10,7 @@
     <title>LocoThrottleJS</title>
     
 </head>
-    <body onload="init()">
+    <body onload="init('pageload')">
         <p id="wsstatus">WebSockets: DISCONNECTED</p>
         <button onclick="connect('10.10.39.85', 12080)">Connect</button>
         <button onclick='trkpower("toggle")'>Toggle Track Power</button>
@@ -26,13 +26,13 @@
                 <p id="notchindicator">Current Notch: 0 (Idling)</p>
                 <button onclick='setNotch("up")'>Notch Up</button>
                 <button onclick='setNotch("down")'>Notch Down</button>
+                <button onclick='setNotch("reset")'>RESET PRIME MOVER</button>
             </div>
             <p>
             <button onclick='setCompressor(true)'>Start Compressor</button>
             <button onclick='setCompressor(false)'>Stop Compressor</button>
             <p></p>
-            <button onclick='setHorn(true)'>Airhorn on</button>
-            <button onclick='setHorn(false)'>Airhorn off</button>
+            <button onmousedown='setHorn(true)' onmouseup='setHorn(false)'>Airhorn (momentary)</button>
             <p></p>
             <button onclick='setBell(true)'>Air bell on</button>
             <button onclick='setBell(false)'>Air bell off</button>
