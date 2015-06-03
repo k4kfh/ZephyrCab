@@ -106,7 +106,7 @@ function setNotch(dowhat) {
         
         if (dowhat == "up") {
             //be sure notches stay within acceptable range
-            if(notch < locoMaxNotch) {
+            if(notch < prototypeMaxNotch) {
                 //notch the sound up, adjust the notch variable
                 notch++
                 sound_notch("up")
@@ -229,6 +229,14 @@ function sendcmdLocoSpeed(speed) {
     
     
 }
+
+function setRPM(notch) {
+    if (notch == 0) {
+        rpm = prototypeMinRPM
+        console.log("Notch is 0 (Idle) so updating prime mover RPM to " + rpm + " (Idle RPM specified in globalvars.js)")
+    }
+    else {
+        rpm = (((prototypeMaxRPM - prototypeMinRPM) / prototypeMaxNotch) * notch) //finds RPM based on min/max RPM and current notch
 
 
 //still in development, need to make it where when it closes it stops the heartbeats but im doing other things
