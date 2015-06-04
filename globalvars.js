@@ -16,7 +16,7 @@ var locoMaxSpeed = 100 //if your locomotive's speed step system isn't really pro
 
 var layoutTrackPower_state //this is true if track power is on, false if it's off. When it's updated, updateHTML("layoutTrackPower_state") is called, which is an HTMLcab specific script inside ui.js
 
-
+var locoBrake = 100 //this is set to 0 purely starting out, because reasons (better to be stopped unintentionally than driving off unintentionally,right?
 
 
 //ALL LOCOMOTIVE PROTOTYPE SPECIFIC VARIABLES
@@ -27,3 +27,4 @@ var prototypeMinRPM = 275
 var prototypeMaxRPM = 800
 var prototypeMinAmps = 0 //amperage basically set in perecent because I have no idea right now, but if you know the min/max generator amperage for your locomotive, you can set it here and it SHOULD work.
 var prototypeMaxAmps = 100 //^^^
+var prototypeMass = 108900 //this is in kg

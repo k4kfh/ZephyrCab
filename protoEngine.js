@@ -198,7 +198,7 @@ function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, A
      
      
      //this is it, this is the speed finding equation
-     var newLocoSpeedNoBrakes = (((ARGnotch/locoMaxNotch) * locoMaxSpeed) / 100)
+     var newLocoSpeedNoBrakes = (((ARGnotch/prototypeMaxNotch) * locoMaxSpeed) / 100)
      var newLocoSpeed = newLocoSpeedNoBrakes - (newLocoSpeedNoBrakes * (ARGlocoBrake / 100))
      //this function is decoder agnostic and is used for speed stuff because its got momentum and crap like that
      //if you're wondering it's in websockets.js
@@ -237,6 +237,8 @@ function setRPM(notch) {
     }
     else {
         rpm = (((prototypeMaxRPM - prototypeMinRPM) / prototypeMaxNotch) * notch) //finds RPM based on min/max RPM and current notch
+    }
+}
 
 
 //still in development, need to make it where when it closes it stops the heartbeats but im doing other things
