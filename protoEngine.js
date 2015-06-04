@@ -247,7 +247,7 @@ function setRPM(notch) {
 //coefficient is the number you want it to multiply by to get the next value in the chain.
 //timeCycle is how often you want it to find the next number in the chain, in milliseconds
 //endValue is where you want it to stop
-function accel(startingValue, coefficient, timeCycle, endValue) {
+function accelerationCalc(startingValue, coefficient, timeCycle, endValue) {
     var speed
     var accelInterval
     accelInterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed); if (speed == endValue) {clearInterval(accelInterval)} }, timeCycle)
