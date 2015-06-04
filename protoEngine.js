@@ -242,9 +242,15 @@ function setRPM(notch) {
 
 
 //this can be called to return a steady set of declining or inclining numbers. Just call it with a number bigger than one as the coefficient for it to go up, smaller than 1 to go down. You get the idea
-function accel(startingValue, coefficient, timeCycle) {
+//how to call this:
+//startingValue is the value where you want the accel equation to START your chain of numbers at.
+//coefficient is the number you want it to multiply by to get the next value in the chain.
+//timeCycle is how often you want it to find the next number in the chain, in milliseconds
+//endValue is where you want it to stop
+function accel(startingValue, coefficient, timeCycle, endValue) {
     var speed
-    accelinterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed) }, timeCycle)
+    var accelInterval
+    accelInterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed); if (speed == endValue) {clearInterval(accelInterval)} }, timeCycle)
     
 }
 
