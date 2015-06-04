@@ -241,6 +241,14 @@ function setRPM(notch) {
 }
 
 
+//this can be called to return a steady set of declining or inclining numbers. Just call it with a number bigger than one as the coefficient for it to go up, smaller than 1 to go down. You get the idea
+function accel(startingValue, coefficient, timeCycle) {
+    var speed
+    accelinterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed) }, timeCycle)
+    
+}
+
+
 //still in development, need to make it where when it closes it stops the heartbeats but im doing other things
 function disconnnect() {
     if(wsStatus == true) {
