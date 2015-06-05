@@ -202,7 +202,7 @@ function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, A
      var newLocoSpeed = newLocoSpeedNoBrakes - (newLocoSpeedNoBrakes * (ARGlocoBrake / 100))
      //this function is decoder agnostic and is used for speed stuff because its got momentum and crap like that
      //if you're wondering it's in websockets.js
-     sendcmdLocoSpeed(newLocoSpeed)
+     locoAccelerate(currentSpeed, protoEngineConstant_accel_coefficient, 1000, newLocoSpeed)
      
  }
     else {
@@ -222,6 +222,7 @@ function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, A
 function sendcmdLocoSpeed(speed) {
     if(reverser != "neutral") {
         sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
+        currentSpeed = speed
     }
     else{
         console.log("Reverser is set to neutral, so we aren't sending the requested speed command to the engine.")
@@ -247,10 +248,13 @@ function setRPM(notch) {
 //coefficient is the number you want it to multiply by to get the next value in the chain.
 //timeCycle is how often you want it to find the next number in the chain, in milliseconds
 //endValue is where you want it to stop
-function accelerationCalc(startingValue, coefficient, timeCycle, endValue) {
+function locoAccelerate(startingValue, coefficient, timeCycle, endValue) {
+    if (startingValue == 0) {
+        startingValue = 0.1
+    }
     var speed
     var accelInterval
-    accelInterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed); if (speed == endValue) {clearInterval(accelInterval)} }, timeCycle)
+    accelInterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed); sendcmdLocoSpeed(speed); if (speed >= endValue) {clearInterval(accelInterval)} }, timeCycle)
     
 }
 

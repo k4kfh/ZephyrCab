@@ -38,4 +38,10 @@ function JSONhandleType_throttle(json) {
     else if (json.data.forward == false) {
         setReverser("reverse", true)
     }
+    
+    //speed gatherer
+    if (json.data.speed != undefined) {
+        currentSpeed = json.data.speed * 100
+        console.log("Updated currentSpeed to " + currentSpeed)
+    }
 }
