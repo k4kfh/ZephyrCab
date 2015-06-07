@@ -1,0 +1,6 @@
+This is how LocoThrottle "hooks up" to your specific DCC decoder. When you put in a locomotive number in your HTMLcab, it looks up the JMRI Roster Entry for that address. (Consequently, if your loco has no roster entry, LocoThrottleJS reverts to the decoder-agnostic decoder.js located in the decoders/default/default folder. USE THE ROSTA!)
+It looks at the decoder family, and then goes into the folder with that name. then it looks at the decoder model, and goes into the folder with that name.
+
+Once there, it has at it's disposal a whole list of files that work with your particular decoder. For simple DCC decoders that simple control direction, speed, and one light, you could have only one file for the decoder. But for decoders with tons of configurable options, custom sound file support, and all that fancy stuff, you have to have individual decoder.js files for EACH DECODER. So inside the decoder model's folder, there are individual folders named for each decoder's custom configuration option(s). Inside that, there's an "info.json" file with information about that decoder.js file. The program scans all those, and has the user choose which one they want.
+
+As of June 7th, this feature is still being developed. The above text is the final goal. Date of completion is unknown.
