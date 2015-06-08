@@ -1,10 +1,10 @@
 # Harmony Jekyll theme general configurations 
 
 # Base URL
-baseurl: /harmony
+baseurl: /LocoThrottleJS
 
 # Site live URL
-url: http://gayan.me
+url: http://k4kfh.github.io
 
 # Localhost 
 # url: http://127.0.0.1:4000  
@@ -33,13 +33,13 @@ harmony:
   # Profile links, leave blank to ignore
   social: 
     github: gayanvirajith
-    twitter: gayanvirajith
-    facebook: gayanvirajith
-    gplus: +GayanVirajith
-    dribble: gayan
+    twitter: 
+    facebook: 
+    gplus: 
+    dribble: 
     pinterest: 
   # Toggle disclaimer in footer
-  show_disclaimer: true
+  show_disclaimer: false
 
 # Conversion / Build settings 
 markdown:    kramdown
