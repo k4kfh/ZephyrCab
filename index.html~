@@ -3,6 +3,8 @@ layout: page
 description: "Drive your trains like the real deal"
 ---
 
+<p>Can I write my own HTML here? I CAN
+
 {% for post in paginator.posts %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">

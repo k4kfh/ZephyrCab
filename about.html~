@@ -10,10 +10,10 @@ description: "I'm too lazy to write descriptions for this page."
 <h3>How do I install locoThrottle.js?</h3>
 <p><b>In it's current state, only developers should try the program</b>, and for them the source code (all HTML/JavaScript) can be downloaded at <a href="https://github.com/k4kfh/LocoThrottleJS" target="_blank">the project's GitHub page.</a>
 
-<p><b>Non-geeks will be able to try the program in a browser without installing anything, here very shortly when it's in a stable state.</b> Unfortunately, right now the overall experience is not ironed out enough to begin public use. If you have questions about this, feel free to contact me via GitHub. I will be happy to answer any questions you may have, to the best of my ability.
-
 <h3>What does it do?</h3>
 <p><b>locoThrottle.js offers a more prototypical way to drive your model trains.</b> Instead of simply toggling a direction switch and twisting a speed knob, now you'll have to deal with a notched throttle, locomotive brakes, train brakes, wheel slip, momentum, the list goes on! Eventually, there will even be a way for the technically savvy to feed track grade info into the program, and have that play into how the trains behave. <b>In short, locoThrottle.js bridges the gap between model trains and railroad simulation.</b> We have had realistic dispatching and switching for years, and now we can finally have <i>realistic train control.</i>
+
+<p><b>Non-geeks will be able to try the program in a browser without installing anything, here very shortly when it's in a stable state.</b> Unfortunately, right now the overall experience is not ironed out enough to begin public use. If you have questions about this, feel free to contact me via GitHub. I will be happy to answer any questions you may have, to the best of my ability.
 
 <h3>When will it be ready?</h3>
 <p><b>The short answer: I'm shooting for before August, but I can't promise anything.</b> Contact me if you would like to know more, or you can read my blog posts to learn about what's going on right now. I am in high school, so during the school year my time to work on this will likely be limited.
