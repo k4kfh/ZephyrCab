@@ -3,8 +3,8 @@ title: locoThrottle.js
 header-img: img/home-bg.jpg
 email: hampton@evilgeniustech.com
 description: "A FOSS project to make model train control just like the real deal"
-baseurl: ""
-url: "http://k4kfh.github.io/LocoThrottleJS"
+baseurl: "/LocoThrottleJS"
+url: "http://k4kfh.github.io"
 twitter_username: 
 github_username:  k4kfh
 facebook_username:  
