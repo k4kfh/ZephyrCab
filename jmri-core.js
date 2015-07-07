@@ -11,6 +11,8 @@ function getThrottle(address, name) {
     throttleName = name
     //this runs the init() function, and this sort of thing is why you HAVE to at least define them :P they don't have to do anything at all, just define them
     init("throttleacquired")
+    setInterval(protoEngine_recalc, 100)
+    speedMPH = 0
     
 }
 

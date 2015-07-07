@@ -2,6 +2,11 @@
 
 //call this with setReverser([either forward, reverse, or neutral, as a string], [true ONLY if you want the reverser to ignore whether or not the engine is idling to change speed. Do this only in special circumstances. not inputting anything for ignoreNotch sets it to false.])
 //setReverser returns true if the reverser was able to be set as specified, and false if otherwise
+
+
+
+
+
 function setReverser(direction, ignoreNotch) {
     //this if statement replaces the sendcmd function, since its more effective to do custom code here
     if (locoAddress != undefined) {
@@ -187,29 +192,71 @@ function notchTiming(args) {
 //the reason all the variables have ARG in front of them is so that inside the function, we can still access global variables that have been set for information about the various things
 //basically to prevent 2 variables in different scopes with the same name
 
-function ProtoEngine_Speed(ARGnotch, ARGlocoBrake, ARGtrainBrake, ARGdynBrake, ARGreverser) {
+function protoEngine_accel(ARGnotch, ARGreverser) {
  if (locoAddress != undefined) {
-     //actual code can run
-     //the reverser function handles setting the direction itself, because that's so simple, except for one thing:
-     //NEUTRAL
-     //if the reverser is in neutral, we dont need to send ANY speed commands to the locomotive
-     //so for any speed related commands, we use the function sendcmdLocoSpeed(command) which only actually sends the command if the reverser is in either fwd or rev.
-     //saves time
+     //rewritten as of July 4th 2015
      
      
-     //this is it, this is the speed finding equation
-     var newLocoSpeedNoBrakes = (((ARGnotch/prototypeMaxNotch) * locoMaxSpeed) / 100)
-     var newLocoSpeed = newLocoSpeedNoBrakes - (newLocoSpeedNoBrakes * (ARGlocoBrake / 100))
-     //this function is decoder agnostic and is used for speed stuff because its got momentum and crap like that
-     //if you're wondering it's in websockets.js
-     locoAccelerate(currentSpeed, protoEngineConstant_accel_coefficient, 1000, newLocoSpeed)
+     
+     //begin physics
+     console.log("Current speed: " + speedMPH)
+     //finds how much horsepower the engine is putting out right now
+     outputHP = maxHP * (ARGnotch/8)
+     console.log("Output HP found to be: " + outputHP)
+     
+     //rolling resistance
+     rollingResistance = ((0.001 * locoWeight * 32.2))
+     console.log("Rolling resistance: " + rollingResistance)
+     
+     //begin working in time
+     wind = speedMPH + naturalWind
+     console.log("Wind experienced [mph]: " + wind)
+     
+     airResistanceCoeff = locoFrontArea * ((wind * wind) * 0.00256)
+     console.log("Air Resistance Coeff = " + airResistanceCoeff)
+     
+     windResistance = (airResistanceCoeff) * (speedMPH ^ 2)
+     console.log("Wind Resistance = " + windResistance)
+     
+     //there are two kinds of resistance in this program, the kind that makes the engine want to come to a stop, and the kind that's trying to push it in reverse
+     reverseResistance = windResistance //right now this only includes wind resistance
+     stoppingResistance = rollingResistance
+     
+     
+     if (speedMPH == 0) {
+         totalResistance = reverseResistance
+         console.log("Total resistance does not include variable stoppingResistance: " + totalResistance)
+     }
+     else if (speedMPH > 0) {
+         totalResistance = reverseResistance + stoppingResistance
+         console.log("Total resistance includes variable stoppingResistance: " + totalResistance)
+     }
+     else if (speedMPH < 0) {
+         totalResistance = reverseResistance + (stoppingResistance - (2 * stoppingResistance))
+         console.log("Total resistance, inverted, includes stoppingResistance: " + totalResistance)
+     }
+     
+     
+     acceleration = ((outputHP * 550) - (totalResistance))/locoWeight
+     
+     console.log("ACCEL in MPH/sec: " + acceleration)
+     
+     //this assumes you're running the function every 100ms
+     //we convert the acceleration value from mph/sec to mph/100ms
+     //then we find the new speed and set it
+     var accel_highres = acceleration / 10
+     
+     var newSpeed = speedMPH + accel_highres
+     setSpeedMPH(newSpeed)
+     console.log("Speed recalculated after 0.1 sec to be: " + newSpeed)
+     
+     
      
  }
     else {
         alert("You haven't requested a throttle yet. We can't do squat. Wait. How did you even manage to...never mind")
     
-}
-    return newLocoSpeed
+    }
 }
 
 
@@ -231,32 +278,22 @@ function sendcmdLocoSpeed(speed) {
     
 }
 
-function setRPM(notch) {
-    if (notch == 0) {
-        rpm = prototypeMinRPM
-        console.log("Notch is 0 (Idle) so updating prime mover RPM to " + rpm + " (Idle RPM specified in globalvars.js)")
-    }
-    else {
-        rpm = (((prototypeMaxRPM - prototypeMinRPM) / prototypeMaxNotch) * notch) //finds RPM based on min/max RPM and current notch
-    }
+function setSpeedMPH(mph) {
+    console.log("Dummy function set speed to " + mph + " mph.")
+    speedMPH = mph
 }
 
 
-//this can be called to return a steady set of declining or inclining numbers. Just call it with a number bigger than one as the coefficient for it to go up, smaller than 1 to go down. You get the idea
-//how to call this:
-//startingValue is the value where you want the accel equation to START your chain of numbers at.
-//coefficient is the number you want it to multiply by to get the next value in the chain.
-//timeCycle is how often you want it to find the next number in the chain, in milliseconds
-//endValue is where you want it to stop
-function locoAccelerate(startingValue, coefficient, timeCycle, endValue) {
-    if (startingValue == 0) {
-        startingValue = 0.1
-    }
-    var speed
-    var accelInterval
-    accelInterval = setInterval(function () { speed = startingValue *= coefficient; console.log(speed); sendcmdLocoSpeed(speed); if (speed >= endValue) {clearInterval(accelInterval)} }, timeCycle)
+
+
+
+
+function protoEngine_recalc() {
+    protoEngine_accel(notch, reverser)
     
 }
+
+
 
 
 //still in development, need to make it where when it closes it stops the heartbeats but im doing other things
