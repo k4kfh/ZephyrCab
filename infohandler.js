@@ -34,9 +34,11 @@ function JSONhandleType_throttle(json) {
     //this is decoder agnostic and works fine so don't fiddle with it if you can avoid it
     if (json.data.forward == true) {
         setReverser("forward", true)
+        setModelDirection("forward")
     }
     else if (json.data.forward == false) {
         setReverser("reverse", true)
+        setModelDirection("reverse")
     }
     
     //speed gatherer
