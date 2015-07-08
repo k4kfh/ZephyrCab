@@ -271,7 +271,22 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
      var accel_highres = acceleration / 10
      
      var newSpeed = speedMPH + accel_highres
-     speedMPH = newSpeed
+     
+     //GUESS WHAT
+     //THIS IS SUPER WONKY
+     //THIS IS HERE TO KEEP THE SPEED FROM PERPETUALLY BOUNCING AROUND 0, BUT NEVER HITTING 0
+     //THIS IS STILL HIGHLY DEVELOPMENT-ISH
+     //IT WAS ALSO WRITTEN AT 1:30AM SO BEAR THAT IN MIND
+     //AFAIK IT WORKS AS OF JULY 8TH 2015 AT 1:30AM, BUT THAT DOESNT SAY MUCH
+     //THIS HAS BEEN A PUBLIC SERVICE ACCOUNCEMENT
+     if (newSpeed < 0.001) {
+         if (newSpeed > -0.001) {
+             speedMPH = 0
+         }
+     }
+     else {
+        speedMPH = newSpeed
+     }
      
      //figures out speed in percent from speed in mph
      if (speedMPH < 0) {
