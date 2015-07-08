@@ -2,5 +2,6 @@
 locoWeight = 230000
 maxHP = 1500
 locoFrontArea = ( ((10 * 12) + 7) * (15 * 12) ) / (12*12) //taken from math model engine.py
+locoRearArea = ( ((10 * 12) + 7) * (15 * 12) ) / (12*12) //I used the same data as the front on this purely for simplicity's sake...it's not the right data it's just close enough for testing
 airDensity = 0.07962062
 naturalWind = 0
