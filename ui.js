@@ -71,6 +71,9 @@ function updateHTML(variable) {
             document.getElementById("reverserIndicator").innerHTML = "Current Reverser Setting: REVERSE"
         }
     }
+    else if (variable == "speedMPH") {
+        document.getElementById("speedometer").innerHTML = "Speedometer: " + Math.abs(speedMPH)
+    }
     
 }
 

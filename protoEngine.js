@@ -181,6 +181,8 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
  if (locoAddress != undefined) {
      //rewritten as of July 4th 2015
      
+     speedSet = false
+     
      
      
      //begin physics
@@ -268,25 +270,24 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
      //this assumes you're running the function every 100ms
      //we convert the acceleration value from mph/sec to mph/100ms
      //then we find the new speed and set it
-     var accel_highres = acceleration / 10
+     var accel_highres = acceleration
      
      var newSpeed = speedMPH + accel_highres
      
-     //GUESS WHAT
-     //THIS IS SUPER WONKY
-     //THIS IS HERE TO KEEP THE SPEED FROM PERPETUALLY BOUNCING AROUND 0, BUT NEVER HITTING 0
-     //THIS IS STILL HIGHLY DEVELOPMENT-ISH
-     //IT WAS ALSO WRITTEN AT 1:30AM SO BEAR THAT IN MIND
-     //AFAIK IT WORKS AS OF JULY 8TH 2015 AT 1:30AM, BUT THAT DOESNT SAY MUCH
-     //THIS HAS BEEN A PUBLIC SERVICE ACCOUNCEMENT
-     if (newSpeed < 0.001) {
-         if (newSpeed > -0.001) {
-             speedMPH = 0
+     if (speedMPH > 0) { //if speed is positive right now,
+         if (newSpeed < 0) { //and it's about to flip to negative
+             newSpeed = 0 //make sure it crosses exactly 0 once
+             console.log("Forcing zero crossing")
          }
      }
-     else {
-        speedMPH = newSpeed
+     else if (speedMPH < 0) {
+         if (newSpeed > 0) {
+             newSpeed = 0
+             console.log("Forcing zero crossing")
+         }
      }
+     
+     speedMPH = newSpeed
      
      //figures out speed in percent from speed in mph
      if (speedMPH < 0) {
@@ -308,7 +309,8 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
      }
      
      
-     console.log("Speed recalculated after 0.1 sec to be: " + newSpeed)
+     console.log("Speed recalculated after 1 sec to be: " + newSpeed)
+     updateHTML("speedMPH")
      
      
      
