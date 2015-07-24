@@ -61,13 +61,13 @@ function updateHTML(variable) {
         document.getElementById("locoBrakeIndicator").innerHTML = locoBrake + "%"
     }
     else if (variable == "reverser") {
-        if (reverser == "forward") {
+        if (reverser == 1) {
             document.getElementById("reverserIndicator").innerHTML = "Current Reverser Setting: FORWARD"
         }
-        if (reverser == "neutral") {
+        if (reverser == 0) {
             document.getElementById("reverserIndicator").innerHTML = "Current Reverser Setting: NEUTRAL"
         }
-        if (reverser == "reverse") {
+        if (reverser == -1) {
             document.getElementById("reverserIndicator").innerHTML = "Current Reverser Setting: REVERSE"
         }
     }

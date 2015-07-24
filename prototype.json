@@ -1,11 +1,13 @@
 //data for EMD F7-A
-locoWeight = 230000
-maxHP = 1500
+locoWeight = 250000
+prototypeMaxHP = 1500
 locoFrontArea = ( ((10 * 12) + 7) * (15 * 12) ) / (12*12) //taken from math model engine.py
 locoRearArea = ( ((10 * 12) + 7) * (15 * 12) ) / (12*12) //I used the same data as the front on this purely for simplicity's sake...it's not the right data it's just close enough for testing
 
-airDensity = 0.07962062 //DO NOT TOUCH THIS UNLESS YOU KNOW WHAT YOU'RE DOING
+airDensity = 0.07962062 //DO NOT TOUCH THIS UNLESS YOU KNOW WHAT YOU'RE DOING BECAUSE YEAH
 
 protoEngineNotchWait = 5000 //this is how long you must wait between notching the locomotive, in milliseconds. Set it to anything you like.
 
 prototypeMaxNotch = 8 //this is really just in case you have a weird 16 notcher or something, or you want to only allow up to a certain notch. Note that if you do that, the notch set here will be 100% of the locomotive's horsepower. This is not a "you can't make it go all the way up for safety" thing, this is a "be accurate to the prototype" thing. It MUST be set though, if it's undefined the notching system will cease to function!
+
+prototypeStartingTractiveEffort = 56500 //in pounds

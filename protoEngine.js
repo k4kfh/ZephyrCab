@@ -3,6 +3,7 @@
 //call this with setReverser([either forward, reverse, or neutral, as a string], [true ONLY if you want the reverser to ignore whether or not the engine is idling to change speed. Do this only in special circumstances. not inputting anything for ignoreNotch sets it to false.])
 //setReverser returns true if the reverser was able to be set as specified, and false if otherwise
 
+actualDirection = 0
 
 
 
@@ -19,13 +20,13 @@ function setReverser(direction, ignoreNotch) {
     //basically the same code (with different directions) under 3 different if statements for possible directions
     if (direction == "forward") {
         if (notch == 0) {
-            reverser = "forward"
+            reverser = 1
             console.log("Set reverser to FORWARD")
             reverserSet = true
             updateHTML("reverser")
         }
         else if (ignoreNotch == true) {
-            reverser = "forward"
+            reverser = 1
             console.log("Set reverser to FORWARD")
             reverserSet = true
             updateHTML("reverser")
@@ -34,13 +35,13 @@ function setReverser(direction, ignoreNotch) {
     }
     else if (direction == "reverse") {
         if (notch == 0) {
-            reverser = "reverse"
+            reverser = -1
             console.log("Set reverser to REVERSE")
             reverserSet = true
             updateHTML("reverser")
         }
         else if (ignoreNotch == true) {
-            reverser = "reverse"
+            reverser = -1
             console.log("Set reverser to REVERSE")
             reverserSet = true
             updateHTML("reverser")
@@ -50,13 +51,13 @@ function setReverser(direction, ignoreNotch) {
     
     else if (direction == "neutral") {
         if (notch == 0) {
-            reverser = "neutral"
+            reverser = 0
             console.log("Set reverser to NEUTRAL")
             reverserSet = true
             updateHTML("reverser")
         }
         else if (ignoreNotch == true) {
-            reverser = "neutral"
+            reverser = 0
             console.log("Set reverser to NEUTRAL")
             reverserSet = true
             updateHTML("reverser")
@@ -179,101 +180,46 @@ function notchTiming(args) {
 
 function protoEngine_accel(ARGnotch, ARGreverser) {
  if (locoAddress != undefined) {
-     //rewritten as of July 4th 2015
+     //rewrite on July 24th to support minimal if/else usage
      
-     speedSet = false
+     //first find output motive force
+     outputEngineForce = reverser * (((notch/prototypeMaxNotch) * prototypeMaxHP) * 550) //result is in ft-lbs, and works with any set of loco values. reverser math is there so when the reverser is in reverse, we get a negative number
+     console.log("Output Engine Force = " + outputEngineForce)
      
-     
-     
-     //begin physics
-     
-     //MOTIVE FORCE: negative #s are reverse motive force
-     console.log("Current speed: " + speedMPH)
-     //finds how much horsepower the engine is putting out right now
-     outputHP = maxHP * (ARGnotch/8)
-     console.log("Output HP found to be: " + outputHP)
-     
-     
-     
-     if (speedMPH > 0) {
-         //if the loco is going forward, calculate wind this way
-     
-        wind = speedMPH
-        console.log("Wind experienced on the front of the loco [mph] = " + wind)
-     
-        airResistanceCoeff = locoFrontArea * ((wind * wind) * 0.00256)
-        console.log("Air Resistance Coeff = " + airResistanceCoeff)
-     
-        windResistance = (airResistanceCoeff) * (wind ^ 2)
-        console.log("Wind Resistance = " + windResistance)
-        //done with wind
-     }
-     else if (speedMPH < 0) {
-         //if the loco is going backward, calculate wind this way
-         wind = speedMPH
-         console.log("Wind experienced on the back of the loco [mph] = " + wind)
-         
-         airResistanceCoeff = locoRearArea * ((wind * wind) * 0.00256)
-         console.log("Air resistance Coeff = " + windResistance)
-         
-         windResistance = -1 * ((airResistanceCoeff) * (wind ^ 2))
+     //we must use if's for wind resistance due to uncontrollably different front/rear cross-sectional areas
+     wind = Math.abs(speedMPH)
+     console.log("Wind = " + wind)
+     if (actualDirection == 1) {
+         windResistance = locoFrontArea * ((wind^2) * 0.00256) //wind resistance for forward movement
          console.log("Wind Resistance = " + windResistance)
-         //this logic above here ^^^ is flipped to use the back end of the loco when in reverse
-         
      }
-     else {
+     if (actualDirection == -1) {
+         windResistance = -1 * (locoRearArea * ((wind^2) * 0.00256)) //we multiply by negative 1 so that we go towards zero when the loco is moving backwards
+         console.log("Wind Resistance = " + windResistance)
+     }
+     if (actualDirection == 0) {
          windResistance = 0
-         console.log("Wind Resistance = 0 because loco is stationary...")
+         console.log("Wind Resistance = 0")
      }
+     //now we know wind resistance
      
-     //find total motive force, both reverse and forward, by subtracting wind resistance from force generated by the loco
-     if (reverser == "forward") {
-         motiveForce = (outputHP * 550) - windResistance
-         console.log("Total motive force: " + motiveForce)
-     }
+     //rolling resistance code
+     rollingResistance = actualDirection * (0.001 * locoWeight) //very simple math, 0.001 is the coefficient of rolling resistance, and the actualDirection math is to put it in the correct polarity based on direction of travel
+     console.log("Rolling Resistance = " + rollingResistance)
      
-     else if (reverser == "reverse") {
-         motiveForce = ((outputHP * 550) * -1) - (windResistance)
-         console.log("Total motive force: " + motiveForce)
-     }
+     //net force code
+     netForce = outputEngineForce - (windResistance + rollingResistance)
+     console.log("Net Force = " + netForce)
      
-     else {
-         motiveForce = 0
-         console.log("Total motive force: " + motiveForce)
-     }
+     acceleration = netForce / locoWeight //this whole thing is a big f=ma problem
+     console.log("Acceleration = " + acceleration)
      
-     
-     //RESISTANCE STARTS
-     
-     //rolling resistance
-     rollingResistance = ((0.001 * locoWeight * 32.2))
-     console.log("Rolling resistance: " + rollingResistance)
+     newSpeed = speedMPH + acceleration
+     console.log("Speed = " + speedMPH)
      
      
-     //this part has been redone, this is clunky but shows the purpose, will be tidied up later
-     if (speedMPH == 0) {
-         totalResistance = 0
-         console.log("Total resistance: " + totalResistance)
-     }
-     else if (speedMPH <= 0) {
-         totalResistance = -1 * (rollingResistance)
-     }
-     else if (speedMPH >= 0) {
-         totalResistance = rollingResistance
-     }
-     
-     
-     acceleration = (motiveForce - totalResistance)/locoWeight
-     
-     console.log("ACCEL in MPH/sec: " + acceleration)
-     
-     //this assumes you're running the function every 100ms
-     //we convert the acceleration value from mph/sec to mph/100ms
-     //then we find the new speed and set it
-     var accel_highres = acceleration
-     
-     var newSpeed = speedMPH + accel_highres
-     
+     //this code is not for physics purposes, it is purely to keep the program from looping and locking up
+     //it forces the speed to cross exactly 0 when changing direction, without impacting how fast it does so
      if (speedMPH > 0) { //if speed is positive right now,
          if (newSpeed < 0) { //and it's about to flip to negative
              newSpeed = 0 //make sure it crosses exactly 0 once
@@ -287,30 +233,32 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
          }
      }
      
-     speedMPH = newSpeed
      
-     //figures out speed in percent from speed in mph
+     
+     
+     
+     
+     
+     speedMPH = newSpeed //seems counterproductive but it's needed to ensure forced zero crossing, which cuts down on wasted CPU
+     //update ui.js
+     updateHTML("speedMPH")
      if (speedMPH < 0) {
          setModelDirection("reverse")
+         actualDirection = -1
          var locoSpeed = locoSpeedCrunch(Math.abs(speedMPH))
          sendcmdLocoSpeed(locoSpeed)
-         console.log("Sending " + locoSpeed + " as model speed.")
      }
      else if (speedMPH > 0) {
          setModelDirection("forward")
+         actualDirection = 1
          var locoSpeed = locoSpeedCrunch(Math.abs(speedMPH))
-         console.log("Sending " + locoSpeed + " as model speed.")
          sendcmdLocoSpeed(locoSpeed)
      }
      else {
          sendcmdLocoSpeed(0)
+         actualDirection = 0
          console.log("Loco is stationary, setting speed to 0 and ignoring reverser.")
-         modelDirection = reverser
      }
-     
-     
-     console.log("Speed recalculated after 1 sec to be: " + newSpeed)
-     updateHTML("speedMPH")
      
      
      
@@ -363,7 +311,7 @@ function setModelDirection(ARGdirection) {
         sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "forward":false, "throttle":"' + throttleName + '"}}')
         modelDirection = "reverse"
     }
-    console.log("Set MODEL direction to " + ARGdirection)
+    //console.log("Set MODEL direction to " + ARGdirection)
     
 }
 

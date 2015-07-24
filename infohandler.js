@@ -44,6 +44,5 @@ function JSONhandleType_throttle(json) {
     //speed gatherer
     if (json.data.speed != undefined) {
         currentSpeed = json.data.speed * 100
-        console.log("Updated currentSpeed to " + currentSpeed)
     }
 }
