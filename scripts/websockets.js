@@ -9,11 +9,10 @@ function connect(ip, port) {
     //when the connection opens,
     ws.onopen = function() {
         wsStatus = true
-        document.getElementById("wsstatus").innerHTML = "WebSockets: CONNECTED"
 
         console.log("Connection opened.")
         //start the heartbeats to keep it alive
-        var heartbeatInterval = setInterval(heartbeats, 1350)
+        var heartbeatInterval = setInterval(heartbeats, 1000)
         console.log("Beginning heartbeats.")
         setListeners()
         init("connect")
@@ -41,6 +40,7 @@ function connect(ip, port) {
 function heartbeats() {
     
     ws.send('{"type":"ping"}')
+    //console.log("Sent hb")
     
     
 }
@@ -51,6 +51,7 @@ function processReply(ev) {
     latestMsg = ev
     if (ev.type == "pong") {
         //just ignore these
+        console.log("Recieved hb")
     }
     else if (ev.type == "hello") {
         //sets up initial info about railroad
@@ -86,7 +87,7 @@ function sendcmd(command) {
         
     }
     else {
-        alert("We can't tell JMRI whatever you just did, because your WebSockets connection is not up and running yet.")
+        Materialize.toast("We can't tell JMRI whatever you just did, because your WebSockets connection is not up and running yet.", 4000)
         console.error("Tried to send something, but we're not connected yet.")
         return "Can't send!"
         
@@ -100,7 +101,7 @@ function sendcmdLoco(command) {
         return sendcmd(command)
     }
     else {
-        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
     }
 }
 

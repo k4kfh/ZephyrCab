@@ -1,63 +1,222 @@
-<html>
-<head>
-    <script src="websockets.js"></script>
-    <script src="infohandler.js"></script>
-    <script src="ui.js"></script>
-    <script src="decoder.js"></script>
-    <script src="jmri-core.js"></script>
-    <script src="protoEngine.js"></script>
-    <script src="globalvars.js"></script>
-    <script src="prototype.json"></script>
-    <script src="model.js"></script>
-    <title>LocoThrottleJS</title>
-    
-</head>
-    <body onload="init('pageload')">
-        <p id="wsstatus">WebSockets: DISCONNECTED</p>
-        <button onclick="connect('10.10.39.85', 12080)">Connect</button>
-        <button id = "trkpower-button" onclick='trkpower("toggle")' style="background-color: lightgray;">Toggle Track Power</button>
-        <p></p>
-        Locomotive DCC Address:<input type="text" id="dccAddress"></input>
-        <button onclick='getThrottle(document.getElementById("dccAddress").value, "Throttle1")'>Get Throttle</button>
+  <!DOCTYPE html>
+  <html>
+    <head>
+        <!--font for EvilGeniusTech logo--->
+        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>locoThrottle.js</title>
         
-        </form>
-        <div class="lococtl">
-            <div class="prime-mover" style="background-color: gray">
-                <p>
-                <button onclick='setEngine(true)'>Start Engine</button>
-                <button onclick='setEngine(false)'>Stop Engine</button>
-                <p>
-                <p id="notchindicator">Current Notch: 0 (Idling)</p>
-                <p id="speedometer">Speedometer: N/A</p>
-                <button onclick='setNotch("up")'>Notch Up</button>
-                <button onclick='setNotch("down")'>Notch Down</button>
-                <button onclick='setNotch("reset")'>RESET PRIME MOVER</button>
+        <!---material design icons from Google--->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        
+        <!---All locoThrottle.js scripts--->
+        <script src="scripts/infohandler.js"></script>
+        <script src="scripts/jmri-core.js"></script>
+        <script src="scripts/protoEngine.js"></script>
+        <script src="scripts/websockets.js"></script>
+        <script src="scripts/ui.js"></script>
+        
+        <!---dynamic scripts. This is a temporary solution for testing, once I start on the selection system for these scripts, this area will not include src attributes--->
+        <script src="prototype/f7-a.json" id="prototypejson"></script>
+        <script src="decoder.js" id="decoderjs"></script>
+        <script src="models/ft-a.js" id="modeljs"></script>
+    </head>
+
+    <body>
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s1"><a href="#drive">Cab</a></li>
+                        <li class="tab col s3"><a href="#throttlesettings">Throttle Settings</a></li>
+                        <li class="tab col s2"><a class="active" href="#connection">Connection</a></li>
+                        <li class="tab col s3"><a href="#layoutcontrol">Layout Control</a></li>
+                        <li class="tab col s1"><a href="#help">Help</a></li>
+                    </ul>
+                </div>
             </div>
-                <p>
-                <button onclick='setCompressor(true)'>Start Compressor</button>
-                <button onclick='setCompressor(false)'>Stop Compressor</button>
-                <p></p>
-                <button onmousedown='setHorn(true)' onmouseup='setHorn(false)'>Airhorn (momentary)</button>
-                <p></p>
-                <button onclick='setBell(true)'>Air bell on</button>
-                <button onclick='setBell(false)'>Air bell off</button>
-            
-            <div class="reverser" style="background-color: grey;">
-                <p>Reverser:
-                <button onclick='setReverser("forward")'>Forward</button>
-                <button onclick='setReverser("neutral")'>Neutral</button>
-                <button onclick='setReverser("reverse")'>Reverse</button>
-                <a style="color: white;" id="reverserIndicator"></a>
-                </p>
-            
-            
-            
-            </div>
-            
-        
-        
         </div>
-    
+            
+        <div class="container">
+            <!---beginning of actual page, this is the drive portion--->
+            <div id="drive">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4>Cab</h4>
+                            <p><i class="left small material-icons">navigation</i>Current Throttle: <a id="throttlename"></a></p>
+                            <p>JMRI Locomotive Name (from roster): <a id="loconame"><i class="material-icons tiny">warning</i>Unfinished Feature</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-content">
+                            <h5>Controls</h5>
+                            <div class="section">
+                                <h6>Basic Locomotive Devices</h6>
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" onchange="handleCBchange(this, 'bell')">
+                                        <span class="lever"></span>Air Bell
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="section">
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" onchange="handleCBchange(this, 'light')">
+                                        <span class="lever"></span>Headlight
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--connection settings area--->
+            <div id="connection">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="section">
+                                <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
+                                <p>Configure the connection to JMRI. You are currently: <a id="connstatus" style="color:red">Not Connected</a></p>
+                            </div>
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="input-field col s6">
+                                        <div class="row">
+                                            <input id="ip" type="text" class="validate">
+                                            <label for="ip">IP Address</label>
+                                        </div>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <input id="port" type="number" class="validate">
+                                            <label for="port">Port</label>
+                                        </div>
+                                    </div>
+                                
+                                
+                                
+                                
+                                </form>
+                                        <button class="btn-large waves-effect waves-light" onclick='connect(document.getElementById("ip").value, document.getElementById("port").value)'>Connect<i class="material-icons right">trending_flat</i></button>
+                            </div>
+                            
+                        </div>
+                    
+                    </div>
+                </div>
+            
+            
+            </div>
+            
+            <!--throttle settings area--->
+            <div id="throttlesettings">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4><i class="material-icons left medium">av_timer</i>Throttle Settings:</h4>
+                            <p>Here you can select a throttle, adjust the settings, name the throttle, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="section">
+                            <h5>Select Throttle:</h5>
+                            <p>Here you can acquire a throttle for a locomotive.</p>
+                            </div>
+                            
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
+                                            <label for="throttle_name">Throttle Name</label>
+                                        </div>
+                                        <div class="input-field col s2">
+                                            <input id="dcc_addr" type="number" class="validate">
+                                            <label for="dcc_addr">DCC Address</label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light">Get Throttle</button>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            
+            <!---unfinished layout control tab--->
+            <div id="layoutcontrol">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4><i class="material-icons left medium">settings</i>Layout Control</h4>
+                            <p>This page allows control of various aspects of your layout, most importantly, the track power.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card col s6">
+                        <div class="card-content">
+                            <h5><i class="material-icons left small">power</i>Power Settings</h5>
+                            <p>This toggles track power on and off for your whole layout. Use with caution!</p>
+                            <div class="section">
+                                <div class="switch">
+                                    <label>
+                                        <input type="checkbox" onchange="handleCBchange(this, 'trackpower')">
+                                        <span class="lever"></span>Track Power
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card col s6">
+                        <div class="card-content">
+                            <h5>Turnout Control</h5>
+                            <p><i class="material-icons small left">error</i>Unfortunately, this feature is still in development.</p>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            
+            <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
+            <div class="row">
+                <div class="card">
+                    <div class="card-content">
+                        <i class="material-icons left small">info_outline</i>
+                        <p>locoThrottle.js is free software, released with no license. Find out more on <a href="https://github.com/k4kfh/LocoThrottleJS" target="_blank">our GitHub page.</a></p>
+                        <div class="section">
+                            <p><b>locoThrottle.js</b> is a product of the <a style="font-family: 'Orbitron', sans-serif; color: black;" href="http://evilgeniustech.com/blog" target="_target">EvilGeniusTech blog.</a></p>
+                            
+                            <div class="section">
+                                <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS.</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     
     
     

@@ -1,2 +1,0 @@
-//This lists all the decoder models in this decoder family (actually, their directory names, but same thing if you follow the right naming convention)
-//It just saves the JavaScript (which is totally client side :D) the trouble of manually scanning all the directories into list form every time.

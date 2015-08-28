@@ -142,4 +142,8 @@ function JSONhandleType_throttle_functions(json) {
     setCompressor(json.F20)
     
     }
+
+function headlight(dowhat) {
+    //dummy function, this decoder has a messed up light
+}
     
