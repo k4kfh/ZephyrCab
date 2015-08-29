@@ -159,6 +159,6 @@ function handleSlider(slider, whatisit) {
 debugToastMode = true
 function debugToast(toast, time) {
     if (debugToastMode == true) {
-        Materialize.toast(toast, time)
+        Materialize.toast("Debug: " + toast, time)
     }
 }
