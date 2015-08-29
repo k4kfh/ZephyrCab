@@ -189,8 +189,9 @@
                 <div class="row">
                     
                     <!---Card with headlight, bell, and other accessory functions--->
-                    <div class="card col s2">
-                        <div class="card-content">
+                    <div class="col s2">
+                        <div class="card">
+                            <div class="card-content">
                             <h6><b>Devices</b></h6>
                                 <div class="switch">
                                     <label>
@@ -208,10 +209,11 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                     
                     <!---Card with Prime Mover controls--->
-                    <div class="col s10">
+                    <div class="col s8">
                         <!---the big card with the two smaller ones in it--->
                         <div class="card">
                             <div class="card-content">
@@ -224,7 +226,7 @@
                                             <div class="switch">
                                                 <label>
                                                     <input type="checkbox" onchange="handleCBchange(this, 'primemover')">
-                                                    <span class="lever"></span>Prime Mover
+                                                    <span class="lever"></span>On/Off
                                                 </label>
                                             </div>
                                         </div>
@@ -250,7 +252,36 @@
                         </div>
                     </div>
                     
-                    <div class="row">
+                    <!---reverser card--->
+                    <div class="col s2">
+                        <div class="card">
+                            <div class="card-content">
+                                <h6><i class="material-icons left">swap_vert</i>Reverser</h6>
+                                <!---HTML radio buttons for reverser
+The section class must surround it or the alignment is wrong and it looks funky--->
+                                <div class="section">
+                                 <form action="#">
+                                        <p>
+                                            <input name="reverser" type="radio" id="forward" />
+                                            <label for="forward">Forward</label>
+                                        </p>
+                                        <p>
+                                            <input name="reverser" type="radio" id="neutral" />
+                                            <label for="neutral">Neutral</label>
+                                        </p>
+                                        <p>
+                                            <input name="reverser" type="radio" id="reverse"  />
+                                            <label for="reverse">Reverse</label>
+                                        </p>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
@@ -260,7 +291,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
             
             <!--connection settings area--->
@@ -384,6 +414,10 @@
             
             </div>
             
+            
+
+            
+            
             <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
             <div class="row">
                 <div class="col s12">
@@ -396,6 +430,7 @@
                             
                                 <div class="section">
                                     <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS.</a></p>
+                                    <p>Special thanks to <a href="http://brucekmodeltrains.com" target="_blank">Mr. Bruce Kingsley</a> for help with the physics engine.</p>
                                 </div>
                             </div>
                         </div>
