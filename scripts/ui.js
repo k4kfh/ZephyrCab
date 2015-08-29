@@ -141,6 +141,6 @@ function handleSlider(slider, whatisit) {
         var newNotch = slider.value
         setNotch(newNotch)
         document.getElementById("notch").value = notch
-        Materialize.toast("You can't set the notch right now!", 3000)
+
     }
 }

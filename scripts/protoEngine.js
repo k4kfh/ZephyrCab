@@ -84,13 +84,28 @@ function setLocoBrake(brakeSetting) {
 
 
 
+//this is the new high level setnotch function
+function setNotch(newNotch) {
+    notchDiffABS = Math.abs(notch - newNotch) //this finds the difference between the new and old notches
+    if (notchDiffABS == 1) {
+        //it's okay to notch up
+        notchDiffReal = newNotch - notch //we use this number, negative or positive, to determine which DIRECTION to notch it
+        if (notchDiffReal == 1) {
+            //notch up
+            setNotchCrude("up")
+        }
+        else if (notchDiffReal == -1) {
+            //notch down
+            setNotchCrude("down")
+        }
+    }
+    else {
+        Materialize.toast("You can only move the throttle one notch at a time.", 4000)
+    }
+}
 
-
-
-//this is the high level notching system. ANYTHING that adjusts the notch should ALWAYS use this. It is decoder agnostic because it calls functions from decoder.js, which behave the same across decoders, but the code inside is decoder specific. This allows a simple, unified approach to make the higher level function below work with all decoders that there exists a decoder.js for
-//setnotch is called with setnotch(up or down) and it returns the new notch as a number
-
-
+//this is the high level notching system. ANYTHING that adjusts the notch should NOT USE THIS. Use setNotch() instead, which is built on top of this. Weird, but it works. It is decoder agnostic because it calls functions from decoder.js, which behave the same across decoders, but the code inside is decoder specific. This allows a simple, unified approach to make the higher level function below work with all decoders that there exists a decoder.js for
+//setnotchcrude is called with setNotchCrude(up or down) and it returns the new notch as a number
 function setNotchCrude(dowhat) {
     //this if statement takes the place of sendcmdLoco(), since we may be sending several commands within setNotch(). Don't want to make anyone throw their computer out the window because of 6 billion alert() functions!
     if (locoAddress != undefined) {
@@ -336,6 +351,6 @@ function disconnnect() {
         
     }
     else {
-        alert("It's near impossible to disconnect when you're not connected in the first place...")
+        Materialize.toast("It's near impossible to disconnect when you're not connected in the first place...", 4000)
     }
 }

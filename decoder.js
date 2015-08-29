@@ -66,7 +66,7 @@ function sound_notch(direction) {
     }
     //self explanatory alert system :P
     else {
-        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
     }
 }
 
