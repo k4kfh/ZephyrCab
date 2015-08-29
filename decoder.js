@@ -79,12 +79,14 @@ function setEngine(dowhat) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":true, "throttle":"' + throttleName + '"}}');
             console.log("Started engine on EMD 567 ESU LokSound bad-to-the-bone decoder! :D This decoder.js file written by K4KFH");
             engine = true
+            updateHTML("engine")
     }
     else if (dowhat == false) {
             //add if(notch == 0) statement here later
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F8":false, "throttle":"' + throttleName + '"}}');
             console.log("Stopped engine on EMD 567 ESU LokSound bad-to-the-bone decoder! D:");
             engine = false
+            updateHTML("engine")
     }
     }
 }
@@ -140,17 +142,37 @@ function setHorn(dowhat) {
 
 
 function JSONhandleType_throttle_functions(json) {
-    if (bell != json.F1) {
-        Materialize.toast("Bell recieved via WebSockets to be: " + json.F1, 5000)
-        setBell(json.F1)
+    if (json.F1 !=undefined) {
+        if (bell != json.F1) {
+            setBell(json.F1)
+            debugToast("JSON handler ran setBell(), with JSON value " + json.F1, 4000)
+        }
     }
-    setHorn(json.F2)
-    setEngine(json.F8)
-    setCompressor(json.F20)
+    if (json.F2 != undefined) {
+        if (horn != json.F2) {
+        //nothing here, just for organization and potential future feature...but since the horn is a button its not workable like the switches
+            debugToast("JSON handler ran setHorn() dummy, with JSON value " + json.F2, 4000)
+        }
+    }
+    if (json.F8 != undefined) {
+        if (engine != json.F8) {
+            setEngine(json.F8)
+            debugToast("JSON handler ran setEngine(), with JSON value " + json.F8, 4000)
+        }
+    }
+    if (json.F20 != undefined) {
+        if (compressor != json.F20) {
+            setCompressor(json.F20)
+            debugToast("JSON handler ran setCompressor(), with JSON value " + json.F20, 4000)
+        }
+    }
     
-    }
+}
 
+
+//called with headlight(boolean)
 function headlight(dowhat) {
     //dummy function, this decoder has a messed up light
+    headlight = dowhat
 }
     

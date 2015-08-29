@@ -11,6 +11,11 @@ var layoutRailroadName //the name of the railroad as set in JMRI prefs, only che
 var notch = 0 //this is the notch the loco is currently in. DO NOT try to adjust the notch with this, it's only for reading. The only reason it's set here is because it's always supposed to start at 0. if you want to adjust the notch use the function setNotchCrude("up"/"down")
 var notchAllowed = true //this is set to true because the program assumes the locomotive is idling, and if we can't run setNotch() at least once it creates an impossibility
 
+//more global vars
+var horn = false
+var compressor = false
+var engine = false
+
 //getthrottle grabs a throttle for a locomotive, and refers to it as whatever throttlename is
 function getThrottle(address, name) {
     if (wsStatus == true) {

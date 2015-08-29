@@ -199,22 +199,33 @@
                                     Air Horn
                                 </div>
                                 <!---the rest of the devices--->
-                                <div class="switch">
-                                    <label>
-                                        <input id="bell" type="checkbox" onclick="handleCBchange(this, 'bell')">
-                                        <span class="lever"></span>Air Bell
-                                    </label>
+                                <div class="section">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="bell" type="checkbox" onclick="handleCBchange(this, 'bell')">
+                                            <span class="lever"></span>Bell
+                                        </label>
+                                    </div>
                                 </div>
-                            
-                            <div class="section">
-                                <div class="switch">
-                                    <label>
-                                        <input id="headlight" type="checkbox" onclick="handleCBchange(this, 'light')">
-                                        <span class="lever"></span>Headlight
-                                    </label>
+                                
+                                <div class="section">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="headlight" type="checkbox" onclick="handleCBchange(this, 'light')">
+                                            <span class="lever"></span>Headlight
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="section">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="compressor" type="checkbox" onclick="handleCBchange(this, 'compressor')">
+                                            <span class="lever"></span>Compr.
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                     
@@ -231,7 +242,7 @@
                                             <h6><i class="material-icons tiny left">vpn_key</i>Startup</h6>
                                             <div class="switch">
                                                 <label>
-                                                    <input type="checkbox" onchange="handleCBchange(this, 'primemover')">
+                                                    <input id="engineOnOff" type="checkbox" onchange="handleCBchange(this, 'primemover')">
                                                     <span class="lever"></span>On/Off
                                                 </label>
                                             </div>

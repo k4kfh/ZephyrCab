@@ -86,15 +86,19 @@ function updateHTML(variable) {
     }
     else if (variable == "compressor") {
         //update compressor checkbox
-        
+        if (document.getElementById("compressor").checked != compressor) {
+            document.getElementById("compressor").checked = compressor
+        }
     }
     else if (variable == "bell") {
         //update bell HTML
-        Materialize.toast("Updating Bell HTML", 4000)
-        document.getElementById("bell").checked = bell
-        
+        if (document.getElementById("bell").checked != bell) {
+            document.getElementById("bell").checked = bell
+        }
     }
-    
+    else if (variable == "engine") {
+        document.getElementById("engineOnOff").checked = engine
+    }
 }
 
 
@@ -114,31 +118,28 @@ function handleCBchange(cb, whatisit) {
     if (whatisit == "bell") {
         if (bell != cb.checked) {
             setBell(cb.checked)
-            Materialize.toast("Changed bell", 4000)
+        }
+    }
+    else if (whatisit == "compressor") {
+        if (compressor != cb.checked) {
+            setCompressor(cb.checked)
+            Materialize.toast("handleCBchange() ran setCompressor", 4000)
         }
     }
     else if (whatisit == "light") {
-        if (cb.checked == true) {
-            headlight(true)
-        }
-        else {
-            headlight(false)
+        if (headlight != cb.checked) {
+            setHeadlight(cb.checked)
         }
     }
     else if (whatisit == "trackpower") {
-        if (cb.checked == true) {
-            trkpower("on");
-        }
-        if (cb.checked == false) {
-            trkpower("off")
+        if (layoutTrackPower_state != cb.checked) {
+            //trkpower function needs to be updated to use bool instead of "on" and "off" as params, that's stupid
+            //trkpower(cb.checked)
         }
     }
     else if (whatisit == "primemover") {
-        if (cb.checked == true) {
-            setEngine(true)
-        }
-        else {
-            setEngine(false)
+        if (engine != cb.checked) {
+            setEngine(cb.checked)
         }
     }
 }
@@ -150,5 +151,14 @@ function handleSlider(slider, whatisit) {
         setNotch(newNotch)
         document.getElementById("notch").value = notch
 
+    }
+}
+
+
+//this is a function I made to make a sort of "verbose mode" for the JS toast alerts. I put in lots of Materialize.toast alerts, but when I don't want to hear everything they're annoying. So if you set debugToastMode = false, then the debug alerts cease and only the normal toasts come.
+debugToastMode = true
+function debugToast(toast, time) {
+    if (debugToastMode == true) {
+        Materialize.toast(toast, time)
     }
 }
