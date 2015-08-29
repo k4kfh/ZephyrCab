@@ -1,3 +1,6 @@
+
+
+
 function pageUpdate() {
         //this code keeps the page updated with the latest variables, and runs basically constantly.
         
@@ -129,5 +132,15 @@ function handleCBchange(cb, whatisit) {
         else {
             setEngine(false)
         }
+    }
+}
+
+function handleSlider(slider, whatisit) {
+    if (whatisit == "notch") {
+        //this is rather complex and clunky
+        var newNotch = slider.value
+        setNotch(newNotch)
+        document.getElementById("notch").value = notch
+        Materialize.toast("You can't set the notch right now!", 3000)
     }
 }

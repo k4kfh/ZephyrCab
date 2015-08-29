@@ -68,7 +68,7 @@ function setReverser(direction, ignoreNotch) {
     return reverserSet
     }
     else {
-        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
         return false
     }
 }
@@ -140,7 +140,7 @@ function setNotch(dowhat) {
         
     }
     else {
-        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
     }
 return notch;
 }
@@ -166,7 +166,7 @@ function notchTiming(args) {
      }
     //more of failsafe loco check system
     else {
-        alert("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P")
+        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
     }
 }
 
@@ -264,7 +264,7 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
      
  }
     else {
-        alert("You haven't requested a throttle yet. We can't do squat. Wait. How did you even manage to...never mind")
+        Materialize.toast("You haven't requested a throttle yet. We can't do squat. Wait. How did you even manage to...never mind", 4000)
     
     }
 }
