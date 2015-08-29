@@ -84,6 +84,16 @@ function updateHTML(variable) {
     else if (variable == "speedMPH") {
         //document.getElementById("speedometer").innerHTML = "Speedometer: " + Math.abs(speedMPH)
     }
+    else if (variable == "compressor") {
+        //update compressor checkbox
+        
+    }
+    else if (variable == "bell") {
+        //update bell HTML
+        Materialize.toast("Updating Bell HTML", 4000)
+        document.getElementById("bell").checked = bell
+        
+    }
     
 }
 
@@ -102,11 +112,9 @@ function notchDisallowed(args) {
 //this is what handles the checkbox crap, more documentation coming soon
 function handleCBchange(cb, whatisit) {
     if (whatisit == "bell") {
-        if (cb.checked == true) {
-            setBell(true);
-        }
-        else {
-            setBell(false);
+        if (bell != cb.checked) {
+            setBell(cb.checked)
+            Materialize.toast("Changed bell", 4000)
         }
     }
     else if (whatisit == "light") {

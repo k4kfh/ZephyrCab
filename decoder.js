@@ -96,11 +96,13 @@ function setCompressor(dowhat) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":true, "throttle":"' + throttleName + '"}}');
             compressor = true
             console.log("Compressor started.")
+            updateHTML("compressor")
     }
     if (dowhat == false) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F20":false, "throttle":"' + throttleName + '"}}');
             compressor = false
             console.log("Compressor stopped.")
+            updateHTML("compressor")
     }
 }
 
@@ -110,10 +112,12 @@ function setBell(dowhat) {
     if (dowhat == true) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":true, "throttle":"' + throttleName + '"}}');
             bell = true
+            updateHTML("bell")
     }
     else if (dowhat == false) {
             sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "F1":false, "throttle":"' + throttleName + '"}}');
             bell = false
+            updateHTML("bell")
     }
 }
 
@@ -136,7 +140,10 @@ function setHorn(dowhat) {
 
 
 function JSONhandleType_throttle_functions(json) {
-    setBell(json.F1)
+    if (bell != json.F1) {
+        Materialize.toast("Bell recieved via WebSockets to be: " + json.F1, 5000)
+        setBell(json.F1)
+    }
     setHorn(json.F2)
     setEngine(json.F8)
     setCompressor(json.F20)
