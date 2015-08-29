@@ -54,7 +54,7 @@ function sound_notch(direction) {
         else if (direction == "reset") {
             //hold down "notch down" button for 15 seconds to make sure we get to 0
             setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":true, "throttle":"' + throttleName + '"}}'); console.log("Sent command to soundNotch down-RESETTING NOTCH TO 0")}, 500)
-            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("NOTCH RESET COMPLETE"); setNotch(0, "resetmode");}, 15000)
+            setTimeout(function() { sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "F10":false, "throttle":"' + throttleName + '"}}'); console.log("NOTCH RESET COMPLETE"); setNotchCrude(0, "resetmode");}, 15000)
             //shut engine off
             setTimeout(function() {setEngine(false)}, 16000)
             notchSuccess = true

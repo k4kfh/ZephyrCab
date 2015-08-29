@@ -91,7 +91,7 @@ function setLocoBrake(brakeSetting) {
 //setnotch is called with setnotch(up or down) and it returns the new notch as a number
 
 
-function setNotch(dowhat) {
+function setNotchCrude(dowhat) {
     //this if statement takes the place of sendcmdLoco(), since we may be sending several commands within setNotch(). Don't want to make anyone throw their computer out the window because of 6 billion alert() functions!
     if (locoAddress != undefined) {
         if (notchAllowed == true) {
