@@ -95,6 +95,8 @@ function notchDisallowed(args) {
     }
 }
 
+
+//this is what handles the checkbox crap, more documentation coming soon
 function handleCBchange(cb, whatisit) {
     if (whatisit == "bell") {
         if (cb.checked == true) {
@@ -118,6 +120,14 @@ function handleCBchange(cb, whatisit) {
         }
         if (cb.checked == false) {
             trkpower("off")
+        }
+    }
+    else if (whatisit == "primemover") {
+        if (cb.checked == true) {
+            setEngine(true)
+        }
+        else {
+            setEngine(false)
         }
     }
 }
