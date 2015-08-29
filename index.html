@@ -49,16 +49,143 @@
         <div class="container">
             <!---beginning of actual page, this is the drive portion--->
             <div id="drive">
+                <!---drive page header--->
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <h4>Cab</h4>
-                            <p><i class="left small material-icons">navigation</i>Current Throttle: <a id="throttlename"></a></p>
-                            <p>JMRI Locomotive Name (from roster): <a id="loconame"><i class="material-icons tiny">warning</i>Unfinished Feature</a></p>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <h4>Cab</h4>
+                                <p><i class="left small material-icons">navigation</i>Current Throttle: <a id="throttlename"></a></p>
+                                <p>JMRI Locomotive Name (from roster): <a id="loconame"><i class="material-icons tiny">warning</i>Unfinished Feature</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--first row of controls section-->
+                
+                <!---Indications row---->
+                <div class="row">
+                    <div class="col s12">
+                        <!---Card with gauges and indicators--->
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="section">
+                                    <h6><i class="material-icons left small">view_module</i><b>My Dash</b></h6>
+                                </div>
+                                <!---first column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---second column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---third column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---fourth column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---fifth column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---sixth column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---seventh column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---8th column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---9th column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---10th column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---11th column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!---12th column of dash--->
+                                <div class="col s1">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <p>Card</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--second row of controls section-->
                 <div class="row">
                     
                     <!---Card with headlight, bell, and other accessory functions--->
@@ -84,17 +211,53 @@
                     </div>
                     
                     <!---Card with Prime Mover controls--->
-                    <div class="card col s3">
-                        <div class="card-content">
-                            <h6><b>Prime Mover</b></h6>
-                            <p>This section is unfinished.</p>
-                            <div class="switch">
-                                    <label>
-                                        <input type="checkbox" onchange="handleCBchange(this, 'primemover')">
-                                        <span class="lever"></span>Prime Mover
-                                    </label>
+                    <div class="col s10">
+                        <!---the big card with the two smaller ones in it--->
+                        <div class="card">
+                            <div class="card-content">
+                                <h6><b>Prime Mover</b></h6>
+                                <!---the startup card--->
+                                <div class="col s3">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <h6><i class="material-icons tiny left">vpn_key</i>Startup</h6>
+                                            <div class="switch">
+                                                <label>
+                                                    <input type="checkbox" onchange="handleCBchange(this, 'primemover')">
+                                                    <span class="lever"></span>Prime Mover
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            <p>More realism coming soon!</p>
+                                
+                                <!---The notch card--->
+                                <div class="col s9">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <!---actual notch slider crap--->
+                                            <form action="#">
+                                                <p class="range-field"><i class="material-icons right">settings_backup_restore</i>Notch
+                                                    <input type="range" id="notch" min="0" max="8" />
+                                                </p>
+                                            </form>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <h6><b>Brakes</b></h6>
+                                    <p>Coming soon!</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -183,32 +346,38 @@
             <!---unfinished layout control tab--->
             <div id="layoutcontrol">
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <h4><i class="material-icons left medium">settings</i>Layout Control</h4>
-                            <p>This page allows control of various aspects of your layout, most importantly, the track power.</p>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <h4><i class="material-icons left medium">settings</i>Layout Control</h4>
+                                <p>This page allows control of various aspects of your layout, most importantly, the track power.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="card col s6">
-                        <div class="card-content">
-                            <h5><i class="material-icons left small">power</i>Power Settings</h5>
-                            <p>This toggles track power on and off for your whole layout. Use with caution!</p>
-                            <div class="section">
-                                <div class="switch">
-                                    <label>
-                                        <input type="checkbox" onchange="handleCBchange(this, 'trackpower')">
-                                        <span class="lever"></span>Track Power
-                                    </label>
+                    <div class="col s6">
+                        <div class="card">
+                            <div class="card-content">
+                                <h5><i class="material-icons left small">power</i>Power Settings</h5>
+                                <p>This toggles track power on and off for your whole layout. Use with caution!</p>
+                                <div class="section">
+                                    <div class="switch">
+                                        <label>
+                                            <input type="checkbox" onchange="handleCBchange(this, 'trackpower')">
+                                            <span class="lever"></span>Track Power
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card col s6">
-                        <div class="card-content">
-                            <h5>Turnout Control</h5>
-                            <p><i class="material-icons small left">error</i>Unfortunately, this feature is still in development.</p>
+                    <div class="col s6">
+                        <div class="card">
+                            <div class="card-content">
+                                <h5>Turnout Control</h5>
+                                <p><i class="material-icons small left">error</i>Unfortunately, this feature is still in development.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -217,15 +386,17 @@
             
             <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
             <div class="row">
-                <div class="card">
-                    <div class="card-content">
-                        <i class="material-icons left small">info_outline</i>
-                        <p>locoThrottle.js is free software, released with no license. Find out more on <a href="https://github.com/k4kfh/LocoThrottleJS" target="_blank">our GitHub page.</a></p>
-                        <div class="section">
-                            <p><b>locoThrottle.js</b> is a product of the <a style="font-family: 'Orbitron', sans-serif; color: black;" href="http://evilgeniustech.com/blog" target="_target">EvilGeniusTech blog.</a></p>
-                            
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="material-icons left small">info_outline</i>
+                            <p>locoThrottle.js is free software, released with no license. Find out more on <a href="https://github.com/k4kfh/LocoThrottleJS" target="_blank">our GitHub page.</a></p>
                             <div class="section">
-                                <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS.</a></p>
+                                <p><b>locoThrottle.js</b> is a product of the <a style="font-family: 'Orbitron', sans-serif; color: black;" href="http://evilgeniustech.com/blog" target="_target">EvilGeniusTech blog.</a></p>
+                            
+                                <div class="section">
+                                    <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS.</a></p>
+                                </div>
                             </div>
                         </div>
                     </div>
