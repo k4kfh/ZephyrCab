@@ -188,11 +188,17 @@
                 <!--second row of controls section-->
                 <div class="row">
                     
-                    <!---Card with headlight, bell, and other accessory functions--->
+                    <!---Card with horn, headlight, bell, and other accessory functions--->
                     <div class="col s2">
                         <div class="card">
                             <div class="card-content">
                             <h6><b>Devices</b></h6>
+                                <!---Special section class for airhorn--->
+                                <div class="section">
+                                    <a class="waves-effect waves-light btn-floating btn-large red tooltipped" data-position="left" data-delay="50" data-tooltip="Hold to sound horn."><i class="material-icons left tiny">volume_up</i></a>
+                                    Air Horn
+                                </div>
+                                <!---the rest of the devices--->
                                 <div class="switch">
                                     <label>
                                         <input type="checkbox" onchange="handleCBchange(this, 'bell')">
