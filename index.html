@@ -20,11 +20,12 @@
         <script src="scripts/protoEngine.js"></script>
         <script src="scripts/websockets.js"></script>
         <script src="scripts/ui.js"></script>
+        <script src="scripts/script-selector.js"></script>
         
         <!---dynamic scripts. This is a temporary solution for testing, once I start on the selection system for these scripts, this area will not include src attributes--->
-        <script src="prototype/f7-a.json" id="prototypejson"></script>
-        <script src="decoder.js" id="decoderjs"></script>
-        <script src="models/ft-a.js" id="modeljs"></script>
+        <script id="prototypejson"></script>
+        <script id="decoderjs"></script>
+        <script id="modeljs"></script>
     </head>
 
     <body>
@@ -40,7 +41,7 @@
                         <li class="tab col s3"><a href="#throttlesettings">Throttle Settings</a></li>
                         <li class="tab col s2"><a class="active" href="#connection">Connection</a></li>
                         <li class="tab col s3"><a href="#layoutcontrol">Layout Control</a></li>
-                        <li class="tab col s1"><a href="#help">Help</a></li>
+                        <li class="tab col s1 disabled"><a href="#help">Help</a></li>
                     </ul>
                 </div>
             </div>
@@ -352,43 +353,104 @@ The section class must surround it or the alignment is wrong and it looks funky-
             <!--throttle settings area--->
             <div id="throttlesettings">
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <h4><i class="material-icons left medium">av_timer</i>Throttle Settings:</h4>
-                            <p>Here you can select a throttle, adjust the settings, name the throttle, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <h4><i class="material-icons left medium">av_timer</i>Throttle Settings:</h4>
+                                <p>Here you can select a throttle, adjust the settings, name the throttle, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
+                <!---select a throttle card--->
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="section">
-                            <h5>Select Throttle:</h5>
-                            <p>Here you can acquire a throttle for a locomotive.</p>
-                            </div>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="section">
+                                <h5>Select Throttle:</h5>
+                                <p>Here you can acquire a throttle for a locomotive.</p>
+                                </div>
                             
-                            <div class="row">
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="input-field col s3">
-                                            <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
-                                            <label for="throttle_name">Throttle Name</label>
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s3">
+                                                <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
+                                                <label for="throttle_name">Throttle Name</label>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <input id="dcc_addr" type="number" class="validate">
+                                                <label for="dcc_addr">DCC Address</label>
+                                            </div>
                                         </div>
-                                        <div class="input-field col s2">
-                                            <input id="dcc_addr" type="number" class="validate">
-                                            <label for="dcc_addr">DCC Address</label>
-                                        </div>
+                                    </form>
+                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn-large waves-light waves-effect">Get Throttle</button>
                                     </div>
-                                </form>
-                                <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light">Get Throttle</button>
+                                </div>
+                            
                             </div>
-                            
-                            
+                        </div>
+                    </div>
+                <div class="row">
+                    <!---model and decoder settings card--->
+                    <div class="col s8">
+                                            
+                    </div>
+                    <!--prototype card--->
+                    <div class="col s4">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Prototype<i class="material-icons right small">help</i></span>
+                                 <div class="row">
+                                     <form class="col s12">
+                                         <div class="row">
+                                             <div class="input-field col s12">
+                                                 <input placeholder="f7-a.json" id="prototypejsonfilename" type="text" class="validate">
+                                                 <label for="prototypejsonfilename" >prototype.json Location</label>
+                                             </div>
+                                         </div>
+                                     </form>
+                                     <a onclick="selScript('prototype',document.getElementById('prototypejsonfilename').value)" class="btn tooltipped" data-position="right" data-delay="50" data-tooltip="Having trouble? Click the help icon up and to the right."><i class="material-icons left">input</i>Load json file</a>
+                                </div>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Help | Prototype<i class="material-icons right">close</i></span>
+                                <p>When you select this file, you're telling the physics engine how to make your locomotive behave. Prototype.json files should be located in the /prototype folder in your locoThrottle.js install directory.</p>
+                                <p>Unfortunately, at this point in time, there may not be a prototype.json file for your locomotive. If that is the case, I highly suggest you write one. It is not hard, you don't have to know any kind of programming, and it benefits everyone.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--model/decoder card--->
+                    <div class="col s8">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title grey-text text-darken-4">Model/Decoder</span>
+                                <p>Paths here are relative to their respective directories. <b>Do NOT include /model or /decoder in your paths or your script will NOT load!</b></p>
+                                <div class="row">
+                                     <form class="col s12">
+                                         <div class="row">
+                                             <div class="input-field col s6">
+                                                 <input placeholder="/bachmann/ft-a.js" id="modeljsfilename" type="text" class="validate">
+                                                 <label for="prototypejsonfilename" >model.js Location</label>
+                                             </div>
+                                             <div class="input-field col s6">
+                                                 <input placeholder="/generic/fallback.js" id="decoderjsfilename" type="text" class="validate">
+                                                 <label for="prototypejsonfilename" >decoder.js Location</label>
+                                             </div>
+                                         </div>
+                                     </form>
+                                <a class="btn waves-effect waves-light"><i class="material-icons left">input</i>Load Model/Decoder Files</a> <a class="btn tooltipped orange waves-effect waves-light" data-position="bottom" data-delay="50" data-tooltip="The generic fallback files are a very limited set of decoder.js/model.js files which assume a simple direction/speed DCC decoder and a Bachmann FT-A unit. These will work on any locomotive, and are loaded by default for compatibility reasons until you load your own here."><i class="material-icons left">error</i>Load Generic FallBack Files</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            
             </div>
+            </div>
+        </div>
+                
             
             <!---unfinished layout control tab--->
             <div id="layoutcontrol">
@@ -432,8 +494,6 @@ The section class must surround it or the alignment is wrong and it looks funky-
             </div>
             
             
-
-            
             
             <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
             <div class="row">
@@ -454,7 +514,6 @@ The section class must surround it or the alignment is wrong and it looks funky-
                     </div>
                 </div>
             </div>
-        </div>
         
     
     
