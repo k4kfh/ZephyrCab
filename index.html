@@ -313,36 +313,38 @@ The section class must surround it or the alignment is wrong and it looks funky-
             <!--connection settings area--->
             <div id="connection">
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="section">
-                                <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
-                                <p>Configure the connection to JMRI. You are currently: <a id="connstatus" style="color:red">Not Connected</a></p>
-                            </div>
-                            <div class="row">
-                                <form class="col s12">
-                                    <div class="input-field col s6">
-                                        <div class="row">
-                                            <input id="ip" type="text" class="validate">
-                                            <label for="ip">IP Address</label>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="section">
+                                    <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
+                                    <p>Configure the connection to JMRI. You are currently: <a id="connstatus" style="color:red">Not Connected</a></p>
+                                </div>
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="input-field col s6">
+                                            <div class="row">
+                                                <input id="ip" type="text" class="validate">
+                                                <label for="ip">IP Address</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="input-field col s2">
-                                        <div class="row">
-                                            <input id="port" type="number" class="validate">
-                                            <label for="port">Port</label>
+                                        <div class="input-field col s2">
+                                            <div class="row">
+                                                <input id="port" type="number" class="validate">
+                                                <label for="port">Port</label>
+                                            </div>
                                         </div>
-                                    </div>
                                 
                                 
                                 
                                 
-                                </form>
-                                        <button class="btn-large waves-effect waves-light" onclick='connect(document.getElementById("ip").value, document.getElementById("port").value)'>Connect<i class="material-icons right">trending_flat</i></button>
-                            </div>
+                                    </form>
+                                    <button class="btn-large waves-effect waves-light" onclick='connect(document.getElementById("ip").value, document.getElementById("port").value)'>Connect<i class="material-icons right">trending_flat</i></button>
+                                </div>
                             
-                        </div>
+                            </div>
                     
+                        </div>
                     </div>
                 </div>
             
@@ -352,38 +354,42 @@ The section class must surround it or the alignment is wrong and it looks funky-
             <!--throttle settings area--->
             <div id="throttlesettings">
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <h4><i class="material-icons left medium">av_timer</i>Throttle Settings:</h4>
-                            <p>Here you can select a throttle, adjust the settings, name the throttle, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <h4><i class="material-icons left medium">av_timer</i>Throttle Settings:</h4>
+                                <p>Here you can select a throttle, adjust the settings, name the throttle, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="section">
-                            <h5>Select Throttle:</h5>
-                            <p>Here you can acquire a throttle for a locomotive.</p>
-                            </div>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="section">
+                                <h5>Select Throttle:</h5>
+                                <p>Here you can acquire a throttle for a locomotive.</p>
+                                </div>
                             
-                            <div class="row">
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="input-field col s3">
-                                            <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
-                                            <label for="throttle_name">Throttle Name</label>
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s3">
+                                                <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
+                                                <label for="throttle_name">Throttle Name</label>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <input id="dcc_addr" type="number" class="validate">
+                                                <label for="dcc_addr">DCC Address</label>
+                                            </div>
                                         </div>
-                                        <div class="input-field col s2">
-                                            <input id="dcc_addr" type="number" class="validate">
-                                            <label for="dcc_addr">DCC Address</label>
-                                        </div>
-                                    </div>
-                                </form>
-                                <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light">Get Throttle</button>
+                                    </form>
+                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light">Get Throttle</button>
+                                </div>
+                            
+                            
                             </div>
-                            
-                            
                         </div>
                     </div>
                 </div>
