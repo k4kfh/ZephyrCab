@@ -56,14 +56,7 @@ function updateHTML(variable) {
         
     }
     else if (variable == "layoutTrackPower_state") {
-        if (layoutTrackPower_state == true) {
-            //if track power is on, turn the button green
-            //document.getElementById("trkpower-button").style.backgroundColor = "lightgreen"
-        }
-        else if (layoutTrackPower_state == false) {
-            //if track power is on, turn the button green
-            //document.getElementById("trkpower-button").style.backgroundColor = "red"
-        }
+        document.getElementById("trkpowerswitch").checked = layoutTrackPower_state
             
         
     }
@@ -134,7 +127,7 @@ function handleCBchange(cb, whatisit) {
     else if (whatisit == "trackpower") {
         if (layoutTrackPower_state != cb.checked) {
             //trkpower function needs to be updated to use bool instead of "on" and "off" as params, that's stupid
-            //trkpower(cb.checked)
+            trkpower(cb.checked)
         }
     }
     else if (whatisit == "primemover") {

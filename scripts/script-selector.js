@@ -2,18 +2,18 @@
 function selScript(type, filename) {
     if (type == "prototype") {
         //selecting prototype.json file
-        var scriptFullPath = "prototype/" + filename
+        var scriptFullPath = "prototypes/" + filename
         debugToast("prototype.json path found to be " + scriptFullPath, 4000)
         document.getElementById("prototypejson").src = scriptFullPath
         
     }
     if (type == "decoder") {
-        var scriptFullPath = "decoder/" + filename
+        var scriptFullPath = "decoders/" + filename
         debugToast("decoder.js path found to be " + scriptFullPath, 4000)
         document.getElementById("decoderjs").src = scriptFullPath
     }
     else if (type == "model") {
-        var scriptFullPath = "model/" + filename
+        var scriptFullPath = "models/" + filename
         debugToast("model.js path found to be " + scriptFullPath, 4000)
         document.getElementById("modeljs").src = scriptFullPath
     }

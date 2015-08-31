@@ -36,14 +36,14 @@ function getThrottle(address, name) {
 
 
 
-//call with state as string, either "on", "off", or "toggle"
+//call with state as boolean
 function trkpower(option) {
-    if (option == "on") {
+    if (option == true) {
         sendcmd('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
         updateHTML("layoutTrackPower_state")
     }
-    else if (option == "off") {
+    else if (option == false) {
         sendcmd('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
         updateHTML("layoutTrackPower_state")

@@ -20,11 +20,12 @@
         <script src="scripts/protoEngine.js"></script>
         <script src="scripts/websockets.js"></script>
         <script src="scripts/ui.js"></script>
+        <script src="scripts/script-selector.js"></script>
         
         <!---dynamic scripts. This is a temporary solution for testing, once I start on the selection system for these scripts, this area will not include src attributes--->
-        <script src="prototype/f7-a.json" id="prototypejson"></script>
-        <script src="/decoders/decoder.js" id="decoderjs"></script>
-        <script src="models/ft-a.js" id="modeljs"></script>
+        <script id="prototypejson"></script>
+        <script id="decoderjs"></script>
+        <script id="modeljs"></script>
     </head>
 
     <body>
@@ -403,12 +404,12 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                     <form class="col s12">
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input placeholder="f7-a.json" id="throttle_name" type="text" class="validate">
-                                                <label for="throttle_name">prototype.json Location</label>
+                                                <input placeholder="f7-a.json" id="prototypejsonlocation" type="text" class="validate">
+                                                <label for="prototypejsonlocation">prototype.json Location</label>
                                             </div>
                                         </div>
                                     </form>
-                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Prototype</button>
+                                    <button id="throttle_sel_button" onclick="selScript('prototype', document.getElementById('prototypejsonlocation').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Prototype</button>
                                 </div>
                             </div>
                         </div>
@@ -423,17 +424,17 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="row">
                                     <form class="col s12">
                                         <div class="row">
-                                            <div class="input-field col s3">
-                                                <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
-                                                <label for="throttle_name">Throttle Name</label>
+                                            <div class="input-field col s6">
+                                                <input placeholder="bachmann-ft-a.js" id="modeljslocation" type="text" class="validate">
+                                                <label for="throttle_name">model.js location</label>
                                             </div>
-                                            <div class="input-field col s2">
-                                                <input id="dcc_addr" type="number" class="validate">
-                                                <label for="dcc_addr">DCC Address</label>
+                                            <div class="input-field col s6">
+                                                <input placeholder="generic.js" id="decoderjslocation" type="text" class="validate">
+                                                <label for="throttle_name">decoder.js location</label>
                                             </div>
                                         </div>
                                     </form>
-                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Scripts</button>
+                                    <button id="throttle_sel_button" onclick="selScript('decoder', document.getElementById('decoderjslocation').value); selScript('model', document.getElementById('modeljslocation').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Scripts</button>
                                 </div>
                             </div>
                         </div>
@@ -463,7 +464,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="section">
                                     <div class="switch">
                                         <label>
-                                            <input type="checkbox" onchange="handleCBchange(this, 'trackpower')">
+                                            <input id="trkpowerswitch" type="checkbox" onchange="handleCBchange(this, 'trackpower')">
                                             <span class="lever"></span>Track Power
                                         </label>
                                     </div>
