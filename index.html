@@ -23,7 +23,7 @@
         
         <!---dynamic scripts. This is a temporary solution for testing, once I start on the selection system for these scripts, this area will not include src attributes--->
         <script src="prototype/f7-a.json" id="prototypejson"></script>
-        <script src="decoder.js" id="decoderjs"></script>
+        <script src="/decoders/decoder.js" id="decoderjs"></script>
         <script src="models/ft-a.js" id="modeljs"></script>
     </head>
 
@@ -389,6 +389,52 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 </div>
                             
                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col s4">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title black-text">Prototype Loco</span>
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input placeholder="f7-a.json" id="throttle_name" type="text" class="validate">
+                                                <label for="throttle_name">prototype.json Location</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Prototype</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s8">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title black-text">Model/Decoder Info</span>
+                                <p>Make sure to leave /models and /decoders off your file paths! If you include these, the scripts will not load properly!</p>
+                                
+                                <!---form--->
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s3">
+                                                <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
+                                                <label for="throttle_name">Throttle Name</label>
+                                            </div>
+                                            <div class="input-field col s2">
+                                                <input id="dcc_addr" type="number" class="validate">
+                                                <label for="dcc_addr">DCC Address</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Scripts</button>
+                                </div>
                             </div>
                         </div>
                     </div>
