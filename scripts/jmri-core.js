@@ -19,14 +19,20 @@ var engine = false
 //getthrottle grabs a throttle for a locomotive, and refers to it as whatever throttlename is
 function getThrottle(address, name) {
     if (wsStatus == true) {
-    sendcmd('{"type":"throttle","data":{"throttle":"' + name + '","address":' + address + '}}')
-    console.log("Requested throttle " + name + " for locomotive #" + address)
-    locoAddress = address
-    throttleName = name
-    //this runs the init() function, and this sort of thing is why you HAVE to at least define them :P they don't have to do anything at all, just define them
-    init("throttleacquired")
-    protoEngine_recalc_interval = setInterval(protoEngine_recalc, 1000)
-    speedMPH = 0
+        //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
+        if (document.getElementById("decoderjs").src != "") {
+            sendcmd('{"type":"throttle","data":{"throttle":"' + name + '","address":' + address + '}}')
+            console.log("Requested throttle " + name + " for locomotive #" + address)
+            locoAddress = address
+            throttleName = name
+            //this runs the init() function, and this sort of thing is why you HAVE to at least define them :P they don't have to do anything at all, just define them
+            init("throttleacquired")
+            protoEngine_recalc_interval = setInterval(protoEngine_recalc, 1000)
+            speedMPH = 0
+        }
+        else {
+            Materialize.toast("Please select your decoder.js/model.js scripts first, they are required before you can request a throttle!", 4000)
+        }
     }
     else {
         Materialize.toast("You need to set up your WebSockets connection first!", 4000)

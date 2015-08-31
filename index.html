@@ -263,7 +263,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                             <div class="card-content">
                                 <div class="section">
                                     <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
-                                    <p>Configure the connection to JMRI. You are currently: <a id="connstatus" style="color:red">Not Connected</a></p>
+                                    <p>Configure the connection to JMRI. Unless you have changed it, you may leave the port on 12080 (the default JMRI web server port). You are currently: <a id="connstatus" style="color:red">Not Connected</a> via WebSockets.</p>
                                 </div>
                                 <div class="row">
                                     <form class="col s12">
@@ -275,7 +275,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                         </div>
                                         <div class="input-field col s2">
                                             <div class="row">
-                                                <input id="port" type="number" class="validate">
+                                                <input id="port" value="12080" type="number" class="validate">
                                                 <label for="port">Port</label>
                                             </div>
                                         </div>
