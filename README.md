@@ -1,5 +1,7 @@
 # LocoThrottleJS
 
+[![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #PLEASE READ THIS FIRST PARAGRAPH BEFORE DOING ANYTHING WITH THIS!
 This project is still HEAVILY under development as of 6/4 2015. I am working on getting a mostly-realistic physics system, then I will likely release the first dev version. Right now, the only reason it's on GitHub is to allow people to help me with the physics system, and to keep track of my changes for my own sake. I eventually hope to make this so intuitive anyone can download/use it, but that day is not today. When a version that is even remotely usable is available, I will update this README. Until then, you're welcome to try it, just know that it probably will not do a danged thing right! :P
 
