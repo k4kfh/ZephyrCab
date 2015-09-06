@@ -1,10 +1,7 @@
 
 
 
-function pageUpdate() {
-        //this code keeps the page updated with the latest variables, and runs basically constantly.
-        
-}
+
 
 
 //this function runs with no arguments on page load
@@ -154,4 +151,9 @@ function debugToast(toast, time) {
     if (debugToastMode == true) {
         Materialize.toast("Debug: " + toast, time)
     }
+}
+
+function updateGauge(gaugeName, gaugeValue) {
+    document.getElementById(gaugeName).value = gaugeValue
+    debugToast("updateGauge() just updated " + gaugeName + " to indicate " + gaugeValue + ".")
 }

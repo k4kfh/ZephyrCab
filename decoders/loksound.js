@@ -171,7 +171,7 @@ function JSONhandleType_throttle_functions(json) {
 
 
 //called with headlight(boolean)
-function headlight(dowhat) {
+function setHeadlight(dowhat) {
     //dummy function, this decoder has a messed up light
     headlight = dowhat
 }
