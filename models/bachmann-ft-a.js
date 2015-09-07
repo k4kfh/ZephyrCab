@@ -7,3 +7,11 @@ function locoSpeedCrunch(mph) {
     
     return newSpeed
 }
+
+
+
+//this is the function that lets the program know this script loaded without issues
+//every model.js should include this
+//it should always be at the bottom, not the top!
+
+scriptLoaded("modeljs")

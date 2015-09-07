@@ -18,3 +18,29 @@ function selScript(type, filename) {
         document.getElementById("modeljs").src = scriptFullPath
     }
 }
+
+var decoderJSstatus
+var modelJSstatus
+
+function scriptLoaded(scriptname) {
+    if (scriptname == "decoderjs") {
+        if (modelJSstatus == true) {
+            //set button to disabled
+            document.getElementById("loadScript-decoderandmodel").addClass = "disabled"
+            document.getElementById("loadScript-decoderandmodel").value = "Scripts Loaded!"
+            
+            debugToast("Both model.js and decoder.js are loaded now.", 4000)
+        }
+        decoderJSstatus = true
+    }
+    if (scriptname == "modeljs") {
+        if (decoderJSstatus == true) {
+            //set button to disabled
+            document.getElementById("loadScript-decoderandmodel").addClass = "disabled"
+            document.getElementById("loadScript-decoderandmodel").value = "Scripts Loaded!"
+            
+            debugToast("Both model.js and decoder.js are loaded now.", 4000)
+        }
+        modelJSstatus = true
+    }
+}

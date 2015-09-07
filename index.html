@@ -225,16 +225,16 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="section">
                                  <form action="#">
                                         <p>
-                                            <input name="reverser" type="radio" id="forward" />
-                                            <label for="forward">Forward</label>
+                                            <input onclick='handleRadio(this, "reverser")' name="reverser" type="radio" id="rv-forward" />
+                                            <label for="rv-forward">Forward</label>
                                         </p>
                                         <p>
-                                            <input name="reverser" type="radio" id="neutral" />
-                                            <label for="neutral">Neutral</label>
+                                            <input onclick='handleRadio(this, "reverser")' name="reverser"  type="radio" id="rv-neutral" />
+                                            <label for="rv-neutral">Neutral</label>
                                         </p>
                                         <p>
-                                            <input name="reverser" type="radio" id="reverse"  />
-                                            <label for="reverse">Reverse</label>
+                                            <input onclick='handleRadio(this, "reverser")' name="reverser"  type="radio" id="rv-reverse"  />
+                                            <label for="rv-reverse">Reverse</label>
                                         </p>
                                     </form>
                                 </div>
@@ -379,7 +379,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                             </div>
                                         </div>
                                     </form>
-                                    <button id="throttle_sel_button" onclick="selScript('decoder', document.getElementById('decoderjslocation').value); selScript('model', document.getElementById('modeljslocation').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Scripts</button>
+                                    <a id="loadScript-decoderandmodel" onclick="selScript('decoder', document.getElementById('decoderjslocation').value); selScript('model', document.getElementById('modeljslocation').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Scripts</a>
                                 </div>
                             </div>
                         </div>

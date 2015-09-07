@@ -175,4 +175,11 @@ function setHeadlight(dowhat) {
     //dummy function, this decoder has a messed up light
     headlight = dowhat
 }
+
+
+
+
+//this is the function that runs to say that we've loaded a decoder script successfully
+//any and all decoder.js should include this at the BOTTOM not the top!
+scriptLoaded("decoderjs")
     

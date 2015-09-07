@@ -72,7 +72,7 @@ function updateHTML(variable) {
         }
     }
     else if (variable == "speedMPH") {
-        //document.getElementById("speedometer").innerHTML = "Speedometer: " + Math.abs(speedMPH)
+        document.getElementById("speedometer").innerHTML = (Math.round((Math.abs(speedMPH))*10))/10
     }
     else if (variable == "compressor") {
         //update compressor checkbox
@@ -141,6 +141,54 @@ function handleSlider(slider, whatisit) {
         setNotch(newNotch)
         document.getElementById("notch").value = notch
 
+    }
+}
+
+function handleRadio(radio, whatisit) {
+    if (whatisit == "reverser") {
+        var hypotheticalReverser
+        //figure out what we're trying to set it to
+        if (document.getElementById("rv-forward").checked == true) {
+            //we're trying to set this to forward
+            hypotheticalReverser = "forward"
+            debugToast("hypotheticalReverser = " + hypotheticalReverser, 4000)
+        }
+        else if (document.getElementById("rv-neutral").checked == true) {
+            //we're trying to put it in neutral
+            hypotheticalReverser = "neutral"
+            debugToast("hypotheticalReverser = " + hypotheticalReverser, 4000)
+        }
+        else if (document.getElementById("rv-reverse").checked == true) {
+            //we're trying to put it in reverse
+            hypotheticalReverser = "reverse"
+            debugToast("hypotheticalReverser = " + hypotheticalReverser, 4000)
+        }
+        if (true) {
+            var reverserReturn = setReverser(hypotheticalReverser)
+            if (reverserReturn == true) {
+                //we set the reverser successfully!
+                debugToast("Set reverser successfully to " + reverser, 4000)
+            }
+            if (reverserReturn == false) {
+                //we did not set it successfully for some reason
+                debugToast("reverserReturn = false", 4000)
+                if (reverser == 1) {
+                    //set checkbox to show forward
+                    document.getElementById("rv-forward").checked = true
+                    Materialize.toast("You can't set the reverser right now!", 4000)
+                }
+                else if (reverser == 0) {
+                    //set checkbox to show neutral
+                    document.getElementById("rv-neutral").checked = true
+                    Materialize.toast("You can't set the reverser right now!", 4000)
+                }
+                else if (reverser == -1) {
+                    //set checkbox to show reverse
+                    document.getElementById("rv-reverse").checked = true
+                    Materialize.toast("You can't set the reverser right now!", 4000)
+                }
+            }
+        }
     }
 }
 
