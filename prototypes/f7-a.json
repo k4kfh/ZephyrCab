@@ -20,3 +20,14 @@ locoMaxSpeed = 100 //if your locomotive's speed step system isn't really prototy
 layoutTrackPower_state //this is true if track power is on, false if it's off. When it's updated, updateHTML("layoutTrackPower_state") is called, which is an HTMLcab specific script inside ui.js
 
 locoBrake = 100 //this is set to 0 purely starting out, because reasons (better to be stopped unintentionally than driving off unintentionally,right?
+
+prototype.locomotive.f7a = {
+    "type" : "locomotive",
+    "weight" : 250000,
+    "maxHP" : 1500,
+    "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
+    "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
+    "maxNotch" : 8,
+    "startingTE" : 56500,
+    "notchWait":0
+}
