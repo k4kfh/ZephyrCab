@@ -1,0 +1,29 @@
+var prototype
+prototype.locomotives = {
+    //f7-a
+    "f7a":{
+        "type" : "locomotive",
+        "weight" : 250000,
+        "maxHP" : 1500,
+        "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
+        "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
+        "maxNotch" : 8,
+        "startingTE" : 56500,
+        "notchWait":0,
+    }
+    ,
+    
+    //ft-a
+    "fta":{
+        "type" : "locomotive",
+        "weight" : 230000,
+        "maxHP" : 1350,
+        "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
+        "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
+        "maxNotch" : 8,
+        "startingTE" : 55000,
+        "notchWait":0,
+    }
+
+
+}
