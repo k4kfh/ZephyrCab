@@ -115,7 +115,7 @@ function setNotchCrude(dowhat) {
         
         if (dowhat == "up") {
             //be sure notches stay within acceptable range
-            if(notch < train[0].maxNotch) {
+            if(notch < prototypeMaxNotch) {
                 //notch the sound up, adjust the notch variable
                 notch++
                 sound_notch("up")
@@ -168,8 +168,8 @@ function notchTiming(args) {
      if (locoAddress != undefined) {
          if(args == "reset") {
           notchAllowed = false
-          setTimeout(function() {notchAllowed = true}, train[0].notchWait)
-          setTimeout(function() {console.log("Notching allowed again!")}, train[0].notchWait)
+          setTimeout(function() {notchAllowed = true}, protoEngineNotchWait)
+          setTimeout(function() {console.log("Notching allowed again!")}, protoEngineNotchWait)
          }
          else if (args == "allow") {
              notchAllowed = true
@@ -193,74 +193,40 @@ function notchTiming(args) {
 //the reason all the variables have ARG in front of them is so that inside the function, we can still access global variables that have been set for information about the various things
 //basically to prevent 2 variables in different scopes with the same name
 
-//hacky global variable definitions for tinkering
-train = []
-train.total = {weight:0, maxHP:0, rollingResistance:0}
-currentTrainElement = 0
-speedMPH = 0
-
 function protoEngine_accel(ARGnotch, ARGreverser) {
  if (locoAddress != undefined) {
-     //rewrite on 9/18/15 to use the new JSON train notation
-     train.total = {"maxHP":0}
-     train.total.weight = 0 //reset just in case changes are made, we redo this frequently
-     //parses train list and find out which ones are locomotives and which are cars
-     for (i = 0; i < train.length; i++) {
-         console.log("I is equal to " + i)
-         currentTrainElement = i
-         //we do this for each train car
-         //adding this car's weight to the total train weight
-         train.total.weight = train.total.weight + train[currentTrainElement].weight;
-         console.log("train.totalmass Updated to " + train.total.weight)
-         
-         
-         
-         //trainwide max HP
-         //parses each element on the train to see if it's a locomotive, if it is then it adds the max horsepower of it to the trainwide max HP value
-         if (train[currentTrainElement].type == "locomotive") {
-             train.total.maxHP = train.total.maxHP + train[currentTrainElement].maxHP
-             console.log("Train's total maximum horsepower updated to: " + train.total.maxHP)
-             
-         }
-         
-         train.total.maxNotch = train[0].maxNotch //this sets the trainwide max notch based on lead locomotive max notch
-         
-         //end of train parsing function below here  
-     }
+     //rewrite on July 24th to support minimal if/else usage
      
-     //rolling resistance of whole train, changed to the correct sign (+ or -) based on the direction the train is moving
-         train.total.rollingResistance = actualDirection * (0.001 * train.total.weight)
+     //first find output motive force
+     outputEngineForce = reverser * (((notch/prototypeMaxNotch) * prototypeMaxHP) * 550) //result is in ft-lbs, and works with any set of loco values. reverser math is there so when the reverser is in reverse, we get a negative number
+     console.log("Output Engine Force = " + outputEngineForce)
      
-     //motive force
-     train.total.outputEngineForce = reverser * (((notch/train.total.maxNotch) * train.total.maxHP) * 550) //finds the output force of all the engines on the train
-     console.log("Output Engine Horsepower = " + reverser * ((notch/train.total.maxNotch) * train.total.maxHP))
-     console.log("Output Engine Force = " + train.total.outputEngineForce)
-     
-     //wind resistance junk
+     //we must use if's for wind resistance due to uncontrollably different front/rear cross-sectional areas
      wind = Math.abs(speedMPH)
      console.log("Wind = " + wind)
      if (actualDirection == 1) {
-         train.total.windResistance = train[0].frontArea * ((wind^2) * 0.00256) //wind resistance for forward movement
-         console.log("Wind Resistance = " + train.total.windResistance)
+         windResistance = locoFrontArea * ((wind^2) * 0.00256) //wind resistance for forward movement
+         console.log("Wind Resistance = " + windResistance)
      }
      if (actualDirection == -1) {
-         train.total.windResistance = -1 * (train[(train.length - 1)].rearArea * ((wind^2) * 0.00256)) //this seems goofy but it just finds the rear area of the last thing in the train
-         console.log("Wind Resistance = " + train.total.windResistance)
+         windResistance = -1 * (locoRearArea * ((wind^2) * 0.00256)) //we multiply by negative 1 so that we go towards zero when the loco is moving backwards
+         console.log("Wind Resistance = " + windResistance)
      }
      if (actualDirection == 0) {
-         train.total.windResistance = 0
+         windResistance = 0
          console.log("Wind Resistance = 0")
      }
-     //end wind resistance
+     //now we know wind resistance
      
-     
-     console.log("Rolling Resistance = " + train.total.rollingResistance)
+     //rolling resistance code
+     rollingResistance = actualDirection * (0.001 * locoWeight) //very simple math, 0.001 is the coefficient of rolling resistance, and the actualDirection math is to put it in the correct polarity based on direction of travel
+     console.log("Rolling Resistance = " + rollingResistance)
      
      //net force code
-     netForce = train.total.outputEngineForce - (train.total.windResistance + train.total.rollingResistance)
+     netForce = outputEngineForce - (windResistance + rollingResistance)
      console.log("Net Force = " + netForce)
      
-     acceleration = netForce / train.total.weight //this whole thing is a big f=ma problem
+     acceleration = netForce / locoWeight //this whole thing is a big f=ma problem
      console.log("Acceleration = " + acceleration)
      
      newSpeed = speedMPH + acceleration
@@ -322,6 +288,28 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
 
 
 
+
+//moved this to protoEngine.js for simplicity's sake, because it's such an important part of the engine, it's less of a low level network function and more of a high level Engine function
+//this function is used for sending any SPEED RELATED commands to a locomotive (handled only by ProtoEngine() ). It's what handles the reverser's weird hard-to-deal-with NEUTRAL setting
+//old function, left it commented out just in case I need to look
+//function sendcmdLocoSpeed(speed) {
+//    speed = Math.round(speed / 100)
+//    if(reverser = "forward") {
+//        sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
+//        currentSpeed = speed
+ //   }
+ //   else if (reverser = "reverse") {
+//        speedABS = Math.abs(speed)
+//        
+//        sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speedABS + '}}')
+//        currentSpeed = speedABS
+//    }
+//    else{
+//        console.log("Reverser is set to neutral, so we aren't sending the requested speed command to the engine.")
+//    }
+    
+    
+//}
 
 function sendcmdLocoSpeed(ARGspeed) {
     speedJMRIformat = ((Math.round(ARGspeed)) / 100)
