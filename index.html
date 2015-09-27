@@ -26,14 +26,6 @@
         <script id="prototypejson"></script>
         <script id="decoderjs"></script>
         <script id="modeljs"></script>
-        
-        <!---Custom Font Styling for Codes-->
-        <style>
-            .nofmt {
-                font-family: monospace;
-                
-            }
-        </style>
     </head>
 
     <body>
@@ -349,7 +341,25 @@ The section class must surround it or the alignment is wrong and it looks funky-
                 </div>
                 
                 <div class="row">
-                    <div class="col s12">
+                    <div class="col s4">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title black-text">Prototype Loco</span>
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input placeholder="f7-a.json" id="prototypejsonlocation" type="text" class="validate">
+                                                <label for="prototypejsonlocation">prototype.json Location</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <button id="throttle_sel_button" onclick="selScript('prototype', document.getElementById('prototypejsonlocation').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Prototype</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s8">
                         <div class="card">
                             <div class="card-content">
                                 <span class="card-title black-text">Model/Decoder Info</span>
@@ -375,6 +385,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 
                 <div class="row">
                     <div class="col s12">
@@ -442,6 +453,8 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         </div>
                     </div>
                 </div>
+=======
+>>>>>>> parent of 2b7a9c5... Some work on train builder GUI
             
             </div>
             
@@ -512,6 +525,11 @@ The section class must surround it or the alignment is wrong and it looks funky-
             </div>
         </div>
         
+    
+    
+    
+    
+    
     </body>
 
 

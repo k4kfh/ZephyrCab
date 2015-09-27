@@ -366,12 +366,3 @@ function disconnnect() {
         Materialize.toast("It's near impossible to disconnect when you're not connected in the first place...", 4000)
     }
 }
-
-
-//functions dealing with the train
-
-train.add = function(code) {
-    train.push(prototype[code])
-    updateHTML("train-display")
-    return train
-}
