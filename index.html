@@ -391,15 +391,18 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <p>Enter an item code below to add it to the end of your train. Right now, we only support adding linearly, nonlinear support with drag and drop is a planned feature.</p>
+                                            <p>Select an item code from the dropdown below to add it to your train.
                                                     
                                         </div>
                                         <div class="row">
-                                            <div class="input-field col s4">
-                                                <input placeholder="f7-a" id="add_item_code" type="text" class="validate">
-                                                <label for="add_item_code">Item Code</label>
-                                                <a class="btn waves-effect light"><i class="material-icons left">add</i>Add</a>
+                                            <!---The Input Dropdown--->
+                                            <div class="input-field col s12">
+                                                <select id="trainItemDropdown">
+                                                    <option value="" disabled selected>Train Items</option>
+                                                </select>
                                             </div>
+                                            
+                                        </div>
                                             <div class="card">
                                                 <div class="card-content">
                                                     <b>Example Codes (bundled)</b>

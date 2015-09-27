@@ -2,6 +2,8 @@ var prototype
 prototype.locomotives = {
     //f7-a
     "f7a":{
+        "builder" : "EMD",
+        "name" : "F7-A",
         "type" : "locomotive",
         "weight" : 250000,
         "maxHP" : 1500,
