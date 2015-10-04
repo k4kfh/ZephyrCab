@@ -220,13 +220,6 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
          if (train[currentTrainElement].type == "locomotive") {
              train.total.maxHP = train.total.maxHP + train[currentTrainElement].maxHP
              console.log("Train's total maximum horsepower updated to: " + train.total.maxHP)
-             train[currentTrainElement].outputEngineForce = (notch * train[currentTrainElement].maxHP * 550)
-             train.total.outputEngineFore = train.total.outputEngineForce + train[currentTrainElement].outputEngineForce
-             train[currentTrainElement].Fmax = train.coefficient.friction * train[currentTrainElement].weight
-             if (train[currentTrainElement].Fmax < train[currentTrainElement].outputEngineForce) {
-                 //if this locomotive's output force exceeds it's maximum value, then...
-                 
-             }
              
          }
          
@@ -328,8 +321,6 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
 
 
 
-
-
 function sendcmdLocoSpeed(ARGspeed) {
     speedJMRIformat = ((Math.round(ARGspeed)) / 100)
     sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speedJMRIformat + '}}')
@@ -398,6 +389,14 @@ train.build.add = function(type, number) {
     }
 }
 
+train.build.remove = function(number) {
+    //remove the given number from the train array, then update the train display
+    var index = train.indexOf(number)
+    train.splice(index, 1)
+    train.ui.update();
+    console.log("Removed list element #" + i + " from the train object")
+}
+
 train.ui.update = function() {
     var newHTML = ""
     var finalHTML = ""
@@ -406,11 +405,11 @@ train.ui.update = function() {
     //we go through each train element
     for (i = 0; i < train.length; i++) {
         if (train[i].imageURL == undefined) {
-            newHTML = '<div class="chip">' + train[i].builder + " " + train[i].name + "<i class='material-icons close-chip-btn right'>close</i></div>"
+            newHTML = '<div class="chip">' + train[i].builder + " " + train[i].name + "<i onclick=\'train.build.remove(" + i + ")\' class='material-icons right'>close</i></div>"
             finalArray.push(newHTML) //append the newly built HTML for this element to the final product
         }
         if (train[i].imageURL != undefined) {
-            newHTML = '<div class="chip"><img src="' + train[i].imageURL + '">' + train[i].builder + " " + train[i].name + "<i class='material-icons right close-chip-btn'>close</i></div>"
+            newHTML = '<div class="chip"><img src="' + train[i].imageURL + '">' + train[i].builder + " " + train[i].name + "<i class='material-icons right' onclick=\'train.build.remove(" + i + ")\'>close</i></div>"
             finalArray.push(newHTML) //append the newly built HTML for this element to the final product
         }
     }
@@ -455,11 +454,11 @@ train.ui.buildPalette = function() {
     //we go through each available locomotive from prototypes.json
     for (i = 0; i < prototype.rollingstock.length; i++) {
         if (prototype.rollingstock[i].imageURL == undefined) {
-            rollingstock.newHTML = '<div class="chip">' + prototype.rollingstock[i].name + '<i class="material-icons right">add</i></div>';
+            rollingstock.newHTML = '<div class="chip">' + prototype.rollingstock[i].name + '<i class="material-icons right" onclick="train.build.add(\'rollingstock\',' + i + ')">add</i></div>';
             rollingstock.finalArray.push(rollingstock.newHTML); //append the newly built HTML for this element to the final product
         }
         if (prototype.rollingstock[i].imageURL != undefined) {
-            rollingstock.newHTML = '<div class="chip"><img src="' + prototype.rollingstock[i].imageURL + '">' + prototype.rollingstock[i].name + '<i class="material-icons right">add</i></div>';
+            rollingstock.newHTML = '<div class="chip"><img src="' + prototype.rollingstock[i].imageURL + '">' + prototype.rollingstock[i].name + '<i class="material-icons right" onclick="train.build.add(\'rollingstock\',' + i + ')">add</i></div>';
             rollingstock.finalArray.push(rollingstock.newHTML); //append the newly built HTML for this element to the final product
         }
     }
