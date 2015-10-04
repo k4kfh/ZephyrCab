@@ -5,17 +5,17 @@ prototype.locomotives = new Object();
 prototype.locomotives = [
     //f7-a
     {
-        "builder" : "EMD",
-        "name" : "F7-A",
-        "type" : "locomotive",
-        "imageURL" : "http://www.wheelsmuseum.org/HISTORY/hist%20images/tr_sf347.jpg",
-        "weight" : 250000,
-        "maxHP" : 1500,
-        "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
-        "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
-        "maxNotch" : 8,
-        "startingTE" : 56500,
-        "notchWait":0,
+        "builder" : "EMD", //This is displayed to the client and can be anything
+        "name" : "F7-A", //This is also displayed to the client and can be anything
+        "type" : "locomotive", //This must be "locomotive"
+        "imageURL" : "http://www.wheelsmuseum.org/HISTORY/hist%20images/tr_sf347.jpg", //This is optional, but allows display of an image of the prototype if you prefer
+        "weight" : 250000, //Weight of the locomotive in lbs
+        "maxHP" : 1500, //Horsepower of the locomotive
+        "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Front cross-sectional area in sq. ft.
+        "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Rear cross-sectional area in sq. ft.
+        "maxNotch" : 8, //Number of throttle notches the locomotive has
+        "startingTE" : 56500, //Starting tractive effort (in ft-lbs)
+        "notchWait":0, //How long must we wait between notches (in milliseconds)
     }
     ,
     
@@ -24,20 +24,6 @@ prototype.locomotives = [
         "type" : "locomotive",
         "name" : "FT-A",
         "builder" : "EMD",
-        "weight" : 230000,
-        "maxHP" : 1350,
-        "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
-        "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
-        "maxNotch" : 8,
-        "startingTE" : 55000,
-        "notchWait":0,
-    },
-    
-    {
-        "type" : "locomotive",
-        "name" : "GP15-1",
-        "builder" : "EMD",
-        "imageURL" : "http://condrenrails.com/Recent-Trains/images-26/BNSF-1494-Rochelle-IL-5-17-07-1.jpg",
         "weight" : 230000,
         "maxHP" : 1350,
         "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
