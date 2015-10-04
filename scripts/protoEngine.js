@@ -220,6 +220,13 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
          if (train[currentTrainElement].type == "locomotive") {
              train.total.maxHP = train.total.maxHP + train[currentTrainElement].maxHP
              console.log("Train's total maximum horsepower updated to: " + train.total.maxHP)
+             train[currentTrainElement].outputEngineForce = (notch * train[currentTrainElement].maxHP * 550)
+             train.total.outputEngineFore = train.total.outputEngineForce + train[currentTrainElement].outputEngineForce
+             train[currentTrainElement].Fmax = train.coefficient.friction * train[currentTrainElement].weight
+             if (train[currentTrainElement].Fmax < train[currentTrainElement].outputEngineForce) {
+                 //if this locomotive's output force exceeds it's maximum value, then...
+                 
+             }
              
          }
          
@@ -369,9 +376,94 @@ function disconnnect() {
 
 
 //functions dealing with the train
+train = []
+train.build = new Object();
+train.ui = new Object();
 
-train.add = function(code) {
-    train.push(prototype[code])
-    updateHTML("train-display")
-    return train
+
+train.build.add = function(type, number) {
+    if (type == "locomotive") {
+        //if the type of the item is a locomotive
+        var item = prototype.locomotives[number];
+        train.push(item);
+        console.log("Added " + item + "to train object.");
+        train.ui.update();
+    }
+    if (type == "rollingstock") {
+        //if the type of the item is rolling stock
+        var item = prototype.rollingstock[number];
+        train.push(item);
+        console.log("Added " + item + "to train object.");
+        train.ui.update();
+    }
+}
+
+train.ui.update = function() {
+    var newHTML = ""
+    var finalHTML = ""
+    var finalArray = []
+    
+    //we go through each train element
+    for (i = 0; i < train.length; i++) {
+        if (train[i].imageURL == undefined) {
+            newHTML = '<div class="chip">' + train[i].builder + " " + train[i].name + "<i class='material-icons close-chip-btn right'>close</i></div>"
+            finalArray.push(newHTML) //append the newly built HTML for this element to the final product
+        }
+        if (train[i].imageURL != undefined) {
+            newHTML = '<div class="chip"><img src="' + train[i].imageURL + '">' + train[i].builder + " " + train[i].name + "<i class='material-icons right close-chip-btn'>close</i></div>"
+            finalArray.push(newHTML) //append the newly built HTML for this element to the final product
+        }
+    }
+    
+    finalHTML = finalArray.join(""); //join the array elements together into a single HTML string, using "" as a separator (nothing, as opposed to comma which is the default)
+    
+    document.getElementById("trainDisplay").innerHTML = finalHTML //set inner HTML of div element for displaying train
+    
+}
+
+train.ui.buildPalette = function() {
+    //FIRST LOCOMOTIVES
+    var locos = new Object();
+    locos.finalHTML = ""
+    locos.finalArray = []
+    locos.newHTML = ""
+    
+    //we go through each available locomotive from prototypes.json
+    for (i = 0; i < prototype.locomotives.length; i++) {
+        if (prototype.locomotives[i].imageURL == undefined) {
+            locos.newHTML = '<div class="chip">' + prototype.locomotives[i].builder + " " + prototype.locomotives[i].name + '<i class="material-icons right" onclick="train.build.add(\'locomotive\',' + i + ')">add</i></div>';
+            locos.finalArray.push(locos.newHTML); //append the newly built HTML for this element to the final product
+        }
+        if (prototype.locomotives[i].imageURL != undefined) {
+            locos.newHTML = '<div class="chip"><img src="' + prototype.locomotives[i].imageURL + '">' + prototype.locomotives[i].builder + " " + prototype.locomotives[i].name + '<i class="material-icons right" onclick="train.build.add(\'locomotive\',' + i + ')" >add</i></div>';
+            locos.finalArray.push(locos.newHTML); //append the newly built HTML for this element to the final product
+        }
+    }
+    
+    locos.finalHTML = locos.finalArray.join(""); //join the array elements together into a single HTML string, using "" as a separator (nothing, as opposed to comma which is the default)
+    
+    document.getElementById("locomotivePalette").innerHTML = locos.finalHTML
+    console.log("Locomotive Palette Final HTML: " + locos.finalHTML)
+    
+    //Now locomotives is done
+    //SECOND, ROLLING STOCK
+    var rollingstock = new Object();
+    rollingstock.finalHTML = ""
+    rollingstock.finalArray = []
+    rollingstock.newHTML = ""
+    
+    //we go through each available locomotive from prototypes.json
+    for (i = 0; i < prototype.rollingstock.length; i++) {
+        if (prototype.rollingstock[i].imageURL == undefined) {
+            rollingstock.newHTML = '<div class="chip">' + prototype.rollingstock[i].name + '<i class="material-icons right">add</i></div>';
+            rollingstock.finalArray.push(rollingstock.newHTML); //append the newly built HTML for this element to the final product
+        }
+        if (prototype.rollingstock[i].imageURL != undefined) {
+            rollingstock.newHTML = '<div class="chip"><img src="' + prototype.rollingstock[i].imageURL + '">' + prototype.rollingstock[i].name + '<i class="material-icons right">add</i></div>';
+            rollingstock.finalArray.push(rollingstock.newHTML); //append the newly built HTML for this element to the final product
+        }
+    }
+    
+    document.getElementById("rollingstockPalette").innerHTML = rollingstock.finalHTML
+    
 }

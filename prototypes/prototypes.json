@@ -1,10 +1,14 @@
-var prototype
-prototype.locomotives = {
+prototype = new Object();
+prototype.locomotives = new Object();
+
+//LOCOMOTIVES
+prototype.locomotives = [
     //f7-a
-    "f7a":{
+    {
         "builder" : "EMD",
         "name" : "F7-A",
         "type" : "locomotive",
+        "imageURL" : "http://www.wheelsmuseum.org/HISTORY/hist%20images/tr_sf347.jpg",
         "weight" : 250000,
         "maxHP" : 1500,
         "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
@@ -16,8 +20,10 @@ prototype.locomotives = {
     ,
     
     //ft-a
-    "fta":{
+    {
         "type" : "locomotive",
+        "name" : "FT-A",
+        "builder" : "EMD",
         "weight" : 230000,
         "maxHP" : 1350,
         "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12),
@@ -28,4 +34,10 @@ prototype.locomotives = {
     }
 
 
-}
+]
+//END OF LOCOMOTIVES
+
+//ROLLING STOCK
+prototype.rollingstock = [
+    
+]

@@ -4,7 +4,7 @@
         <!--font for EvilGeniusTech logo--->
         <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="materialize/css/materialize-fromSASS.css"  media="screen,projection"/>
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -23,7 +23,7 @@
         <script src="scripts/script-selector.js"></script>
         
         <!---dynamic scripts. This is a temporary solution for testing, once I start on the selection system for these scripts, this area will not include src attributes--->
-        <script id="prototypejson"></script>
+        <script src="prototypes/prototypes.json"></script>
         <script id="decoderjs"></script>
         <script id="modeljs"></script>
     </head>
@@ -31,7 +31,7 @@
     <body>
       <!--Import jQuery before materialize.js-->
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+      <script type="text/javascript" src="materialize/js/materialize.js"></script>
         
         <div class="container">
             <div class="row">
@@ -378,17 +378,32 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <!---the actual display of the train we've built--->
                                 <div class="col s12">
                                     <div class="card">
-                                        <div i="trainDisplay" class="card-content">
-                                            <p>This feature is unfinished. For now, please open the JavaScript console and edit the JSON variable yourself. Sorry!</p>
+                                        <div id="trainDisplay" class="card-content">
+                                            Nothing here yet. Set up a train and stuff will start happening.
                                         </div>
                                     </div>
-                                    
-                                    <div class="input-field col s6">
-                                        <select>
-                                            <option>EMD FT</option>
-                                            <option>EMD F7-A</option>
-                                            <option>EMD GP15-1</option>
-                                        </select>
+                                </div>
+                                <!---palette--->
+                                <div class="col s6">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div id="locomotivePalette">
+                                                <b>Something goofed...we couldn't build you a locomotive palette.</b>
+                                                <p>In light of this, we have provided you with this excellent big red button that does absolutely nothing.</p>
+                                                <a class="btn red waves-light waves-effect">Useless Big Red Button</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s6">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div id="rollingstockPalette">
+                                                <b>Something goofed...we couldn't build you a rolling stock palette.</b>
+                                                <p>In light of this, we have provided you with this excellent big red button that does absolutely nothing.</p>
+                                                <a class="btn red waves-light waves-effect">Useless Big Red Button</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -464,13 +479,10 @@ The section class must surround it or the alignment is wrong and it looks funky-
                 </div>
             </div>
         </div>
-        
-    
-    
-    
-    
-    
-    </body>
+        <script>
+            $(document).ready(train.ui.buildPalette())
+        </script>
+      </body>
 
 
 

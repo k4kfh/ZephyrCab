@@ -3281,7 +3281,7 @@ $(document).ready(function(){
 }( jQuery ));;(function ($) {
   $(document).ready(function() {
 
-    $(document).on('click.chip', '.chip .material-icons', function (e) {
+    $(document).on('click.chip', '.chip .close-chip-btn', function (e) {
       $(this).parent().remove();
     });
 
