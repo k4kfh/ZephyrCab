@@ -391,10 +391,9 @@ train.build.add = function(type, number) {
 
 train.build.remove = function(number) {
     //remove the given number from the train array, then update the train display
-    var index = train.indexOf(number)
-    train.splice(index, 1)
+    train.splice(number, 1)
     train.ui.update();
-    console.log("Removed list element #" + i + " from the train object")
+    console.log("Removed list element #" + number + " from the train object")
 }
 
 train.ui.update = function() {
