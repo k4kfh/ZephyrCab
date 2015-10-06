@@ -15,7 +15,9 @@ prototype.locomotives = [
         "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Rear cross-sectional area in sq. ft.
         "maxNotch" : 8, //Number of throttle notches the locomotive has
         "startingTE" : 56500, //Starting tractive effort (in ft-lbs)
-        "notchWait":0, //How long must we wait between notches (in milliseconds)
+        "notchWait" : 0, //How long must we wait between notches (in milliseconds)
+        "efficiency" : 0.72, //this is a percent of efficiency which varies slightly from loco to loco
+        "dragCoefficient" : 1.7, //this is a value from the internet, but is used in calculating wind resistance
     }
     ,
     
