@@ -227,7 +227,18 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
          }
          
          if (train[currentElement].type == "locomotive") {
-             train[currentElement].motiveForce = (reverser * (notch/8 * train[currentElement].maxHP * 550)) * train[currentElement].efficiency //find the motive force for this locomotive, negative for reverse motive force
+             
+             
+             //motive force
+             if ( (Math.abs(speedMPH) < (Math.abs(train[currentElement].tractiveEffortEquationStart))) ) {
+                 //if we haven't passed the set threshold just yet
+                 train[currentElement].motiveForce = reverser * (train[currentElement].startingTE * (notch/8))
+             }
+             else if (speedMPH != 0) {
+                 //if we have passed it, use the VA tech equation
+                 train[currentElement].outputHP = reverser * (train[currentElement].maxHP * (notch/8))
+                 train[currentElement].motiveForce = calculateTractiveEffort((train[currentElement].outputHP), (train[currentElement].weight), (train[currentElement].efficiency), speedMPH)
+             }
              train.total.motiveForce = train[currentElement].motiveForce + train.total.motiveForce
              
              //Wind Resistance based on direction
@@ -465,4 +476,12 @@ train.ui.buildPalette = function() {
     
     document.getElementById("rollingstockPalette").innerHTML = rollingstock.finalHTML
     
+}
+
+calculateTractiveEffort = function(ARGoutputHorsepower, ARGweight, ARGefficiency, ARGcurrentSpeed) {
+    var ARGcurrentSpeedSI;
+    ARGcurrentSpeedSI = ARGcurrentSpeed * 1.60934
+    var outputMotiveForce;
+    outputMotiveForce = 0.224809 * (2650 * ((ARGefficiency * ARGoutputHorsepower)/ARGcurrentSpeedSI));
+    return outputMotiveForce;
 }
