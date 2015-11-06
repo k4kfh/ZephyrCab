@@ -72,7 +72,7 @@ function updateHTML(variable) {
         }
     }
     else if (variable == "speedMPH") {
-        document.getElementById("speedometer").innerHTML = (Math.round((Math.abs(speedMPH))*10))/10
+        gauge.speedometer((Math.round((Math.abs(speedMPH))*10))/10)
     }
     else if (variable == "compressor") {
         //update compressor checkbox

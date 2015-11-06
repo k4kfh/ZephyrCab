@@ -181,7 +181,9 @@ function notchTiming(args) {
 //hacky global variable definitions for tinkering
 train = []
 train.total = {weight:0, maxHP:0, rollingResistance:0}
+train.maxSpeeds = []
 speedMPH = 0
+train.leadLoco = undefined
 
 function protoEngine_accel(ARGnotch, ARGreverser) {
  if (locoAddress != undefined) {
@@ -228,20 +230,28 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
          
          if (train[currentElement].type == "locomotive") {
              
+             //set this loco to the lead loco if we haven't gotten one yet
+             if (train.leadLoco == undefined) {
+                train.leadLoco = train[currentElement]
+             }
+             
              
              //motive force
+             train[currentElement].outputHP = reverser * (train[currentElement].maxHP * (notch/8)) //find the output horsepower
              if ( (Math.abs(speedMPH) < (Math.abs(train[currentElement].tractiveEffortEquationStart))) ) {
                  //if we haven't passed the set threshold just yet
                  train[currentElement].motiveForce = reverser * (train[currentElement].startingTE * (notch/8))
+                 console.log("Using starting TE")
              }
              else if (speedMPH != 0) {
                  //if we have passed it, use the VA tech equation
-                 train[currentElement].outputHP = reverser * (train[currentElement].maxHP * (notch/8))
                  train[currentElement].motiveForce = calculateTractiveEffort((train[currentElement].outputHP), (train[currentElement].weight), (train[currentElement].efficiency), speedMPH)
+                 console.log("Using VA Tech Equation")
              }
              train.total.motiveForce = train[currentElement].motiveForce + train.total.motiveForce
              
              //Wind Resistance based on direction
+             //TODO - Fix this to use the equation outlined at EngineeringToolbox.com...dunno what kind of drunk crap this is using right now
              wind = Math.abs(speedMPH)
              if (actualDirection == 1) {
                  if (i == 0) {
@@ -263,7 +273,7 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
              }
              
              //Rolling Resistance
-             train[currentElement].rollingResistance = actualDirection * (0.001 * train[i].weight) //multiplied by actualDirection so we get the correct value, negative, positive or zero, based on direction
+             train[currentElement].rollingResistance = actualDirection * (0.001 * train[currentElement].weight) //multiplied by actualDirection so we get the correct value, negative, positive or zero, based on direction
              train.total.rollingResistance = train.total.rollingResistance + train[currentElement].rollingResistance
              
          }
@@ -272,6 +282,10 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
      train.total.resistingForce = train.total.rollingResistance + train.total.windResistance
      train.total.netForce = train.total.motiveForce - train.total.resistingForce
      acceleration = (train.total.netForce / train.total.weight) * .681818 //this whole thing is a big f=ma problem, the trailing decimal is just a conversion from mph to ft/sec
+     
+     //we have to check the newSpeed value against the maximum speed for the traction motors in each locomotive
+     
+     
      newSpeed = speedMPH + acceleration
      
      train.physicsData = {"netForce":train.total.netForce, "rollingResistance":train.total.rollingResistance, "windResistance":train.total.windResistance, "motiveForce":train.total.motiveForce,"resistingForce":train.total.resistingForce,"notch":notch, "reverser":reverser, "weight":train.total.weight, "speed":speedMPH, "acceleration":acceleration,}
@@ -484,4 +498,8 @@ calculateTractiveEffort = function(ARGoutputHorsepower, ARGweight, ARGefficiency
     var outputMotiveForce;
     outputMotiveForce = 0.224809 * (2650 * ((ARGefficiency * ARGoutputHorsepower)/ARGcurrentSpeedSI));
     return outputMotiveForce;
+    console.log("ARGoutputHorsepower = " + ARGoutputHorsepower)
+    console.log("ARGweight = " + ARGweight)
+    console.log("ARGefficiency = " + ARGefficiency)
+    console.log("ARGcurrentSpeed = " + ARGcurrentSpeed)
 }
