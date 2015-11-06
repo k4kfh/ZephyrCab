@@ -70,4 +70,10 @@ function trkpower(option) {
         }
     }
 }
+
+function throttle(addressArg, nameArg, decoderScriptArg) {
+    this.address = addressArg;
+    this.name = nameArg;
+    this.decoder = new decoder(decoderScriptArg);
+}
     
