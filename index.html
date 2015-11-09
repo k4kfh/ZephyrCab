@@ -354,10 +354,42 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="col s12">
                                     <div class="card">
                                         <div id="trainDisplay" class="card-content">
-                                            Nothing here yet. Set up a train and stuff will start happening                         
+                                            <div class="chip"><img src="http://www.canadianrailwayobservations.com/croarchives/sept357.jpg"><a class="modal-trigger waves-effect" href="#modal1">EMD GP15-1</a></div>                       
                                         </div>
                                     </div>
                                 </div>
+                                 <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>EMD GP15-1</h4>
+        <ul class="collection">
+            <li class="collection-item">
+                <h5>Address</h5>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s3">
+                                <input id="dccAddress0" type="number" class="validate" length="4">
+                                <label for="dccAddress0" data-error="invalid" data-success="validated">DCC Address</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </li>
+            <li class="collection-item">
+                <h5>Decoder</h5>
+                
+            </li>
+            <li class="collection-item">
+                <h5>Prototype Information</h5>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Apply Settings</a>
+    </div>
+  </div>
                                 <!---palette--->
                                 <div class="col s6">
                                     <div class="card">
@@ -457,6 +489,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
         <script>
             $(document).ready(train.ui.buildPalette())
             $(document).ready(gauge.createAll())
+            $(document).ready(function() {$('.modal-trigger').leanModal();}); //initializes all modals
         </script>
         
       </body>
