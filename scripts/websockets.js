@@ -55,12 +55,12 @@ function processReply(ev) {
     }
     else if (ev.type == "hello") {
         //sets up initial info about railroad
-        JMRIhellomsg = ev
-        layoutRailroadName = ev.data.railroad
+        jmri.hellomsg = ev
+        jmri.railroadName = ev.data.railroad
     }
     else if (ev.type == "throttle") {
         //send to throttle info handler
-        JSONhandleType_throttle(ev)
+        //TODO, if we even need this with how complex this is and how un-normal it is compared to traditional DCC
     }
     else if (ev.type == "sensor") {
         //send to sensor info handler
@@ -71,7 +71,7 @@ function processReply(ev) {
     }
     else if (ev.type == "power") {
         //send to layout power info handler
-        JSONhandleType_power(ev)
+        jmri.handleType.power(ev)
     }
     else if (ev.list) {
         //send to list handler
@@ -91,17 +91,6 @@ function sendcmd(command) {
         console.error("Tried to send something, but we're not connected yet.")
         return "Can't send!"
         
-    }
-}
-
-
-//this is used for any command sent to a locomotive, since it provides an alert if we haven't requested a throttle yet.
-function sendcmdLoco(command) {
-    if (locoAddress != undefined) {
-        return sendcmd(command)
-    }
-    else {
-        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
     }
 }
 

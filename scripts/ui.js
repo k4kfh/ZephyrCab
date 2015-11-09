@@ -53,7 +53,7 @@ function updateHTML(variable) {
         
     }
     else if (variable == "layoutTrackPower_state") {
-        document.getElementById("trkpowerswitch").checked = layoutTrackPower_state
+        document.getElementById("trkpowerswitch").checked = jmri.trkpower.state
             
         
     }
@@ -124,7 +124,7 @@ function handleCBchange(cb, whatisit) {
     else if (whatisit == "trackpower") {
         if (layoutTrackPower_state != cb.checked) {
             //trkpower function needs to be updated to use bool instead of "on" and "off" as params, that's stupid
-            trkpower(cb.checked)
+            jmri.trkpower(cb.checked)
         }
     }
     else if (whatisit == "primemover") {
@@ -199,9 +199,4 @@ function debugToast(toast, time) {
     if (debugToastMode == true) {
         Materialize.toast("Debug: " + toast, time)
     }
-}
-
-function updateGauge(gaugeName, gaugeValue) {
-    document.getElementById(gaugeName).value = gaugeValue
-    debugToast("updateGauge() just updated " + gaugeName + " to indicate " + gaugeValue + ".")
 }

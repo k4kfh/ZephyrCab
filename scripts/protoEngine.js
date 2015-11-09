@@ -344,15 +344,6 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
     }
 }
 
-
-
-
-function sendcmdLocoSpeed(ARGspeed) {
-    speedJMRIformat = ((Math.round(ARGspeed)) / 100)
-    sendcmdLoco('{"type":"throttle","data":{"address":' + locoAddress + ', "throttle":"' + throttleName + '", "speed":' + speedJMRIformat + '}}')
-    
-}
-
 function setModelDirection(ARGdirection) {
     if (ARGdirection == "forward") {
         sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "forward":true, "throttle":"' + throttleName + '"}}')

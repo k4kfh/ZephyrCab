@@ -1,38 +1,35 @@
 //this contains decoder-agnostic functions for JMRI
 
-//with the current getThrottle() function, you can only have one throttle per instance of LocoThrottleJS. it sets the variables for the rest of the program's throttle info and address info there, so no need to set it yourself.
+//a few global variables conveniently defined here for now
+var reverser //this is just set here because reasons
+var notch = 0
 
-//some global variable crap that has to be defined
-var locoAddress //locomotive's DCC #
-var throttleName //name given to throttle requested
-var reverser  //direction locomotive should be in (neutral, forward, or reverse),
-var JMRIhellomsg  //initial websockets hello message
-var layoutRailroadName //the name of the railroad as set in JMRI prefs, only checked on initial connect
-var notch = 0 //this is the notch the loco is currently in. DO NOT try to adjust the notch with this, it's only for reading. The only reason it's set here is because it's always supposed to start at 0. if you want to adjust the notch use the function setNotchCrude("up"/"down")
-var notchAllowed = true //this is set to true because the program assumes the locomotive is idling, and if we can't run setNotch() at least once it creates an impossibility
+jmri = new Object();
 
-//more global vars
-var horn = false
-var compressor = false
-var engine = false
 
-//getthrottle grabs a throttle for a locomotive, and refers to it as whatever throttlename is
-function getThrottle(address, name) {
+//you can call this with keyword new to create a new throttle object that has all the functions of a working throttle. no decoder-specific anything, just like it would be on a Digitrax throttle or something
+
+//example: exampleThrottle = new jmri.throttle(1379, 0)
+//now I can run exampleThrottle.f.set(0, true) to turn on #1379's headlight. You get the idea.
+jmri.throttle = function(address, throttleName) {
     if (wsStatus == true) {
         //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
-        if (document.getElementById("decoderjs").src != "") {
-            sendcmd('{"type":"throttle","data":{"throttle":"' + name + '","address":' + address + '}}')
-            console.log("Requested throttle " + name + " for locomotive #" + address)
-            locoAddress = address
-            throttleName = name
-            //this runs the init() function, and this sort of thing is why you HAVE to at least define them :P they don't have to do anything at all, just define them
-            init("throttleacquired")
-            protoEngine_recalc_interval = setInterval(protoEngine_recalc, 1000)
-            speedMPH = 0
+        sendcmd('{"type":"throttle","data":{"throttle":"' + throttleName + '","address":' + address + '}}')
+        console.log("Requested throttle " + name + " for locomotive #" + address)
+        this.address = address
+        this.name = throttleName //throttle name should always be the train position just for ease-of-development purposes
+        this.speed = new Object(); //same reason as this.f for existing as a seemingly stupid object
+        this.speed.set = function(speed) {
+            //set speed to given percent
+            sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
         }
-        else {
-            Materialize.toast("Please select your decoder.js/model.js scripts first, they are required before you can request a throttle!", 4000)
+        this.f = new Object(); //the reason we did this as an object with only one function was to leave room for future ability to store the states of the functions. I will add it if I need it, but its a pain so I haven't yet.
+        this.f.set = function(fnumber, state) {
+            //set the function number from fnumber to the state from state
+            sendcmd('{"type":"throttle","data":{"address":' + address + ', "F' + fnumber + '":' + state + ', "throttle":"' + throttleName + '"}}')
         }
+        
+        //TODO - add command here so that when a throttle is acquired, all functions are set to off and the speed to 0
     }
     else {
         Materialize.toast("You need to set up your WebSockets connection first!", 4000)
@@ -41,9 +38,8 @@ function getThrottle(address, name) {
 }
 
 
-
 //call with state as boolean
-function trkpower(option) {
+jmri.trkpower = function(option) {
     if (option == true) {
         sendcmd('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
@@ -71,9 +67,21 @@ function trkpower(option) {
     }
 }
 
-function throttle(addressArg, nameArg, decoderScriptArg) {
-    this.address = addressArg;
-    this.name = nameArg;
-    this.decoder = new decoder(decoderScriptArg);
+jmri.railroadName = "Railroad" //this is set upon connection
+jmri.hellomsg //initial railroad hello message
+
+jmri.handleType = new Object(); //this contains all the non-locomotive/throttle related handler functions
+jmri.handleType.power = function(string) {
+    var json = string
+    if (json.data.state == 2) {
+        jmri.trkpower.state = true
+        console.log("Updated layout track power status to TRUE")
+        updateHTML("layoutTrackPower_state")
+    }
+    else if (json.data.state == 4) {
+        jmri.trkpower.state = false
+        console.log("Updated layout track power status to FALSE")
+        updateHTML("layoutTrackPower_state")
+    }
 }
     
