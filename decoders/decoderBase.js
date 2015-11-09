@@ -10,7 +10,7 @@ decoders = {
                 //By Hampton Morgan - k4kfh@github - May 2015
                 //evilgeniustech.com
                 
-                this.throttle = new jmri.throttle(address, trainPosition) //we use the train position as the throttle name for future lookup purposes
+                train[trainPosition].throttle = new jmri.throttle(address, trainPosition) //we use the train position as the throttle name for future lookup purposes
                 
                 //FUNCTIONS
                 this.f = new Object();
@@ -18,21 +18,24 @@ decoders = {
                 //bell
                 this.f.bell = new Object();
                 this.f.bell.set = function(state) {
-                    
+                    train[trainPosition].throttle.f.set(1, state)
+                    train[trainPosition].dcc.f.bell.state = state;
                 }
                 this.f.bell.state = false;
                 
                 //horn
                 this.f.horn = new Object();
                 this.f.horn.set = function(state) {
-                    
+                    train[trainPosition].throttle.f.set(2, state)
+                    train[trainPosition].dcc.f.horn.state = state;
                 }
                 this.f.horn.state = false;
                 
                 //compressor
                 this.f.compressor = new Object();
                 this.f.compressor.set = function(state) {
-                    
+                    train[trainPosition].throttle.f.set(20, state)
+                    train[trainPosition].dcc.f.compressor.state = state;
                 }
                 this.f.compressor.state = false;
                 
@@ -53,7 +56,8 @@ decoders = {
                 //engine on/off
                 this.f.engine = new Object();
                 this.f.engine.set = function(state) {
-                    
+                    train[trainPosition].throttle.f.set(8, state)
+                    train[trainPosition].dcc.f.engine.state = state;
                 }
                 this.f.engine.state = false;
                 
@@ -74,9 +78,10 @@ decoders = {
                 
                 //SPEED SETTING
                 this.speed = new Object();
-                this.speed.state = false;
+                this.speed.state = 0;
                 this.speed.set = function(speed) {
-                    
+                    train[trainPosition].throttle.speed.set(speed)
+                    train[trainPosition].dcc.speed.state = speed;
                 }
                 
                 
