@@ -84,4 +84,10 @@ jmri.handleType.power = function(string) {
         updateHTML("layoutTrackPower_state")
     }
 }
+
+jmri.roster = new Object();
+
+jmri.roster.lookup = new Object();
+
+
     
