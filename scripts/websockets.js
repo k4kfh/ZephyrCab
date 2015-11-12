@@ -16,6 +16,7 @@ function connect(ip, port) {
         console.log("Beginning heartbeats.")
         setListeners()
         init("connect")
+        sendcmd('{"list":"roster"}')
     }
     
     ws.onmessage = function(event) {
@@ -75,6 +76,10 @@ function processReply(ev) {
     }
     else if (ev.list) {
         //send to list handler
+    }
+    else if (ev[0].type = "rosterEntry") {
+        jmri.roster.raw = ev
+        jmri.roster.entries = jmri.roster.reformat(jmri.roster.raw) //rebuild the reformatted roster every time we get new roster data
     }
 }
 

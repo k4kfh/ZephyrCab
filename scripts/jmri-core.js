@@ -87,7 +87,58 @@ jmri.handleType.power = function(string) {
 
 jmri.roster = new Object();
 
-jmri.roster.lookup = new Object();
+
+/*
+This is a special version of the JMRI roster.
+
+The returned value from the JMRI JSON server when you request the roster is the in the form of an array of objects. You cannot look up objects by their name, or by any other property, you can only request their number in the array. This variable is automatically generated as an object with the entry names as keys. The values of these keys are the data attributes of the raw roster. This means you can look up a locomotive by name, and it is part of what helps jmri.roster.matchProperty() work.
+*/
+jmri.roster.entries = new Object();
+
+jmri.roster.raw = new Object(); //this will contain the raw data straight from JMRI's JSON system
+
+
+/*
+This function is not to be used by any front-end scripts. This is only called by websockets.js when it recieves updated roster data.
+
+Because of this, jmri.roster.entries is ALWAYS up-to-date with whatever data is in jmri.roster.raw.
+*/
+jmri.roster.reformat = function(rosterRaw) {
+    var newRoster = new Object();
+    for (i = 0; i < rosterRaw.length; i++) {
+        //run for each element of the raw roster
+        var entry = rosterRaw[i];
+        var name = entry.data.name
+        newRoster[name] = entry.data
+    }
+    return newRoster;
+}
+
+
+/*
+This function is used to find entries in the JMRI roster which match a certain object.
+
+You call it with:
+jmri.roster.matchProperty({"property":"value"})
+
+The function returns the name keys of all the entries that have the property with the correct value.
+
+For example, jmri.roster.matchProperty({"decoderFamily":"fakeDecoderFamily"}) would return an array of the names of every locomotive whose decoderFamily attribute equals "fakeDecoderFamily". If nothing fits the query, it will return an empty array, or [].
+*/
+jmri.roster.matchProperty = function(property) {
+    var rosterEntries = Object.keys(jmri.roster.entries) //get an array of all the locomotive names for easy for looping
+    var results = []
+    for (i = 0; i < rosterEntries.length; i++) {
+        //this code runs for each roster entry
+        var entryName = rosterEntries[i];
+        var key = (Object.keys(property))[0] //we always use the first element in the keys list. this is just some idiot proofing
+        var value = property[key]
+        if (jmri.roster.entries[entryName][key] == value) {
+            results.push(entryName)
+        }
+    }
+    return results;
+}
 
 
     

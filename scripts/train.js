@@ -52,7 +52,9 @@ train.ui.update = function() {
     
 }
 
-train.ui.buildPalette = function() {
+train.ui.palette = new Object();
+
+train.ui.palette.build = function() {
     //FIRST LOCOMOTIVES
     var locos = new Object();
     locos.finalHTML = ""
@@ -97,4 +99,65 @@ train.ui.buildPalette = function() {
     
     document.getElementById("rollingstockPalette").innerHTML = rollingstock.finalHTML
     
+}
+
+train.ui.modal = new Object();
+
+
+/*
+Call this with:
+train.ui.locomotive.modal(0)
+If you want to build a modal for locomotive 0 in the array.
+
+This will automatically add the modal's HTML to <div id="modalStorage"> so you do not need to do anything with that
+*/
+train.ui.modal.locomotive = function(prototypeNum) {
+    var prototypeObj = prototype.locomotives[prototypeNum];
+    var name = prototypeObj.name;
+    var builder = prototypeObj.builder;
+    var locoName = builder + " " + name //this is for display later, so the code doesn't have to fight with " " and such
+    var modalName = "loco-modal-" + prototypeNum;
+    
+    /*
+    This works by going through one line at a time. It builds the HTML in "lines", which are sometimes what would be a line and are sometimes several lines grouped together. The lines are only there for organizational purposes.
+    
+    After building one line, it uses .push() to add that line to the modalHTML array.
+    
+    At the end of the function, after all the lines have been added, we run modalHTML.join() and get the resulting string of HTML. It's not pretty, but it's functional.
+    */
+    
+    var modalHTML = [] //define the array HTML variable, which will be combined into a string at the end
+    
+    var nextline = "" //this is a variable purely for organization, and is redefined every time a new line is made
+    
+    //main div element for modal
+    nextline = '<div id="' + modalName + '" class="modal modal-fixed-footer"><div class="modal-content">';
+    modalHTML.push(nextline);
+    
+    nextline = "<h4>" + locoName + "</h4>";
+    modalHTML.push(nextline);
+    
+    //this is the beginning of the collection thing. I put it separate for organizational purposes
+    nextline = '<ul class="collection">';
+    modalHTML.push(nextline);
+    
+    //this is the first element in the collection, which is "Address"
+    nextline = '<li class="collection-item"><h5>Address</h5><div class="row"><form class="col s12"><div class="row"><div class="input-field col s3">"';
+    modalHTML.push(nextline);
+    
+    //this is the DCC address input element, plus the corresponding <label>
+    nextline = '<input id="dccAddress' + prototypeNum + '" type="number" class="validate" length="4"><label for="dccAddress' + prototypeNum + '" data-error="invalid" data-success="validated">DCC Address</label>';
+    modalHTML.push(nextline);
+    
+    //this is the closing tags for the "Address" collection element
+    nextline = ' </div></div></form></div></li>';
+    modalHTML.push(nextline);
+    
+    //this is the opening tags for the next collection element, "Model Information"
+    nextline = '<li class="collection-item"><h5>Model Information</h5><div class="row"><div class="input-field col s4">';
+    modalHTML.push(nextline);
+    
+    //postponing the first <select> until I have written a good directory-style select library
+    
+    return modalHTML; //this is for debugging only!
 }
