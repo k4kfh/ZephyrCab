@@ -1,0 +1,23 @@
+/*
+This file is rather special. It bundles locomotive prototype entries and model entries to an entry in the JMRI roster.
+
+It is done using objects, but the syntax is very specific. You must adhere to this syntax or things will explode in fiery infernos.
+*/
+
+bundles = {
+    /*
+    Example entry for my Athearn Genesis GP15-1 is shown below
+    
+    "GP15-1 #1379":{
+        model:{
+            manufacturer:"Athearn",
+            family:"Athearn Genesis",
+            product:"GP15-1"
+        },
+        
+        prototype:"EMD GP15-1"
+    }
+    
+    The decoder settings are not here because we can grab those straight from JMRI.
+    */
+}

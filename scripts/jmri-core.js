@@ -6,11 +6,14 @@ var notch = 0
 
 jmri = new Object();
 
+/*
+you can call this with keyword new to create a new throttle object that has all the functions of a working throttle. no decoder-specific anything, just like it would be on a Digitrax throttle or something
 
-//you can call this with keyword new to create a new throttle object that has all the functions of a working throttle. no decoder-specific anything, just like it would be on a Digitrax throttle or something
+example: exampleThrottle = new jmri.throttle(1379, 0)
+now I can run exampleThrottle.f.set(0, true) to turn on #1379's headlight. You get the idea.
 
-//example: exampleThrottle = new jmri.throttle(1379, 0)
-//now I can run exampleThrottle.f.set(0, true) to turn on #1379's headlight. You get the idea.
+This function should not be used by anything except the core train builder stuff; if you try and build your own throttle stuff using this it WILL BREAK THINGS!
+*/
 jmri.throttle = function(address, throttleName) {
     if (wsStatus == true) {
         //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
@@ -95,7 +98,11 @@ The returned value from the JMRI JSON server when you request the roster is the 
 */
 jmri.roster.entries = new Object();
 
-jmri.roster.raw = new Object(); //this will contain the raw data straight from JMRI's JSON system
+
+/*
+This contains the roster, raw, as returned by the JSON servlet. It auto-updates if we recieve any new data at any time.
+*/
+jmri.roster.raw = new Object();
 
 
 /*
