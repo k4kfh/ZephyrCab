@@ -7,8 +7,9 @@ locoThrottle.js is an HTML/CSS/JavaScript app that is designed to simulate proto
 ## Installation
 
 ### Prerequisites
-- You need to understand basic JavaScript/JSON syntax
-- You need a simple web server. lighttpd, nginx, Apache, or JMRI's built in web server should all work fine.
+- Understand very basic JSON/JavaScript syntax
+- A simple web server. lighttpd, nginx, Apache, or JMRI's built in web server should all work fine.
+- A layout connected to JMRI with the JMRI JSON WebSockets service enabled
 
 The simplest way to install locoThrottle.js is to download the ZIP from this page and extract it onto a web server of your choice. There is no server-side code, so you do not need a sophisticated web server to run it. Once you have extracted it to a directory of your choice, see the setup procedure below.
 
