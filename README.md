@@ -4,9 +4,12 @@
 
 locoThrottle.js is an HTML/CSS/JavaScript app that is designed to simulate prototypically accurate controls for model trains. It communicates with your layout using JMRI's JSON WebSockets servlet, which is built into the JMRI web interface.
 
+Read more on [my blog.](http://evilgeniustech.com/tag/locothrottlejs/)
+
 ## Installation
 
 ### Prerequisites
+
 - Understand very basic JSON/JavaScript syntax
 - A simple web server. lighttpd, nginx, Apache, or JMRI's built in web server should all work fine.
 - A layout connected to JMRI with the JMRI JSON WebSockets service enabled
@@ -14,4 +17,11 @@ locoThrottle.js is an HTML/CSS/JavaScript app that is designed to simulate proto
 The simplest way to install locoThrottle.js is to download the ZIP from this page and extract it onto a web server of your choice. There is no server-side code, so you do not need a sophisticated web server to run it. Once you have extracted it to a directory of your choice, see the setup procedure below.
 
 ## Setup
+
 When you install locoThrottle.js, you'll need to edit the `bundles.json` file. This file is responsible for linking JMRI roster entries with specific models (for example, the Athearn Genesis GP15-1) and with the correct prototype locomotive (for example, the EMD SD40-2). We are working on an article on how to edit this file properly, but until then you should see the comments in the file.
+
+## Usage
+
+When you first log in after setting up `bundles.json`, you'll need to connect to your JMRI PC. You can do this by inputting the IP of the PC, with the port of the JMRI web interface. By default, locoThrottle.js uses port 12080, which is the default for JMRI.
+
+![Connection Settings in locoThrottle.js](http://evilgeniustech.com/wp-content/uploads/2015/11/connectionsettings.png)
