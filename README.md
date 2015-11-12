@@ -5,6 +5,7 @@
 locoThrottle.js is an HTML/CSS/JavaScript app that is designed to simulate prototypically accurate controls for model trains. It communicates with your layout using JMRI's JSON WebSockets servlet, which is built into the JMRI web interface.
 
 > Note: This project is still heavily under development. It is not recommended to try to use the project unless you are the adventurous type, and/or you understand JavaScript/JSON and are willing to tinker.
+>
 > Read more on [my blog.](http://evilgeniustech.com/tag/locothrottlejs/)
 
 ## Installation
