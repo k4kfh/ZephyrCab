@@ -180,96 +180,64 @@ speedMPH = 0
 train.leadLoco = undefined
 
 function protoEngine_accel(ARGnotch, ARGreverser) {
-    if (locoAddress != undefined) {
-        /*
+    /*
         First we need to go through each element in the train and perform some calculations. The motive force, fuel use, and some other non-physics calculations are outsourced to other functions, so bear that in mind when reading the code.
         
         The for loop below is just to cycle through every item in the train.
         */
-        for (i = 0; i < train.length; i++) {
-            /*
+    for (i = 0; i < train.length; i++) {
+        /*
             Now that we're going to parse each element in the train, including rolling stock AND locomotives, we need to split things up.
             
             Since we need to do different calculations for rolling stock than we do locomotives, we sort them out into their own if functions.
             */
-            if(train[i].type == "locomotive") {
-                /*
+        if(train[i].type == "locomotive") {
+            /*
                 All code to do with locomotives only will go here.
                 
                 Now that we know we're dealing with a locomotive, we can start the calculations. This function calculates all of the following things:
                 - Motive Force (lbs)
                 - Braking Force (as of 11/12/15 this is unfinished)
                 
-                It takes all of those and determines a net force value.
+                The first lines here are for calculating tractive effort. The variables/arguments for the function that is used here is explained in the comments above the function.
                 */
-                train[i].prototype.motiveForce = crunch.diesel.motiveForce(train[i].prototype.outputHorsepower, train[i].prototype.speed, train[i].prototype.efficiency) //This calculates motive force using the equation from Virginia Tech.
-                train[i].prototype.rollingResistance = crunch.rollingResistance(train[i].prototype.weight, train[i].prototype.coefficientOfRollingResistance)
+            var horsepower = train[i].prototype.outputHorsepower;
+            var speed = train[i].prototype.speed;
+            var efficiency = train[i].prototype.efficiency;
+            var beginningSpeed = train[i].prototype.tractiveEffortEquationStart;
+            var startingTE = train[i].prototype.startingTE
+            train[i].prototype.TE = crunch.tractiveEffort(horsepower, speed, efficiency, beginningSpeed, startingTE);
                 
-                /*
+            train[i].prototype.rollingResistance = crunch.rollingResistance(train[i].prototype.weight, train[i].prototype.coefficientOfRollingResistance)
+                
+            /*
                 Now we must add the motiveForce and rollingResistance values we just found to the totals for the whole train. This physics engine is assuming no coupler slack for simplicity's sake; I would like to add slack later on but not right now.
                 */
-                train.total.motiveForce = train.total.motiveForce + train[i].prototype.motiveForce;
-                train.total.rollingResistance = train.total.rollingResistance + train[i].prototype.rollingResistance;
-            }
+            train.total.motiveForce = train.total.motiveForce + train[i].prototype.TE;
+            train.total.rollingResistance = train.total.rollingResistance + train[i].prototype.rollingResistance;
         }
-        
-        acceleration = (train.total.netForce / train.total.weight) * .681818 //this whole thing is a big f=ma problem, the trailing decimal is just a conversion from mph to ft/sec
+    }
+    
+    speedMPH = 0
      
-     //we have to check the newSpeed value against the maximum speed for the traction motors in each locomotive
-     
-     
-     newSpeed = speedMPH + acceleration
-     
-     
-     //this code is not for physics purposes, it is purely to keep the program from looping and locking up
-     //it forces the speed to cross exactly 0 when changing direction, without impacting how fast it does so
-     if (speedMPH > 0) { //if speed is positive right now,
+    /*
+    //this code is not for physics purposes, it is purely to keep the program from looping and locking up
+    //it forces the speed to cross exactly 0 when changing direction, without impacting how fast it does so
+    if (speedMPH > 0) { //if speed is positive right now,
          if (newSpeed < 0) { //and it's about to flip to negative
              newSpeed = 0 //make sure it crosses exactly 0 once
              console.log("Forcing zero crossing")
          }
      }
-     else if (speedMPH < 0) {
+    else if (speedMPH < 0) {
          if (newSpeed > 0) {
              newSpeed = 0
              console.log("Forcing zero crossing")
          }
      }
      
-     
-     
-     
-     
-     
-     
-     speedMPH = newSpeed //seems counterproductive but it's needed to ensure forced zero crossing, which cuts down on wasted CPU
-     //update ui.js
-     updateHTML("speedMPH")
-     if (speedMPH < 0) {
-         setModelDirection("reverse")
-         actualDirection = -1
-         var locoSpeed = locoSpeedCrunch(Math.abs(speedMPH))
-         sendcmdLocoSpeed(locoSpeed)
-     }
-     else if (speedMPH > 0) {
-         setModelDirection("forward")
-         actualDirection = 1
-         var locoSpeed = locoSpeedCrunch(Math.abs(speedMPH))
-         sendcmdLocoSpeed(locoSpeed)
-     }
-     else {
-         sendcmdLocoSpeed(0)
-         actualDirection = 0
-         console.log("Loco is stationary, setting speed to 0 and ignoring reverser.")
-     }
-     
-     
-     
-    }
-    else {
-        Materialize.toast("You haven't requested a throttle yet. We can't do squat. Wait. How did you even manage to...never mind", 4000)
-    
-    }
+     Commented out for debugging purposes 11/12/15
+     */
 }
 
 function setModelDirection(ARGdirection) {
@@ -312,7 +280,7 @@ Weight is the weight of the rolling thing in pounds, and coefficient is the dime
 
 The function will then return a rolling resistance value, in lbs.
 */
-crunch.rollingResistance(weight, coefficient) {
+crunch.rollingResistance = function(weight, coefficient) {
     return (weight * coefficient)
 }
 
@@ -321,12 +289,14 @@ This function is rather involved, but simple to use. It is for calculating the t
 
 It is called like so:
 
-crunch.tractiveEffort(horsepower, speed, efficiency)
+crunch.tractiveEffort(horsepower, speed, efficiency, beginningSpeed, startingTE)
 
 Arguments:
 horsepower - the OUTPUT HORSEPOWER of the locomotive. This is dependent on the notch.
 speed - the current speed of the locomotive IN MILES PER HOUR. IF YOU GIVE IT KM/HR IT WILL BE WRONG!
 efficiency - the efficiency of the locomotive in converting power into torque, expressed as a decimal. For example, 75% efficiency would be 0.75
+startingTE - the starting tractive effort in lbs
+beginningSpeed - the speed to start using the equation to find TE. Until this speed, the function will simply report the starting TE.
 
 The function will return a tractive effort value in POUNDS.
 
@@ -334,7 +304,7 @@ This function is built using an equation outlined in an engineering paper by Vir
 http://128.173.204.63/courses/cee3604/cee3604_pub/rail_resistance.pdf
 Credit where credit is due; this paper is excellent.
 */
-crunch.tractiveEffort(horsepower, speed, efficiency) {
+crunch.tractiveEffort = function(horsepower, speed, efficiency, beginningSpeed, startingTE) {
     //First we need to convert the speed to KM/HR.
     var speedSI = speed * 1.60934
     
@@ -347,10 +317,17 @@ crunch.tractiveEffort(horsepower, speed, efficiency) {
     p is the output horsepower
     v is the speed in km/hr
     */
-    var teNewtons = 2650( (efficiency * horsepower)/(speedSI) )
+    var teNewtons = 2650 * ( (efficiency * horsepower)/(speedSI) )
     
     //Now that we have the tractive effort in Newtons, we must convert it to pounds.
     var teLbs = 0.224809 * teNewtons
+    
+    /*
+    The tractive effort curve moves upward too sharply below a certain speed. This can vary by locomotive, so it is a configurable value in prototype objects. The following code is a safeguard to set the tractive effort to the starting TE if the speed is below the cutoff.
+    */
+    if (speed < beginningSpeed) {
+        teLbs = startingTE;
+    }
     
     //Since the tractive effort is converted to LBS now, we can return this value.
     return teLbs;
