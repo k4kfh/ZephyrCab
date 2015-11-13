@@ -172,125 +172,53 @@ function notchTiming(args) {
 
 
 
-//this is what calculates the speed for the locomotive
-//this is basically where it all goes down
-
-//the reason all the variables have ARG in front of them is so that inside the function, we can still access global variables that have been set for information about the various things
-//basically to prevent 2 variables in different scopes with the same name
-
 //hacky global variable definitions for tinkering
 train = []
-train.total = {weight:0, maxHP:0, rollingResistance:0}
+train.total = {weight:0, motiveForce:0, rollingResistance:0}
 train.maxSpeeds = []
 speedMPH = 0
 train.leadLoco = undefined
 
 function protoEngine_accel(ARGnotch, ARGreverser) {
- if (locoAddress != undefined) {
-     //rewrite on 9/18/15 to use the new JSON train notation
-     train.total = {"maxHP":0, "netForce":0, "rollingResistance":0, "motiveForce":0, "windResistance":0, "resistingForce":0}
-     train.total.weight = 0 //reset just in case changes are made, we redo this frequently
-     //parses train list and find out which ones are locomotives and which are cars
-     for (i = 0; i < train.length; i++) {
-         console.log("I is equal to " + i)
-         var currentElement;
-         currentElement = i;
-         train.total.weight = train.total.weight + train[i].weight //go ahead and add this element's weight to the total
-         
-         if (train[currentElement].type == "rollingstock") {
-             
-             //TODO: Add the option for rolling stock to have motive force on a grade
-             train[currentElement].motiveForce = 0; //all rolling stock has no motive force, obviously
-             train.total.motiveForce = train[currentElement].motiveForce + train.total.motiveForce
-             //Wind Resistance based on direction
-             wind = Math.abs(speedMPH)
-             if (actualDirection == 1) {
-                 if (i == 0) {
-                     //if we're going forward and this element is leading, we must find wind resistance
-                     train.total.windResistance = train[currentElement].frontArea * ((wind^2) * 0.00256)
-                 }
-             }
-             else if (actualDirection == -1) {
-                 if (i == train.length) {
-                     //find wind resistance on this element if it's last and we're going backwards
-                     train.total.windResistance = actualDirection * (train[currentElement].frontArea * ((wind^2) * 0.00256))
-                 }
-             }
-             else if (actualDirection == 0) {
-                 train.total.windResistance = 0 //if we're stationary, no wind resistance
-             }
-             
-             //Rolling Resistance
-             train[currentElement].rollingResistance = actualDirection * (0.001 * train[currentElement].weight); //multiplied by actualDirection so we get the correct value, negative, positive or zero, based on direction
-             
-             //Net Force
-             train[currentElement].netForce = (train[currentElement].motiveForce) - (train[currentElement].rollingResistance);
-             train.total.netForce = train.total.netForce + train[currentElement].netForce //add this new net force value to the total net force for the whole train
-         }
-         
-         if (train[currentElement].type == "locomotive") {
-             
-             //set this loco to the lead loco if we haven't gotten one yet
-             if (train.leadLoco == undefined) {
-                train.leadLoco = train[currentElement]
-             }
-             
-             
-             //motive force
-             train[currentElement].outputHP = reverser * (train[currentElement].maxHP * (notch/8)) //find the output horsepower
-             if ( (Math.abs(speedMPH) < (Math.abs(train[currentElement].tractiveEffortEquationStart))) ) {
-                 //if we haven't passed the set threshold just yet
-                 train[currentElement].motiveForce = reverser * (train[currentElement].startingTE * (notch/8))
-                 console.log("Using starting TE")
-             }
-             else if (speedMPH != 0) {
-                 //if we have passed it, use the VA tech equation
-                 train[currentElement].motiveForce = calculateTractiveEffort((train[currentElement].outputHP), (train[currentElement].weight), (train[currentElement].efficiency), speedMPH)
-                 console.log("Using VA Tech Equation")
-             }
-             train.total.motiveForce = train[currentElement].motiveForce + train.total.motiveForce
-             
-             //Wind Resistance based on direction
-             //TODO - Fix this to use the equation outlined at EngineeringToolbox.com...dunno what kind of drunk crap this is using right now
-             wind = Math.abs(speedMPH)
-             if (actualDirection == 1) {
-                 if (i == 0) {
-                     //if we're going forward and this element is leading, we must find wind resistance
-                     train.total.windResistance = 0.224809 * (train[currentElement].dragCoefficient * 0.5 * 1.2 * ((speedMPH * 1.60934) * (speedMPH * 1.60934)) * (158.75 * 0.092903))
-                     
-                     //did this using this page on 10/5/2015 (fall break 2015)
-                     //http://www.engineeringtoolbox.com/drag-coefficient-d_627.html
-                 }
-             }
-             else if (actualDirection == -1) {
-                 if (i == (train.length-1)) {
-                     //find wind resistance on this element if it's last and we're going backwards
-                     train.total.windResistance = actualDirection * (0.224809 * (train[currentElement].dragCoefficient * 0.5 * 1.2 * ((speedMPH * 1.60934) * (speedMPH * 1.60934)) * (158.75 * 0.092903)))
-                 }
-             }
-             else if (actualDirection == 0) {
-                 train.total.windResistance = 0 //if we're stationary, no wind resistance
-             }
-             
-             //Rolling Resistance
-             train[currentElement].rollingResistance = actualDirection * (0.001 * train[currentElement].weight) //multiplied by actualDirection so we get the correct value, negative, positive or zero, based on direction
-             train.total.rollingResistance = train.total.rollingResistance + train[currentElement].rollingResistance
-             
-         }
-         
-     }
-     train.total.resistingForce = train.total.rollingResistance + train.total.windResistance
-     train.total.netForce = train.total.motiveForce - train.total.resistingForce
-     acceleration = (train.total.netForce / train.total.weight) * .681818 //this whole thing is a big f=ma problem, the trailing decimal is just a conversion from mph to ft/sec
+    if (locoAddress != undefined) {
+        /*
+        First we need to go through each element in the train and perform some calculations. The motive force, fuel use, and some other non-physics calculations are outsourced to other functions, so bear that in mind when reading the code.
+        
+        The for loop below is just to cycle through every item in the train.
+        */
+        for (i = 0; i < train.length; i++) {
+            /*
+            Now that we're going to parse each element in the train, including rolling stock AND locomotives, we need to split things up.
+            
+            Since we need to do different calculations for rolling stock than we do locomotives, we sort them out into their own if functions.
+            */
+            if(train[i].type == "locomotive") {
+                /*
+                All code to do with locomotives only will go here.
+                
+                Now that we know we're dealing with a locomotive, we can start the calculations. This function calculates all of the following things:
+                - Motive Force (lbs)
+                - Braking Force (as of 11/12/15 this is unfinished)
+                
+                It takes all of those and determines a net force value.
+                */
+                train[i].prototype.motiveForce = crunch.diesel.motiveForce(train[i].prototype.outputHorsepower, train[i].prototype.speed, train[i].prototype.efficiency) //This calculates motive force using the equation from Virginia Tech.
+                train[i].prototype.rollingResistance = crunch.rollingResistance(train[i].prototype.weight, train[i].prototype.coefficientOfRollingResistance)
+                
+                /*
+                Now we must add the motiveForce and rollingResistance values we just found to the totals for the whole train. This physics engine is assuming no coupler slack for simplicity's sake; I would like to add slack later on but not right now.
+                */
+                train.total.motiveForce = train.total.motiveForce + train[i].prototype.motiveForce;
+                train.total.rollingResistance = train.total.rollingResistance + train[i].prototype.rollingResistance;
+            }
+        }
+        
+        acceleration = (train.total.netForce / train.total.weight) * .681818 //this whole thing is a big f=ma problem, the trailing decimal is just a conversion from mph to ft/sec
      
      //we have to check the newSpeed value against the maximum speed for the traction motors in each locomotive
      
      
      newSpeed = speedMPH + acceleration
-     
-     train.physicsData = {"netForce":train.total.netForce, "rollingResistance":train.total.rollingResistance, "windResistance":train.total.windResistance, "motiveForce":train.total.motiveForce,"resistingForce":train.total.resistingForce,"notch":notch, "reverser":reverser, "weight":train.total.weight, "speed":speedMPH, "acceleration":acceleration,}
-     console.log("LOG PHYSICS DATA: ");
-     console.dir(train.physicsData);
      
      
      //this code is not for physics purposes, it is purely to keep the program from looping and locking up
@@ -337,7 +265,7 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
      
      
      
- }
+    }
     else {
         Materialize.toast("You haven't requested a throttle yet. We can't do squat. Wait. How did you even manage to...never mind", 4000)
     
@@ -367,6 +295,66 @@ function protoEngine_recalc() {
     
 }
 
+
+/*
+The crunch object
+
+The crunch object is actually a very simple way to handle things. I built this in to allow for easy addition of calculations without cluttering up code. If you know you're going to be calculating the same old thing over and over again (for example, rolling resistance) then it makes sense to tidy things up and use a function instead of littering the main physics engine function with loads of decimals and other variables.
+*/
+crunch = new Object();
+
+/*
+This function is quite simple. It is for calculating rolling resistance of a given body.
+
+Call with:
+crunch.rollingResistance(weight, coefficient)
+Weight is the weight of the rolling thing in pounds, and coefficient is the dimensionless coefficient of rolling resistance.
+
+The function will then return a rolling resistance value, in lbs.
+*/
+crunch.rollingResistance(weight, coefficient) {
+    return (weight * coefficient)
+}
+
+/*
+This function is rather involved, but simple to use. It is for calculating the tractive effort of a diesel locomotive at a given speed.
+
+It is called like so:
+
+crunch.tractiveEffort(horsepower, speed, efficiency)
+
+Arguments:
+horsepower - the OUTPUT HORSEPOWER of the locomotive. This is dependent on the notch.
+speed - the current speed of the locomotive IN MILES PER HOUR. IF YOU GIVE IT KM/HR IT WILL BE WRONG!
+efficiency - the efficiency of the locomotive in converting power into torque, expressed as a decimal. For example, 75% efficiency would be 0.75
+
+The function will return a tractive effort value in POUNDS.
+
+This function is built using an equation outlined in an engineering paper by Virginia Tech.
+http://128.173.204.63/courses/cee3604/cee3604_pub/rail_resistance.pdf
+Credit where credit is due; this paper is excellent.
+*/
+crunch.tractiveEffort(horsepower, speed, efficiency) {
+    //First we need to convert the speed to KM/HR.
+    var speedSI = speed * 1.60934
+    
+    /*
+    Now we must actually use the formula from the Virginia Tech paper. It states:
+    T = 2650((np/v))
+    
+    T is tractive effort in Newtons.
+    n is the efficiency coefficient (unitless)
+    p is the output horsepower
+    v is the speed in km/hr
+    */
+    var teNewtons = 2650( (efficiency * horsepower)/(speedSI) )
+    
+    //Now that we have the tractive effort in Newtons, we must convert it to pounds.
+    var teLbs = 0.224809 * teNewtons
+    
+    //Since the tractive effort is converted to LBS now, we can return this value.
+    return teLbs;
+}
 
 
 
