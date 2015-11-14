@@ -206,8 +206,7 @@ function protoEngine_accel(ARGnotch, ARGreverser) {
             var efficiency = train[i].prototype.efficiency;
             var beginningSpeed = train[i].prototype.tractiveEffortEquationStart;
             var startingTE = train[i].prototype.startingTE
-            train[i].prototype.TE = crunch.tractiveEffort(horsepower, speed, efficiency, beginningSpeed, startingTE);
-                
+            train[i].prototype.TE = crunch.tractiveEffort(horsepower, speed, efficiency, beginningSpeed, startingTE);   
             train[i].prototype.rollingResistance = crunch.rollingResistance(train[i].prototype.weight, train[i].prototype.coefficientOfRollingResistance)
                 
             /*
@@ -331,6 +330,52 @@ crunch.tractiveEffort = function(horsepower, speed, efficiency, beginningSpeed, 
     
     //Since the tractive effort is converted to LBS now, we can return this value.
     return teLbs;
+}
+
+/*
+
+*/
+crunch.wheelSlip = function(mass, load, coeffStatic, coeffKinetic, coeffSand, currentSlip) {
+    var cube = new Object();
+    //First we choose either the coefficient of kinetic friction or the coefficient of static friction, based on whether or not the wheel is already slipping.
+    var coefficient
+    if (currentSlip != 0) {
+        coefficient = coeffKinetic;
+    }
+    else {
+        coefficient = coeffStatic;
+    }
+    
+    var threshold = mass * coefficient;
+    
+    if (load > threshold) {
+        slipping = true;
+        coefficient = coeffKinetic
+        threshold = mass * coefficient;
+        cube.netForce = load - threshold
+        cube.acceleration = cube.netForce / mass //this is in feet per second
+        cube.newSpeed = currentSlip + cube.acceleration
+    }
+    if (load <= threshold) {
+        slipping = false;
+    }
+    
+    console.log(cube)
+    return slipping;
+}
+
+wheel = function(trainNumber, mass, radius) {
+    this.slip = new Object();
+    this.slip.current = 0;
+    this.slip.calc = function(load) {
+        var threshold = mass * load;
+        if (load > threshold) {
+            var slipping = true;
+        }
+        else {
+            var slipping = false;
+        }
+    }
 }
 
 

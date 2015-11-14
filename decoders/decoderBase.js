@@ -3,7 +3,7 @@ decoders = {
     //product "LokSound Select"
     "ESU LokSound Select":{
         //sound project "emd567"
-        "LokSound Select EMD 12-645 non turbo":function(address, trainPosition) {
+        "LokSound Select EMD 567":function(address, trainPosition) {
             //ESU LokSound Select V4
             //decoder object for ESU official EMD 567 Sound project
             //By Hampton Morgan - k4kfh@github - May 2015
@@ -79,6 +79,10 @@ decoders = {
             this.speed.set = function(speed) {
                 train[trainPosition].throttle.speed.set(speed)
                 train[trainPosition].dcc.speed.state = speed;
+            }
+            this.speed.setMPH = function(mph) {
+                var speed = train[trainPosition].model.speed(mph)
+                train[trainPosition.dcc.speed.set(speed)]
             }
                 
                 

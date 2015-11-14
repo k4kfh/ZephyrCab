@@ -12,7 +12,7 @@ function connect(ip, port) {
 
         console.log("Connection opened.")
         //start the heartbeats to keep it alive
-        var heartbeatInterval = setInterval(heartbeats, 1000)
+        var heartbeatInterval = setInterval(heartbeats, 500)
         console.log("Beginning heartbeats.")
         setListeners()
         init("connect")
@@ -31,6 +31,12 @@ function connect(ip, port) {
         }
         else {
         }
+    }
+    
+    ws.onclose = function(event) {
+        data = JSON.parse(event.data);
+        console.log("WEBSOCKET CLOSED!")
+        console.dir(data)
     }
     
 }

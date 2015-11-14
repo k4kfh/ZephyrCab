@@ -1,5 +1,5 @@
-  <!DOCTYPE html>
-  <html>
+<!DOCTYPE html>
+<html>
     <head>
         <!--font for EvilGeniusTech logo--->
         <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
@@ -20,10 +20,10 @@
         <script src="scripts/protoEngine.js"></script>
         <script src="scripts/websockets.js"></script>
         <script src="scripts/ui.js"></script>
-        <script src="scripts/script-selector.js"></script>
         <script src="/scripts/gauges.js"></script>
         <script src="decoders/decoderBase.js"></script>
         <script src="scripts/train.js"></script>
+        <script src="bundles/bundles.json"></script>
         
         <!---Third party scripts--->
         <!--Import jQuery before materialize.js-->
@@ -285,64 +285,6 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="section">
-                                <h5>Select Throttle:</h5>
-                                <p>Here you can acquire a throttle for a locomotive.</p>
-                                </div>
-                            
-                                <div class="row">
-                                    <form class="col s12">
-                                        <div class="row">
-                                            <div class="input-field col s3">
-                                                <input placeholder="Unnamed Throttle" id="throttle_name" type="text" class="validate">
-                                                <label for="throttle_name">Throttle Name</label>
-                                            </div>
-                                            <div class="input-field col s2">
-                                                <input id="dcc_addr" type="number" class="validate">
-                                                <label for="dcc_addr">DCC Address</label>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <button id="throttle_sel_button" onclick="getThrottle(document.getElementById('dcc_addr').value, document.getElementById('throttle_name').value)" class="btn waves-light">Get Throttle</button>
-                                </div>
-                            
-                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title black-text">Model/Decoder Info</span>
-                                <p>Make sure to leave /models and /decoders off your file paths! If you include these, the scripts will not load properly!</p>
-                                
-                                <!---form--->
-                                <div class="row">
-                                    <form class="col s12">
-                                        <div class="row">
-                                            <div class="input-field col s6">
-                                                <input placeholder="bachmann-ft-a.js" id="modeljslocation" type="text" class="validate">
-                                                <label for="throttle_name">model.js location</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <input placeholder="generic.js" id="decoderjslocation" type="text" class="validate">
-                                                <label for="throttle_name">decoder.js location</label>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <a id="loadScript-decoderandmodel" onclick="selScript('decoder', document.getElementById('decoderjslocation').value); selScript('model', document.getElementById('modeljslocation').value)" class="btn waves-light"><i class="material-icons left">input</i>Load Scripts</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 
                 <!---train builder--->
                 <div class="row">
@@ -354,74 +296,10 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <!---the actual display of the train we've built--->
                                 <div class="col s12">
                                     <div class="card">
-                                        <div id="trainDisplay" class="card-content">
-                                            <div class="chip"><img src="http://www.canadianrailwayobservations.com/croarchives/sept357.jpg"><a class="modal-trigger waves-effect" href="#modal1">EMD GP15-1</a></div>                       
+                                        <div id="trainDisplay" class="card-content">          
                                         </div>
                                     </div>
                                 </div>
-                                 <div id="modal1" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>EMD GP15-1</h4>
-        <ul class="collection">
-            <li class="collection-item">
-                <h5>Address</h5>
-                <div class="row">
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s3">
-                                <input id="dccAddress0" type="number" class="validate" length="4">
-                                <label for="dccAddress0" data-error="invalid" data-success="validated">DCC Address</label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                
-            </li>
-            <li class="collection-item">
-                <h5>Model Information</h5>
-                <div class="row">
-                    <div class="input-field col s4">
-                        <select class="browser-default">
-                            <option value="" disabled selected>Manufacturer</option>
-                        </select>
-                    </div>
-                    <div class="input-field col s4">
-                        <select class="browser-default">
-                            <option value="" disabled selected>Product Family</option>
-                        </select>
-                    </div>
-                    <div class="input-field col s4">
-                        <select class="browser-default">
-                            <option value="" disabled selected>Product Model</option>
-                        </select>
-                    </div>
-                </div>
-            </li>
-            <li class="collection-item">
-                <h5>Decoder</h5>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <select class="browser-default">
-                            <option value="" disabled selected>Decoder Family</option>
-                            <option value="LokSound Something Or Other">LokSound Something or Other</option>
-                        </select>
-                    </div>
-                    <div class="input-field col s6">
-                        <select class="browser-default">
-                            <option value="" disabled selected>Decoder Model</option>
-                            <option value="LokSound EMD 12-645 non turbo">LokSound EMD 12-645 non turbo</option>
-                        </select>
-                    </div>
-                </div>
-                
-            </li>
-        </ul>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
-      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Apply Settings</a>
-    </div>
-  </div>
                                 <!---palette--->
                                 <div class="col s6">
                                     <div class="card">
@@ -518,11 +396,6 @@ The section class must surround it or the alignment is wrong and it looks funky-
                 </div>
             </div>
         </div>
-        <script>
-            $(document).ready(train.ui.palette.build())
-            $(document).ready(gauge.createAll())
-            $(document).ready(function() {$('.modal-trigger').leanModal();}); //initializes all modals
-        </script>
         
       </body>
 
