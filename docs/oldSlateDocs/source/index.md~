@@ -1,0 +1,24 @@
+---
+title: API Reference
+
+language_tabs:
+  - JavaScript
+
+toc_footers:
+  - <a href='http://evilgeniustech.com'>EvilGeniusTech Blog</a>
+  - <a href="http://github.com/k4kfh/LocoThrottleJS" target="_blank">locoThrottle.js on GitHub</a>
+
+includes:
+  - errors
+
+search: true
+---
+
+# Introduction
+
+Welcome to the locoThrottle.js docs!
+
+# Interfacing with JMRI
+
+## The ``jmri`` Object
+

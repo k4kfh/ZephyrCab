@@ -1,0 +1,13 @@
+site_name: locoThrottle.js Docs
+pages:
+- Home: index.md
+- User Guide:
+  - Installation Guide: userguide/installation-guide.md
+  - Configure Locomotives: userguide/configure-locomotives.md
+- Developer Guide:
+  - WebSockets Interface: devguide/websockets.md
+  - jmri Object: devguide/jmri-object.md
+
+theme: cosmo
+repo_url: http://github.com/k4kfh/LocoThrottleJS
+copyright: locoThrottle.js is free software, released with no license.
