@@ -1,3 +1,18 @@
 .roboto-light {
     font-weight: 300;
 }
+
+.y-center {
+    width: 100%;
+    text-align: center;
+}
+
+body  {
+    background: url(img/Railway_track_1920x1080.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
