@@ -65,6 +65,10 @@
                         </li>
                     
                         <li >
+                            <a href="../general-configuration/">General Configuration</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configure-locomotives/">Configure Locomotives</a>
                         </li>
                     
@@ -74,7 +78,7 @@
             
             
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developer Guide <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developers <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
@@ -83,6 +87,27 @@
                     
                         <li >
                             <a href="../../devguide/jmri-object/">jmri Object</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Standards <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../../standards/prototype/">Prototype Object</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../standards/model/">Model Object</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../standards/decoder/">Decoder Object</a>
                         </li>
                     
                     </ul>
@@ -99,7 +124,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../configure-locomotives/">
+                    <a rel="prev" href="../general-configuration/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -127,6 +152,8 @@
             <li><a href="#using-jmris-jetty-server">Using JMRI's Jetty server</a></li>
         
             <li><a href="#using-your-own-web-server">Using your own web server</a></li>
+        
+            <li><a href="#so-what-now">So what now?</a></li>
         
     
     </ul>
@@ -194,7 +221,10 @@
 <h3 id="using-your-own-web-server">Using your own web server</h3>
 <p>locoThrottle.js is built as an entirely static HTML/CSS/JS app. This means you can install it on any web server, regardless of whether or not it can handle things like PHP, or Python. All the code runs client-side.</p>
 <p>To install it on your own server, simply drag and drop the extracted release files into a directory of your choice. It should not matter what directory you put them in, or what network the server is on. As long as the client device is connected to the same network as your JMRI PC, you should have access to JMRI.</p>
-<p>We do not provide an official guide for setting it up on your own web server because it's so simple. If you don't know what you're doing, or you want an easier way, use the <a href="#using-jmris-jetty-server">Using JMRI's Jetty server</a> guide above.</p></div>
+<p>We do not provide an official guide for setting it up on your own web server because it's so simple. If you don't know what you're doing, or you want an easier way, use the <a href="#using-jmris-jetty-server">Using JMRI's Jetty server</a> guide above.</p>
+<hr />
+<h3 id="so-what-now">So what now?</h3>
+<p>Next, you'll need to set up your <code>bundles</code> object. This is what links your locomotive roster entries to all the data we need about them. You can follow <a href="../configure-locomotives">this tutorial to find out how to do it.</a></p></div>
         </div>
 
         <footer class="col-md-12">

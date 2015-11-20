@@ -64,6 +64,10 @@
                             <a href="../installation-guide/">Installation Guide</a>
                         </li>
                     
+                        <li >
+                            <a href="../general-configuration/">General Configuration</a>
+                        </li>
+                    
                         <li class="active">
                             <a href="./">Configure Locomotives</a>
                         </li>
@@ -74,7 +78,7 @@
             
             
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developer Guide <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developers <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
@@ -89,12 +93,33 @@
                 </li>
             
             
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Standards <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../../standards/prototype/">Prototype Object</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../standards/model/">Model Object</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../standards/decoder/">Decoder Object</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
             </ul>
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../installation-guide/">
+                    <a rel="next" href="../general-configuration/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
@@ -122,16 +147,20 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#setting-up-your-locomotive-roster-unfinished">Setting up your Locomotive Roster (unfinished)</a></li>
+        <li class="main active"><a href="#setting-up-your-locomotive-roster">Setting up your Locomotive Roster</a></li>
         
-            <li><a href="#setup">Setup</a></li>
+            <li><a href="#basics">Basics</a></li>
+        
+            <li><a href="#editing-bundlesjson-for-dummies">Editing bundles.json for Dummies</a></li>
+        
+            <li><a href="#editing-json-for-developers">Editing JSON for Developers</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="setting-up-your-locomotive-roster-unfinished">Setting up your Locomotive Roster (unfinished)</h1>
+<h1 id="setting-up-your-locomotive-roster">Setting up your Locomotive Roster</h1>
 <p>Since locoThrottle.js needs quite a bit of information about a locomotive to accurately simulate its physics, we must get additional data about the locomotive that isn't on the JMRI roster. This includes everything from weight, to horsepower, to fuel consumption data.</p>
 <p>We also need data on the model, including DCC decoder information (for accurately simulated sounds), and gearing information for the model (so we can run it at the correct speed in scale MPH)</p>
 <p><strong>In all, we need 3 key things for any locomotive:</strong></p>
@@ -149,31 +178,63 @@
 <hr />
 <p>To tell locoThrottle.js the correct combination of those three items for one of your locomotives, we employ <code>bundles.json</code>. This file contains a series of "bundles" that link model and prototype information to a given JMRI roster entry. locoThrottle.js grabs the decoder information straight from the roster. (Handy, huh?)</p>
 <p>Right now, we don't have a pretty graphical tool for editing <code>bundles.json</code>. This means you'll have to edit it yourself on your JMRI PC, or whatever you're hosting locoThrottle.js on.</p>
-<h2 id="setup">Setup</h2>
+<h2 id="basics">Basics</h2>
 <p><code>bundles.json</code> contains a single object, written in JSON format. This object contains a child object for each locomotive.</p>
 <hr />
-<h3 id="editing-bundlesjson-for-dummies">Editing <code>bundles.json</code> for Dummies</h3>
-<p><strong>If you've never edited JSON before, read this guide.</strong> If you're a developer, you should save yourself some time and <a href="#editing-json-for-developers">read the developer's version below.</a></p>
-<ol>
+<h2 id="editing-bundlesjson-for-dummies">Editing <code>bundles.json</code> for Dummies</h2>
+<p><strong>If you've never edited JSON before, please don't try to set up this file on your own.</strong> Visit the gitter chat and ask one of the developers to help you. I, <a href="http://github.com/k4kfh">k4kfh@github</a>, will always try my best to help you get this running. I know this can be a daunting task, and I'm working on an automated tool for this, but there are other things I have to get done first.</p>
+<hr />
+<h2 id="editing-json-for-developers">Editing JSON for Developers</h2>
+<p><strong>This tutorial is shortened for people who already know/understand JSON syntax.</strong></p>
+<ul>
 <li>
-<p><strong>In your locoThrottle.js installation directory, go to <code>/bundles</code>.</strong> If you followed our recommended installation method, your directory would be <code>/web/locoThrottleJS/bundles</code> inside your JMRI install folder.</p>
+<p><strong>Open <code>bundles.json</code> from the <code>/bundles</code> directory of your install folder.</strong></p>
 </li>
 <li>
-<p><strong>Open <code>bundles.json</code> with your text editor of choice.</strong></p>
+<p>You should use a syntax-highlighting capable editor for the best experience with this. This JSON object can become rather lengthy, so an editor that supports collapsibles (such as <a href="http://brackets.io">Brackets</a>) is highly recommended even for developers.</p>
+</li>
+</ul>
+<p><br/></p>
+<h4 id="bundles-object-syntax"><code>bundles</code> object syntax:</h4>
+<p>The <code>bundles</code> object is structured in a simple way. It contains a number of subobjects, each named with the roster entry name they represent. For example, I might have a roster entry called "BN 1776". In <code>bundles</code>, that would be represented with:</p>
+<pre><code class="javascript">&quot;BN 1776&quot;:{&quot;someString&quot;:&quot;someValue&quot;}
+</code></pre>
+
+<p>You can have as many of these entries as you want, but make sure you do not have any duplicate entries. There is currently no method in place for having multiple <code>bundles</code> objects for one locomotive, so be sure you only have one for each.</p>
+<p><br/></p>
+<h4 id="whats-inside-the-entries">What's inside the entries?</h4>
+<p>By now, you're probably wondering what exactly is inside of the value for a <code>bundles</code> object. Below is a structure chart that shows, at a high level, what's in there. You'll have to see the standards pages for some objects to see which objects contain which things, and some may not be documented yet due to rapidly progressing development. Bear with us!</p>
+<p>Each object is structured like this:</p>
+<hr />
 <ul>
-<li>If you don't have a text editor with syntax highlighting (for example, if you're using Notepad in Windows) I highly recommend using a better one for this. I personally (<a href="http://github.com/k4kfh">k4kfh@github</a>) use <a href="http://brackets.io">Brackets</a>, but you can take your pick.</li>
+<li><code>"myRosterEntry"</code> - This <em>must</em> match the name in JMRI exactly (spaces and all) or it will not work!<ul>
+<li><code>model</code><ul>
+<li>This will contain a sub-object that takes in a speed in MPH (from the physics engine) and calculates a speed in speed steps. This varies among locomotives due to gearing, so the best way to find out is to test your locomotive with a scale speedometer and see if you can build an equation that scales it automatically.</li>
 </ul>
 </li>
-<li>
-<p>Find the beginning of the <code>bundles</code> object. This is usually marked by <code>bundles = {</code>.</p>
+<li><code>prototype</code><ul>
+<li>This will contain an entire prototype object, which is in the process of being standardized now.</li>
+</ul>
 </li>
-<li>
-<p>Stop here. This tutorial is unfinished.</p>
+</ul>
 </li>
-</ol>
+</ul>
 <hr />
-<h3 id="editing-json-for-developers">Editing JSON for Developers</h3>
-<p><strong>This tutorial is shortened for people who already know/understand JSON syntax.</strong></p></div>
+<p>See the comments in the code sample below for explanations.</p>
+<pre><code class="javascript">&quot;myRosterEntry&quot;:{
+    model:{
+        /*
+        This will contain a function that takes in a speed in MPH and converts it to a speed in % for your locomotive. The exact structure of this object is still up in the air a little bit, so it's not documented here until it's finalized.
+        */
+    },
+
+    prototype:{
+        /*
+        This will contain an entire prototype object. You can see what's included in the prototype object standards by visiting Standards &gt; prototype Objects on the docs.
+        */
+    }
+}
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">

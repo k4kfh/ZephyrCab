@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>WebSockets Interface - locoThrottle.js Docs</title>
+	<title>General Configuration - locoThrottle.js Docs</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -56,20 +56,20 @@
             
             
             
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="../../userguide/installation-guide/">Installation Guide</a>
+                            <a href="../installation-guide/">Installation Guide</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">General Configuration</a>
                         </li>
                     
                         <li >
-                            <a href="../../userguide/general-configuration/">General Configuration</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../userguide/configure-locomotives/">Configure Locomotives</a>
+                            <a href="../configure-locomotives/">Configure Locomotives</a>
                         </li>
                     
                     </ul>
@@ -77,16 +77,16 @@
             
             
             
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developers <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li class="active">
-                            <a href="./">WebSockets Interface</a>
+                        <li >
+                            <a href="../../devguide/websockets/">WebSockets Interface</a>
                         </li>
                     
                         <li >
-                            <a href="../jmri-object/">jmri Object</a>
+                            <a href="../../devguide/jmri-object/">jmri Object</a>
                         </li>
                     
                     </ul>
@@ -119,12 +119,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../../userguide/configure-locomotives/">
+                    <a rel="next" href="../installation-guide/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../jmri-object/">
+                    <a rel="prev" href="../configure-locomotives/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -147,11 +147,52 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
+        <li class="main active"><a href="#general-configuration">General Configuration</a></li>
+        
+            <li><a href="#options-available">Options Available:</a></li>
+        
+            <li><a href="#example-settingsjson">Example settings.json</a></li>
+        
+    
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-</div>
+<h1 id="general-configuration">General Configuration</h1>
+<p>While you still have to configure settings separately for things like locomotives, decoders, and other things, there is a central place to set up general program settings. Inside your installation directory, <code>/cfg/settings.json</code> contains a number of useful settings/options for general use.</p>
+<hr />
+<h2 id="options-available">Options Available:</h2>
+<ul>
+<li><strong>WebSockets Auto-Connect</strong> - This feature allows you to specify an IP/Port in <code>settings.json</code> and have all your clients auto-connect to that. They will get to skip the "Connection" tab completely, and will be dropped directly in the "Train Settings" tab. Since locoThrottle.js performs all the normal connection functions, this means your roster data, layout information, and other things will already be downloaded, parsed, and ready to go. Incredibly handy feature!</li>
+</ul>
+<hr />
+<h2 id="example-settingsjson">Example <code>settings.json</code></h2>
+<p>The following is an example of settings.json with every option we currently support. See the comments in the code (marked by <code>/*</code> and <code>*/</code>) for detailed information on usage.</p>
+<pre><code class="javascript">cfg = new Object(); //DO NOT REMOVE THIS LINE!
+
+/*
+This file is used to store settings server-side. This is capable of storing an IP address to connect to automatically, as well as other things.
+*/
+
+/*
+These two settings are for the WebSockets Auto-Connect feature mentioned above.
+
+cfg.ip - Set to a string (either an IP or hostname)
+cfg.port - Set to a port number (not a string)
+
+If you do not wish to use the autoconnect feature, simply comment these out by adding // at the begining of each line. This will revert the program back to its original ask-for-connection-details behavior.
+
+Example disabled autoconnect:
+
+//cfg.ip = &quot;10.10.39.85&quot;;
+//cfg.port = 12080;
+
+*/
+cfg.ip = &quot;10.10.39.85&quot;;
+cfg.port = 12080;
+</code></pre>
+
+<hr /></div>
         </div>
 
         <footer class="col-md-12">
