@@ -46,5 +46,11 @@ To install it on your own server, simply drag and drop the extracted release fil
 
 We do not provide an official guide for setting it up on your own web server because it's so simple. If you don't know what you're doing, or you want an easier way, use the [Using JMRI's Jetty server](#using-jmris-jetty-server) guide above.
 
+---
+
+### So what now?
+
+Next, you'll need to set up your ``bundles`` object. This is what links your locomotive roster entries to all the data we need about them. You can follow [this tutorial to find out how to do it.](configure-locomotives)
+
 
 

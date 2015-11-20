@@ -4,9 +4,13 @@ pages:
 - User Guide:
   - Installation Guide: userguide/installation-guide.md
   - Configure Locomotives: userguide/configure-locomotives.md
-- Developer Guide:
+- Developers:
   - WebSockets Interface: devguide/websockets.md
   - jmri Object: devguide/jmri-object.md
+- Standards:
+  - Prototype Object: standards/prototype.md
+  - Model Object: standards/model.md
+  - Decoder Object: standards/decoder.md
 
 theme: cosmo
 repo_url: http://github.com/k4kfh/LocoThrottleJS

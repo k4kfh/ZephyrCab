@@ -18,7 +18,7 @@
 
 ### Installation
 
-This installation guide is for technically-minded developer/nerd people. If you need a simplified guide, try [this one.](http://localhost:8000/userguide/installation-guide/)
+This installation guide is for technically-minded developer/nerd people. If you need a simplified guide, try [this one.](userguide/installation-guide/)
 
 You can download a release from GitHub. Once you have the release extracted from the ZIP, simply drag all the files into a directory on any web server. When you go to the web server, you should be left at a "Connection Settings" page that looks like this.
 
