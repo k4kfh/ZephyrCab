@@ -3,6 +3,7 @@ pages:
 - Home: index.md
 - User Guide:
   - Installation Guide: userguide/installation-guide.md
+  - General Configuration: userguide/general-configuration.md
   - Configure Locomotives: userguide/configure-locomotives.md
 - Developers:
   - WebSockets Interface: devguide/websockets.md
