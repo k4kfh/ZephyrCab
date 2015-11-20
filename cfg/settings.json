@@ -1,1 +1,8 @@
-layoutCfg = new Object()
+cfg = new Object();
+
+/*
+This file is used to store settings server-side. This is capable of storing an IP address to connect to automatically, as well as other things.
+*/
+
+cfg.ip = "10.10.39.85";
+cfg.port = 12080;

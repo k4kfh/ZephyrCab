@@ -81,4 +81,7 @@ train.build.add = function(object) {
     Because of the magical things built into the decoder constructor function spec, we don't need to call a separate create throttle thing. The throttle subobject is automatically created when we add the DCC decoder thing.
     */
     train[trainPosition].dcc = new decoders[decoderFamily][decoderModel](address, trainPosition)
+    
+    //Now we need to update the train ui
+    train.ui.update()
 }
