@@ -8,10 +8,13 @@
         <!--fonts--->
         <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
         <link href="custom.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="octicons/octicons.css">
 
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <script src="3rdpartyJS/smooth-scroll/smooth-scroll.min.js"></script>
     </head>
 
     <body>
@@ -22,27 +25,37 @@
         <!---This is a full browser div--->
         <div style="height: 100vh" class="valign-wrapper">
             <div class="container">
-                <div class="card hoverable">
-                    <div class="card-content">
-                        <h1 class="light" style="text-align: center">locoThrottle.js</h1>
-                        <hr>
-                        <div class="light">
-                            <h5  class="light" style="text-align: center">Drive your trains like the real thing</h5>
-                            
-                            <a class="white-text btn-large waves-effect blue">GitHub</a>
+                <div class="container">
+                    <div class="card z-depth-5">
+                        <div class="card-content">
+                            <h1 class="light" style="text-align: center">locoThrottle.js</h1>
+                            <div class="light">
+                                <h5  class="light" style="text-align: center">Drive your trains like the real thing</h5>
+                            </div>
+                            <div class="center-align">
+                                <a href="http://github.com/k4kfh/LocoThrottleJS" target="_blank" class="btn-large blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
+                                <a href="http://k4kfh.github.io/LocoThrottleJS/docs/site" class="btn-large blue white-text waves-effect"><i class="material-icons left">info_outline</i>Documentation</a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
+                <!---First down button under landing page card--->
+                <div class="center-align" style="height:70%">
+                    <a data-scroll href="#anchor1" class="anchorLink btn-floating blue hoverable">
+                    <i class="material-icons white-text">keyboard_arrow_down</i>
+                    </a>
+                </div>
                 
             </div>
         </div>
         
-        <div class="container">
+        <div class="container" id="anchor1">
             <div class="col s12">
                 <div class="card">
                     <div class="card-content">
-                        Something Something Something
+                        <span class="card-title black-text">What is locoThrottle.js?</span>
+                        
                     </div>
                 </div>
             </div>
@@ -52,4 +65,7 @@
         
         
     </body>
+      <script>
+    smoothScroll.init({easing:"easeInOutCubic"});
+</script>
   </html>
