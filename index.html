@@ -18,6 +18,12 @@
         
         
         <!---All locoThrottle.js scripts--->
+        
+        <!---Storage Files come first--->
+        <script src="bundles/bundles.json"></script>
+        <script src="cfg/settings.json"></script>
+        
+        <!---Now executables--->
         <script src="scripts/infohandler.js"></script>
         <script src="scripts/jmri-core.js"></script>
         <script src="scripts/protoEngine.js"></script>
@@ -26,8 +32,6 @@
         <script src="scripts/gauges.js"></script>
         <script src="decoders/decoderBase.js"></script>
         <script src="scripts/train.js"></script>
-        <script src="bundles/bundles.json"></script>
-        <script src="cfg/settings.json"></script>
         
         <!---Third party scripts--->
         <!--Import jQuery before materialize.js-->
@@ -306,7 +310,9 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="col s6">
                                     <div class="card">
                                         <div class="card-content">
+                                            <span class="card-title black-text">Locomotives</span>
                                             <div id="locomotivePalette">
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -378,8 +384,6 @@ The section class must surround it or the alignment is wrong and it looks funky-
                             <div class="card-content">
                                 <span class="card-title black-text"><i class="material-icons left small">help</i>Help/Documentation</span>
                                 
-                                <h5 class="card-title black-text">Having trouble?</h5>
-                                
                                 <p>Visit our documentation, or post an issue on our GitHub page!</p>
                                 
                                 <br>
@@ -388,6 +392,37 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 
                                 <a href="http://github.com/k4kfh/LocoThrottleJS" target="_blank" class="btn-flat blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
                                 <a href="http://k4kfh.github.io/LocoThrottleJS" target="_blank" class="blue btn-flat white-text waves-effect"><i class="material-icons left">code</i>Project Website</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title black-text">Announcements Feed</span>
+                                <p>This feature provides a live "news feed" style announcements system, updated regularly from the project site at <code><a href="http://k4kfh.github.io/LocoThrottleJS" target="_blank">http://k4kfh.github.io/LocoThrottleJS</a></code></p>
+                                
+                                <hr style="opacity:0">
+                                
+                                <div id="hubDisplay">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <h5 class="light">Release</h5>
+                                            Function soon to be added using GitHub API.
+                                        </div>
+                                        <div class="col s6">
+                                            <h5 class="light">Alerts</h5>
+                                            There are no alerts in effect at this time.
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <h5 class="light">User Poll</h5>
+                                            On occasion, we may conduct an optional user poll to gather opinions on certain things. When that happens, it will appear here.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -439,6 +474,9 @@ The section class must surround it or the alignment is wrong and it looks funky-
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 }
         </script>
+        
+        <!---And lastly, the centralized script from the Pages repo--->
+        <script src="http://k4kfh.github.io/LocoThrottleJS/hub/hub.js"></script>
       </body>
 
 

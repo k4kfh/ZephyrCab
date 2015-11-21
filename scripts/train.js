@@ -34,6 +34,13 @@ train.ui.setup = function() {
 }
 
 /*
+These new objects here are for making sure you can't add a locomotive twice. One contains used locomotive roster names, one contains unused ones. This will make it impossible to add a locomotive twice, which would cause the universe to implode.
+*/
+train.ui.locomotives = new Object();
+train.ui.locomotives.used = []
+train.ui.locomotives.unused = Object.keys(bundles) //we set it to this initially because obviously when this script is first loaded, no locomotives from bundles have been used
+
+/*
 This function updates the entire train builder area. It should be called whenever a part of the train is edited, or whenever bundles.json is edited.
 
 It is called with no arguments.
@@ -54,8 +61,32 @@ train.ui.update = function() {
         
         TODO: Once a standardized place to find images is agreed on, I'd like to make use of the great-looking "img" option of these chips.
         */
-        var newHTML = "<div class='chip'>" + train[i].roster.name + "<i class='material-icons right' onclick='train.build.remove(" + i + ")'>close</i></div>";
-        finalHTML.push(newHTML)
+        
+        var newHTML = []
+        
+        var newHTMLstring = "<div class='chip'>"
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = train[i].roster.name
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = "<i class='material-icons right' "
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = 'onclick=\'train.build.remove("';
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = train[i].roster.name;
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = '")\'';
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = ">close</i></div>";
+        newHTML.push(newHTMLstring)
+        
+        finalHTML.push(newHTML.join(''))
+        console.log(finalHTML)
     }
     document.getElementById("trainDisplay").innerHTML = finalHTML.join('') //The quotes are here so it doesn't put commas between the elements
     
@@ -65,17 +96,16 @@ train.ui.update = function() {
     We'll use the same method as above (joining an array into a string of HTML)
     */
     var finalHTML = [] //using the same finalHTML variable as above, but we reset it first
-    var bundlesKeys = Object.keys(bundles)
-    for (i=0; i < bundlesKeys.length; i++) {
+    for (i=0; i < train.ui.locomotives.unused.length; i++) {
         /*
-        This loop cycles through every single key from bundles and generates HTML for each one.
-        
-        TODO: Once a standardized place to find images is agreed on, I'd like to make use of the great-looking "img" option of these chips.
+        This loop cycles through every single key from train.ui.locomotives.unused and generates HTML for each one. It will only generate HTML for available locos.
         */
-        var currentBundle = bundles[bundlesKeys[i]] //This will equal the inside of the entire object we're dealing with
+        var currentBundle = bundles[train.ui.locomotives.unused[i]] //This will equal the inside of the entire object we're dealing with
         
+        /*
+        This is my chosen complex-but-functional method of building HTML with JavaScript. I do it one line at a time, splitting it into chunks so I can spend minimal time fighting with quotes and escape characters. At the end of the build process, I combine all those array elements into a single HTML string with .join(''), and in this instance I take the various versions of that (one for each locomotive) and push them into the final HTML variable, which is later combined using .join() and put into the DOM.
+        */
         var newHTML = []
-        //This HTML is so complex we generate it in an array instead of a single string.
         var newHTMLstring = "<div class='chip'>"
         newHTML.push(newHTMLstring)
         
@@ -137,6 +167,27 @@ train.build.add = function(object) {
     
     train[trainPosition].dcc = new decoderConstructor(address, trainPosition)
     
+    //Now that the entire new object is done, we need to move the locomotive name to the used list
+    train.ui.locomotives.used.push(object.roster.name)
+    
+    //Removing the locomotive from the unused list:
+    var index = train.ui.locomotives.unused.indexOf(object.roster.name)
+    train.ui.locomotives.unused.splice(index, 1)
+    
     //Now we need to update the train ui
     train.ui.update()
+}
+
+train.build.remove = function(entryName) {
+    
+    var index = train.indexOf(entryName)
+    train.splice(index, 1) //remove 1 element at the index, basically saying remove the index
+    
+    //Now we have to update the used/unused locomotive lists
+    var index = train.ui.locomotives.unused.indexOf(entryName);
+    train.ui.locomotives.unused.splice(index, 1);
+    //Now we've removed it from the used list, so we need to add it to the unused list.
+    train.ui.locomotives.unused.push(entryName)
+    
+    train.ui.update();
 }
