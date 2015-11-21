@@ -2,6 +2,10 @@
     font-weight: 300;
 }
 
+.roboto-ultralight {
+    font-weight: 100;
+}
+
 .y-center {
     width: 100%;
     text-align: center;
@@ -18,3 +22,11 @@ body  {
 }
 
 magic-width-text {font-size: 1vw;}
+
+.cursive {
+    font-family: 'Cedarville Cursive', cursive;
+}
+
+#downarrow {
+    padding-top: 0px
+}

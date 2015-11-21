@@ -1,26 +1,32 @@
  <!DOCTYPE html>
   <html>
     <head>
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         
-        <!--fonts--->
+        <!--fonts and icons--->
         <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
         <link href="custom.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="octicons/octicons.css">
+        <link href='https://fonts.googleapis.com/css?family=Cedarville+Cursive' rel='stylesheet' type='text/css'>
 
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
+        <!--Import jQuery before materialize.js, all other third party scripts go below-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        
+        <!---third-party FOSS javascripts--->
         <script src="3rdpartyJS/smooth-scroll/smooth-scroll.min.js"></script>
+        <script src="3rdpartyJS/FitText.js-master/jquery.fittext.js"></script>
+        
+        <script src="custom.js"></script>
     </head>
 
     <body>
-        <!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
         
         <!---This is a full browser div--->
         <div style="height: 100vh" class="valign-wrapper">
@@ -28,14 +34,17 @@
                 <div class="container">
                     <div class="card z-depth-5">
                         <div class="card-content">
-                            <h2 class="light magic-width-text" style="text-align: center">locoThrottle.js</h2>
+                            <h2 id="locothrottlejs-headline" class="roboto-ultralight" style="text-align: center">locoThrottle.js</h2>
                             <div class="light">
                                 <h5  class="light flow-text" style="text-align: center">Drive your trains like the real thing</h5>
                             </div>
                             <div class="card-action">
                                 <div class="center-align">
-                                    <a href="http://github.com/k4kfh/LocoThrottleJS" target="_blank" class="hoverable btn-large blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
-                                    <a href="http://k4kfh.github.io/LocoThrottleJS/docs/site" class="hoverable btn-large blue white-text waves-effect"><i class="material-icons left">info_outline</i>Documentation</a>
+                                    <a href="http://github.com/k4kfh/LocoThrottleJS" target="_blank" class="btn-flat blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
+                                    
+                                    <hr style="visibility:hidden;" class="hide-on-med-and-up">
+                                    
+                                    <a href="http://k4kfh.github.io/LocoThrottleJS/docs/site" class="btn-flat blue white-text waves-effect"><i class="material-icons left">info_outline</i>Docs</a>
                                 </div>
                             </div>
                         </div>
@@ -44,15 +53,17 @@
                 
                 <!---First down button under landing page card--->
                 <div class="center-align" style="height:70%">
-                    <a data-scroll href="#anchor1" class="anchorLink btn-floating blue hoverable">
-                    <i class="material-icons white-text">keyboard_arrow_down</i>
+                    <a data-scroll href="#anchor1" class="anchorLink btn-floating btn-large blue hoverable">
+                    <i class="material-icons" onmouseover="downDownArrow()" onmouseout="upDownArrow()" id="downarrow">keyboard_arrow_down</i>
                     </a>
                 </div>
                 
             </div>
         </div>
+        <!---End of main headline card--->
         
-        <div class="container" id="anchor1">
+        <!---First Card--->
+        <div class="container" id="anchor1" style="opacity:0">
             <div class="col s12">
                 <div class="card">
                     <div class="card-content">
@@ -62,7 +73,8 @@
                             <p>
                                 With locoThrottle.js, I aim to deliver the best possible driving experience for modelers, giving them the same experience as a real engineer. You'll have to carefully accelerate, operate simulated air brakes, and deal with events like wheelslip and even running out of fuel. All the while, your existing DCC-equipped models will be responding to your controls as if they were 1:1 scale. You'll hear the engine rev when you notch up the throttle, hear air hissing when you operate the brakes, and hear the compressor kick on when your pressure is low. With the help of some really awesome people, I'm building a software that I hope will make everyone's layout more enjoyable.</p>
                         </blockquote>
-                        - Hampton (<a target=_blank href="http://github.com/k4kfh">k4kfh@github</a>)
+                        <!---this is class "cursive" because in custom.css it's set up to be the cursive font from Google Fonts, so it looks like a signature--->
+                        - <a class="cursive black-text flow-text">Hampton</a> (<a target=_blank href="http://github.com/k4kfh">k4kfh@github</a>)
                         
                         <p>
                         
@@ -73,10 +85,110 @@
         
         </div>
         
+        <!---Second Card--->
+        <div class="container" id="anchor2" style="opacity:0">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title black-text">
+                            How does it work?
+                        </span>
+                        
+                        <p>
+                            locoThrottle.js functions very similarly to Bruce Kingsley's "Ultimate DCC Throttle" project, demonstrated <a target=_blank href="https://www.youtube.com/watch?v=51V1FEoJhTA">here.</a>
+                        </p>
+                        
+                        <ol>
+                            <li>You tell JMRI information about each roster entry, including what prototype locomotive it is, and some data about the model's speed range.</li>
+                            <li>It connects to your layout via <a href="http://jmri.sourceforge.net/help/en/html/web/JsonServlet.shtml" target="_blank">JMRI's WebSockets JSON servlet.</a></li>
+                            <li>When you run locoThrottle.js, you'll use our graphical "Train Builder" tool to tell the program what is on your train. This is so the physics engine can accurately simulate the motion physics for every part of the train, rolling stock included.</li>
+                            <li>You go to the virtual cab, and you have the same controls as a real locomotive.</li>
+                        </ol>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container" id="anchor3" style="opacity:0">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title black-text">Get Started</span>
+                            
+                            <p>locoThrottle.js is quite early in development right now, so I do not recommend that non-developers try it at this point.</p>
+                            <br style="opacity:0">
+                            <p class="center-align">If you would like to learn more, you can check out:</p>
+                            <br style="opacity:0">
+                            <div class="center-align">
+                                    <a href="http://github.com/k4kfh/LocoThrottleJS" target="_blank" class="btn-flat blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
+                                    
+                                    <hr style="visibility:hidden;" class="hide-on-med-and-up">
+                                
+                                <a href="http://gitter.im/k4kfh/LocoThrottleJS" target="_blank" class="btn btn-flat green white-text waves-effect"><i class="left material-icons">message</i>Gitter Chat</a>
+                                
+                                <hr style="visibility:hidden;" class="hide-on-med-and-up">
+                                    
+                                    <a href="http://k4kfh.github.io/LocoThrottleJS/docs/site" class="btn-flat blue white-text waves-effect"><i class="material-icons left">info_outline</i>Docs</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <!---CREDITS AND FOOTER CARD--->
+        <div class="container" id="footer" style="opacity:0">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s6">
+                                    <p style="text-decoration: underline;"><b>Special Thanks to:</b></p>
+                                    <ul class="light">
+                                        <li><b><a target="_blank" href="http://brucekmodeltrains.com">Mr. Bruce Kingsley</a></b>, for invaluable help with physics</li>
+                                        <li><b><a target="_blank" href="http://www.alkrug.vcn.com/home.html">Mr. Al Krug</a></b>, for help with the prototypical accuracy as well as physics</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col s6">
+                                    <span class="card-title black-text">Donations</span>
+                                    <p>Please consider donating to BloodWater Mission to help provide clean water for those less fortunate.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
         
         
     </body>
+      
+      <!---Post-DOM-Load scripts--->
       <script>
-    smoothScroll.init({easing:"easeInOutCubic"});
-</script>
+          smoothScroll.init({easing:"easeInOutCubic"});
+          $("#locothrottlejs-headline").fitText(0.8);
+          
+          
+          //ScrollFire Crap, some of which uses my custom.js transition thing
+          var options = [
+              {selector: '#anchor1', offset: 100, callback: 'transition.slideIn.x("#anchor1", 1200, -200)' },
+              {selector: '#anchor2', offset: 200, callback: 'transition.slideIn.x("#anchor2", 1200, -200)' },
+              {selector: '#anchor3', offset: 250, callback: 'transition.slideIn.x("#anchor3", 1200, -200)' },
+              {selector: '#footer', offset: 100, callback: 'transition.slideIn.y("#footer", 1200, -100)' },
+          ];
+          Materialize.scrollFire(options);
+          
+          //Stuff for moving little arrow thing randomly
+          setTimeout(wiggleDownArrow(), 500);
+          wiggleArrowInterval = setInterval(wiggleDownArrow(), 10000);
+          
+      </script>
   </html>
