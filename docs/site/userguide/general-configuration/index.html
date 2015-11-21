@@ -163,7 +163,12 @@
 <hr />
 <h2 id="options-available">Options Available:</h2>
 <ul>
-<li><strong>WebSockets Auto-Connect</strong> - This feature allows you to specify an IP/Port in <code>settings.json</code> and have all your clients auto-connect to that. They will get to skip the "Connection" tab completely, and will be dropped directly in the "Train Settings" tab. Since locoThrottle.js performs all the normal connection functions, this means your roster data, layout information, and other things will already be downloaded, parsed, and ready to go. Incredibly handy feature!</li>
+<li>
+<p><strong>WebSockets Auto-Connect</strong> - This feature allows you to specify an IP/Port in <code>settings.json</code> and have all your clients auto-connect to that. They will get to skip the "Connection" tab completely, and will be dropped directly in the "Train Settings" tab. Since locoThrottle.js performs all the normal connection functions, this means your roster data, layout information, and other things will already be downloaded, parsed, and ready to go. Incredibly handy feature!</p>
+</li>
+<li>
+<p><strong>Disable Push Notifications</strong> - This feature disables the push notifications feature we created. This feature is for alerting users when major program changes are made, and just as a communication tool for our users who don't regularly visit GitHub. Setting this configuration option to <code>true</code> will not disable the "HUB" feature completely, it will only disable the push notifications feature.</p>
+</li>
 </ul>
 <hr />
 <h2 id="example-settingsjson">Example <code>settings.json</code></h2>
@@ -190,6 +195,11 @@ Example disabled autoconnect:
 */
 cfg.ip = &quot;10.10.39.85&quot;;
 cfg.port = 12080;
+
+/*
+This setting, as explained above, disables the &quot;HUB&quot; push notifications feature when set to true.
+*/
+cfg.disablePushNotifications = false; //this leaves push notifications on
 </code></pre>
 
 <hr /></div>

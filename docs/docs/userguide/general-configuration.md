@@ -8,6 +8,8 @@ While you still have to configure settings separately for things like locomotive
 
 - **WebSockets Auto-Connect** - This feature allows you to specify an IP/Port in ``settings.json`` and have all your clients auto-connect to that. They will get to skip the "Connection" tab completely, and will be dropped directly in the "Train Settings" tab. Since locoThrottle.js performs all the normal connection functions, this means your roster data, layout information, and other things will already be downloaded, parsed, and ready to go. Incredibly handy feature!
 
+- **Disable Push Notifications** - This feature disables the push notifications feature we created. This feature is for alerting users when major program changes are made, and just as a communication tool for our users who don't regularly visit GitHub. Setting this configuration option to ``true`` will not disable the "HUB" feature completely, it will only disable the push notifications feature.
+
 ---
 
 ## Example ``settings.json``
@@ -37,6 +39,11 @@ Example disabled autoconnect:
 */
 cfg.ip = "10.10.39.85";
 cfg.port = 12080;
+
+/*
+This setting, as explained above, disables the "HUB" push notifications feature when set to true.
+*/
+cfg.disablePushNotifications = false; //this leaves push notifications on
 ```
 
 ---
