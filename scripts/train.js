@@ -57,7 +57,56 @@ train.ui.update = function() {
         var newHTML = "<div class='chip'>" + train[i].roster.name + "<i class='material-icons right' onclick='train.build.remove(" + i + ")'>close</i></div>";
         finalHTML.push(newHTML)
     }
-    document.getElementById("trainDisplay").innerHTML = finalHTML.join()
+    document.getElementById("trainDisplay").innerHTML = finalHTML.join('') //The quotes are here so it doesn't put commas between the elements
+    
+    /*
+    Now we need to tackle the locomotive palette, which is based on the bundles object.
+    
+    We'll use the same method as above (joining an array into a string of HTML)
+    */
+    var finalHTML = [] //using the same finalHTML variable as above, but we reset it first
+    var bundlesKeys = Object.keys(bundles)
+    for (i=0; i < bundlesKeys.length; i++) {
+        /*
+        This loop cycles through every single key from bundles and generates HTML for each one.
+        
+        TODO: Once a standardized place to find images is agreed on, I'd like to make use of the great-looking "img" option of these chips.
+        */
+        var currentBundle = bundles[bundlesKeys[i]] //This will equal the inside of the entire object we're dealing with
+        
+        var newHTML = []
+        //This HTML is so complex we generate it in an array instead of a single string.
+        var newHTMLstring = "<div class='chip'>"
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = currentBundle.roster.name;
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = "<i onclick='train.build.add("
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = 'bundles["'
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = currentBundle.roster.name; //This is the name from the roster
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = '"]'
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = ")'"
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = "class='material-icons right'>add</i>"
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = "</div>"
+        newHTML.push(newHTMLstring)
+        
+        finalHTML.push(newHTML.join(''))
+    }
+    document.getElementById("locomotivePalette").innerHTML = finalHTML.join(''); //The quotes are here so it doesn't put commas between the elements
+    console.log(finalHTML.join(''))
 }
 
 /*
@@ -79,8 +128,14 @@ train.build.add = function(object) {
     train.push(object)
     /*
     Because of the magical things built into the decoder constructor function spec, we don't need to call a separate create throttle thing. The throttle subobject is automatically created when we add the DCC decoder thing.
+    
+    
     */
-    train[trainPosition].dcc = new decoders[decoderFamily][decoderModel](address, trainPosition)
+    var decoderConstructor = decoders[decoderFamily][decoderModel]
+    console.log("Decoder Constructor")
+    console.dir(decoderConstructor)
+    
+    train[trainPosition].dcc = new decoderConstructor(address, trainPosition)
     
     //Now we need to update the train ui
     train.ui.update()

@@ -33,10 +33,8 @@ function connect(ip, port) {
         }
     }
     
-    ws.onclose = function(event) {
-        data = JSON.parse(event.data);
-        console.log("WEBSOCKET CLOSED!")
-        console.dir(data)
+    ws.onclose = function() {
+        console.log("well crap...the websocket closed")
     }
     
 }
@@ -102,7 +100,7 @@ function sendcmd(command) {
         
     }
     else {
-        Materialize.toast("We can't tell JMRI whatever you just did, because your WebSockets connection is not up and running yet.", 4000)
+        Materialize.toast("<i class='material-icons left'>error</i>You need to connect to JMRI first!", 4000)
         console.error("Tried to send something, but we're not connected yet.")
         return "Can't send!"
         
