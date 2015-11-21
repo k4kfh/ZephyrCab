@@ -18,11 +18,11 @@ hub.info = {
 hub.ui = new Object();
 
 hub.ui.update = function() {
-    var html = [
-        ""
-    ]
+    //TODO
 }
 
 hub.pushNotification(toast, duration) {
     Materialize.toast("<i class='material-icons left'>info</i>" + toast, duration)
 }
+
+hub.pushNotification("Hello locoThrottle.js user! We hope you enjoy our new HUB notification system.")
