@@ -21,7 +21,7 @@ hub.ui.update = function() {
     //TODO
 }
 
-hub.pushNotification(toast, duration) {
+hub.pushNotification = function(toast, duration) {
     Materialize.toast("<i class='material-icons left'>info</i>" + toast, duration)
 }
 
