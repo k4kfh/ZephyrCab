@@ -22,7 +22,10 @@ hub.ui.update = function() {
 }
 
 hub.pushNotification = function(toast, duration) {
-    Materialize.toast("<i class='material-icons left'>info</i>" + toast, duration)
+    if (cfg.disablePushNotifications != true) {
+        Materialize.toast("<i class='material-icons left'>info</i>" + toast, duration)
+        
+    }
 }
 
 hub.pushNotification("Hello locoThrottle.js user! We hope you enjoy our new HUB notification system.")
