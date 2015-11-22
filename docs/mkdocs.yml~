@@ -1,4 +1,4 @@
-site_name: ZephyrCab Docs
+site_name: locoThrottle.js Docs
 pages:
 - Home: index.md
 - User Guide:
@@ -14,5 +14,5 @@ pages:
   - Decoder Object: standards/decoder.md
 
 theme: cosmo
-repo_url: http://github.com/k4kfh/ZephyrCab
-copyright: ZephyrCab is free software, released with no license.
+repo_url: http://github.com/k4kfh/LocoThrottleJS
+copyright: locoThrottle.js is free software, released with no license.
