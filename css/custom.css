@@ -12,7 +12,7 @@
 }
 
 body  {
-    background: url(img/Railway_track_1920x1080.jpg) no-repeat center center fixed; 
+    background: url(/img/Railway_track_1920x1080.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -29,4 +29,15 @@ magic-width-text {font-size: 1vw;}
 
 #downarrow {
     padding-top: 0px
+}
+
+@font-face {
+	font-family: 'Zephyr';
+	src: url('fonts/zephyr.eot');
+	src: local('☺'), url('fonts/zephyr.woff') format('woff'), url('fonts/zephyr.ttf') format('truetype'), url('fonts/zephyr.svg') format('svg');
+	
+}
+
+.zephyr {
+    font-family: 'Zephyr';
 }
