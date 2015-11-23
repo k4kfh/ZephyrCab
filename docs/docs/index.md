@@ -1,3 +1,7 @@
+[![ZephyrCab Logo](http://i.imgur.com/n07xxtI.png)](http://k4kfh.github.io/ZephyrCab)
+
+---
+
 *Before you read the full docs, it is suggested that you read README.md, provided [on GitHub](http://github.com/k4kfh/LocoThrottleJS). This quickstart guide is intended for relatively experienced computer users, so follow the more detailed user guide if you don't know what you're doing.*
 
 [![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS)
@@ -26,6 +30,6 @@ You can download a release from GitHub. Once you have the release extracted from
 
 Before you proceed any further, you need to set up your ``bundles.json`` file. Unfortunately, there is no automated tool to do this as of now. You may see the comments in the code for explanation of how to set it up. Feel free to join the Gitter chat below if you want help!
 
-[![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS)
+[![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/ZephyrCab)
 
-Once you have your ``bundles.json`` set up, you should be able to use the program normally. Connect to your JMRI PC (if you don't know the IP, you will need to find that) using the "Connection" tab, and everything should work. If you run into problems, post an issue on [the project's GitHub page](http://github.com/k4kfh/LocoThrottleJS).
+Once you have your ``bundles.json`` set up, you should be able to use the program normally. Connect to your JMRI PC (if you don't know the IP, you will need to find that) using the "Connection" tab, and everything should work. If you run into problems, post an issue on [the project's GitHub page](http://github.com/k4kfh/ZephyrCab).
