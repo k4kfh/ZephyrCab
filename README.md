@@ -1,5 +1,6 @@
-# ZephyrCab
-Formerly locoThrottle.js
+![ZephyrCab Logo](http://i.imgur.com/n07xxtI.png)
+
+*Formerly locoThrottle.js*
 
 [![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -17,7 +18,7 @@ ZephyrCab is an HTML/CSS/JavaScript app that is designed to simulate prototypica
 - A simple web server. lighttpd, nginx, Apache, or JMRI's built in web server should all work fine.
 - A layout connected to JMRI with the JMRI JSON WebSockets service enabled
 
-The simplest way to install locoThrottle.js is to download the ZIP from this page and extract it onto a web server of your choice. There is no server-side code, so you do not need a sophisticated web server to run it. Once you have extracted it to a directory of your choice, see the setup procedure below.
+The simplest way to install ZephyrCab is to download the ZIP from this page and extract it onto a web server of your choice. There is no server-side code, so you do not need a sophisticated web server to run it. Once you have extracted it to a directory of your choice, see the setup procedure below.
 
 ## Setup
 
