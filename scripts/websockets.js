@@ -107,3 +107,8 @@ function sendcmd(command) {
     }
 }
 
+//this runs the second the websockets connection is open, it sets up any listeners to constantly let LocoThrottle know when the state of something changes.
+function setListeners() {
+    sendcmd('{"type":"power","data":{}}')
+}
+

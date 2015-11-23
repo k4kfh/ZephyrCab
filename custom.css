@@ -1,0 +1,10 @@
+@font-face {
+	font-family: 'Zephyr';
+	src: url('thirdparty/fonts/zephyr.eot');
+	src: local('☺'), url('thirdparty/fonts/zephyr.woff') format('woff'), url('thirdparty/fonts/zephyr.ttf') format('truetype'), url('thirdparty/fonts/zephyr.svg') format('svg');
+	
+}
+
+.zephyr {
+    font-family: 'Zephyr';
+}
