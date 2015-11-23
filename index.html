@@ -456,25 +456,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
             </div>
         </div>
         <script>
-                if(cfg.ip != undefined) {
-                    connect(cfg.ip, cfg.port);
-                    console.log("Connected automatically to " + cfg.ip + ":" + cfg.port);
-                    Materialize.toast("<i class='material-icons left'>info</i>Connected automatically to ws://" + cfg.ip + ":" + cfg.port, 10000)
-                    document.getElementById("ip").value = cfg.ip;
-                    document.getElementById("port").value = cfg.port;
-                    
-                    //These two lines go over to the trainsettings tab and scroll up to the top of the page.
-                    document.getElementById("tab_trainsettings").click();
-                    document.body.scrollTop = document.documentElement.scrollTop = 0;
-                }
-                else if (cfg.ip == undefined) {
-                    console.log("Did not connect automatically; no settings found!")
-                    Materialize.toast("<i class='material-icons left'>info</i>Couldn't find any settings for auto-connection, please connect manually.")
-                    
-                    //These two lines go over to the connection tab and scroll up to the top of the page.
-                    document.getElementById("tab_connection").click();
-                    document.body.scrollTop = document.documentElement.scrollTop = 0;
-                }
+            attemptAutoconnect();
         </script>
         
         <!---And lastly, the centralized script from the Pages repo--->

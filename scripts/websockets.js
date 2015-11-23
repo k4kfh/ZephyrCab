@@ -4,7 +4,14 @@ logallreplies = true
 //do not change this
 wsStatus = false
 
-function connect(ip, port) {
+function connect(ip, port, automaticornot) {
+    
+    if (automaticornot != true) {
+        //This is not being called automatically
+        automaticornot = false;
+    }
+    
+    
     ws = new WebSocket("ws://" + ip + ":" + port + "/json/")
     //when the connection opens,
     ws.onopen = function() {
@@ -17,6 +24,16 @@ function connect(ip, port) {
         setListeners()
         init("connect")
         sendcmd('{"list":"roster"}')
+        
+        //Display the appropriate connection message
+        if (automaticornot == true) {
+            //If this connection attempt was automatic
+            Materialize.toast("Connected automatically to ws://" + cfg.ip + ":" + cfg.port)
+        }
+        else {
+            //If this connection attempt was not automatic
+            Materialize.toast("Connected manually to ws://" + cfg.ip + ":" + cfg.port)
+        }
     }
     
     ws.onmessage = function(event) {
@@ -110,5 +127,30 @@ function sendcmd(command) {
 //this runs the second the websockets connection is open, it sets up any listeners to constantly let LocoThrottle know when the state of something changes.
 function setListeners() {
     sendcmd('{"type":"power","data":{}}')
+}
+
+/*
+This function is what makes the auto connect feature work. It is at the bottom of index.html, so it runs when the page loads.
+
+It looks at the cfg object to see if the variables we need are configured or not, and connects if they are set up.
+*/
+function attemptAutoconnect() {
+    if(cfg.ip != undefined) {
+        connect(cfg.ip, cfg.port, true); //the third argument tells the connect() that it's being called automatically
+        document.getElementById("ip").value = cfg.ip;
+        document.getElementById("port").value = cfg.port;
+                    
+        //These two lines go over to the trainsettings tab and scroll up to the top of the page.
+        document.getElementById("tab_trainsettings").click();
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+    else if (cfg.ip == undefined) {
+        console.log("Did not connect automatically; no settings found!")
+        Materialize.toast("<i class='material-icons left'>info</i>Couldn't find any settings for auto-connection, please connect manually.")
+                    
+        //These two lines go over to the connection tab and scroll up to the top of the page.
+        document.getElementById("tab_connection").click();
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
 }
 
