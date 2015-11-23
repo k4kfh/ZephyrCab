@@ -1,6 +1,9 @@
-![ZephyrCab Logo](http://i.imgur.com/n07xxtI.png)
+[![ZephyrCab Logo](http://i.imgur.com/n07xxtI.png)](http://k4kfh.github.io/ZephyrCab)
 
 *Formerly locoThrottle.js*
+
+* [Visit Main Project Site](http://k4kfh.github.io/ZephyrCab)
+* [Project Documentation](http://k4kfh.github.io/ZephyrCab)
 
 [![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
