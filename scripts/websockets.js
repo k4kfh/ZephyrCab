@@ -98,13 +98,15 @@ function processReply(ev) {
     else if (ev.list) {
         //send to list handler
     }
-    else if (ev[0].type = "rosterEntry") {
-        jmri.roster.raw = ev
-        jmri.roster.entries = jmri.roster.reformat(jmri.roster.raw) //rebuild the reformatted roster every time we get new roster data
+    else if (ev[0] != undefined) {
+        if (ev[0].type = "rosterEntry") {
+            jmri.roster.raw = ev
+            jmri.roster.entries = jmri.roster.reformat(jmri.roster.raw) //rebuild the reformatted roster every time we get new roster data
         
-        //Now that the roster has been edited, we need to update the UI for the train
-        train.ui.setup();
-        train.ui.update();
+            //Now that the roster has been edited, we need to update the UI for the train
+            train.ui.setup();
+            train.ui.update();
+        }
     }
 }
 
