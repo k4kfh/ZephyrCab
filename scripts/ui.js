@@ -7,6 +7,7 @@ ui = {
                 $("#notch").val(returned)
             }
         },
+        
         engine : {
             start : {
                 set : function(arg) {
@@ -22,13 +23,33 @@ ui = {
             },
             state : false, //Boolean to represent the state of the engine on all the trains
         },
+        
         locoName : {
             update : function(name) {
                 //This function sets the locomotive name in the CAB tab
                 document.getElementById("ui.locoName").innerHTML = name;
             }
+        },
+        
+        headlight : {
+            set : function(arg) {
+                //Because of the way the consist system (or lack thereof, in all technicality) works, we must set the headlight on ONLY the lead locomotive. First, we check and make sure we actually HAVE a lead locomotive
+                if (train.all[0] != undefined) {
+                    //Turn the headlight on on the lead loco, and also change the state we have stored locally
+                    train.all[0].dcc.f.headlight.set(arg);
+                    ui.cab.headlight.state = arg;
+                    document.getElementById("ui.cab.headlight").checked = arg;
+                }
+                else {
+                    //If we don't have a lead loco, revert back the state we have.
+                    document.getElementById("ui.cab.headlight").checked = ui.cab.headlight.state;
+                }
+            },
+            
+            state : false,
         }
     },
+    
     connection : {
         status : {
             
@@ -40,6 +61,7 @@ ui = {
             }
         }
     },
+    
     layout : {
         power : {
             status : {

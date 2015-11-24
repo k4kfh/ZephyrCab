@@ -12,6 +12,12 @@ decoders = {
             
             //FUNCTIONS
             this.f = new Object();
+            //light
+            this.f.headlight = new Object();
+            this.f.headlight.set = function(state) {
+                train.all[trainPosition].throttle.f.set(0, state);
+                train.all[trainPosition].dcc.f.headlight.state = state;
+            }
             //bell
             this.f.bell = new Object();
             this.f.bell.set = function(state) {
