@@ -34,9 +34,9 @@ ui = {
                         document.getElementById("ui.cab.engine.start").checked = ui.cab.engine.start.state;
                         return ui.cab.engine.start.state;
                     }
-                }
+                },
+                state : false, //Boolean to represent the state of the engine on all the trains
             },
-            state : false, //Boolean to represent the state of the engine on all the trains
         },
         
         locoName : {

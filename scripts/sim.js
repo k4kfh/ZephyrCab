@@ -48,6 +48,16 @@ sim.accel = function() {
             var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
             train.all[i].prototype.realtime.te = te; //Store TE in the train object
             
+            /*
+            Handling global sounds (sounds that are on all locos, not just lead)
+            The if statements here are to protect against unnecessary bandwidth usage. It's just checking to see if the state has actually changed since last time we set it. If it hasn't we don't set it.
+            */
+            //Prime Mover startup
+            if (train.all[i].dcc.f.engine.state != ui.cab.engine.start.state) {
+                train.all[i].dcc.f.engine.set(ui.cab.engine.start.state)
+            }
+            
+            
         }
         else if (train.all[i].prototype.type == "rollingstock") {
             //We are dealing with rolling stock.

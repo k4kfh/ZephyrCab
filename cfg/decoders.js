@@ -59,7 +59,7 @@ decoders = {
             //engine on/off
             this.f.engine = new Object();
             this.f.engine.set = function(state) {
-                train.all[trainPosition].throttle.f.set(8, state)
+                train.all[trainPosition].throttle.f.set(8, state);
                 train.all[trainPosition].dcc.f.engine.state = state;
             }
             this.f.engine.state = false;
