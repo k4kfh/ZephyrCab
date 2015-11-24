@@ -25,7 +25,6 @@
         <script src="cfg/settings.json"></script>
         
         <!---Now executables--->
-        <script src="scripts/infohandler.js"></script>
         <script src="scripts/jmri-core.js"></script>
         <script src="scripts/protoEngine.js"></script>
         <script src="scripts/websockets.js"></script>
@@ -187,7 +186,7 @@
                                             <!---actual notch slider crap--->
                                             <form action="#">
                                                 <p class="range-field"><i class="material-icons right">settings_backup_restore</i>Notch
-                                                    <input type="range" value="0" id="notch" min="0" max="8" onchange="cab.slider.notch.set(this.value)"/>
+                                                    <input type="range" value="0" id="notch" min="0" max="8" onchange="ui.cab.notch.set(this.value)"/>
                                                 </p>
                                             </form>
                                             

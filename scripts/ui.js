@@ -4,7 +4,7 @@ ui = {
             set : function() {
                 var newNotch = document.getElementById("notch").value;
                 var returned = notch.set(newNotch)
-                console.log("Returned " + returned)
+                $("#notch").val(returned)
             }
         }
     },
