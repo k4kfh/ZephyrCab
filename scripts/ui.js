@@ -1,5 +1,20 @@
 ui = {
     cab : {
+        gauges : {
+            speedometer : {
+                create : function() {},
+                update : function() {},
+            },
+            rpm : {
+                create : function() {},
+                update : function() {},
+            },
+            ammeter : {
+                create : function() {},
+                update : function() {},
+            },
+        },
+        
         notch : {
             set : function() {
                 var newNotch = document.getElementById("notch").value;
@@ -75,6 +90,36 @@ ui = {
                     console.log("Set reverser to " + reverser + ", but there is nothing on the train!")
                 }
             }
+        },
+        
+        bell : {
+            set:function(arg) {
+                if (train.all[0] != undefined) {
+                    //If we have a lead locomotive
+                    train.all[0].dcc.f.bell.set(arg)
+                    ui.cab.bell.state = arg;
+                    return ui.cab.bell.state;
+                }
+                else {
+                    //If there's no lead locomotive
+                    Materialize.toast("You can't turn on the bell until you add a lead locomotive.", 3000)
+                    document.getElementById("ui.cab.bell").checked = ui.cab.bell.state;
+                    return ui.cab.bell.state;
+                }
+            },
+            state : false,
+        },
+        
+        horn : {
+            set : function(arg) {
+                if (train.all[0] != undefined) {
+                    train.all[0].dcc.f.horn.set(arg)
+                    ui.cab.horn.state = arg;
+                }
+                //Since this is a button, not a checkbox, we don't have to do anything if there's no lead loco.
+            },
+            
+            state : false,
         }
     },
     

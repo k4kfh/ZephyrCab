@@ -34,7 +34,7 @@ bundles = {
             "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Front cross-sectional area in sq. ft
             "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Rear cross-sectional area in sq. ft.
             "dragCoefficient":1.7,
-            "notchRPM" : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "notchRPM" : [300, 362, 425, 487, 550, 613, 675, 738, 800],
             "notchMaxSpeeds" : [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "running": false,
             "fuelUse": [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //this is in order of notch with 0 being idle and 8 being Run8
@@ -45,7 +45,9 @@ bundles = {
                 */
                 "te" : function(speed, trainPosition) {
                     /*
-                    This example uses an equation from a Virginia Tech paper
+                    This example uses an equation from a Virginia Tech paper.
+                    
+                    It is important to note that the value from this function will be used, unaltered, in the physics engine. You cannot forget to take into account the reverser. This is easy; all you have to do is multiply your calculated value by the global variable: reverser . If we're in neutral, this will yield 0. In forward, it will do nothing. In reverse, it will make your number negative. Simple, but very important.
                     */
                     //First we need to convert the speed to KM/HR.
                     var efficiency = 0.72
@@ -64,16 +66,20 @@ bundles = {
                     var teNewtons = 2650 * ( (efficiency * horsepower)/(speedSI) )
     
                     //Now that we have the tractive effort in Newtons, we must convert it to pounds.
-                    var teLbs = 0.224809 * teNewtons
+                    var teLbs = 0.224809 * teNewtons * reverser
                     //This is a measure of protection since the equation creates a curve that moves upwards too sharply
                     if (speed < 8.9) {
-                        teLbs = 56500 * (notch.state / 8);
+                        teLbs = 56500 * (notch.state / 8) * reverser;
                     }
                     return teLbs;
                 }
             },
             "realtime" : {
                 speed : 0, //This is defined just to be safe.
+                notch : {
+                    soundNotch : 0,
+                    simNotch : 0,
+                },
             }, //This is used by the physics engine to store current information, we just go ahead and define it
             "gauges": {
             //this is a sub object containing all the gauge info because this would take up WAAAAY too much space to put in the main object

@@ -123,14 +123,14 @@
                             <h6><b>Devices</b></h6>
                                 <!---Special section class for airhorn--->
                                 <div class="section">
-                                    <a id="horn" onmousedown = "setHorn(true)" onmouseup="setHorn(false)" class="waves-effect waves-light btn-floating btn-large red tooltipped" data-position="left" data-delay="50" data-tooltip="Hold to sound horn."><i class="material-icons left tiny">volume_up</i></a>
+                                    <a id="ui.cab.horn" onmousedown = "ui.cab.horn.set(true)" onmouseup="ui.cab.horn.set(false)" class="waves-effect waves-light btn-floating btn-large red tooltipped" data-position="left" data-delay="50" data-tooltip="Hold to sound horn."><i class="material-icons left tiny">volume_up</i></a>
                                     Air Horn
                                 </div>
                                 <!---the rest of the devices--->
                                 <div class="section">
                                     <div class="switch">
                                         <label>
-                                            <input id="bell" type="checkbox" onclick="handleCBchange(this, 'bell')">
+                                            <input id="ui.cab.bell" type="checkbox" onclick="ui.cab.bell.set(this.checked)">
                                             <span class="lever"></span>Bell
                                         </label>
                                     </div>
@@ -141,15 +141,6 @@
                                         <label>
                                             <input id="ui.cab.headlight" type="checkbox" onclick="ui.cab.headlight.set(this.checked)">
                                             <span class="lever"></span>Headlight
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="section">
-                                    <div class="switch">
-                                        <label>
-                                            <input id="compressor" type="checkbox" onclick="handleCBchange(this, 'compressor')">
-                                            <span class="lever"></span>Compr.
                                         </label>
                                     </div>
                                 </div>
