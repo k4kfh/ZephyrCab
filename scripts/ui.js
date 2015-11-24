@@ -26,8 +26,21 @@ ui = {
         
         locoName : {
             update : function(name) {
-                //This function sets the locomotive name in the CAB tab
-                document.getElementById("ui.locoName").innerHTML = name;
+                if (jmri.roster.entries[name] != undefined) {
+                    //This function sets the locomotive name in the CAB tab
+                    if (jmri.roster.entries[name].road != undefined && jmri.roster.entries[name].number != undefined) {
+                        //If the roadname and road number are not undefined
+                        var display = jmri.roster.entries[name].road + " #" + jmri.roster.entries[name].number + " (" + name + ")"
+                    }
+                    else {
+                        var display = name;
+                    }
+                }
+                else {
+                    var display = "No Lead Locomotive Found!";
+                }
+                
+                document.getElementById("ui.locoName").innerHTML = display;
             }
         },
         
