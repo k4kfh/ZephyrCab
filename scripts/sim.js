@@ -37,6 +37,7 @@ sim.accel = function() {
             //From there, we'll calculate fuel stuff, and then deal with tractive effort.
             
             train.all[i].prototype.realtime.rpm = train.all[i].prototype.notchRPM[notch.state] //This uses the notch (global variable) to lookup the rpm in an array of RPMs by notches.
+            gauge.rpm(train.all[i].prototype.realtime.rpm) //Now we update the gauge
             
             //TODO - Fuel stuff
             

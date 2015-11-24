@@ -186,7 +186,10 @@ train.build.add = function(object) {
     train.ui.locomotives.unused.splice(index, 1)
     
     //Now we need to update the train ui
-    train.ui.update()
+    train.ui.update();
+    
+    //We only call the gauges.createAll() function when we ADD something, because if there's nothing on the train it'll break things.
+    gauge.createAll();
 }
 
 train.build.remove = function(entryName) {

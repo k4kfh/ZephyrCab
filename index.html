@@ -31,7 +31,7 @@
         <script src="scripts/jmri-core.js"></script>
         <script src="scripts/train.js"></script>
         <script src="scripts/ui.js"></script>
-        <script src="scripts/gauges.js"></script>
+        <script src="scripts/cab-gauges.js"></script>
         <script src="scripts/sim.js"></script>
         
         <!--Import jQuery before materialize.js-->
@@ -41,7 +41,7 @@
         <script type="text/javascript" src="thirdparty/materialize/js/materialize.js"></script>
         
         <!---Google gauges crap--->
-        <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['gauge']}]}"></script>
+        <script src="thirdparty/canv-gauge-master/gauge.min.js"></script>
         
     </head>
 
@@ -85,28 +85,10 @@
                                     <h6><i class="material-icons left small">view_module</i><b>My Dash</b></h6>
                                 </div>
                                 
-                                <div class="col s2">
-                                    <div id="speedometer"></div>
-                                </div>
-                                
-                                <div class="col s2">
-                                    <div id="RPM"></div>
-                                </div>
-                                
-                                <div class="col s2">
-                                    <div id="ammeter"></div>
-                                </div>
-                                
-                                <div class="col s2">
-                                    
-                                </div>
-                                
-                                <div class="col s2">
-                                    
-                                </div>
-                                
-                                <div class="col s2">
-                                    
+                                <div class="row">
+                                    <!---First Row of Gauges--->
+                                    <canvas id="gauge.speedometer"></canvas>
+                                    <canvas id="gauge.rpm"></canvas>
                                 </div>
                                 
                             </div>
