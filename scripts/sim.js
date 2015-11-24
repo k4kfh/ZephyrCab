@@ -58,6 +58,24 @@ sim.accel = function() {
                 train.all[i].dcc.f.engine.set(ui.cab.engine.start.state)
             }
             
+            //Prime mover notching sounds
+            
+            //We check and see if the notch has changed since the last cycle
+            if (train.all[i].dcc.f.notch.state != notch.state) {
+                //We know it's changed, now we have to figure out which direction (up or down) to move it.
+                var difference = notch.state - train.all[i].dcc.f.notch.state; //This will equal 1 or -1, telling us the direction to notch
+                //console.log("Difference in notch: " + difference)
+                if (difference == 1) {
+                    train.all[i].dcc.f.notch.up();
+                }
+                else if (difference == -1) {
+                    train.all[i].dcc.f.notch.down();
+                }
+            }
+            else {
+                //console.log("No notch difference found")
+            }
+            
             
         }
         else if (train.all[i].prototype.type == "rollingstock") {

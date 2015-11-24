@@ -71,8 +71,9 @@ decoders = {
                     //This is inside an IF statement to make sure we don't try to notch OVER 8. If that happens, ESU decoders get confused.
                     var newNotch = (train.all[trainPosition].dcc.f.notch.state + 1)
                     if (newNotch <= 8) {
+                         train.all[trainPosition].dcc.f.notch.state++; //THIS HAS TO RUN INSTANTLY OR SIM.JS IS STUPID
                         setTimeout(function() { train.all[trainPosition].throttle.f.set(9, true)}, 500);
-                        setTimeout(function() { train.all[trainPosition].throttle.f.set(9, false); train.all[trainPosition].dcc.f.notch.state++;}, 1750)
+                        setTimeout(function() { train.all[trainPosition].throttle.f.set(9, false);}, 1750)
                     }
                 },
                 down : function() {
@@ -80,11 +81,12 @@ decoders = {
                     //This is inside an IF statement to make sure we don't try to notch LESS THAN idle. If that happens, ESU decoders get confused.
                     var newNotch = (train.all[trainPosition].dcc.f.notch.state - 1)
                     if (newNotch >= 0) {
+                        train.all[trainPosition].dcc.f.notch.state--; //THIS MUST RUN INSTANTLY OR SIM.JS DOES WEIRD STUFF
                         setTimeout(function() { train.all[trainPosition].throttle.f.set(10, true)}, 500);
-                        setTimeout(function() { train.all[trainPosition].throttle.f.set(10, false); train.all[trainPosition].dcc.f.notch.state--;}, 1750)
+                        setTimeout(function() { train.all[trainPosition].throttle.f.set(10, false);}, 1750)
                     }
                 },
-                state : 0,
+                state : 0, //This should reflect the current notching state of the sound decoder. You should increment this up or down 1 when your up() and down() functions finish, or sim.js's functions will be horribly confused and mess up your sounds.
             }
                 
             
