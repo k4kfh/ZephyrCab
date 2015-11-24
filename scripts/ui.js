@@ -7,6 +7,21 @@ ui = {
                 $("#notch").val(returned)
             }
         },
+        engine : {
+            start : {
+                set : function(arg) {
+                    if (train.all[0] != undefined) {
+                        ui.cab.engine.start.state = arg;
+                        document.getElementById("ui.cab.engine.start").checked = arg;
+                    }
+                    else {
+                        document.getElementById("ui.cab.engine.start").checked = ui.cab.engine.start.state;
+                        return ui.cab.engine.start.state;
+                    }
+                }
+            },
+            state : false, //Boolean to represent the state of the engine on all the trains
+        },
         locoName : {
             update : function(name) {
                 //This function sets the locomotive name in the CAB tab
