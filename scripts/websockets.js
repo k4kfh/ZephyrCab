@@ -27,11 +27,11 @@ function connect(ip, port, automaticornot) {
         //Display the appropriate connection message
         if (automaticornot == true) {
             //If this connection attempt was automatic
-            Materialize.toast("Connected automatically to ws://" + cfg.ip + ":" + cfg.port)
+            Materialize.toast("Connected automatically to ws://" + cfg.ip + ":" + cfg.port, 3000)
         }
         else {
             //If this connection attempt was not automatic
-            Materialize.toast("Connected manually to ws://" + cfg.ip + ":" + cfg.port)
+            Materialize.toast("Connected manually to ws://" + cfg.ip + ":" + cfg.port, 3000)
         }
     }
     
@@ -51,6 +51,7 @@ function connect(ip, port, automaticornot) {
     
     ws.onclose = function() {
         console.log("well crap...the websocket closed")
+        Materialize.toast("<i class='material-icons left'>warning</i>Lost connection to JMRI! Please refresh the page and reconnect. <a class='btn-flat orange-text' onclick='location.reload(true)'>Reload</a>")
     }
     
 }

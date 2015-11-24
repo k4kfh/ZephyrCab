@@ -85,7 +85,6 @@ train.ui.update = function() {
         newHTML.push(newHTMLstring)
         
         finalHTML.push(newHTML.join(''))
-        console.log(finalHTML)
     }
     document.getElementById("trainDisplay").innerHTML = finalHTML.join('') //The quotes are here so it doesn't put commas between the elements
     
@@ -176,8 +175,6 @@ train.build.add = function(object) {
     
     */
     var decoderConstructor = decoders[decoderFamily][decoderModel]
-    console.log("Decoder Constructor")
-    console.dir(decoderConstructor)
     
     train.all[trainPosition].dcc = new decoderConstructor(address, trainPosition)
     

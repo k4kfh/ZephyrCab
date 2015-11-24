@@ -16,9 +16,9 @@ prototype.locomotives = [
         "maxNotch" : 8, //Number of throttle notches the locomotive has
         "dragCoefficient":1.7,
         "startingTE" : 56500, //Starting tractive effort (in ft-lbs)
-        "notchWait" : 0, //How long must we wait between notches (in milliseconds)
         "efficiency" : 0.72, //this is a percent of efficiency which varies slightly from loco to loco
         "notchMaxSpeeds" : [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
+        "notchRPM" : [1, 2, 3, 4, 5, 6, 7, 8, 9],
         "tractiveEffortEquationStart" : 7, //this is the speed at which the starting tractive effort stops mattering and the Virginia Tech equation starts mattering
         "running": false,
         "fuelUse": [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //this is in order of notch with 0 being idle and 8 being Run8

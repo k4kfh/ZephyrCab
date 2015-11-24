@@ -60,6 +60,21 @@ ui = {
             },
             
             state : false,
+        },
+        
+        reverser : {
+            set : function(arg) {
+                if(train.all.length != 0) {
+                    //If there is something on the train
+                    reverser = arg;
+                    console.log("Set reverser to " + reverser)
+                }
+                else {
+                    Materialize.toast("<i class='material-icons left'>warning</i>You have nothing on your train!", 3000)
+                    reverser = arg;
+                    console.log("Set reverser to " + reverser + ", but there is nothing on the train!")
+                }
+            }
         }
     },
     

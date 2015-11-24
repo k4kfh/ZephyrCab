@@ -1,13 +1,9 @@
-//this contains high level locomotive functions, usually (at least mostly) decoder agnostic. These functions call functions from decoder.js in order to communicate with the locomotive
-
-var actualDirection;
-actualDirection = 0;
-
-
 /*
 Notching Objects
 
 notch is the top level object for all this, and it contains "state" and "set()" which are pretty self explanatory
+
+set() is called with a number as it's only argument. If a user tries to raise the notch by more than one, then the function will return the existing notch. The function will always return the actual notch.
 */
 notch = new Object();
 notch.state = 0 //Notch defaults to 0, which is idling.
@@ -28,103 +24,43 @@ notch.set = function(newNotch) {
     }
 }
 
+sim = new Object();
 
-
-//hacky global variable definitions for tinkering
-train = []
-train.total = {weight:0, motiveForce:0, rollingResistance:0}
-train.maxSpeeds = []
-speedMPH = 0
-train.leadLoco = undefined
-
-function protoEngine_accel(ARGnotch, ARGreverser) {
-    /*
-        First we need to go through each element in the train and perform some calculations. The motive force, fuel use, and some other non-physics calculations are outsourced to other functions, so bear that in mind when reading the code.
-        
-        The for loop below is just to cycle through every item in the train.
-        */
-    for (i = 0; i < train.length; i++) {
-        /*
-            Now that we're going to parse each element in the train, including rolling stock AND locomotives, we need to split things up.
+sim.accel = function() {
+    //This FOR loop goes through every train element. If there are none, it just does nothing.
+    for(i = 0; i < train.all.length; i++) {
+        //First, we need to find out what type of element we're dealing with.
+        if (train.all[i].prototype.type == "locomotive") {
+            //We are dealing with a locomotive.
             
-            Since we need to do different calculations for rolling stock than we do locomotives, we sort them out into their own if functions.
+            //First thing we need to do is deal with engine RPM and notching.
+            //From there, we'll calculate fuel stuff, and then deal with tractive effort.
+            
+            train.all[i].prototype.realtime.rpm = train.all[i].prototype.notchRPM[notch.state] //This uses the notch (global variable) to lookup the rpm in an array of RPMs by notches.
+            
+            //TODO - Fuel stuff
+            
+            /*
+            Now we can calculate tractive effort based on notch and speed. This is done using a function (left open to developers of prototype objects) from inside the train object's prototype subobject.
             */
-        if(train[i].type == "locomotive") {
-            /*
-                All code to do with locomotives only will go here.
-                
-                Now that we know we're dealing with a locomotive, we can start the calculations. This function calculates all of the following things:
-                - Motive Force (lbs)
-                - Braking Force (as of 11/12/15 this is unfinished)
-                
-                The first lines here are for calculating tractive effort. The variables/arguments for the function that is used here is explained in the comments above the function.
-                */
-            var horsepower = train[i].prototype.outputHorsepower;
-            var speed = train[i].prototype.speed;
-            var efficiency = train[i].prototype.efficiency;
-            var beginningSpeed = train[i].prototype.tractiveEffortEquationStart;
-            var startingTE = train[i].prototype.startingTE
-            train[i].prototype.TE = crunch.tractiveEffort(horsepower, speed, efficiency, beginningSpeed, startingTE);   
-            train[i].prototype.rollingResistance = crunch.rollingResistance(train[i].prototype.weight, train[i].prototype.coefficientOfRollingResistance)
-                
-            /*
-                Now we must add the motiveForce and rollingResistance values we just found to the totals for the whole train. This physics engine is assuming no coupler slack for simplicity's sake; I would like to add slack later on but not right now.
-                */
-            train.total.motiveForce = train.total.motiveForce + train[i].prototype.TE;
-            train.total.rollingResistance = train.total.rollingResistance + train[i].prototype.rollingResistance;
+            var elementSpeed = train.all[i].prototype.realtime.speed
+            var trainPosition = i; //This is passed as an argument so the function can see ALL of its parent object's attributes
+            var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
+            train.all[i].prototype.realtime.te = te; //Store TE in the train object
+            
+        }
+        else if (train.all[i].prototype.type == "rollingstock") {
+            //We are dealing with rolling stock.
+            
         }
     }
-    
-    speedMPH = 0
-     
-    /*
-    //this code is not for physics purposes, it is purely to keep the program from looping and locking up
-    //it forces the speed to cross exactly 0 when changing direction, without impacting how fast it does so
-    if (speedMPH > 0) { //if speed is positive right now,
-         if (newSpeed < 0) { //and it's about to flip to negative
-             newSpeed = 0 //make sure it crosses exactly 0 once
-             console.log("Forcing zero crossing")
-         }
-     }
-    else if (speedMPH < 0) {
-         if (newSpeed > 0) {
-             newSpeed = 0
-             console.log("Forcing zero crossing")
-         }
-     }
-     
-     Commented out for debugging purposes 11/12/15
-     */
-}
-
-function setModelDirection(ARGdirection) {
-    if (ARGdirection == "forward") {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "forward":true, "throttle":"' + throttleName + '"}}')
-        modelDirection = "forward"
-    }
-    else if (ARGdirection == "reverse") {
-        sendcmd('{"type":"throttle","data":{"address":' + locoAddress + ', "forward":false, "throttle":"' + throttleName + '"}}')
-        modelDirection = "reverse"
-    }
-    //console.log("Set MODEL direction to " + ARGdirection)
-    
-}
-
-
-
-
-
-
-function protoEngine_recalc() {
-    protoEngine_accel(notch, reverser)
-    
 }
 
 
 /*
 The crunch object
 
-The crunch object is actually a very simple way to handle things. I built this in to allow for easy addition of calculations without cluttering up code. If you know you're going to be calculating the same old thing over and over again (for example, rolling resistance) then it makes sense to tidy things up and use a function instead of littering the main physics engine function with loads of decimals and other variables.
+The crunch object is actually a very simple way to handle things. It's basically a collection of reusable "canned" math functions. I built this in to allow for easy addition of calculations without cluttering up code. If you know you're going to be calculating the same old thing over and over again (for example, rolling resistance) then it makes sense to tidy things up and use a function instead of littering the main physics engine function with loads of decimals and other variables.
 */
 crunch = new Object();
 
@@ -235,6 +171,9 @@ wheel = function(trainNumber, mass, radius) {
         }
     }
 }
+
+//Once ALL this is loaded, we start the calculation loop, which runs every 100ms.
+sim.recalcInterval = setInterval(function() {sim.accel()}, 100)
 
 
 

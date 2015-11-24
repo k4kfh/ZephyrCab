@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!--import math.js--->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.1/math.min.js"></script>
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="thirdparty/materialize/css/materialize-fromSASS.css"/>
         
@@ -25,14 +27,12 @@
         <script src="cfg/settings.json"></script>
         
         <!---Now executables--->
-        <script src="scripts/jmri-core.js"></script>
-        <script src="scripts/protoEngine.js"></script>
         <script src="scripts/websockets.js"></script>
+        <script src="scripts/jmri-core.js"></script>
+        <script src="scripts/train.js"></script>
         <script src="scripts/ui.js"></script>
         <script src="scripts/gauges.js"></script>
-        <script src="scripts/train.js"></script>
-        
-        <!---Third party scripts--->
+        <script src="scripts/sim.js"></script>
         
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -207,16 +207,16 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="section">
                                  <form action="#">
                                         <p>
-                                            <input onclick='handleRadio(this, "reverser")' name="reverser" type="radio" id="rv-forward" />
-                                            <label for="rv-forward">Forward</label>
+                                            <input onclick='ui.cab.reverser.set(1)' name="reverser" type="radio" id="ui.cab.reverser.forward" />
+                                            <label for="ui.cab.reverser.forward">Forward</label>
                                         </p>
                                         <p>
-                                            <input onclick='handleRadio(this, "reverser")' name="reverser"  type="radio" id="rv-neutral" />
-                                            <label for="rv-neutral">Neutral</label>
+                                            <input onclick='ui.cab.reverser.set(0)' name="reverser"  type="radio" id="ui.cab.reverser.neutral" />
+                                            <label for="ui.cab.reverser.neutral">Neutral</label>
                                         </p>
                                         <p>
-                                            <input onclick='handleRadio(this, "reverser")' name="reverser"  type="radio" id="rv-reverse"  />
-                                            <label for="rv-reverse">Reverse</label>
+                                            <input onclick='ui.cab.reverser.set(-1)' name="reverser"  type="radio" id="ui.cab.reverser.reverse"  />
+                                            <label for="ui.cab.reverser.reverse">Reverse</label>
                                         </p>
                                     </form>
                                 </div>
