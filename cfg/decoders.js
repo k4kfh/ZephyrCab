@@ -64,19 +64,28 @@ decoders = {
             }
             this.f.engine.state = false;
                 
-            //notch up
-            this.f.notchup = new Object();
-            this.f.notchup.set = function(state) {
-                    
+            //notch sound stuff.
+            this.f.notch = {
+                up : function() {
+                    //Notch up code
+                    //This is inside an IF statement to make sure we don't try to notch OVER 8. If that happens, ESU decoders get confused.
+                    var newNotch = (train.all[trainPosition].dcc.f.notch.state + 1)
+                    if (newNotch <= 8) {
+                        setTimeout(function() { train.all[trainPosition].throttle.f.set(9, true)}, 500);
+                        setTimeout(function() { train.all[trainPosition].throttle.f.set(9, false); train.all[trainPosition].dcc.f.notch.state++;}, 1750)
+                    }
+                },
+                down : function() {
+                    //Notch down code
+                    //This is inside an IF statement to make sure we don't try to notch LESS THAN idle. If that happens, ESU decoders get confused.
+                    var newNotch = (train.all[trainPosition].dcc.f.notch.state - 1)
+                    if (newNotch >= 0) {
+                        setTimeout(function() { train.all[trainPosition].throttle.f.set(10, true)}, 500);
+                        setTimeout(function() { train.all[trainPosition].throttle.f.set(10, false); train.all[trainPosition].dcc.f.notch.state--;}, 1750)
+                    }
+                },
+                state : 0,
             }
-            this.f.notchup.state = false;
-                
-            //notch down
-            this.f.notchdown = new Object();
-            this.f.notchdown.set = function(state) {
-                    
-            }
-            this.f.notchdown.state = false;
                 
             
             //SPEED SETTING
