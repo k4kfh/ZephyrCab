@@ -4,169 +4,27 @@ var actualDirection;
 actualDirection = 0;
 
 
-function setReverser(direction, ignoreNotch) {
-    //this if statement replaces the sendcmd function, since its more effective to do custom code here
-    if (locoAddress != undefined) {
-    var pastReverser = reverser
-    var reverserSet = false
-    //causes the "ignore the current notch" parameter to default to false, in case a dev forgets it
-    if (ignoreNotch == undefined) {
-        var ignoreNotch = false
-    }
-    //basically the same code (with different directions) under 3 different if statements for possible directions
-    if (direction == "forward") {
-        if (notch == 0) {
-            reverser = 1
-            console.log("Set reverser to FORWARD")
-            reverserSet = true
-            updateHTML("reverser")
-        }
-        else if (ignoreNotch == true) {
-            reverser = 1
-            console.log("Set reverser to FORWARD")
-            reverserSet = true
-            updateHTML("reverser")
-            }
+/*
+Notching Objects
+
+notch is the top level object for all this, and it contains "state" and "set()" which are pretty self explanatory
+*/
+notch = new Object();
+notch.state = 0 //Notch defaults to 0, which is idling.
+notch.set = function(newNotch) {
+    //First, we need to check and make sure we're not adjusting the notch by more than 1.
+    var differenceInNotch = Math.abs(notch.state - newNotch)
+    if (differenceInNotch == 1) {
+        //The user is only moving the notch 1 click, so we can continue with setting it
+        notch.state = newNotch;
         
-    }
-    else if (direction == "reverse") {
-        if (notch == 0) {
-            reverser = -1
-            console.log("Set reverser to REVERSE")
-            reverserSet = true
-            updateHTML("reverser")
-        }
-        else if (ignoreNotch == true) {
-            reverser = -1
-            console.log("Set reverser to REVERSE")
-            reverserSet = true
-            updateHTML("reverser")
-            }
-        
-    }
-    
-    else if (direction == "neutral") {
-        if (notch == 0) {
-            reverser = 0
-            console.log("Set reverser to NEUTRAL")
-            reverserSet = true
-            updateHTML("reverser")
-        }
-        else if (ignoreNotch == true) {
-            reverser = 0
-            console.log("Set reverser to NEUTRAL")
-            reverserSet = true
-            updateHTML("reverser")
-            }
-        
-        
-    }
-    return reverserSet
+        //and finally we return the new notch
+        return notch.state;
     }
     else {
-        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
-        return false
-    }
-}
-
-//this is the new high level setnotch function
-function setNotch(newNotch) {
-    notchDiffABS = Math.abs(notch - newNotch) //this finds the difference between the new and old notches
-    if (notchDiffABS == 1) {
-        //it's okay to notch up
-        notchDiffReal = newNotch - notch //we use this number, negative or positive, to determine which DIRECTION to notch it
-        if (notchDiffReal == 1) {
-            //notch up
-            setNotchCrude("up")
-        }
-        else if (notchDiffReal == -1) {
-            //notch down
-            setNotchCrude("down")
-        }
-    }
-    else {
-        Materialize.toast("You can only move the throttle one notch at a time.", 4000)
-    }
-}
-
-//this is the high level notching system. ANYTHING that adjusts the notch should NOT USE THIS. Use setNotch() instead, which is built on top of this. Weird, but it works. It is decoder agnostic because it calls functions from decoder.js, which behave the same across decoders, but the code inside is decoder specific. This allows a simple, unified approach to make the higher level function below work with all decoders that there exists a decoder.js for
-//setnotchcrude is called with setNotchCrude(up or down) and it returns the new notch as a number
-function setNotchCrude(dowhat) {
-    //this if statement takes the place of sendcmdLoco(), since we may be sending several commands within setNotch(). Don't want to make anyone throw their computer out the window because of 6 billion alert() functions!
-    if (locoAddress != undefined) {
-        if (notchAllowed == true) {
-        
-        //this if else if... statement checks if we're notching up, down, setting a notch as a number, or resetting the notching. //setting as a number not done yet
-        
-        if (dowhat == "up") {
-            //be sure notches stay within acceptable range
-            if(notch < train[0].maxNotch) {
-                //notch the sound up, adjust the notch variable
-                notch++
-                sound_notch("up")
-                //call that function from ui.js that can be customized to fit your specific HTML code
-                updateHTML("notch")
-                //reset the timing wait system of the notch thing
-                notchTiming("reset")
-            }
-        }
-        else if (dowhat == "down") {
-            //be sure notches stay within acceptable range
-            if(notch > 0) {
-                //notch the sound down, adjust the notch variable
-                notch--
-                sound_notch("down")
-                updateHTML("notch")
-                notchTiming("reset")
-                //PROTOENGINE COMMAND HERE
-            }
-        }
-        else if (dowhat == "reset") {
-            //this calls all the notching resetting functions, including resetting the sound notch if the locomotive has those
-            console.log("Full notching reset by setNotch() BEGIN")
-            sound_notch("reset")
-            notch = 0
-            updateHTML("notch")
-            //PROTOENGINE COMMAND HERE
-            ProtoEngine_Speed(0)
-        }
-            
-        }
-        //if notch isn't allowed, then
-        else {
-            //if the notch request isnt allowed because of ProtoEngine's timing settings, then run the notchDisallowed()
-            notchDisallowed("timing")
-        }
-        
-    }
-    else {
-        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
-    }
-return notch;
-}
-
-
-
-//this can be called with "reset" every time the notch is changed so that it disallows the notch to be changed for protoEngineNotchWait's time
-function notchTiming(args) {
-    //first IF statement to be sure we're actually throttling a locomotive here
-     if (locoAddress != undefined) {
-         if(args == "reset") {
-          notchAllowed = false
-          setTimeout(function() {notchAllowed = true}, train[0].notchWait)
-          setTimeout(function() {console.log("Notching allowed again!")}, train[0].notchWait)
-         }
-         else if (args == "allow") {
-             notchAllowed = true
-         }
-         else if (args == "disallow") {
-             notchAllowed = false
-         }
-        
-     }
-    //more of failsafe loco check system
-    else {
-        Materialize.toast("You haven't requested a throttle yet! We can't send any commands to a locomotive until you...um...tell us which one...which you do by requesting a throttle... :P", 4000)
+        //User is trying to move the notch by more than 1 click, which can't happen. We simply return the existing notch, which causes the slider to move back, and notify them.
+        Materialize.toast("<i class='material-icons left'>error</i>You can't adjust the notch by more than 1 click at a time!", 5000)
+        return notch.state;
     }
 }
 

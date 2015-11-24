@@ -46,12 +46,12 @@ jmri.trkpower = function(option) {
     if (option == true) {
         sendcmd('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
-        updateHTML("layoutTrackPower_state")
+        ui.layout.power.status.update();
     }
     else if (option == false) {
         sendcmd('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
-        updateHTML("layoutTrackPower_state")
+        ui.layout.power.status.update();
     }
     
     else if (option == "toggle") {
@@ -59,13 +59,13 @@ jmri.trkpower = function(option) {
         if (layoutTrackPower_state == true) {
             sendcmd('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
-        updateHTML("layoutTrackPower_state")
+        ui.layout.power.status.update();
         }
         //if its currently off, turn it on
         else if (layoutTrackPower_state == false) {
             sendcmd('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
-        updateHTML("layoutTrackPower_state")
+        ui.layout.power.status.update();
         }
     }
 }
@@ -79,12 +79,12 @@ jmri.handleType.power = function(string) {
     if (json.data.state == 2) {
         jmri.trkpower.state = true
         console.log("Updated layout track power status to TRUE")
-        updateHTML("layoutTrackPower_state")
+        ui.layout.power.status.update();
     }
     else if (json.data.state == 4) {
         jmri.trkpower.state = false
         console.log("Updated layout track power status to FALSE")
-        updateHTML("layoutTrackPower_state")
+        ui.layout.power.status.update();
     }
 }
 

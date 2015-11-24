@@ -187,7 +187,7 @@
                                             <!---actual notch slider crap--->
                                             <form action="#">
                                                 <p class="range-field"><i class="material-icons right">settings_backup_restore</i>Notch
-                                                    <input type="range" value="0" id="notch" min="0" max="8" onchange="handleSlider(this, 'notch')"/>
+                                                    <input type="range" value="0" id="notch" min="0" max="8" onchange="cab.slider.notch.set(this.value)"/>
                                                 </p>
                                             </form>
                                             
@@ -248,7 +248,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                             <div class="card-content">
                                 <div class="section">
                                     <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
-                                    <p>Configure the connection to JMRI. Unless you have changed it, you may leave the port on 12080 (the default JMRI web server port). You are currently: <a id="connstatus" style="color:red">Not Connected</a> via WebSockets.</p>
+                                    <p>Configure the connection to JMRI. Unless you have changed it, you may leave the port on 12080 (the default JMRI web server port). You are currently: <a id="connectionStatus" style="color:red">Not Connected</a> via WebSockets.</p>
                                 </div>
                                 <div class="row">
                                     <form class="col s12">
@@ -358,7 +358,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <div class="section">
                                     <div class="switch">
                                         <label>
-                                            <input id="trkpowerswitch" type="checkbox" onchange="handleCBchange(this, 'trackpower')">
+                                            <input id="jmri.trkpower" type="checkbox" onchange="jmri.trkpower(this.checked)">
                                             <span class="lever"></span>Track Power
                                         </label>
                                     </div>
