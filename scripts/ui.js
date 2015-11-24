@@ -6,6 +6,12 @@ ui = {
                 var returned = notch.set(newNotch)
                 $("#notch").val(returned)
             }
+        },
+        locoName : {
+            update : function(name) {
+                //This function sets the locomotive name in the CAB tab
+                document.getElementById("ui.locoName").innerHTML = name;
+            }
         }
     },
     connection : {

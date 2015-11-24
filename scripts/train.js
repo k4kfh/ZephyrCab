@@ -1,9 +1,8 @@
 //functions dealing with the train go in here, this is for organization
-train = []; //first we must define these objects
+train = new Object(); //first we must define these objects
+train.all = []; //THIS IS THE MAIN TRAIN LIST
 train.build = new Object();
 train.ui = new Object();
-
-locomotives = [];
 
 /*
 This function adds the roster information to the bundles file entries, and builds the train builder selection UI system thing based on all that information.
@@ -53,7 +52,7 @@ train.ui.update = function() {
     It is handled using MaterializeCSS's "chip" feature.
     */
     var finalHTML = [] //This variable is going to be combined using join() later on.
-    for (i=0; i < train.length; i++) {
+    for (i=0; i < train.all.length; i++) {
         /*
         This loop cycles through every single element in the train and generates HTML for each one.
         
@@ -67,7 +66,7 @@ train.ui.update = function() {
         var newHTMLstring = "<div class='chip'>"
         newHTML.push(newHTMLstring)
         
-        var newHTMLstring = train[i].roster.name
+        var newHTMLstring = train.all[i].roster.name
         newHTML.push(newHTMLstring)
         
         var newHTMLstring = "<i class='material-icons right' "
@@ -76,7 +75,7 @@ train.ui.update = function() {
         var newHTMLstring = 'onclick=\'train.build.remove("';
         newHTML.push(newHTMLstring)
         
-        var newHTMLstring = train[i].roster.name;
+        var newHTMLstring = train.all[i].roster.name;
         newHTML.push(newHTMLstring)
         
         var newHTMLstring = '")\'';
@@ -136,7 +135,22 @@ train.ui.update = function() {
         finalHTML.push(newHTML.join(''))
     }
     document.getElementById("locomotivePalette").innerHTML = finalHTML.join(''); //The quotes are here so it doesn't put commas between the elements
-    console.log(finalHTML.join(''))
+    //console.log(finalHTML.join(''))
+    
+    /*
+    New Feature: Display locomotive name in CAB tab
+    
+    This feature looks at the roster entry name of the lead locomotive and displays it in the CAB tab's spot for names.
+    
+    The IF statement is so that if there IS no lead locomotive, we can set the name to "Not Set"
+    */
+    if (train.all[0] != undefined) {
+        var locoName = train.all[0].roster.name;
+    }
+    else {
+        var locoName = "No Lead Locomotive Found";
+    }
+    ui.cab.locoName.update(locoName)
 }
 
 /*
@@ -153,9 +167,9 @@ train.build.add = function(object) {
     
     var address = object.roster.address; //We need this because the DCC decoder constructor and the throttle need this
     
-    var trainPosition = train.length; //this is necessary because the DCC decoder constructor accepts a trainPosition argument
+    var trainPosition = train.all.length; //this is necessary because the DCC decoder constructor accepts a trainPosition argument
     
-    train.push(object)
+    train.all.push(object)
     /*
     Because of the magical things built into the decoder constructor function spec, we don't need to call a separate create throttle thing. The throttle subobject is automatically created when we add the DCC decoder thing.
     
@@ -165,7 +179,7 @@ train.build.add = function(object) {
     console.log("Decoder Constructor")
     console.dir(decoderConstructor)
     
-    train[trainPosition].dcc = new decoderConstructor(address, trainPosition)
+    train.all[trainPosition].dcc = new decoderConstructor(address, trainPosition)
     
     //Now that the entire new object is done, we need to move the locomotive name to the used list
     train.ui.locomotives.used.push(object.roster.name)
@@ -180,8 +194,8 @@ train.build.add = function(object) {
 
 train.build.remove = function(entryName) {
     
-    var index = train.indexOf(entryName)
-    train.splice(index, 1) //remove 1 element at the index, basically saying remove the index
+    var index = train.all.indexOf(entryName)
+    train.all.splice(index, 1) //remove 1 element at the index, basically saying remove the index
     
     //Now we have to update the used/unused locomotive lists
     var index = train.ui.locomotives.unused.indexOf(entryName);
