@@ -1,7 +1,7 @@
 gauge = new Object();
 
 gauge.createAll = function() {
-    if (train.all[0] != undefined) {
+    if (train.all[ui.cab.currentLoco] != undefined) {
         gauge.speedometer.create();
         gauge.rpm.create();
         gauge.fuel.create();

@@ -46,8 +46,6 @@ sim.accel = function() {
             train.all[i].prototype.realtime.rpm = train.all[i].prototype.notchRPM[notch.state] //This uses the notch (global variable) to lookup the rpm in an array of RPMs by notches.
             gauge.rpm(train.all[i].prototype.realtime.rpm) //Now we update the gauge
             
-            //TODO - Fuel stuff
-            
             /*
             Now we can calculate tractive effort based on notch and speed. This is done using a function (left open to developers of prototype objects) from inside the train object's prototype subobject.
             */
@@ -99,7 +97,7 @@ sim.accel = function() {
             */
             var fuelUsage = train.all[i].prototype.fuel.usage[notch.state];
             train.all[i].prototype.realtime.fuel.usagePerHour = fuelUsage;
-            train.all[i].prototype.realtime.fuel.usagePerCycle = (fuelUsage / (36000)) * sim.time.speed
+            train.all[i].prototype.realtime.fuel.usagePerCycle = (fuelUsage / (36000)) * sim.time.speed * train.all[i].prototype.engineRunning;
             train.all[i].prototype.realtime.fuel.status = train.all[i].prototype.realtime.fuel.status - train.all[i].prototype.realtime.fuel.usagePerCycle;
             //This IF makes sure we don't end up with a negative fuel amount.
             if (train.all[i].prototype.realtime.fuel.status < 0) {

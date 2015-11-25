@@ -123,6 +123,12 @@ ui = {
         },
         
         currentLoco : 0,
+        setCurrentLoco : function(name) {
+            var number = train.find.all(name);
+            ui.cab.currentLoco = number;
+            gauge.createAll();
+            ui.cab.locoName.update(name);
+        }
     },
     
     connection : {

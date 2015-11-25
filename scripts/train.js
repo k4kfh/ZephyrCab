@@ -200,7 +200,7 @@ train.build.add = function(object) {
 
 train.build.remove = function(entryName) {
     
-    var index = train.all.find(entryName)
+    var index = train.find.all(entryName)
     train.all.splice(index, 1) //remove 1 element at the index, basically saying remove the index
     debugToast("Removing " + entryName + " from train.");
     
@@ -217,7 +217,8 @@ train.build.remove = function(entryName) {
 /*
 This is basically a jerry-rigged version of .indexOf(), but it works with the weird objects-inside-array format of the train.all array. It accepts a name argument and will return the position of the object with that roster.name attribute.
 */
-train.all.find = function(entryName) {
+train.find = new Object();
+train.find.all = function(entryName) {
     var position; //Go ahead and define this so it's in the right scope
     
     for (i = 0; i < train.all.length; i++ ) {
