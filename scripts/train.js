@@ -202,12 +202,10 @@ train.build.remove = function(entryName) {
     
     var index = train.all.find(entryName)
     train.all.splice(index, 1) //remove 1 element at the index, basically saying remove the index
-    console.log("Index of : " + index)
-    console.log("Attempting removal of " + entryName)
+    debugToast("Removing " + entryName + " from train.");
     
     //Now we have to update the used/unused locomotive lists
     var index = train.ui.locomotives.used.indexOf(entryName);
-    console.log("Index of : " + index)
     train.ui.locomotives.used.splice(index, 1);
     //Now we've removed it from the used list, so we need to add it to the unused list.
     train.ui.locomotives.unused.push(entryName)

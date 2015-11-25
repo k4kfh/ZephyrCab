@@ -150,10 +150,9 @@ ui = {
 }
 
 
-//this is a function I made to make a sort of "verbose mode" for the JS toast alerts. I put in lots of Materialize.toast alerts, but when I don't want to hear everything they're annoying. So if you set debugToastMode = false, then the debug alerts cease and only the normal toasts come.
-debugToastMode = false
+//this is a function I made to make a sort of "verbose mode" for the JS toast alerts. I put in lots of Materialize.toast alerts, but when I don't want to hear everything they're annoying. So if you set debugToastMode = false, then the debug alerts cease and only the normal toasts come. Turn it on and off with cfg.debugToasts
 function debugToast(toast, time) {
-    if (debugToastMode == true) {
+    if (cfg.debugToasts == true) {
         Materialize.toast("Debug: " + toast, time)
     }
 }

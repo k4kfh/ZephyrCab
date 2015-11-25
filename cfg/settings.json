@@ -8,3 +8,5 @@ cfg.ip = "10.10.39.85";
 cfg.port = 12080;
 
 cfg.disablePushNotifications = true;
+
+cfg.debugToasts = true;
