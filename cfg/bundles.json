@@ -34,8 +34,10 @@ bundles = {
             "notchRPM" : [300, 362, 425, 487, 550, 613, 675, 738, 800],
             "notchMaxSpeeds" : [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
-            "fuelUse": [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //this is in order of notch with 0 being idle and 8 being Run8
-            "fuelCapacity" : 1500, //in gallons
+            fuel : {
+                usage : [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //array in gal/hr, by notch
+                capacity : 1200, //fuel tank in GAL
+            },
             "calc" : {
                 /*
                 This is an object containing several functions that I am leaving open to developers. Among these are tractive effort and a few other things that could be calculated in a number of different ways. There's no one-size-fits-all method, so I am putting this in the hands of devs.
@@ -74,6 +76,10 @@ bundles = {
             "realtime" : {
                 speed : 0, //This is defined just to be safe.
                 horsepower : 0, //This is the OUTPUT HP
+                fuel : {
+                    status : 1200, //You should set this to the max fuel capacity, or you'll be starting off with a non-full tank
+                    notifiedOfEmptyTank : false,
+                },
             }, //This is used by the physics engine to store current information, we just go ahead and define it
             "gauges": {
                 /*
@@ -130,12 +136,193 @@ bundles = {
                         needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
                     },
                     highlights : [],
-                }
+                },
+                "fuel": {
+                    "title" : "Fuel",
+                    "minValue" : 0,
+                    "maxValue" : 1200,
+                    "majorTicks" : ['0', '100', '200', '300', '400', '500', '600', '700', '800', '900', '1000', '1100', '1200'],
+                    "minorTicks" : 10,
+                    "strokeTicks" : true,
+                    "units" : "Gal.",
+                    "valueFormat" : {int:4, dec:0},
+                    "glow" : false,
+                    "animation" : {
+                        delay : 0,
+                        duration : 500,
+                        fn : "quad",
+                    },
+                    "colors" : {
+                        plate      : '#fff',
+                        majorTicks : '#444',
+                        minorTicks : '#666',
+                        title      : '#888',
+                        units      : '#888',
+                        numbers    : '#444',
+                        needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+                    },
+                    highlights : [],
+                },
             },
             "coefficientOf" : {
                 rollingResistance : 0.0015,
                 
+            },
+            "grade" : 0, //IMPORTANT : This can be set to any grade percentage, but it should be as a percent not as a decimal. 1 for a 1% grade, NOT 0.01!
+        }
+    },
+    
+    "CBQ1":{
+        model:{
+            speed:function(mph) {
+                mph = speed; //totally not correct but it is a functional example
+                return speed;
             }
+        },
+        prototype:{
+            "builder" : "EMD", //This is displayed to the client and can be anything
+            "name" : "F7-A", //This is also displayed to the client and can be anything
+            "type" : "locomotive", //This must be "locomotive"
+            "weight" : 250000, //Weight of the locomotive in lbs
+            "maxHP" : 1500, //Horsepower of the locomotive
+            "notchRPM" : [300, 362, 425, 487, 550, 613, 675, 738, 800],
+            "notchMaxSpeeds" : [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
+            "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
+            fuel : {
+                usage : [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //array in gal/hr, by notch
+                capacity : 1200, //fuel tank in GAL
+            },
+            "calc" : {
+                /*
+                This is an object containing several functions that I am leaving open to developers. Among these are tractive effort and a few other things that could be calculated in a number of different ways. There's no one-size-fits-all method, so I am putting this in the hands of devs.
+                */
+                "te" : function(speed, trainPosition) {
+                    /*
+                    This example uses an equation from a Virginia Tech paper.
+                    
+                    It is important to note that the value from this function will be used, unaltered, in the physics engine. You cannot forget to take into account the reverser. This is easy; all you have to do is multiply your calculated value by the global variable: reverser . If we're in neutral, this will yield 0. In forward, it will do nothing. In reverse, it will make your number negative. Simple, but very important.
+                    */
+                    //First we need to convert the speed to KM/HR.
+                    var efficiency = 0.72
+                    var horsepower = train.all[trainPosition].prototype.realtime.horsepower * notch.state
+                    var speedSI = speed * 1.60934
+    
+                    /*
+                    Now we must actually use the formula from the Virginia Tech paper. It states:
+                    T = 2650((np/v))
+    
+                    T is tractive effort in Newtons.
+                    n is the efficiency coefficient (unitless)
+                    p is the output horsepower
+                    v is the speed in km/hr
+                    */
+                    var teNewtons = 2650 * ( (efficiency * horsepower)/(speedSI) )
+    
+                    //Now that we have the tractive effort in Newtons, we must convert it to pounds.
+                    var teLbs = 0.224809 * teNewtons * reverser
+                    //This is a measure of protection since the equation creates a curve that moves upwards too sharply
+                    if (speed < 8.9) {
+                        teLbs = 56500 * (notch.state / 8) * reverser;
+                    }
+                    return teLbs;
+                }
+            },
+            "realtime" : {
+                speed : 0, //This is defined just to be safe.
+                horsepower : 0, //This is the OUTPUT HP
+                fuel : {
+                    status : 1200, //You should set this to the max fuel capacity, or you'll be starting off with a non-full tank
+                    notifiedOfEmptyTank : false,
+                },
+            }, //This is used by the physics engine to store current information, we just go ahead and define it
+            "gauges": {
+                /*
+            this is a sub object containing all the gauge info. Gauges are rendered with https://github.com/Mikhus/canv-gauge/, so see the wiki there for more info on these options.
+            */
+                "speedometer": {
+                    "title" : "Speed",
+                    "minValue" : 0,
+                    "maxValue" : 120,
+                    "majorTicks" : ['0', '20', '40', '60', '80', '80', '100', '120'],
+                    "minorTicks" : 10,
+                    "strokeTicks" : true,
+                    "units" : "MPH",
+                    "valueFormat" : { int : 3, dec : 0},
+                    "glow" : false,
+                    "animation" : {
+                        delay : 0,
+                        duration : 500,
+                        fn : "quad",
+                    },
+                    "colors" : {
+                        plate      : '#fff',
+                        majorTicks : '#444',
+                        minorTicks : '#666',
+                        title      : '#888',
+                        units      : '#888',
+                        numbers    : '#444',
+                        needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+                    },
+                    highlights : [],
+                },
+                "rpm" : {
+                    "title" : "",
+                    "minValue" : 0,
+                    "maxValue" : 900,
+                    "majorTicks" : ['0', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+                    "minorTicks" : 10,
+                    "strokeTicks" : true,
+                    "units" : "RPM",
+                    "valueFormat" : { int : 3, dec : 0},
+                    "glow" : false,
+                    "animation" : {
+                        delay : 0,
+                        duration : 500,
+                        fn : "cycle",
+                    },
+                    "colors" : {
+                        plate      : '#fff',
+                        majorTicks : '#444',
+                        minorTicks : '#666',
+                        title      : '#888',
+                        units      : '#888',
+                        numbers    : '#444',
+                        needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+                    },
+                    highlights : [],
+                },
+                "fuel": {
+                    "title" : "Fuel",
+                    "minValue" : 0,
+                    "maxValue" : 1200,
+                    "majorTicks" : ['0', '100', '200', '300', '400', '500', '600', '700', '800', '900', '1000', '1100', '1200'],
+                    "minorTicks" : 10,
+                    "strokeTicks" : true,
+                    "units" : "Gal.",
+                    "valueFormat" : {int:4, dec:0},
+                    "glow" : false,
+                    "animation" : {
+                        delay : 0,
+                        duration : 500,
+                        fn : "quad",
+                    },
+                    "colors" : {
+                        plate      : '#fff',
+                        majorTicks : '#444',
+                        minorTicks : '#666',
+                        title      : '#888',
+                        units      : '#888',
+                        numbers    : '#444',
+                        needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+                    },
+                    highlights : [],
+                },
+            },
+            "coefficientOf" : {
+                rollingResistance : 0.0015,
+                
+            },
+            "grade" : 0, //IMPORTANT : This can be set to any grade percentage, but it should be as a percent not as a decimal. 1 for a 1% grade, NOT 0.01!
         }
     }
     

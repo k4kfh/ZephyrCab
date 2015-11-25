@@ -18,9 +18,9 @@ jmri.throttle = function(address, throttleName) {
     if (wsStatus == true) {
         //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
         sendcmd('{"type":"throttle","data":{"throttle":"' + throttleName + '","address":' + address + '}}')
-        console.log("Requested throttle " + name + " for locomotive #" + address)
+        console.log("Requested throttle " + throttleName + " for locomotive #" + address)
         this.address = address
-        this.name = throttleName //throttle name should always be the train position just for ease-of-development purposes
+        this.name = throttleName; //throttle name should always be the train position just for ease-of-development purposes
         this.speed = new Object(); //same reason as this.f for existing as a seemingly stupid object
         this.speed.set = function(speed) {
             //set speed to given percent
@@ -146,6 +146,11 @@ jmri.roster.matchProperty = function(property) {
     }
     return results;
 }
-
+jmri.throttleName = new Object();
+jmri.throttleName.object = 0
+jmri.throttleName.generate = function() {
+    jmri.throttleName.object++
+    return jmri.throttleName.object;
+}
 
     

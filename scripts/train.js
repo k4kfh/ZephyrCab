@@ -144,7 +144,7 @@ train.ui.update = function() {
     The IF statement is so that if there IS no lead locomotive, we can set the name to "Not Set"
     */
     if (train.all[0] != undefined) {
-        var locoName = train.all[0].roster.name;
+        var locoName = train.all[ui.cab.currentLoco].roster.name;
     }
     else {
         var locoName = "No Lead Locomotive Found";
@@ -174,7 +174,13 @@ train.build.add = function(object) {
     
     
     */
-    var decoderConstructor = decoders[decoderFamily][decoderModel]
+    
+    if (decoders[decoderFamily] == undefined) {
+        decoderConstructor = decoders["generic"]["generic"]
+    }
+    else {
+        var decoderConstructor = decoders[decoderFamily][decoderModel]
+    }
     
     train.all[trainPosition].dcc = new decoderConstructor(address, trainPosition)
     
@@ -194,14 +200,35 @@ train.build.add = function(object) {
 
 train.build.remove = function(entryName) {
     
-    var index = train.all.indexOf(entryName)
+    var index = train.all.find(entryName)
     train.all.splice(index, 1) //remove 1 element at the index, basically saying remove the index
+    console.log("Index of : " + index)
+    console.log("Attempting removal of " + entryName)
     
     //Now we have to update the used/unused locomotive lists
-    var index = train.ui.locomotives.unused.indexOf(entryName);
-    train.ui.locomotives.unused.splice(index, 1);
+    var index = train.ui.locomotives.used.indexOf(entryName);
+    console.log("Index of : " + index)
+    train.ui.locomotives.used.splice(index, 1);
     //Now we've removed it from the used list, so we need to add it to the unused list.
     train.ui.locomotives.unused.push(entryName)
     
     train.ui.update();
+}
+
+
+/*
+This is basically a jerry-rigged version of .indexOf(), but it works with the weird objects-inside-array format of the train.all array. It accepts a name argument and will return the position of the object with that roster.name attribute.
+*/
+train.all.find = function(entryName) {
+    var position; //Go ahead and define this so it's in the right scope
+    
+    for (i = 0; i < train.all.length; i++ ) {
+        var name = train.all[i].roster.name
+        console.log("Name = " + name)
+        if (name == entryName) {
+            position = i;
+            break;
+        }
+    }
+    return position;
 }

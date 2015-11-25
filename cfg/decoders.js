@@ -8,7 +8,7 @@ decoders = {
             //decoder object for ESU official EMD 567 Sound project
             //By Hampton Morgan - k4kfh@github - May 2015
             //evilgeniustech.com
-            train.all[trainPosition].throttle = new jmri.throttle(address, trainPosition) //we use the train position as the throttle name for future lookup purposes
+            train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate()) //we use the train position as the throttle name for future lookup purposes
             
             //FUNCTIONS
             this.f = new Object();
@@ -59,8 +59,21 @@ decoders = {
             //engine on/off
             this.f.engine = new Object();
             this.f.engine.set = function(state) {
-                train.all[trainPosition].throttle.f.set(8, state);
-                train.all[trainPosition].dcc.f.engine.state = state;
+                //This IF makes the entire function useless if you're out of fuel.
+                if (train.all[trainPosition].prototype.realtime.fuel.status != 0){
+                    train.all[trainPosition].throttle.f.set(8, state);
+                    train.all[trainPosition].dcc.f.engine.state = state;
+                    //This code sets engineRunning to 0 or 1 depending on the state
+                    if (state == true) {
+                        train.all[trainPosition].prototype.engineRunning = 1;
+                    }
+                    else if (state == false) {
+                        train.all[trainPosition].prototype.engineRunning = 0;
+                    }
+                }
+                else {
+                    train.all[trainPosition].dcc.f.engine.state = false;
+                }
             }
             this.f.engine.state = false;
                 
@@ -107,38 +120,35 @@ decoders = {
     },
     
     //TESTING ONLY
-    "E-Z Command decoders":{
+    "generic":{
         //sound project "emd567"
-        "1 function decoder (36-551)" : function(address, trainPosition) {
-            //ESU LokSound Select V4
-            //decoder object for ESU official EMD 567 Sound project
-            //By Hampton Morgan - k4kfh@github - May 2015
-            //evilgeniustech.com
-            train[trainPosition].throttle = new jmri.throttle(address, trainPosition) //we use the train position as the throttle name for future lookup purposes
+        "generic" : function(address, trainPosition) {
+            //GENERIC FALLBACK
+            train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate())
             
             //FUNCTIONS
             this.f = new Object();
             //bell
             this.f.bell = new Object();
             this.f.bell.set = function(state) {
-                train[trainPosition].throttle.f.set(1, state)
-                train[trainPosition].dcc.f.bell.state = state;
+                train.all[trainPosition].throttle.f.set(1, state)
+                train.all[trainPosition].dcc.f.bell.state = state;
             }
             this.f.bell.state = false;
                 
             //horn
             this.f.horn = new Object();
             this.f.horn.set = function(state) {
-                train[trainPosition].throttle.f.set(2, state)
-                train[trainPosition].dcc.f.horn.state = state;
+                train.all[trainPosition].throttle.f.set(2, state)
+                train.all[trainPosition].dcc.f.horn.state = state;
             }
             this.f.horn.state = false;
                 
             //compressor
             this.f.compressor = new Object();
             this.f.compressor.set = function(state) {
-                train[trainPosition].throttle.f.set(20, state)
-                train[trainPosition].dcc.f.compressor.state = state;
+                train.all[trainPosition].throttle.f.set(20, state)
+                train.all[trainPosition].dcc.f.compressor.state = state;
             }
             this.f.compressor.state = false;
                 
@@ -164,19 +174,39 @@ decoders = {
             }
             this.f.engine.state = false;
                 
-            //notch up
-            this.f.notchup = new Object();
-            this.f.notchup.set = function(state) {
-                    
+            //notch sound stuff.
+            this.f.notch = {
+                up : function() {
+                    //Notch up code
+                    //This is inside an IF statement to make sure we don't try to notch OVER 8.
+                    var newNotch = (train.all[trainPosition].dcc.f.notch.state + 1)
+                    if (newNotch <= 8) {
+                         train.all[trainPosition].dcc.f.notch.state++; //THIS HAS TO RUN INSTANTLY OR SIM.JS IS STUPID
+                    }
+                },
+                down : function() {
+                    //Notch down code
+                    //This is inside an IF statement to make sure we don't try to notch LESS THAN idle.
+                    var newNotch = (train.all[trainPosition].dcc.f.notch.state - 1)
+                    if (newNotch >= 0) {
+                        train.all[trainPosition].dcc.f.notch.state--; //THIS MUST RUN INSTANTLY OR SIM.JS DOES WEIRD STUFF
+                    }
+                },
+                state : 0, //This should reflect the current notching state of the sound decoder. You should increment this up or down 1 when your up() and down() functions finish, or sim.js's functions will be horribly confused and mess up your sounds.
             }
-            this.f.notchup.state = false;
                 
-            //notch down
-            this.f.notchdown = new Object();
-            this.f.notchdown.set = function(state) {
-                    
+            
+            //SPEED SETTING
+            this.speed = new Object();
+            this.speed.state = 0;
+            this.speed.set = function(speed) {
+                train.all[trainPosition].throttle.speed.set(speed)
+                train.all[trainPosition].dcc.speed.state = speed;
             }
-            this.f.notchdown.state = false;
+            this.speed.setMPH = function(mph) {
+                var speed = train.all[trainPosition].model.speed(mph)
+                train.all[trainPosition.dcc.speed.set(speed)]
+            }
                 
             
             //SPEED SETTING

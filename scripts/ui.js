@@ -26,7 +26,7 @@ ui = {
         engine : {
             start : {
                 set : function(arg) {
-                    if (train.all[0] != undefined) {
+                    if (train.all[ui.cab.currentLoco] != undefined) {
                         ui.cab.engine.start.state = arg;
                         document.getElementById("ui.cab.engine.start").checked = arg;
                     }
@@ -62,9 +62,9 @@ ui = {
         headlight : {
             set : function(arg) {
                 //Because of the way the consist system (or lack thereof, in all technicality) works, we must set the headlight on ONLY the lead locomotive. First, we check and make sure we actually HAVE a lead locomotive
-                if (train.all[0] != undefined) {
+                if (train.all[ui.cab.currentLoco] != undefined) {
                     //Turn the headlight on on the lead loco, and also change the state we have stored locally
-                    train.all[0].dcc.f.headlight.set(arg);
+                    train.all[ui.cab.currentLoco].dcc.f.headlight.set(arg);
                     ui.cab.headlight.state = arg;
                     document.getElementById("ui.cab.headlight").checked = arg;
                 }
@@ -94,9 +94,9 @@ ui = {
         
         bell : {
             set:function(arg) {
-                if (train.all[0] != undefined) {
+                if (train.all[ui.cab.currentLoco] != undefined) {
                     //If we have a lead locomotive
-                    train.all[0].dcc.f.bell.set(arg)
+                    train.all[ui.cab.currentLoco].dcc.f.bell.set(arg)
                     ui.cab.bell.state = arg;
                     return ui.cab.bell.state;
                 }
@@ -112,15 +112,17 @@ ui = {
         
         horn : {
             set : function(arg) {
-                if (train.all[0] != undefined) {
-                    train.all[0].dcc.f.horn.set(arg)
+                if (train.all[ui.cab.currentLoco] != undefined) {
+                    train.all[ui.cab.currentLoco].dcc.f.horn.set(arg)
                     ui.cab.horn.state = arg;
                 }
                 //Since this is a button, not a checkbox, we don't have to do anything if there's no lead loco.
             },
             
             state : false,
-        }
+        },
+        
+        currentLoco : 0,
     },
     
     connection : {

@@ -29,6 +29,9 @@ reverser = 0; //NEUTRAL not FWD
 
 sim = new Object();
 sim.direction = 1 //1 means forward, -1 means reverse. This is the ACTUAL direction, which is not necessarily the reverser's direction.
+sim.time = {
+    speed : 1,
+}
 
 sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
@@ -51,7 +54,7 @@ sim.accel = function() {
             var elementSpeed = train.all[i].prototype.realtime.speed
             var trainPosition = i; //This is passed as an argument so the function can see ALL of its parent object's attributes
             var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
-            train.all[i].prototype.realtime.te = te; //Store TE in the train object
+            train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning; //We multiply by engineRunning so if we're not running it's 0
             
             /*
             Handling global sounds (sounds that are on all locos, not just lead)
@@ -83,11 +86,60 @@ sim.accel = function() {
             }
             
             /*
+            FUEL USAGE
+            The first two lines of this calculation are simple.
+            Line 1 looks at the array to find the gal/hr fuel usage for this notch.
+            Line 2 sets the fuel usage per hour for the element to the number we just found
+            
+            Line 3 gets complexish. It divides fuel usage by (60 * 10 * the time ratio) We divide by 60*10 so we can get the fuel usage per normal physics engine cycle. sim.time.speed is in there because if time is moving 2x as fast, it's 2x the fuel usage per sim cycle.
+            
+            Line 4 subtracts the usage per cycle (calculated in line 3) from the fuel tank to give us the new fuel value.
+            
+            Line 5 begins an IF statement that updates the fuel gauge if we're on locomotive 0.
+            */
+            var fuelUsage = train.all[i].prototype.fuel.usage[notch.state];
+            train.all[i].prototype.realtime.fuel.usagePerHour = fuelUsage;
+            train.all[i].prototype.realtime.fuel.usagePerCycle = (fuelUsage / (36000)) * sim.time.speed
+            train.all[i].prototype.realtime.fuel.status = train.all[i].prototype.realtime.fuel.status - train.all[i].prototype.realtime.fuel.usagePerCycle;
+            //This IF makes sure we don't end up with a negative fuel amount.
+            if (train.all[i].prototype.realtime.fuel.status < 0) {
+                train.all[i].prototype.realtime.fuel.status = 0;
+            }
+            if (i == ui.cab.currentLoco) {
+                gauge.fuel(train.all[ui.cab.currentLoco].prototype.realtime.fuel.status)
+            }
+            if (train.all[i].prototype.realtime.fuel.status <= 0) {
+                //If we're out of fuel...
+                var locoName = train.all[i].roster.name;
+                train.all[i].dcc.f.engine.set(false); //Turn off engine sounds, which sets running to 0, making the TE of this loco nothing
+                //This if statement checks if we've already notified the user, and if we haven't, it does.
+                if (train.all[i].prototype.realtime.fuel.notifiedOfEmptyTank == false) {
+                    Materialize.toast("<i class='material-icons left'>warning</i>" + locoName + " has run out of fuel!")
+                    train.all[i].prototype.realtime.fuel.notifiedOfEmptyTank = true;
+                }
+            }
+            
+            
+            
+            /*
             Adding up rolling resistance for this element alone
             */
             train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
+            //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
+            if (sim.speed == 0) {
+                train.all[i].prototype.realtime.rollingResistance = 0
+            }
+            /*
+            GRADE RESISTANCE
             
+            This feature is not really practical unless you have sensors in every car/locomotive, but it could be made practical with some careful occupancy detection and a little scripting, so I'm going ahead and adding it. By default, the grade is set at 0%, so this has no effect, but if you change it then the math will be right.
             
+            This math courtesy of Mr. Al Krug
+            */
+            var tonnage = train.all[i].prototype.weight * 0.0005 //This finds the tonnage of the INDIVIDUAL element that we're dealing with right now, not the whole train.
+            var gradePercent = train.all[i].prototype.grade; //1% grade would be 1, not 0.01!
+            var gradeResistance = -1 * gradePercent * tonnage * 20 //20 is for 20lbs per ton per % (Al Krug), -1 is to make it a negative since it's RESISTANCE.
+            train.all[i].prototype.realtime.gradeResistance = gradeResistance;
         }
         else if (train.all[i].prototype.type == "rollingstock") {
             //We are dealing with rolling stock.
@@ -115,55 +167,6 @@ The function will then return a rolling resistance value, in lbs.
 */
 crunch.rollingResistance = function(weight, coefficient) {
     return (weight * coefficient)
-}
-
-/*
-This function is rather involved, but simple to use. It is for calculating the tractive effort of a diesel locomotive at a given speed.
-
-It is called like so:
-
-crunch.tractiveEffort(horsepower, speed, efficiency, beginningSpeed, startingTE)
-
-Arguments:
-horsepower - the OUTPUT HORSEPOWER of the locomotive. This is dependent on the notch.
-speed - the current speed of the locomotive IN MILES PER HOUR. IF YOU GIVE IT KM/HR IT WILL BE WRONG!
-efficiency - the efficiency of the locomotive in converting power into torque, expressed as a decimal. For example, 75% efficiency would be 0.75
-startingTE - the starting tractive effort in lbs
-beginningSpeed - the speed to start using the equation to find TE. Until this speed, the function will simply report the starting TE.
-
-The function will return a tractive effort value in POUNDS.
-
-This function is built using an equation outlined in an engineering paper by Virginia Tech.
-http://128.173.204.63/courses/cee3604/cee3604_pub/rail_resistance.pdf
-Credit where credit is due; this paper is excellent.
-*/
-crunch.tractiveEffort = function(horsepower, speed, efficiency, beginningSpeed, startingTE) {
-    //First we need to convert the speed to KM/HR.
-    var speedSI = speed * 1.60934
-    
-    /*
-    Now we must actually use the formula from the Virginia Tech paper. It states:
-    T = 2650((np/v))
-    
-    T is tractive effort in Newtons.
-    n is the efficiency coefficient (unitless)
-    p is the output horsepower
-    v is the speed in km/hr
-    */
-    var teNewtons = 2650 * ( (efficiency * horsepower)/(speedSI) )
-    
-    //Now that we have the tractive effort in Newtons, we must convert it to pounds.
-    var teLbs = 0.224809 * teNewtons
-    
-    /*
-    The tractive effort curve moves upward too sharply below a certain speed. This can vary by locomotive, so it is a configurable value in prototype objects. The following code is a safeguard to set the tractive effort to the starting TE if the speed is below the cutoff.
-    */
-    if (speed < beginningSpeed) {
-        teLbs = startingTE;
-    }
-    
-    //Since the tractive effort is converted to LBS now, we can return this value.
-    return teLbs;
 }
 
 /*
