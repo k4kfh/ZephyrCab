@@ -124,6 +124,15 @@ ui = {
         
         currentLoco : 0,
         setCurrentLoco : function(name) {
+            if (name == undefined) {
+                if (train.all[0] == undefined) {
+                    return undefined; //This makes the entire function not do anything if we have no lead loco
+                }
+                //Set name to the name of the lead loco
+                var name = train.all[0].roster.name;
+                
+                //Now the function can move on as normal, but it will revert to the lead locomotive.
+            }
             var number = train.find.all(name);
             ui.cab.currentLoco = number;
             gauge.createAll();
