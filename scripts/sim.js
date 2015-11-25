@@ -24,7 +24,11 @@ notch.set = function(newNotch) {
     }
 }
 
+//We also go ahead and define the reverser so the math works
+reverser = 0; //NEUTRAL not FWD
+
 sim = new Object();
+sim.direction = 1 //1 means forward, -1 means reverse. This is the ACTUAL direction, which is not necessarily the reverser's direction.
 
 sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
@@ -58,9 +62,11 @@ sim.accel = function() {
                 train.all[i].dcc.f.engine.set(ui.cab.engine.start.state)
             }
             
-            //Prime mover notching sounds
+            /*
+            PRIME MOVER NOTCHING SOUNDS
             
-            //We check and see if the notch has changed since the last cycle
+            First, we must check and see if the notch has changed at all since the last physics engine cycle.
+            */
             if (train.all[i].dcc.f.notch.state != notch.state) {
                 //We know it's changed, now we have to figure out which direction (up or down) to move it.
                 var difference = notch.state - train.all[i].dcc.f.notch.state; //This will equal 1 or -1, telling us the direction to notch
@@ -75,6 +81,11 @@ sim.accel = function() {
             else {
                 //console.log("No notch difference found")
             }
+            
+            /*
+            Adding up rolling resistance for this element alone
+            */
+            train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
             
             
         }

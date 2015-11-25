@@ -31,12 +31,9 @@ bundles = {
             "type" : "locomotive", //This must be "locomotive"
             "weight" : 250000, //Weight of the locomotive in lbs
             "maxHP" : 1500, //Horsepower of the locomotive
-            "frontArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Front cross-sectional area in sq. ft
-            "rearArea" : ( ((10 * 12) + 7) * (15 * 12) ) / (12*12), //Rear cross-sectional area in sq. ft.
-            "dragCoefficient":1.7,
             "notchRPM" : [300, 362, 425, 487, 550, 613, 675, 738, 800],
             "notchMaxSpeeds" : [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
-            "running": false,
+            "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
             "fuelUse": [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //this is in order of notch with 0 being idle and 8 being Run8
             "fuelCapacity" : 1500, //in gallons
             "calc" : {
@@ -51,7 +48,7 @@ bundles = {
                     */
                     //First we need to convert the speed to KM/HR.
                     var efficiency = 0.72
-                    var horsepower = train.all[trainPosition].prototype.maxHP * notch
+                    var horsepower = train.all[trainPosition].prototype.realtime.horsepower * notch.state
                     var speedSI = speed * 1.60934
     
                     /*
@@ -76,10 +73,7 @@ bundles = {
             },
             "realtime" : {
                 speed : 0, //This is defined just to be safe.
-                notch : {
-                    soundNotch : 0,
-                    simNotch : 0,
-                },
+                horsepower : 0, //This is the OUTPUT HP
             }, //This is used by the physics engine to store current information, we just go ahead and define it
             "gauges": {
                 /*
@@ -137,6 +131,10 @@ bundles = {
                     },
                     highlights : [],
                 }
+            },
+            "coefficientOf" : {
+                rollingResistance : 0.0015,
+                
             }
         }
     }
