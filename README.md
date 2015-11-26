@@ -3,7 +3,7 @@
 *Formerly locoThrottle.js*
 
 * [Visit Main Project Site](http://k4kfh.github.io/ZephyrCab)
-* [Project Documentation](http://k4kfh.github.io/ZephyrCab)
+* [Project Documentation](http://k4kfh.github.io/ZephyrCab/docs/site)
 
 [![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
