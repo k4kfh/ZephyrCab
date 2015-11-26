@@ -35,7 +35,7 @@ Before using the program:
 
 When you first log in after setting up `bundles.json`, you'll need to connect to your JMRI PC (unless you set up autoconnection, which I highly recommend. [See this guide.](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/general-configuration/)). You can do this by inputting the IP of the PC, with the port of the JMRI web interface. By default, locoThrottle.js uses port 12080, which is the default for JMRI.
 
-![Connection Settings in locoThrottle.js](http://evilgeniustech.com/wp-content/uploads/2015/11/connectionsettings.png)
+![Connection Settings in ZephyrCab](http://evilgeniustech.com/wp-content/uploads/2015/11/connectionsettings.png)
 
 Once you have connected to your JMRI PC, you'll need to visit the "Train Settings" tab. There, you'll set up your train by adding the locomotive(s) and cars you wish to use. You need to add the cars as well if you want the load to be simulated by the physics engine.
 

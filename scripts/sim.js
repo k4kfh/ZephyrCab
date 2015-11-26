@@ -79,11 +79,6 @@ sim.accel = function() {
             train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning; //We multiply by engineRunning so if we're not running it's 0
             
             /*
-            Handling global sounds (sounds that are on all locos, not just lead)
-            The if statements here are to protect against unnecessary bandwidth usage. It's just checking to see if the state has actually changed since last time we set it. If it hasn't we don't set it.
-            */
-            
-            /*
             PRIME MOVER NOTCHING SOUNDS
             
             First, we must check and see if the notch has changed at all since the last physics engine cycle.
@@ -138,6 +133,46 @@ sim.accel = function() {
                     train.all[i].prototype.realtime.fuel.notifiedOfEmptyTank = true;
                 }
             }
+            
+            /*
+            Air compressor sounds
+            
+            This handles both the simulation calculations and the sound, all in the same lines of code.
+            
+            First we figure out if it's running at all.
+            Then we calculate the flow rate.
+            */
+            if (testCompVar == true) { //This is true temporarily until I figure more out about pressure levels
+                train.all[i].prototype.realtime.air.compressor.running = 1;
+                
+                //If we're dealing with the cabbed locomotive
+                if (i == ui.cab.currentLoco) {
+                    light.compressor(true);
+                }
+            }
+            else {
+                train.all[i].prototype.realtime.air.compressor.running = 0;
+                
+                //If user is in this locomotive's cab
+                if (i == ui.cab.currentLoco) {
+                    light.compressor(false);
+                }
+            }
+            
+            //Another IF for the sound stuff
+            if (train.all[i].prototype.realtime.air.compressor.running == 1) {
+                train.all[i].dcc.f.compressor.set(true);
+            }
+            else {
+                train.all[i].dcc.f.compressor.set(false);
+            }
+            
+            //Find flow rate
+            var rpm = train.all[i].prototype.realtime.rpm; //this is just to make it more readable than this giant long object name
+            var CfmRpmRatio = train.all[i].prototype.air.compressor.flowrate;
+            var isRunning = train.all[i].prototype.realtime.air.compressor.running
+            train.all[i].prototype.realtime.air.compressor.flowrate = rpm * CfmRpmRatio * isRunning
+            
             
             /*
             Adding up rolling resistance for this element alone

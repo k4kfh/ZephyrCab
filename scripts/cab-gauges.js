@@ -56,3 +56,26 @@ gauge.fuel.create = function() {
     gauge.fuel.object = new Gauge(options);
     gauge.fuel.object.draw();
 }
+
+
+//Indicator Lights - All these are either on or off, they have no specific value like the gauges.
+
+light = new Object();
+
+light.compressor = function(state) {
+    if (state == true) {
+        document.getElementById("ui.cab.compressor").className = "btn-flat white-text red"
+    }
+    else if (state == false) {
+        document.getElementById("ui.cab.compressor").className = "btn-flat grey lighten-3"
+    }
+}
+
+light.wheelSlip = function(state) {
+    if (state == true) {
+        document.getElementById("ui.cab.wheelSlip").className = "btn-flat white-text red"
+    }
+    else if (state == false) {
+        document.getElementById("ui.cab.wheelSlip").className = "btn-flat grey lighten-3"
+    }
+}

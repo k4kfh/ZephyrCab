@@ -73,6 +73,20 @@ bundles = {
                     return teLbs;
                 }
             },
+            air : {
+                reservoir : {
+                    main : {
+                        pressure : 0,//Set this to 0 to start
+                    },
+                },
+                compressor : {
+                    limits : {
+                        lower : 80, //This is the point at which the compressor will turn back on and fill up the air reservoir (psi)
+                        upper : 90, //This is the point at which the compressor will turn off (psi)
+                    },
+                    flowrate : 0.28 //This is cfm/rpm, derived from "255cfm @ 900rpm for an SD45" according to Mr. Al Krug
+                }
+            },
             "realtime" : {
                 speed : 0, //This is defined just to be safe.
                 horsepower : 0, //This is the OUTPUT HP
@@ -80,6 +94,22 @@ bundles = {
                 fuel : {
                     status : 1200, //You should set this to the max fuel capacity, or you'll be starting off with a non-full tank
                     notifiedOfEmptyTank : false,
+                },
+                air : {
+                    compressor : {
+                        calc : function(trainPosition) {
+                            /*
+                            This function should calculate and set the flow rate in CFM. You can find out any prototype property since we gave it the trainPosition. You should NOT multiply this calculation by running or engineRunning; sim.js will do that!
+                            In an F7, the compressor is driven directly by the prime mover, so this calculation will look at RPM and go from there. If you had an engine with an electric compressor, that would be different.
+                            */
+                            var rpm = train.all[trainPosition].prototype.realtime.rpm
+                            var cfm = rpm * 0.283; //This is a figure that I got from "255cu ft/min @ 900rpm" from Al Krug.
+                            
+                            return cfm;
+                        },
+                        flowrate : 0, //Set this to 0
+                        running : 0, //This works a lot like prototype.engineRunning
+                    },
                 },
             }, //This is used by the physics engine to store current information, we just go ahead and define it
             "gauges": {
