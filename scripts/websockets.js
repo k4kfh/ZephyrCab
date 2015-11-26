@@ -57,7 +57,9 @@ function connect(ip, port, automaticornot) {
 function heartbeats() {
     
     ws.send('{"type":"ping"}')
-    console.log('SENT : {"type":"ping"}' )
+    if (cfg.logallmessages == true) {
+        console.log('SENT : {"type":"ping"}' )
+    }
     
     
 }

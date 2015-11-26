@@ -139,14 +139,12 @@ sim.accel = function() {
                 }
             }
             
-            
-            
             /*
             Adding up rolling resistance for this element alone
             */
             train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
             //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
-            if (sim.speed == 0) {
+            if (train.all[i].prototype.realtime.speed == 0) {
                 train.all[i].prototype.realtime.rollingResistance = 0
             }
             /*
@@ -157,9 +155,11 @@ sim.accel = function() {
             This math courtesy of Mr. Al Krug
             */
             var tonnage = train.all[i].prototype.weight * 0.0005 //This finds the tonnage of the INDIVIDUAL element that we're dealing with right now, not the whole train.
-            var gradePercent = train.all[i].prototype.grade; //1% grade would be 1, not 0.01!
+            var gradePercent = train.all[i].prototype.realtime.grade; //1% grade would be 1, not 0.01!
             var gradeResistance = -1 * gradePercent * tonnage * 20 //20 is for 20lbs per ton per % (Al Krug), -1 is to make it a negative since it's RESISTANCE.
             train.all[i].prototype.realtime.gradeResistance = gradeResistance;
+            
+            
         }
         else if (train.all[i].prototype.type == "rollingstock") {
             //We are dealing with rolling stock.

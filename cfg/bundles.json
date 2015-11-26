@@ -76,6 +76,7 @@ bundles = {
             "realtime" : {
                 speed : 0, //This is defined just to be safe.
                 horsepower : 0, //This is the OUTPUT HP
+                "grade" : 0, //IMPORTANT : This can be set to any grade percentage, but it should be as a percent not as a decimal. 1 for a 1% grade, NOT 0.01!
                 fuel : {
                     status : 1200, //You should set this to the max fuel capacity, or you'll be starting off with a non-full tank
                     notifiedOfEmptyTank : false,
@@ -168,7 +169,6 @@ bundles = {
                 rollingResistance : 0.0015,
                 
             },
-            "grade" : 0, //IMPORTANT : This can be set to any grade percentage, but it should be as a percent not as a decimal. 1 for a 1% grade, NOT 0.01!
         }
     },
     
