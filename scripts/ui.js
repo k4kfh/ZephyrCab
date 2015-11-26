@@ -134,9 +134,16 @@ ui = {
                 //Now the function can move on as normal, but it will revert to the lead locomotive.
             }
             var number = train.find.all(name);
+            
+            //This stops the function mid-execution if it is trying to work with a nonexistant locomotive.
+            if (number == undefined) {
+                return undefined;
+            }
+            
             ui.cab.currentLoco = number;
             gauge.createAll();
             ui.cab.locoName.update(name);
+            Materialize.toast("<i class='material-icons left'>directions_railway</i>Entered cab of " + name, 2500)
         }
     },
     

@@ -259,7 +259,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                     <div class="col s12">
                         <div class="card">
                             <div class="card-content">
-                                <h4><i class="material-icons left medium">av_timer</i>Train Settings:</h4>
+                                <h4><i class="material-icons left medium">directions_railway</i>Train Settings:</h4>
                                 <p>Here you can select a throttle, adjust the settings, name the throttle, configure your train, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
                             </div>
                         </div>
@@ -276,7 +276,10 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                 <!---the actual display of the train we've built--->
                                 <div class="col s12">
                                     <div class="card">
-                                        <div id="trainDisplay" class="card-content">          
+                                        <div class="card-content">
+                                            Select a cab by clicking the blue locomotive name on each train element.
+                                            <hr style="opacity:0">
+                                            <a class="black-text" id="trainDisplay"></a>
                                         </div>
                                     </div>
                                 </div>

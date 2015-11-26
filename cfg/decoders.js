@@ -72,6 +72,9 @@ decoders = {
                     }
                 }
                 else {
+                    //This code means that if you're out of fuel, regardless of what state you fed into this function it will turn the engine off.
+                    train.all[trainPosition].throttle.f.set(8, false);
+                    train.all[trainPosition].prototype.engineRunning = 0;
                     train.all[trainPosition].dcc.f.engine.state = false;
                 }
             }
@@ -119,15 +122,23 @@ decoders = {
         }
     },
     
-    //TESTING ONLY
+    //GENERIC FALLBACK SCRIPT - DO NOT REMOVE!!
     "generic":{
-        //sound project "emd567"
         "generic" : function(address, trainPosition) {
             //GENERIC FALLBACK
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate())
             
             //FUNCTIONS
             this.f = new Object();
+            
+            //light
+            this.f.headlight = new Object();
+            this.f.headlight.set = function(state) {
+                train.all[trainPosition].throttle.f.set(0, state)
+                train.all[trainPosition].dcc.f.headlight.state = state;
+            }
+            this.f.headlight.state = false;
+            
             //bell
             this.f.bell = new Object();
             this.f.bell.set = function(state) {
@@ -169,8 +180,24 @@ decoders = {
             //engine on/off
             this.f.engine = new Object();
             this.f.engine.set = function(state) {
-                train[trainPosition].throttle.f.set(8, state)
-                train[trainPosition].dcc.f.engine.state = state;
+                //This function is almost exactly the same as the one in my ESU LokSound EMD 567 decoder constructor, the difference is this one never actually sends a DCC command (it's basically dummy function that the physics engine thinks is legit)
+                
+                //This IF makes the entire function useless if you're out of fuel.
+                if (train.all[trainPosition].prototype.realtime.fuel.status != 0){
+                    train.all[trainPosition].dcc.f.engine.state = state;
+                    //This code sets engineRunning to 0 or 1 depending on the state
+                    if (state == true) {
+                        train.all[trainPosition].prototype.engineRunning = 1;
+                    }
+                    else if (state == false) {
+                        train.all[trainPosition].prototype.engineRunning = 0;
+                    }
+                }
+                else {
+                    //This code means that if you're out of fuel, regardless of what state you fed into this function it will turn the engine off.
+                    train.all[trainPosition].prototype.engineRunning = 0;
+                    train.all[trainPosition].dcc.f.engine.state = false;
+                }
             }
             this.f.engine.state = false;
                 

@@ -63,11 +63,29 @@ train.ui.update = function() {
         
         var newHTML = []
         
-        var newHTMLstring = "<div class='chip'>"
+        var newHTMLstring = "<div class='chip hoverable'>"
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = "<a onclick='"
+        newHTML.push(newHTMLstring);
+        
+        var newHTMLstring = 'ui.cab.setCurrentLoco("'
         newHTML.push(newHTMLstring)
         
         var newHTMLstring = train.all[i].roster.name
         newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = '")'
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = "' style='cursor:pointer'>"
+        newHTML.push(newHTMLstring)
+        
+        var newHTMLstring = train.all[i].roster.name;
+        newHTML.push(newHTMLstring);
+        
+        var newHTMLstring = "</a>"
+        newHTML.push(newHTMLstring);
         
         var newHTMLstring = "<i class='material-icons right' "
         newHTML.push(newHTMLstring)

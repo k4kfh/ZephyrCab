@@ -37,16 +37,11 @@ function connect(ip, port, automaticornot) {
     
     ws.onmessage = function(event) {
         data = JSON.parse(event.data);
-        if (logallreplies == true) {
-            if (data.type == "pong") {
-            }
-            else{
-                console.dir(data)
-                processReply(data)
-            }
+        if (cfg.logallmessages == true) {
+            var stringified = JSON.stringify(data);
+            console.log("RECIEVED : " + stringified)
         }
-        else {
-        }
+        processReply(data);
     }
     
     ws.onclose = function() {
@@ -62,7 +57,7 @@ function connect(ip, port, automaticornot) {
 function heartbeats() {
     
     ws.send('{"type":"ping"}')
-    //console.log("Sent hb")
+    console.log('SENT : {"type":"ping"}' )
     
     
 }
@@ -72,8 +67,7 @@ function heartbeats() {
 function processReply(ev) {
     latestMsg = ev
     if (ev.type == "pong") {
-        //just ignore these
-        console.log("Recieved hb")
+        //just ignore these, I only have this IF in case I want to log these in a special way or something.
     }
     else if (ev.type == "hello") {
         //sets up initial info about railroad
@@ -115,7 +109,10 @@ function processReply(ev) {
 function sendcmd(command) {
     if (wsStatus == true) {
         ws.send(command)
-        return "Sent."
+        if (cfg.logallmessages == true) {
+            console.log("SENT : " + command)
+            return "Sent.";
+        }
         
     }
     else {

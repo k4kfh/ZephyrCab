@@ -43,8 +43,32 @@ sim.accel = function() {
             //First thing we need to do is deal with engine RPM and notching.
             //From there, we'll calculate fuel stuff, and then deal with tractive effort.
             
-            train.all[i].prototype.realtime.rpm = train.all[i].prototype.notchRPM[notch.state] //This uses the notch (global variable) to lookup the rpm in an array of RPMs by notches.
-            gauge.rpm(train.all[i].prototype.realtime.rpm) //Now we update the gauge
+            /*
+            Before we do anything we need to check and see if the engine is started.
+            The first IF statement here checks to see if the locomotive that this FOR loop is dealing with is the locomotive being controlled by ui.cab. If it is, then we move on to start the engine.
+            */
+            if (ui.cab.currentLoco == i) {
+                //If we're dealing with the currentLoco here...
+                if (ui.cab.engine.start.state != train.all[ui.cab.currentLoco].dcc.f.engine.state) {
+                    //If the engine state is DIFFERENT than the one indicated by the switch...
+                    train.all[ui.cab.currentLoco].dcc.f.engine.set(ui.cab.engine.start.state); //Set it to match the switch position
+                    if (ui.cab.engine.start.state == true) {
+                        train.all[ui.cab.currentLoco].prototype.engineRunning = 1;
+                    }
+                    else if (ui.cab.engine.start.state == false) {
+                        train.all[ui.cab.currentLoco].prototype.engineRunning = 0;
+                    }
+                }
+            }
+            
+            if (train.all[i].prototype.engineRunning == 1) {
+                train.all[i].prototype.realtime.rpm = train.all[i].prototype.notchRPM[notch.state] //This uses the notch (global variable) to lookup the rpm in an array of RPMs by notches.
+            }
+            else if (train.all[i].prototype.engineRunning == 0) {
+                //If the engine is off...
+                train.all[i].prototype.realtime.rpm = 0;
+            }
+            gauge.rpm(train.all[i].prototype.realtime.rpm) //Now we update the gauge using the value we just found
             
             /*
             Now we can calculate tractive effort based on notch and speed. This is done using a function (left open to developers of prototype objects) from inside the train object's prototype subobject.
@@ -58,29 +82,27 @@ sim.accel = function() {
             Handling global sounds (sounds that are on all locos, not just lead)
             The if statements here are to protect against unnecessary bandwidth usage. It's just checking to see if the state has actually changed since last time we set it. If it hasn't we don't set it.
             */
-            //Prime Mover startup
-            if (train.all[i].dcc.f.engine.state != ui.cab.engine.start.state) {
-                train.all[i].dcc.f.engine.set(ui.cab.engine.start.state)
-            }
             
             /*
             PRIME MOVER NOTCHING SOUNDS
             
             First, we must check and see if the notch has changed at all since the last physics engine cycle.
             */
-            if (train.all[i].dcc.f.notch.state != notch.state) {
-                //We know it's changed, now we have to figure out which direction (up or down) to move it.
-                var difference = notch.state - train.all[i].dcc.f.notch.state; //This will equal 1 or -1, telling us the direction to notch
-                //console.log("Difference in notch: " + difference)
-                if (difference == 1) {
+            if (train.all[i].prototype.engineRunning == 1) {
+                if (train.all[i].dcc.f.notch.state != notch.state) {
+                    //We know it's changed, now we have to figure out which direction (up or down) to move it.
+                    var difference = notch.state - train.all[i].dcc.f.notch.state; //This will equal 1 or -1, telling us the direction to notch
+                    //console.log("Difference in notch: " + difference)
+                    if (difference == 1) {
                     train.all[i].dcc.f.notch.up();
+                    }
+                    else if (difference == -1) {
+                        train.all[i].dcc.f.notch.down();
+                    }
                 }
-                else if (difference == -1) {
-                    train.all[i].dcc.f.notch.down();
-                }
-            }
-            else {
+                else {
                 //console.log("No notch difference found")
+                }
             }
             
             /*
