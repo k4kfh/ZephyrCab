@@ -25,11 +25,15 @@ The simplest way to install ZephyrCab is to download the ZIP from this page and 
 
 ## Setup
 
-When you install locoThrottle.js, you'll need to edit the `bundles.json` file. This file is responsible for linking JMRI roster entries with specific models (for example, the Athearn Genesis GP15-1) and with the correct prototype locomotive (for example, the EMD SD40-2). We are working on an article on how to edit this file properly, but until then you should see the comments in the file.
+Before using the program:
+
+- You MUST set up ``bundles.json``. Follow [this guide](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/configure-locomotives/) to learn how.
+
+- It is recommended that you set up ``settings.json``. This file makes your life easier by allowing you to configure some general settings, such as autoconnection to JMRI. See [this guide](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/general-configuration/) for setup information.
 
 ## Usage
 
-When you first log in after setting up `bundles.json`, you'll need to connect to your JMRI PC. You can do this by inputting the IP of the PC, with the port of the JMRI web interface. By default, locoThrottle.js uses port 12080, which is the default for JMRI.
+When you first log in after setting up `bundles.json`, you'll need to connect to your JMRI PC (unless you set up autoconnection, which I highly recommend. [See this guide.](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/general-configuration/)). You can do this by inputting the IP of the PC, with the port of the JMRI web interface. By default, locoThrottle.js uses port 12080, which is the default for JMRI.
 
 ![Connection Settings in locoThrottle.js](http://evilgeniustech.com/wp-content/uploads/2015/11/connectionsettings.png)
 
