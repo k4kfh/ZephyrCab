@@ -41,6 +41,9 @@ The bullet list hierarchy below shows the standard contents of a decoder constru
 ### Structure
 
 - ``f``
+    - ``headlight``
+        - ``set()``
+        - ``state``
     - ``horn``
         - ``set()``
         - ``state``
@@ -62,6 +65,7 @@ The bullet list hierarchy below shows the standard contents of a decoder constru
     - ``notch``
         - ``up()``
         - ``down()``
+        - ``state``
 - ``speed``
     - ``set()``
     - ``state``
@@ -98,7 +102,7 @@ Here is a summary of the tasks a decoder constructor must perform.
 
 - Create all the necessary objects for DCC functions
 
-- Call ``jmri.throttle`` to create a throttle object for the new train element (see the example below for an implementation)
+- Call ``jmri.throttle`` to create a throttle object for the new train element. Please make sure to use ``jmri.throttleName.generate()`` as your throttle name argument. This makes sure every throttle has a unique name; a JMRI requirement. (see the example below for an implementation)
 
 ---
 
@@ -106,95 +110,6 @@ Here is a summary of the tasks a decoder constructor must perform.
 
 An example ``decoders`` object is shown below, with annotations.
 
-```javascript
-decoders = {
-    //This is the decoder family attribute from JMRI's roster
-    "ESU LokSound Select":{
-        //This is the decoderModel attribute from JMRI's roster
-        "LokSound Select EMD 567" : function(address, trainPosition) {
-            //ESU LokSound Select V4
-            //decoder object for ESU official EMD 567 Sound project
-            //By Hampton Morgan - k4kfh@github - May 2015
-            //evilgeniustech.com
-            train[trainPosition].throttle = new jmri.throttle(address, trainPosition) //we use the train position as the throttle name for future lookup purposes
-            
-            //FUNCTIONS
-            this.f = new Object();
-            //bell
-            this.f.bell = new Object();
-            this.f.bell.set = function(state) {
-                train[trainPosition].throttle.f.set(1, state)
-                train[trainPosition].dcc.f.bell.state = state;
-            }
-            this.f.bell.state = false;
-                
-            //horn
-            this.f.horn = new Object();
-            this.f.horn.set = function(state) {
-                train[trainPosition].throttle.f.set(2, state)
-                train[trainPosition].dcc.f.horn.state = state;
-            }
-            this.f.horn.state = false;
-                
-            //compressor
-            this.f.compressor = new Object();
-            this.f.compressor.set = function(state) {
-                train[trainPosition].throttle.f.set(20, state)
-                train[trainPosition].dcc.f.compressor.state = state;
-            }
-            this.f.compressor.state = false;
-                
-            //air release
-            this.f.airdump = new Object();
-            this.f.airdump.set = function(state) {
-                    
-            }
-            this.f.airdump.state = false;
-                
-            //dyn brake fans
-            this.f.dynbrakes = new Object();
-            this.f.dynbrakes.set = function(state) {
-                    
-                }
-            this.f.dynbrakes.state = false;
-                
-            //engine on/off
-            this.f.engine = new Object();
-            this.f.engine.set = function(state) {
-                train[trainPosition].throttle.f.set(8, state)
-                train[trainPosition].dcc.f.engine.state = state;
-            }
-            this.f.engine.state = false;
-                
-            //notch up
-            this.f.notchup = new Object();
-            this.f.notchup.set = function(state) {
-                    
-            }
-            this.f.notchup.state = false;
-                
-            //notch down
-            this.f.notchdown = new Object();
-            this.f.notchdown.set = function(state) {
-                    
-            }
-            this.f.notchdown.state = false;
-                
-            
-            //SPEED SETTING
-            this.speed = new Object();
-            this.speed.state = 0;
-            this.speed.set = function(speed) {
-                train[trainPosition].throttle.speed.set(speed)
-                train[trainPosition].dcc.speed.state = speed;
-            }
-            this.speed.setMPH = function(mph) {
-                var speed = train[trainPosition].model.speed(mph)
-                train[trainPosition.dcc.speed.set(speed)]
-            }
-                
-                
-        }
-    }
-}
-```
+This example is a GitHub Gist, so feel free to contribute if you see fit. You may also use any of this code in your own ``decoder`` objects; it is totally open for anyone to use.
+
+<script src="https://gist.github.com/k4kfh/beb7341004ff95bf277a.js"></script>

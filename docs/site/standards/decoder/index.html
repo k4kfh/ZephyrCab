@@ -149,13 +149,144 @@
     
         <li class="main active"><a href="#decoder-constructor-official-standards">Decoder Constructor: Official Standards</a></li>
         
+            <li><a href="#basics">Basics:</a></li>
+        
+            <li><a href="#location">Location</a></li>
+        
+            <li><a href="#object-structure">Object Structure</a></li>
+        
+            <li><a href="#constructor-contents">Constructor Contents</a></li>
+        
+            <li><a href="#function-logic">Function Logic</a></li>
+        
+            <li><a href="#arguments">Arguments</a></li>
+        
+            <li><a href="#tasks">Tasks</a></li>
+        
+            <li><a href="#example-object">Example Object</a></li>
+        
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
 <h1 id="decoder-constructor-official-standards">Decoder Constructor: Official Standards</h1>
-<p>Coming soon!</p></div>
+<p>Decoder objects are actually constructor functions that, when called, will create an object in the <code>train</code> object capable of controlling the DCC decoder in a decoder-agnostic way. This is not to be confused with <code>jmri.throttle</code> objects, which control the decoder at a lower level.</p>
+<h2 id="basics">Basics:</h2>
+<ul>
+<li>
+<p>All decoder objects are located in subobjects of the <code>decoders</code> object.</p>
+</li>
+<li>
+<p>The <code>decoders</code> object is located in <code>decoders.js</code>, which is in <code>/cfg</code>.</p>
+</li>
+<li>
+<p>The decoders are sorted using the same system JMRI uses: <code>decoderFamily</code> and <code>decoderModel</code>.</p>
+</li>
+<li>
+<p>Each <code>decoderFamily</code> is a subobject of <code>decoders</code>, and <code>decoderModel</code> objects are the subobjects of the families that contain the actual constructor functions. Both subobjects should match the corresponding values from JMRI <em>exactly</em>.</p>
+</li>
+</ul>
+<h2 id="location">Location</h2>
+<p>The main <code>decoders</code> object contains all the decoder constructors. This object is located in <code>/cfg/decoders.js</code>. It is already added by default to <code>index.html</code>, there is no need to add a <code>&lt;script&gt;</code> tag or anything of that nature. It is designed to "just work" with minimal effort required to add decoders.</p>
+<p>This file can be redownloaded in the event of an accident from the <a href="http://github.com/k4kfh/ZephyrCab">ZephyrCab GitHub.</a> This should rarely happen, especially when used with a proper editor. Something that supports collapsible objects (such as <a href="http://brackets.io">Brackets</a>) should work quite well for this.</p>
+<h2 id="object-structure">Object Structure</h2>
+<p>The structure of <code>decoders</code> is hierarchical. It works like so:</p>
+<pre><code>decoders ---&gt; decoderFamily ---&gt; decoderModel
+</code></pre>
+
+<p><code>decoderFamily</code> and <code>decoderModel</code> are both strings. For the program's automatic decoder selector to work correctly, these must <em>exactly</em> match the strings stored in the JMRI roster. They <em>are</em> case sensitive!</p>
+<h2 id="constructor-contents">Constructor Contents</h2>
+<p>So now that you know where to find the constructor for a specific decoder, you're probably wondering what these complex constructors have inside them.</p>
+<p>Every constructor should have the same functions. Even if your decoder does not support a certain feature, you should put the functions in the constructor (just make them dummy functions). This modular approach means we don't have to deal with variables being undefined; we can just call a function and know that (if standards are being followed) then the decoder will cooperate.</p>
+<p>The bullet list hierarchy below shows the standard contents of a decoder constructor object. Keep in mind that when writing these functions, you will need to make use of JavaScript's <code>this</code> variable to make the structure apply to the object being created.</p>
+<hr />
+<h3 id="structure">Structure</h3>
+<ul>
+<li><code>f</code><ul>
+<li><code>headlight</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>horn</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>bell</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>compressor</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>airdump</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>dynbrakes</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>engine</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+<li><code>notch</code><ul>
+<li><code>up()</code></li>
+<li><code>down()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>speed</code><ul>
+<li><code>set()</code></li>
+<li><code>state</code></li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>Do not forget that <strong>all decoder objects must contain every standard function, and should not contain any non-standard functions.</strong> If the decoder object structure becomes nonstandardized, the useful modularity of ZephyrCab is lost.</p>
+<p>The reason it is built like this is to allow support for everything from generic DCC decoders to the best sound decoders in the world. The <code>decoders</code> object provides a "layer" that makes the rest of ZephyrCab decoder agnostic, so it is important that standards are followed.</p>
+<hr />
+<h2 id="function-logic">Function Logic</h2>
+<p>Obviously since we're talking about constructor functions here, they're not just variables, they perform tasks. Your decoder constructor function will be called by the train builder UI when a user adds a locomotive with the corresponding decoder to their train.</p>
+<h2 id="arguments">Arguments</h2>
+<p><strong>ALL decoder constructors must accept the following arguments:</strong></p>
+<ul>
+<li>
+<p><code>address</code></p>
+</li>
+<li>
+<p><code>trainPosition</code></p>
+</li>
+</ul>
+<p>No function should accept any additional arguments, as this will only cause problems.</p>
+<h2 id="tasks">Tasks</h2>
+<p>So what exactly should this function do?</p>
+<p>Here is a summary of the tasks a decoder constructor must perform.</p>
+<hr />
+<ul>
+<li>
+<p>Create all the necessary objects for DCC functions</p>
+</li>
+<li>
+<p>Call <code>jmri.throttle</code> to create a throttle object for the new train element. Please make sure to use <code>jmri.throttleName.generate()</code> as your throttle name argument. This makes sure every throttle has a unique name; a JMRI requirement. (see the example below for an implementation)</p>
+</li>
+</ul>
+<hr />
+<h2 id="example-object">Example Object</h2>
+<p>An example <code>decoders</code> object is shown below, with annotations.</p>
+<p>This example is a GitHub Gist, so feel free to contribute if you see fit. You may also use any of this code in your own <code>decoder</code> objects; it is totally open for anyone to use.</p>
+<script src="https://gist.github.com/k4kfh/beb7341004ff95bf277a.js"></script></div>
         </div>
 
         <footer class="col-md-12">

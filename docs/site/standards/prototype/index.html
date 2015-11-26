@@ -149,13 +149,43 @@
     
         <li class="main active"><a href="#prototype-object-official-standards">Prototype Object: Official Standards</a></li>
         
+            <li><a href="#introduction">Introduction</a></li>
+        
+            <li><a href="#locomotives">Locomotives</a></li>
+        
+            <li><a href="#rolling-stock">Rolling Stock</a></li>
+        
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
 <h1 id="prototype-object-official-standards">Prototype Object: Official Standards</h1>
-<p>Coming soon!</p></div>
+<p><strong>Note: </strong>It is important to note that the prototype object standards are the most rapidly changing standards in the whole program right now. If you are serious about building a prototype object, it would benefit you to read through the comments in the <code>bundles.json</code> file bundled with ZephyrCab.</p>
+<hr />
+<h2 id="introduction">Introduction</h2>
+<p>Just for clarification purposes, please make sure you understand the following:</p>
+<ul>
+<li>
+<p>The <code>prototype</code> object has nothing to do with the physical model or DCC decoder.</p>
+</li>
+<li>
+<p>The <code>prototype</code> object is stored as a subobject of a train element. For example, <code>train.all[0].prototype</code> would be a prototype object for the first element in the train.</p>
+</li>
+<li>
+<p>The prototype object is different for locomotives and rolling stock.</p>
+</li>
+</ul>
+<hr />
+<h2 id="locomotives">Locomotives</h2>
+<p>Locomotive prototype objects are by far the most complex. They tell everything that <code>sim.js</code> needs to know about the prototype locomotive, as well as all the information to build a reasonably realistic cab UI.</p>
+<h3 id="example-structure">Example Structure:</h3>
+<p>The prototype object below is for an EMD F7-A. This is a GitHub GIST, so if you know of anything wrong with this standard, please feel free to fix it and create a pull request. I (<a href="http://k4kfh.github.io">k4kfh</a>) do my best to keep it up to date, but sometimes I add something new and forget to update it or don't get time to update it.</p>
+<script src="https://gist.github.com/k4kfh/615aba5fd882777596dc.js"></script>
+
+<hr />
+<h2 id="rolling-stock">Rolling Stock</h2>
+<p>This feature has not been implemented yet. Sorry!</p></div>
         </div>
 
         <footer class="col-md-12">

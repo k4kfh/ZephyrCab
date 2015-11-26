@@ -161,6 +161,8 @@
 <h1 id="general-configuration">General Configuration</h1>
 <p>While you still have to configure settings separately for things like locomotives, decoders, and other things, there is a central place to set up general program settings. Inside your installation directory, <code>/cfg/settings.json</code> contains a number of useful settings/options for general use.</p>
 <hr />
+<p><strong>You will not need any programming knowledge to edit this file. If you can read and follow directions, you can set this up.</strong></p>
+<hr />
 <h2 id="options-available">Options Available:</h2>
 <ul>
 <li>
@@ -168,6 +170,12 @@
 </li>
 <li>
 <p><strong>Disable Push Notifications</strong> - This feature disables the push notifications feature we created. This feature is for alerting users when major program changes are made, and just as a communication tool for our users who don't regularly visit GitHub. Setting this configuration option to <code>true</code> will not disable the "HUB" feature completely, it will only disable the push notifications feature.</p>
+</li>
+<li>
+<p><strong>Enable Debug Toasts</strong> - This feature enables a "debug mode" of sorts. 90% of users should leave this set to <code>false</code>. When you enable this, you will recieve more detailed information from many functions about what's going on. Developers can make use of this feature with the <code>debugToast()</code> function, which behaves exactly the same as the <code>Materialize.toast()</code> function, except it appends "Debug: " to the beginning of the toast, and it only works when the <code>cfg.debugToasts</code> is <code>true</code>.</p>
+</li>
+<li>
+<p><strong>Log all WebSockets messages</strong> - This will log every piece of WebSockets data to the console, including heartbeats, as a string. Sent commands will be prefaced with <code>SENT :</code>, and recieved data with <code>RECIEVED :</code>. This is for developers only, and will make your console a bit messy. If you'd rather log the objects directly as opposed to stringified, you can tweak your <code>websockets.js</code> pretty easily if you know basic JavaScript. <a href="http://k4kfh.github.io">Get in touch with me</a> if you need help with this.</p>
 </li>
 </ul>
 <hr />
@@ -200,6 +208,10 @@ cfg.port = 12080;
 This setting, as explained above, disables the &quot;HUB&quot; push notifications feature when set to true.
 */
 cfg.disablePushNotifications = false; //this leaves push notifications on
+
+cfg.debugToasts = true;
+
+cfg.logallmessages = false; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with &quot;SENT : &quot; and messages from JMRI with &quot;RECIEVED : &quot;
 </code></pre>
 
 <hr /></div>
