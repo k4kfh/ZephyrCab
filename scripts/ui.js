@@ -144,6 +144,11 @@ ui = {
             gauge.createAll();
             ui.cab.locoName.update(name);
             Materialize.toast("<i class='material-icons left'>directions_railway</i>Entered cab of " + name, 2500)
+            
+            //This resets all the switches (engine startup, bell, etc.) to their ACTUAL values as opposed to the last value they were at.
+            document.getElementById("ui.cab.engine.start").checked = train.all[ui.cab.currentLoco].dcc.f.engine.state;
+            document.getElementById("ui.cab.bell").checked = train.all[ui.cab.currentLoco].dcc.f.bell.state;
+            document.getElementById("ui.cab.headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
         }
     },
     
