@@ -142,15 +142,36 @@ sim.accel = function() {
             First we figure out if it's running at all.
             Then we calculate the flow rate.
             */
-            if (testCompVar == true) { //This is true temporarily until I figure more out about pressure levels
-                train.all[i].prototype.realtime.air.compressor.running = 1;
+            if (train.all[i].prototype.realtime.air.reservoir.main.pressure <= train.all[i].prototype.air.compressor.limits.lower) {
                 
-                //If we're dealing with the cabbed locomotive
-                if (i == ui.cab.currentLoco) {
-                    light.compressor(true);
+                
+                
+                //If the compressor needs the prime mover running, make sure it is.
+                if (train.all[i].prototype.air.compressor.needsEngine == true) {
+                    
+                    if (train.all[i].prototype.engineRunning == 1) {
+                        //If the engine is running, this code executes
+                        train.all[i].prototype.realtime.air.compressor.running = 1;
+                        //If we're dealing with the cabbed locomotive
+                        if (i == ui.cab.currentLoco) {
+                            light.compressor(true);
+                        }
+                        
+                    }
+                    else {
+                        light.compressor(false)
+                    }
                 }
+                else if (train.all[i].prototype.air.compressor.needsEngine == false) {
+                    train.all[i].prototype.realtime.air.compressor.running = 1;
+                        //If we're dealing with the cabbed locomotive
+                        if (i == ui.cab.currentLoco) {
+                            light.compressor(true);
+                        }
+                }
+                
             }
-            else {
+            else if (train.all[i].prototype.realtime.air.reservoir.main.pressure >= train.all[i].prototype.air.compressor.limits.upper) {
                 train.all[i].prototype.realtime.air.compressor.running = 0;
                 
                 //If user is in this locomotive's cab

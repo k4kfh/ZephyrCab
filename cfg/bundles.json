@@ -76,15 +76,16 @@ bundles = {
             air : {
                 reservoir : {
                     main : {
-                        pressure : 0,//Set this to 0 to start
                     },
                 },
                 compressor : {
                     limits : {
-                        lower : 80, //This is the point at which the compressor will turn back on and fill up the air reservoir (psi)
-                        upper : 90, //This is the point at which the compressor will turn off (psi)
+                        lower : 130, //This is the point at which the compressor will turn back on and fill up the air reservoir (psi)
+                        upper : 140, //This is the point at which the compressor will turn off (psi)
                     },
-                    flowrate : 0.28 //This is cfm/rpm, derived from "255cfm @ 900rpm for an SD45" according to Mr. Al Krug
+                    flowrate : 0.28, //This is cfm/rpm, derived from "255cfm @ 900rpm for an SD45" according to Mr. Al Krug
+                    needsEngine : true,
+                    
                 }
             },
             "realtime" : {
@@ -110,6 +111,12 @@ bundles = {
                         flowrate : 0, //Set this to 0
                         running : 0, //This works a lot like prototype.engineRunning
                     },
+                    reservoir : {
+                        //Realtime data about the main reservoir is stored here
+                        main : {
+                            pressure : 0,
+                        }
+                    }
                 },
             }, //This is used by the physics engine to store current information, we just go ahead and define it
             "gauges": {
