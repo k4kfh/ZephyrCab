@@ -4,6 +4,16 @@ logallreplies = true
 //do not change this
 wsStatus = false
 
+//This timestamp code deals with the logging functions
+timestamp = function() {
+    var currentDate = new Date();
+    var hours = currentDate.getHours();
+    var minutes = currentDate.getMinutes();
+    var seconds = currentDate.getSeconds();
+    var finalString = hours + ":" + minutes + ":" + seconds;
+    return finalString;
+}
+
 function connect(ip, port, automaticornot) {
     
     if (automaticornot != true) {
@@ -39,7 +49,7 @@ function connect(ip, port, automaticornot) {
         data = JSON.parse(event.data);
         if (cfg.logallmessages == true) {
             var stringified = JSON.stringify(data);
-            console.log("RECIEVED : " + stringified)
+            console.log("[" + timestamp() + "] RECIEVED : " + stringified)
         }
         processReply(data);
     }
@@ -58,7 +68,7 @@ function heartbeats() {
     
     ws.send('{"type":"ping"}')
     if (cfg.logallmessages == true) {
-        console.log('SENT : {"type":"ping"}' )
+        console.log("[" + timestamp() + '] SENT : {"type":"ping"}' )
     }
     
     
@@ -112,7 +122,7 @@ function sendcmd(command) {
     if (wsStatus == true) {
         ws.send(command)
         if (cfg.logallmessages == true) {
-            console.log("SENT : " + command)
+            console.log("[" + timestamp() + "] SENT : " + command)
             return "Sent.";
         }
         

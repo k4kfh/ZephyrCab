@@ -11,4 +11,4 @@ cfg.disablePushNotifications = true;
 
 cfg.debugToasts = true;
 
-cfg.logallmessages = false; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "
+cfg.logallmessages = true; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "
