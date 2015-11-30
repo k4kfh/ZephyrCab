@@ -5,13 +5,38 @@ logallreplies = true
 wsStatus = false
 
 //This timestamp code deals with the logging functions
-timestamp = function() {
-    var currentDate = new Date();
-    var hours = currentDate.getHours();
-    var minutes = currentDate.getMinutes();
-    var seconds = currentDate.getSeconds();
-    var finalString = hours + ":" + minutes + ":" + seconds;
-    return finalString;
+timestamp = function(type) {
+    if (type == undefined) {
+        type = 24;
+    }
+    if (type == 24) {
+        var currentDate = new Date();
+        var hours = currentDate.getHours();
+        var minutes = currentDate.getMinutes();
+        var seconds = currentDate.getSeconds();
+        var finalString = hours + ":" + minutes + ":" + seconds;
+        return finalString;
+    }
+    else if (type == 12) {
+        var currentDate = new Date();
+        var hours = currentDate.getHours();
+        if (hours == 24) {
+            hours = 12;
+            ampm = "AM"
+        }
+        if (hours > 12) {
+            hours = hours - 12;
+            ampm = "PM"
+        }
+        if (hours == 12) {
+            hours = 12;
+            ampm = "PM"
+        }
+        var minutes = currentDate.getMinutes();
+        var seconds = currentDate.getSeconds();
+        var finalString = hours + ":" + minutes + ":" + seconds + " " + ampm;
+        return finalString;
+    }
 }
 
 function connect(ip, port, automaticornot) {
