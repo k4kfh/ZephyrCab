@@ -5,27 +5,27 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.1/math.min.js"></script>
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="thirdparty/materialize/css/materialize-fromSASS.css"/>
-        
+
         <title>ZephyrCab</title>
-        
+
         <!---All Icons/Fonts--->
         <link rel="stylesheet" href="thirdparty/octicons/octicons.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!--font for EvilGeniusTech logo--->
         <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
-        
+
         <!---My custom CSS sheet--->
         <link rel="stylesheet" href="custom.css">
-        
-        
+
+
         <!---All ZephyrCab Program scripts--->
-        
+
         <!---All storage files from /cfg--->
         <script src="cfg/bundles.json"></script>
         <script src="cfg/decoders.js"></script>
         <script src="cfg/prototypes.json"></script>
         <script src="cfg/settings.json"></script>
-        
+
         <!---Now executables--->
         <script src="scripts/websockets.js"></script>
         <script src="scripts/jmri-core.js"></script>
@@ -33,16 +33,16 @@
         <script src="scripts/ui.js"></script>
         <script src="scripts/cab-gauges.js"></script>
         <script src="scripts/sim.js"></script>
-        
+
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        
+
         <!---Now Materialize--->
         <script type="text/javascript" src="thirdparty/materialize/js/materialize.js"></script>
-        
+
         <!---Google gauges crap--->
         <script src="thirdparty/canv-gauge-master/gauge.min.js"></script>
-        
+
     </head>
 
     <body>
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-            
+
         <div class="container">
             <!---beginning of actual page, this is the drive portion--->
             <div id="cab">
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!---Indications row---->
                 <div class="row">
                     <div class="col s12">
@@ -84,7 +84,7 @@
                                 <div class="section">
                                     <h6><i class="material-icons left small">view_module</i><b>My Dash</b></h6>
                                 </div>
-                                
+
                                 <div class="row">
                                     <!---First Row of Gauges--->
                                     <canvas id="gauge.speedometer"></canvas>
@@ -100,14 +100,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--second row of controls section-->
                 <div class="row">
-                    
+
                     <!---Card with horn, headlight, bell, and other accessory functions--->
                     <div class="col s2">
                         <div class="card">
@@ -127,7 +127,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                
+
                                 <div class="section">
                                     <div class="switch">
                                         <label>
@@ -139,7 +139,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!---Card with Prime Mover controls--->
                     <div class="col s8">
                         <!---the big card with the two smaller ones in it--->
@@ -160,7 +160,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!---The notch card--->
                                 <div class="col s9">
                                     <div class="card">
@@ -171,15 +171,15 @@
                                                     <input type="range" value="0" id="notch" min="0" max="8" onchange="ui.cab.notch.set(this.value)"/>
                                                 </p>
                                             </form>
-                                            
-                                            
+
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!---reverser card--->
                     <div class="col s2">
                         <div class="card">
@@ -203,11 +203,11 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                         </p>
                                     </form>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="row">
                         <div class="col s12">
@@ -220,7 +220,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         </div>
                     </div>
             </div>
-            
+
             <!--connection settings area--->
             <div id="connection">
                 <div class="row">
@@ -245,23 +245,23 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                                 <label for="port">Port</label>
                                             </div>
                                         </div>
-                                
-                                
-                                
-                                
+
+
+
+
                                     </form>
                                     <button class="btn-large waves-effect waves-light" onclick='connect(document.getElementById("ip").value, document.getElementById("port").value)'>Connect<i class="material-icons right">trending_flat</i></button>
                                 </div>
-                            
+
                             </div>
-                    
+
                         </div>
                     </div>
                 </div>
-            
-            
+
+
             </div>
-            
+
             <!--throttle settings area--->
             <div id="trainsettings">
                 <div class="row">
@@ -274,14 +274,14 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         </div>
                     </div>
                 </div>
-                
+
                 <!---train builder--->
                 <div class="row">
                     <div class="col s12">
                         <div class="card">
                             <div class="card-content">
                                 <span class="card-title black-text">Train Builder</span>
-                                
+
                                 <!---the actual display of the train we've built--->
                                 <div class="col s12">
                                     <div class="card">
@@ -298,7 +298,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                         <div class="card-content">
                                             <span class="card-title black-text">Locomotives</span>
                                             <div id="locomotivePalette">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -314,13 +314,13 @@ The section class must surround it or the alignment is wrong and it looks funky-
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!---unfinished layout control tab--->
             <div id="layoutcontrol">
                 <div class="row">
@@ -359,9 +359,9 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         </div>
                     </div>
                 </div>
-            
+
             </div>
-            
+
             <!---help/docs tab--->
             <div id="help">
                 <div class="row">
@@ -369,13 +369,13 @@ The section class must surround it or the alignment is wrong and it looks funky-
                         <div class="card">
                             <div class="card-content">
                                 <span class="card-title black-text"><i class="material-icons left small">help</i>Help/Documentation</span>
-                                
+
                                 <p>Visit our documentation, or post an issue on our GitHub page!</p>
-                                
+
                                 <br>
-                                
+
                                 <a class="btn btn-flat blue white-text waves-effect waves-light" target="_blank" href="http://k4kfh.github.io/ZephyrCab/docs"><i class="material-icons left">help</i>Visit our Documentation</a>
-                                
+
                                 <a href="http://github.com/k4kfh/ZephyrCab" target="_blank" class="btn-flat blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
                                 <a href="http://k4kfh.github.io/ZephyrCab" target="_blank" class="blue btn-flat white-text waves-effect"><i class="material-icons left">code</i>Project Website</a>
                             </div>
@@ -388,9 +388,9 @@ The section class must surround it or the alignment is wrong and it looks funky-
                             <div class="card-content">
                                 <span class="card-title black-text">Announcements Feed</span>
                                 <p>This feature provides a live "news feed" style announcements system, updated regularly from the project site at <code><a href="http://k4kfh.github.io/ZephyrCab" target="_blank">http://k4kfh.github.io/ZephyrCab</a></code></p>
-                                
+
                                 <hr style="opacity:0">
-                                
+
                                 <div id="hubDisplay">
                                     <div class="row">
                                         <div class="col s6">
@@ -414,10 +414,10 @@ The section class must surround it or the alignment is wrong and it looks funky-
                     </div>
                 </div>
             </div>
-            
 
-            
-            
+
+
+
             <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
             <div class="row">
                 <div class="col s12">
@@ -428,7 +428,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
                             <p><a class="zephyr btn-flat black-text hoverable" target="_blank" href="http://k4kfh.github.io/ZephyrCab">ZephyrCab</a> is free software, released with no license. Find out more on <a href="https://github.com/k4kfh/ZephyrCab" target="_blank">our GitHub page.</a></p>
                             <div class="section">
                                 <p><a class="zephyr black-text">ZephyrCab</a> is a product of the <a style="font-family: 'Orbitron', sans-serif; color: black;" href="http://evilgeniustech.com/blog" target="_target">EvilGeniusTech blog.</a></p>
-                            
+
                                 <div class="section">
                                     <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS.</a></p>
                                     <p>Special thanks to <a href="http://brucekmodeltrains.com" target="_blank">Mr. Bruce Kingsley</a> for help with the physics engine.</p>
@@ -442,7 +442,7 @@ The section class must surround it or the alignment is wrong and it looks funky-
         <script>
             attemptAutoconnect();
         </script>
-        
+
         <!---And lastly, the centralized script from the Pages repo--->
         <script src="http://k4kfh.github.io/ZephyrCab/hub/hub.js"></script>
       </body>

@@ -54,7 +54,7 @@ function connect(ip, port, automaticornot) {
         ui.connection.status.set(true)
         console.log("Connection opened.")
         //start the heartbeats to keep it alive
-        var heartbeatInterval = setInterval(heartbeats, 500)
+        var heartbeatInterval = setInterval(heartbeats, 6000)
         console.log("Beginning heartbeats.")
         setListeners()
         sendcmd('{"list":"roster"}')
