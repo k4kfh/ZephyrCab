@@ -12,7 +12,7 @@ ui = {
             ammeter : {
                 create : function() {},
                 update : function() {},
-            },
+            }
         },
         
         notch : {

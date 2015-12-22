@@ -76,6 +76,8 @@ bundles = {
             air : {
                 reservoir : {
                     main : {
+                        capacity : 16, //capacity of the tank in cubic feet
+                        leakRate : 0, //leak rate in cubic feet per 100ms
                     },
                 },
                 compressor : {
@@ -108,13 +110,13 @@ bundles = {
                             
                             return cfm;
                         },
-                        flowrate : 0, //Set this to 0
+                        flowrate : {}, //this subobject will end up containing flow rates in a few different units
                         running : 0, //This works a lot like prototype.engineRunning
                     },
                     reservoir : {
                         //Realtime data about the main reservoir is stored here
                         main : {
-                            pressure : 0,
+                            airVolumeInTank : 16, //set this to capacity (in cubic feet) to start, unless you plan to run your train with no atmosphere...
                         }
                     }
                 },
@@ -201,6 +203,36 @@ bundles = {
                     },
                     highlights : [],
                 },
+                "air" : {
+                    "reservoir" : {
+                        "main" : {
+                            "title" : "Main Reservoir",
+                            "minValue" : 0,
+                            "maxValue" : 150,
+                            "majorTicks" : ['0', '25', '50', '75', '100', '125', '150'],
+                            "minorTicks" : 10,
+                            "strokeTicks" : true,
+                            "units" : "PSI",
+                            "valueFormat" : { int : 3, dec : 0},
+                            "glow" : false,
+                            "animation" : {
+                                delay : 0,
+                                duration : 500,
+                                fn : "quad",
+                            },
+                            "colors" : {
+                                plate      : '#fff',
+                                majorTicks : '#444',
+                                minorTicks : '#666',
+                                title      : '#888',
+                                units      : '#888',
+                                numbers    : '#444',
+                                needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+                            },
+                            highlights : [],
+                        }
+                    }
+                }
             },
             "coefficientOf" : {
                 rollingResistance : 0.0015,

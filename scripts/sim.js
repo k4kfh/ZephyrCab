@@ -171,7 +171,7 @@ sim.accel = function() {
                 }
                 
             }
-            else if (train.all[i].prototype.realtime.air.reservoir.main.pressure >= train.all[i].prototype.air.compressor.limits.upper) {
+            else if (train.all[i].prototype.realtime.air.reservoir.main.psi >= train.all[i].prototype.air.compressor.limits.upper) {
                 train.all[i].prototype.realtime.air.compressor.running = 0;
                 
                 //If user is in this locomotive's cab
@@ -210,14 +210,32 @@ sim.accel = function() {
             
             //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
             var flowratePerCycle = train.all[i].prototype.realtime.air.compressor.flowrate.perCycle //This is just a shorthand variable to clean the code up, doesn't change anything
-            train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = ++flowratePerCycle
+            train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank + flowratePerCycle;
+            
+            //Subtract leak rate in cubic feet before calculating pressure
+            var volumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank;
+            var leakRate = train.all[i].prototype.air.reservoir.main.leakRate; //this is loss in cubic feet per cycle
+            var volumeInTank = volumeInTank - leakRate; //lose air from leak
+            train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = volumeInTank;
+            
+            //Make sure the volume isn't below capacity (otherwise we'll have a vacuum and unless you have some kind of space train that won't happen)
+            if (train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank < train.all[i].prototype.air.reservoir.main.capacity) {
+                //if the volume is less than the minimum (the capacity) then fix it
+                train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
+            }
             
             //Find volume of normal-pressure air that's been stuffed into the tank.
             //we create some shorthand variables to make this more readable
             var tankCapacity = train.all[i].prototype.air.reservoir.main.capacity;
             var airVolumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank;
-            var psi = airVolumeInTank / tankCapacity;
+            var psi = (airVolumeInTank / tankCapacity) - 1; //we have to subtract one so that 0psi can exist...math sucks like that
             train.all[i].prototype.realtime.air.reservoir.main.psi = psi;
+            
+            //If we are dealing with the current cab locomotive, we need to update the gauge.
+            if (ui.cab.currentLoco == i) {
+                //if we're in this locomotive
+                gauge.air.reservoir.main(train.all[i].prototype.realtime.air.reservoir.main.psi)
+            }
             
             
             /*

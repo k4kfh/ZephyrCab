@@ -5,6 +5,7 @@ gauge.createAll = function() {
         gauge.speedometer.create();
         gauge.rpm.create();
         gauge.fuel.create();
+        gauge.air.reservoir.main.create();
     }
 }
 
@@ -55,6 +56,30 @@ gauge.fuel.create = function() {
     options.renderTo = "gauge.fuel";
     gauge.fuel.object = new Gauge(options);
     gauge.fuel.object.draw();
+}
+
+gauge.air = {
+    reservoir : {
+        main : {},
+    },
+}
+
+gauge.air.reservoir.main = function(value) {
+    var oldValue = gauge.rpm.object.getValue()
+    //This is just a wrapper so we can add additional functions that trigger if we need to.
+    
+    //This if statement saves resources by not updating the gauge if the value hasn't actually changed. We need this since the physics engine updates this function with a new value every 100ms.
+    if (oldValue != value) {
+        gauge.air.reservoir.main.object.setValue(value)
+    }
+}
+
+gauge.air.reservoir.main.create = function() {
+    //Pulls options from lead locomotive's prototype.gauges object
+    var options = train.all[ui.cab.currentLoco].prototype.gauges.air.reservoir.main;
+    options.renderTo = "gauge.air.reservoir.main";
+    gauge.air.reservoir.main.object = new Gauge(options);
+    gauge.air.reservoir.main.object.draw();
 }
 
 
