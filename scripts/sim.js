@@ -142,7 +142,7 @@ sim.accel = function() {
             First we figure out if it's running at all.
             Then we calculate the flow rate.
             */
-            if (train.all[i].prototype.realtime.air.reservoir.main.pressure <= train.all[i].prototype.air.compressor.limits.lower) {
+            if (train.all[i].prototype.realtime.air.reservoir.main.psi <= train.all[i].prototype.air.compressor.limits.lower) {
                 
                 
                 
@@ -188,11 +188,36 @@ sim.accel = function() {
                 train.all[i].dcc.f.compressor.set(false);
             }
             
-            //Find flow rate
+            /*
+            COMPRESSOR AND AIR RESERVOIR(S)
+            
+            This is calculated using an algebraically twisted version of Boyle's law. We basically find how much volume (at atmosphere pressure) has been crammed into a fixed space, so instead of decreasing volume and keeping mass of air the same, we are increasing mass of air and keeping tank volume constant.
+            
+            Steps:
+            1. Find compressor output flow rate (in cubic feet per physics cycle).
+            2. Find volume of atmosphere-pressure air that is in the tank.
+            3. Account for the steady leak rate specified in the prototype file.
+            
+            More information on all this to come.
+            */
+            
+            //Find flow rate of compressor output
             var rpm = train.all[i].prototype.realtime.rpm; //this is just to make it more readable than this giant long object name
             var CfmRpmRatio = train.all[i].prototype.air.compressor.flowrate;
-            var isRunning = train.all[i].prototype.realtime.air.compressor.running
-            train.all[i].prototype.realtime.air.compressor.flowrate = rpm * CfmRpmRatio * isRunning
+            var isRunning = train.all[i].prototype.realtime.air.compressor.running //NOTE: This makes the flow rate 0 when the compressor is off
+            train.all[i].prototype.realtime.air.compressor.flowrate.cfm = rpm * CfmRpmRatio * isRunning
+            train.all[i].prototype.realtime.air.compressor.flowrate.perCycle = (rpm * CfmRpmRatio * isRunning) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms)
+            
+            //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
+            var flowratePerCycle = train.all[i].prototype.realtime.air.compressor.flowrate.perCycle //This is just a shorthand variable to clean the code up, doesn't change anything
+            train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = ++flowratePerCycle
+            
+            //Find volume of normal-pressure air that's been stuffed into the tank.
+            //we create some shorthand variables to make this more readable
+            var tankCapacity = train.all[i].prototype.air.reservoir.main.capacity;
+            var airVolumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank;
+            var psi = airVolumeInTank / tankCapacity;
+            train.all[i].prototype.realtime.air.reservoir.main.psi = psi;
             
             
             /*
@@ -203,6 +228,7 @@ sim.accel = function() {
             if (train.all[i].prototype.realtime.speed == 0) {
                 train.all[i].prototype.realtime.rollingResistance = 0
             }
+            
             /*
             GRADE RESISTANCE
             
