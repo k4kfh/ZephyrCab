@@ -18,7 +18,7 @@ bundles = {
     
     The decoder settings are not here because we can grab those straight from JMRI.
     */
-    "CBQ2":{
+    "CBQ2" : {
         model:{
             speed:function(mph) {
                 mph = speed; //totally not correct but it is a functional example

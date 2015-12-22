@@ -18,7 +18,7 @@ train.ui.setup = function() {
     Then it adds that entire roster object to bundles.thatThing.roster
     */
     for(i=0; i < locomotivesList.length; i++) {
-        bundles[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]]
+        bundles[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]];
     }
     
     /*
@@ -36,8 +36,8 @@ train.ui.setup = function() {
 These new objects here are for making sure you can't add a locomotive twice. One contains used locomotive roster names, one contains unused ones. This will make it impossible to add a locomotive twice, which would cause the universe to implode.
 */
 train.ui.locomotives = new Object();
-train.ui.locomotives.used = []
-train.ui.locomotives.unused = Object.keys(bundles) //we set it to this initially because obviously when this script is first loaded, no locomotives from bundles have been used
+train.ui.locomotives.used = [];
+train.ui.locomotives.unused = Object.keys(bundles); //we set it to this initially because obviously when this script is first loaded, no locomotives from bundles have been used
 
 /*
 This function updates the entire train builder area. It should be called whenever a part of the train is edited, or whenever bundles.json is edited.
@@ -63,48 +63,48 @@ train.ui.update = function() {
         
         var newHTML = []
         
-        var newHTMLstring = "<div class='chip hoverable'>"
-        newHTML.push(newHTMLstring)
-        
-        var newHTMLstring = "<a onclick='"
+        var newHTMLstring = "<div class='chip hoverable'>";
         newHTML.push(newHTMLstring);
         
-        var newHTMLstring = 'ui.cab.setCurrentLoco("'
-        newHTML.push(newHTMLstring)
+        var newHTMLstring = "<a onclick='";
+        newHTML.push(newHTMLstring);
         
-        var newHTMLstring = train.all[i].roster.name
-        newHTML.push(newHTMLstring)
-        
-        var newHTMLstring = '")'
-        newHTML.push(newHTMLstring)
-        
-        var newHTMLstring = "' style='cursor:pointer'>"
-        newHTML.push(newHTMLstring)
+        var newHTMLstring = 'ui.cab.setCurrentLoco("';
+        newHTML.push(newHTMLstring);
         
         var newHTMLstring = train.all[i].roster.name;
         newHTML.push(newHTMLstring);
         
-        var newHTMLstring = "</a>"
+        var newHTMLstring = '")';
         newHTML.push(newHTMLstring);
         
-        var newHTMLstring = "<i class='material-icons right' "
-        newHTML.push(newHTMLstring)
+        var newHTMLstring = "' style='cursor:pointer'>";
+        newHTML.push(newHTMLstring);
+        
+        var newHTMLstring = train.all[i].roster.name;
+        newHTML.push(newHTMLstring);
+        
+        var newHTMLstring = "</a>";
+        newHTML.push(newHTMLstring);
+        
+        var newHTMLstring = "<i class='material-icons right' ";
+        newHTML.push(newHTMLstring);
         
         var newHTMLstring = 'onclick=\'train.build.remove("';
         newHTML.push(newHTMLstring)
         
         var newHTMLstring = train.all[i].roster.name;
-        newHTML.push(newHTMLstring)
+        newHTML.push(newHTMLstring);
         
         var newHTMLstring = '")\'';
-        newHTML.push(newHTMLstring)
+        newHTML.push(newHTMLstring);
         
         var newHTMLstring = ">close</i></div>";
-        newHTML.push(newHTMLstring)
+        newHTML.push(newHTMLstring);
         
-        finalHTML.push(newHTML.join(''))
+        finalHTML.push(newHTML.join(''));
     }
-    document.getElementById("trainDisplay").innerHTML = finalHTML.join('') //The quotes are here so it doesn't put commas between the elements
+    document.getElementById("trainDisplay").innerHTML = finalHTML.join(''); //The quotes are here so it doesn't put commas between the elements
     
     /*
     Now we need to tackle the locomotive palette, which is based on the bundles object.

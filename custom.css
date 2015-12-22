@@ -8,3 +8,10 @@
 .zephyr {
     font-family: 'Zephyr';
 }
+
+/*
+This keeps the scrollbar on the longer pages from screwing with the alignment of things
+*/
+html {
+  overflow-y: scroll;
+}
