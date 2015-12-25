@@ -88,6 +88,12 @@ bundles = {
                     flowrate : 0.28, //This is cfm/rpm, derived from "255cfm @ 900rpm for an SD45" according to Mr. Al Krug
                     needsEngine : true,
                     
+                },
+                device : {
+                    horn : {
+                        cfm : 70, //air consumption rate in cfm
+                        usagePerMs : 1, //usage in cubic feet, per millisecond (should be an absurdly small number)
+                    },
                 }
             },
             "realtime" : {
@@ -238,7 +244,10 @@ bundles = {
                 rollingResistance : 0.0015,
                 
             },
-        }
+        },
+        
+        //This is an object that needs to be created for use by various system tools
+        junk : {}
     },
     
     "CBQ1":{

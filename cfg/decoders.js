@@ -31,6 +31,7 @@ decoders = {
             this.f.horn.set = function(state) {
                 train.all[trainPosition].throttle.f.set(2, state)
                 train.all[trainPosition].dcc.f.horn.state = state;
+                sim.f.air.horn(trainPosition, state);
             }
             this.f.horn.state = false;
                 

@@ -159,7 +159,8 @@ sim.accel = function() {
                         
                     }
                     else {
-                        light.compressor(false)
+                        train.all[i].prototype.realtime.air.compressor.running = 0;
+                        light.compressor(false);
                     }
                 }
                 else if (train.all[i].prototype.air.compressor.needsEngine == false) {
@@ -338,5 +339,53 @@ wheel = function(trainNumber, mass, radius) {
 //Once ALL this is loaded, we start the calculation loop, which runs every 100ms.
 sim.recalcInterval = setInterval(function() {sim.accel()}, 100)
 
+/*
+AIR UTILITIES
+
+These are specifically designed to make working with air systems easier.
+*/
+
+airTools = {
+    reservoir : {
+        main : {
+            /*
+            take();
+            
+            Subtracts a given number of cubic feet from the main locomotive reservoir
+            take : function(amount, locomotive) {
+            */
+            take : function(amount, locomotive) {
+                //subtracts the amount in cubic feet from the locomotive's main reservoir and updates the gauge
+                train.all[locomotive].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[locomotive].prototype.realtime.air.reservoir.main.airVolumeInTank - amount;
+                //update the gauge to reflect our changes
+                gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.airVolumeInTank)
+                
+                
+            }
+        }
+    }
+}
+
+sim.f = {
+    //This contains a number of functions for dealing with the simulation-ish counterparts of the DCC functions. These functions do things like handling the math behind running the air bell, calculating air removal from the horn, etc.
+    
+    //Subcategory of sim.f that is exclusively for air-related things
+    air : {
+        horn : function(trainPosition, state) {
+            //This should take care of all the math for using a horn
+            if (state == true) {
+                //if we're turning the horn ON...
+                
+                /*
+                This function is actually relatively simple. It gathers information about the air consumption rate of the horn (in cubic feet per millisecond). Then it creates an interval (a child of train.all[x].junk) that takes away the appropriate amount of air from the main reservoir every 1ms.
+                
+                On the flipside, if you feed 'true' into this function, it will kill the interval it created, thus stopping the air usage.
+                */
+                var usagePerMs = train.all[trainPosition].prototype.air.device.horn.usagePerMs;
+                train.all[trainPosition].junk.hornAirInterval = setInterval(function() {airTools.reservoir.main.take(usagePerMs, trainPosition)}, 1);
+            }
+        }
+    }
+}
 
 
