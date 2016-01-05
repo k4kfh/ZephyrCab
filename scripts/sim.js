@@ -142,7 +142,7 @@ sim.accel = function() {
             First we figure out if it's running at all.
             Then we calculate the flow rate.
             */
-            if (train.all[i].prototype.realtime.air.reservoir.main.psi <= train.all[i].prototype.air.compressor.limits.lower) {
+            if (train.all[i].prototype.realtime.air.reservoir.main.psi.g <= train.all[i].prototype.air.compressor.limits.lower) {
                 
                 
                 
@@ -172,7 +172,7 @@ sim.accel = function() {
                 }
                 
             }
-            else if (train.all[i].prototype.realtime.air.reservoir.main.psi >= train.all[i].prototype.air.compressor.limits.upper) {
+            else if (train.all[i].prototype.realtime.air.reservoir.main.psi.g >= train.all[i].prototype.air.compressor.limits.upper) {
                 train.all[i].prototype.realtime.air.compressor.running = 0;
                 
                 //If user is in this locomotive's cab
@@ -211,16 +211,16 @@ sim.accel = function() {
             
             //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
             var flowratePerCycle = train.all[i].prototype.realtime.air.compressor.flowrate.perCycle //This is just a shorthand variable to clean the code up, doesn't change anything
-            train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank + flowratePerCycle;
+            train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume + flowratePerCycle;
             
             //Subtract leak rate in cubic feet before calculating pressure
-            var volumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank;
+            var volumeInTank = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume;
             var leakRate = train.all[i].prototype.air.reservoir.main.leakRate; //this is loss in cubic feet per cycle
             var volumeInTank = volumeInTank - leakRate; //lose air from leak
-            train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = volumeInTank;
+            train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume = volumeInTank;
             
             //Make sure the volume isn't below capacity (otherwise we'll have a vacuum and unless you have some kind of space train that won't happen)
-            if (train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank < train.all[i].prototype.air.reservoir.main.capacity) {
+            if (train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume < train.all[i].prototype.air.reservoir.main.capacity) {
                 //if the volume is less than the minimum (the capacity) then fix it
                 train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
             }
@@ -228,14 +228,13 @@ sim.accel = function() {
             //Find volume of normal-pressure air that's been stuffed into the tank.
             //we create some shorthand variables to make this more readable
             var tankCapacity = train.all[i].prototype.air.reservoir.main.capacity;
-            var airVolumeInTank = train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank;
-            var psi = (airVolumeInTank / tankCapacity) - 1; //we have to subtract one so that 0psi can exist...math sucks like that
-            train.all[i].prototype.realtime.air.reservoir.main.psi = psi;
+            var airVolumeInTank = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume;
+            air.reservoir.main.updatePSI(i)
             
             //If we are dealing with the current cab locomotive, we need to update the gauge.
             if (ui.cab.currentLoco == i) {
                 //if we're in this locomotive
-                gauge.air.reservoir.main(train.all[i].prototype.realtime.air.reservoir.main.psi)
+                gauge.air.reservoir.main(train.all[i].prototype.realtime.air.reservoir.main.psi.g)
             }
             
             
@@ -338,54 +337,4 @@ wheel = function(trainNumber, mass, radius) {
 
 //Once ALL this is loaded, we start the calculation loop, which runs every 100ms.
 sim.recalcInterval = setInterval(function() {sim.accel()}, 100)
-
-/*
-AIR UTILITIES
-
-These are specifically designed to make working with air systems easier.
-*/
-
-airTools = {
-    reservoir : {
-        main : {
-            /*
-            take();
-            
-            Subtracts a given number of cubic feet from the main locomotive reservoir
-            take : function(amount, locomotive) {
-            */
-            take : function(amount, locomotive) {
-                //subtracts the amount in cubic feet from the locomotive's main reservoir and updates the gauge
-                train.all[locomotive].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[locomotive].prototype.realtime.air.reservoir.main.airVolumeInTank - amount;
-                //update the gauge to reflect our changes
-                gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.airVolumeInTank)
-                
-                
-            }
-        }
-    }
-}
-
-sim.f = {
-    //This contains a number of functions for dealing with the simulation-ish counterparts of the DCC functions. These functions do things like handling the math behind running the air bell, calculating air removal from the horn, etc.
-    
-    //Subcategory of sim.f that is exclusively for air-related things
-    air : {
-        horn : function(trainPosition, state) {
-            //This should take care of all the math for using a horn
-            if (state == true) {
-                //if we're turning the horn ON...
-                
-                /*
-                This function is actually relatively simple. It gathers information about the air consumption rate of the horn (in cubic feet per millisecond). Then it creates an interval (a child of train.all[x].junk) that takes away the appropriate amount of air from the main reservoir every 1ms.
-                
-                On the flipside, if you feed 'true' into this function, it will kill the interval it created, thus stopping the air usage.
-                */
-                var usagePerMs = train.all[trainPosition].prototype.air.device.horn.usagePerMs;
-                train.all[trainPosition].junk.hornAirInterval = setInterval(function() {airTools.reservoir.main.take(usagePerMs, trainPosition)}, 1);
-            }
-        }
-    }
-}
-
 

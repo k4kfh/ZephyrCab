@@ -2,6 +2,8 @@
 This file is rather special. It bundles locomotive prototype entries and model entries to an entry in the JMRI roster.
 
 It is done using objects, but the syntax is very specific. You must adhere to this syntax or things will explode in fiery infernos.
+
+NOTE: If you add 
 */
 
 bundles = {
@@ -76,7 +78,7 @@ bundles = {
             air : {
                 reservoir : {
                     main : {
-                        capacity : 16, //capacity of the tank in cubic feet
+                        capacity : 46.7882, //capacity of the tank in cubic feet
                         leakRate : 0, //leak rate in cubic feet per 100ms
                     },
                 },
@@ -122,7 +124,11 @@ bundles = {
                     reservoir : {
                         //Realtime data about the main reservoir is stored here
                         main : {
-                            airVolumeInTank : 16, //set this to capacity (in cubic feet) to start, unless you plan to run your train with no atmosphere...
+                            atmAirVolume: 46.7882, //should be set to capacity
+                            psi : {
+                                g : 0, //gauge psi, 0 means 1atm of pressure
+                                abs : 14.696, //absolute psi
+                            }
                         }
                     }
                 },
