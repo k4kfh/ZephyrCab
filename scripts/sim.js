@@ -338,3 +338,24 @@ wheel = function(trainNumber, mass, radius) {
 //Once ALL this is loaded, we start the calculation loop, which runs every 100ms.
 sim.recalcInterval = setInterval(function() {sim.accel()}, 100)
 
+sim.f = {
+    air : {
+        horn : function(trainPosition, state) {
+            //define a shorthand variable for the usage in cubic feet per millisecond, and for the corresponding pressure
+            var usagePerMs = train.all[trainPosition].prototype.air.device.horn.usagePerMs;
+            var hornOpsPressure = train.all[trainPosition].prototype.air.device.horn.operatingPressure;
+            
+            //if we are turning the horn on, create the interval to run every 1ms
+            if (state == true) {
+                //intervals are stored in .prototype.tmp.intervals
+                train.all[trainPosition].prototype.tmp.intervals.horn = setInterval(function(){air.reservoir.main.take(usagePerMs, hornOpsPressure, trainPosition)}, 1)
+            }
+            //if we are turning the horn off, clear the interval
+            else if (state == false) {
+                clearInterval(train.all[trainPosition].prototype.tmp.intervals.horn);
+            }
+            
+        }
+    }
+}
+

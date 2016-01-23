@@ -26,12 +26,19 @@ air = {
                 var psiAbs = (atmAirVolume / capacity) + 13.696; //this means that if atmAirVolume and capacity are equal, then the psi will be 14.696psi (1atm)
                 var psig = (atmAirVolume / capacity) - 1; //this is psig, which is 0 if capacity and atmAirVolume are equal. It is the difference between tank pressure and ambient (atmosphere) pressure, and is the value displayed on the dash gauge.
                 
+                //this is a safeguard to make sure we don't accidentally turn the reservoir into a vacuum
+                if (psig < 0) {
+                    psiAbs = 14.696;
+                    psig = 0;
+                }
+                
                 //now we actually set the train objects to the newly calculated values
                 train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g = psig;
                 train.all[locomotive].prototype.realtime.air.reservoir.main.psi.abs = psiAbs;
             },
+            
             take : function(cfeet, atPressure, locomotive) {
-                
+                console.log("TAKING " + cfeet + "@" + atPressure + "PSI FROM MAIN RESERVOIR ON LOCOMOTIVE " + locomotive)
                 //Define some shorthand variables
                 var mainReservoir = new Object();
                 mainReservoir.psi = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g;
@@ -52,7 +59,7 @@ air = {
                 
                 //update the gauge to reflect our changes
                 if (locomotive == ui.cab.currentLoco) {
-                    gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume);
+                    gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g);
                 }
                 
                 

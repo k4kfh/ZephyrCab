@@ -4,7 +4,7 @@ cfg = new Object();
 This file is used to store settings server-side. This is capable of storing an IP address to connect to automatically, as well as other things.
 */
 
-cfg.ip = "127.0.0.1";
+cfg.ip = "jmri-pc";
 cfg.port = 12080;
 
 cfg.disablePushNotifications = true;

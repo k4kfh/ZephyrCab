@@ -94,7 +94,8 @@ bundles = {
                 device : {
                     horn : {
                         cfm : 70, //air consumption rate in cfm
-                        usagePerMs : 1, //usage in cubic feet, per millisecond (should be an absurdly small number)
+                        usagePerMs : 0.001167, //usage in cubic feet, per millisecond (should be an absurdly small number)
+                        operatingPressure : 100, //this horn runs at 100psi
                     },
                 }
             },
@@ -250,10 +251,18 @@ bundles = {
                 rollingResistance : 0.0015,
                 
             },
+            //this serves as a sort of "RAM", almost a junk folder...lol
+            "tmp" :{
+                "intervals" : {
+                    
+                }
+            }
         },
         
         //This is an object that needs to be created for use by various system tools
-        junk : {}
+        //TODO: Do we actually need this?
+        junk : {
+        }
     },
     
     "CBQ1":{
