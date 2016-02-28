@@ -21,17 +21,31 @@ decoders = {
             //bell
             this.f.bell = new Object();
             this.f.bell.set = function(state) {
-                train.all[trainPosition].throttle.f.set(1, state)
-                train.all[trainPosition].dcc.f.bell.state = state;
+                var opsPressure = train.all[trainPosition].prototype.air.device.bell.operatingPressure
+                var allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition)
+                if (allowed == true) {
+                    train.all[trainPosition].throttle.f.set(1, state)
+                    train.all[trainPosition].dcc.f.bell.state = state;
+                }
+                else {
+                    console.log("NOT ENOUGH PRESSURE")
+                }
             }
             this.f.bell.state = false;
                 
             //horn
             this.f.horn = new Object();
             this.f.horn.set = function(state) {
-                train.all[trainPosition].throttle.f.set(2, state)
-                train.all[trainPosition].dcc.f.horn.state = state;
-                sim.f.air.horn(trainPosition, state);
+                var opsPressure = train.all[trainPosition].prototype.air.device.horn.operatingPressure
+                var allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition)
+                if (allowed == true) {
+                    train.all[trainPosition].throttle.f.set(2, state)
+                    train.all[trainPosition].dcc.f.horn.state = state;
+                    sim.f.air.horn(trainPosition, state);
+                }
+                else {
+                    console.log("CANT DO IT, NOT ENOUGH PRESSURE")
+                }
             }
             this.f.horn.state = false;
                 
@@ -44,11 +58,16 @@ decoders = {
             this.f.compressor.state = false;
                 
             //air release
-            this.f.airdump = new Object();
-            this.f.airdump.set = function(state) {
-                    
+            this.f.airDump = new Object();
+            this.f.airDump.set = function(state) {
+                var possible = (train.all[trainPosition].prototype.realtime.air.reservoir.main.psi.g != 0)
+                if (possible == true) {
+                    train.all[trainPosition].throttle.f.set(19, state)
+                }
+                else if ((possible == false) && (state == false)) {
+                    train.all[trainPosition].throttle.f.set(19, state)
+                }
             }
-            this.f.airdump.state = false;
                 
             //dyn brake fans
             this.f.dynbrakes = new Object();

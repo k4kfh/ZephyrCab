@@ -81,6 +81,7 @@ bundles = {
                         capacity : 46.7882, //capacity of the tank in cubic feet
                         leakRate : 0, //leak rate in cubic feet per 100ms
                     },
+                    
                 },
                 compressor : {
                     limits : {
@@ -97,6 +98,11 @@ bundles = {
                         usagePerMs : 0.001167, //usage in cubic feet, per millisecond (should be an absurdly small number)
                         operatingPressure : 100, //this horn runs at 100psi
                     },
+                    bell : {
+                        cfm : 0, //temporary until I get actual numbers
+                        usagePerMs : 0, //^^^
+                        operatingPressure : 10, //mental approximation courtesy of Bruce Kingsley
+                    }
                 }
             },
             "realtime" : {
@@ -129,7 +135,8 @@ bundles = {
                             psi : {
                                 g : 0, //gauge psi, 0 means 1atm of pressure
                                 abs : 14.696, //absolute psi
-                            }
+                            },
+                            dump : false, //set to true when the dump valve is open
                         }
                     }
                 },

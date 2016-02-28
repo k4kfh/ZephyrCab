@@ -142,7 +142,9 @@ sim.accel = function() {
             First we figure out if it's running at all.
             Then we calculate the flow rate.
             */
-            if (train.all[i].prototype.realtime.air.reservoir.main.psi.g <= train.all[i].prototype.air.compressor.limits.lower) {
+            var dumpValve = train.all[i].prototype.realtime.air.reservoir.main.dump; //check if the dump valve is open
+            console.log("DUMP VALVE : " + dumpValve)
+            if ((train.all[i].prototype.realtime.air.reservoir.main.psi.g <= train.all[i].prototype.air.compressor.limits.lower) && (dumpValve == false)) {
                 
                 
                 
@@ -172,12 +174,20 @@ sim.accel = function() {
                 }
                 
             }
-            else if (train.all[i].prototype.realtime.air.reservoir.main.psi.g >= train.all[i].prototype.air.compressor.limits.upper) {
+            else if ((train.all[i].prototype.realtime.air.reservoir.main.psi.g >= train.all[i].prototype.air.compressor.limits.upper)&& (dumpValve == false)) {
                 train.all[i].prototype.realtime.air.compressor.running = 0;
                 
                 //If user is in this locomotive's cab
                 if (i == ui.cab.currentLoco) {
                     light.compressor(false);
+                }
+            }
+            
+            //the compressor won't run when the dump valve is open, that's a waste
+            if (dumpValve == true) {
+                train.all[i].prototype.realtime.air.compressor.running = 0;
+                if (i == ui.cab.currentLoco) {
+                    light.compressor(false)
                 }
             }
             
@@ -355,6 +365,15 @@ sim.f = {
                 clearInterval(train.all[trainPosition].prototype.tmp.intervals.horn);
             }
             
+        },
+        dump : function(trainPosition, state) {
+            if (state == true) {
+                train.all[trainPosition].prototype.realtime.air.reservoir.main.atmAirVolume = train.all[trainPosition].prototype.air.reservoir.main.capacity;
+                train.all[trainPosition].prototype.realtime.air.reservoir.main.dump = true;
+            }
+            else {
+                train.all[trainPosition].prototype.realtime.air.reservoir.main.dump = false;
+            }
         }
     }
 }

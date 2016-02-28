@@ -62,7 +62,21 @@ air = {
                     gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g);
                 }
                 
-                
+                //Return true or false based on whether or not it was able to do it
+                if (mainReservoir.psi == 0) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            },
+            
+            //returns true or false whether an air device can operate with the current reservoir pressure
+            pressureCheck : function(opsPressure, locomotive) {
+                var resPressure = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g
+                var result = (resPressure >= opsPressure)
+                if (result == false) {Materialize.toast("Not enough air pressure!", 2000)}
+                return result;
             }
         }
     }

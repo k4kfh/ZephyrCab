@@ -96,8 +96,18 @@ ui = {
             set:function(arg) {
                 if (train.all[ui.cab.currentLoco] != undefined) {
                     //If we have a lead locomotive
-                    train.all[ui.cab.currentLoco].dcc.f.bell.set(arg)
                     ui.cab.bell.state = arg;
+                    var operatingPressure = train.all[ui.cab.currentLoco].prototype.air.device.bell.operatingPressure
+                    var allowed = air.reservoir.main.pressureCheck(operatingPressure, ui.cab.currentLoco)
+                    if (allowed == true) {
+                        ui.cab.bell.state = arg
+                        train.all[ui.cab.currentLoco].dcc.f.bell.set(arg)
+                    }
+                    else {
+                        ui.cab.bell.state = false;
+                        train.all[ui.cab.currentLoco].dcc.f.bell.set(false)
+                    }
+                    document.getElementById("ui.cab.bell").checked = ui.cab.bell.state;
                     return ui.cab.bell.state;
                 }
                 else {
@@ -120,6 +130,37 @@ ui = {
             },
             
             state : false,
+        },
+        
+        airDump : {
+            set : function(arg) {
+                if (train.all[ui.cab.currentLoco] != undefined) {
+                    //If we have a lead locomotive
+                    train.all[ui.cab.currentLoco].dcc.f.airDump.set(arg)
+                    sim.f.air.dump(ui.cab.currentLoco, arg)
+                    ui.cab.airDump.state = arg;
+                    
+                    //disable air devices
+                    ui.cab.shutOffAir()
+                    
+                    return ui.cab.airDump.state;
+                }
+                else {
+                    //If there's no lead locomotive
+                    Materialize.toast("You don't have a lead locomotive.", 3000)
+                    document.getElementById("ui.cab.airDump").checked = ui.cab.airDump.state;
+                    return ui.cab.airDump.state;
+                }
+            },
+            
+            state : false //when true, the compressor won't kick on
+        },
+        
+        //shuts off the functions that use air (runs when air pressure is dumped)
+        shutOffAir : function() {
+            
+            //bell
+            train.all[ui.cab.currentLoco].dcc.f.bell.set(false)
         },
         
         currentLoco : 0,
