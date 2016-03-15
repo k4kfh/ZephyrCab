@@ -5,24 +5,24 @@ train.build = new Object();
 train.ui = new Object();
 
 /*
-This function adds the roster information to the bundles file entries, and builds the train builder selection UI system thing based on all that information.
+This function adds the roster information to the bundles.locomotives file entries, and builds the train builder selection UI system thing based on all that information.
 */
 train.ui.setup = function() {
-    //First we go through the keys of the bundles to build a list of available locomotive bundles.
+    //First we go through the keys of the bundles.locomotives to build a list of available locomotive bundles.locomotives.
     var locomotivesList = new Object();
-    locomotivesList = Object.keys(bundles);
+    locomotivesList = Object.keys(bundles.locomotives);
     
     
     /*
     This loop goes through each element of the list and finds the corresponding roster entry from the JMRI roster.
-    Then it adds that entire roster object to bundles.thatThing.roster
+    Then it adds that entire roster object to bundles.locomotives.thatThing.roster
     */
     for(i=0; i < locomotivesList.length; i++) {
-        bundles[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]];
+        bundles.locomotives[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]];
     }
     
     /*
-    At this point we can confidently use the bundles object to generate anything to do with locomotive availability. It now has all the JMRI roster stuff, so we can get the decoder info from it.
+    At this point we can confidently use the bundles.locomotives object to generate anything to do with locomotive availability. It now has all the JMRI roster stuff, so we can get the decoder info from it.
     
     Now we need to start building the HTML for the train builder. We will store this in an array because it is easier to add to those than a string. At the end, we'll use .join() to combine all of it into a single string and publish it to the DOM.
     */
@@ -37,10 +37,10 @@ These new objects here are for making sure you can't add a locomotive twice. One
 */
 train.ui.locomotives = new Object();
 train.ui.locomotives.used = [];
-train.ui.locomotives.unused = Object.keys(bundles); //we set it to this initially because obviously when this script is first loaded, no locomotives from bundles have been used
+train.ui.locomotives.unused = Object.keys(bundles.locomotives); //we set it to this initially because obviously when this script is first loaded, no locomotives from bundles.locomotives have been used
 
 /*
-This function updates the entire train builder area. It should be called whenever a part of the train is edited, or whenever bundles.json is edited.
+This function updates the entire train builder area. It should be called whenever a part of the train is edited, or whenever bundles.locomotives.json is edited.
 
 It is called with no arguments.
 */
@@ -107,7 +107,7 @@ train.ui.update = function() {
     document.getElementById("trainDisplay").innerHTML = finalHTML.join(''); //The quotes are here so it doesn't put commas between the elements
     
     /*
-    Now we need to tackle the locomotive palette, which is based on the bundles object.
+    Now we need to tackle the locomotive palette, which is based on the bundles.locomotives object.
     
     We'll use the same method as above (joining an array into a string of HTML)
     */
@@ -116,7 +116,7 @@ train.ui.update = function() {
         /*
         This loop cycles through every single key from train.ui.locomotives.unused and generates HTML for each one. It will only generate HTML for available locos.
         */
-        var currentBundle = bundles[train.ui.locomotives.unused[i]] //This will equal the inside of the entire object we're dealing with
+        var currentBundle = bundles.locomotives[train.ui.locomotives.unused[i]] //This will equal the inside of the entire object we're dealing with
         
         /*
         This is my chosen complex-but-functional method of building HTML with JavaScript. I do it one line at a time, splitting it into chunks so I can spend minimal time fighting with quotes and escape characters. At the end of the build process, I combine all those array elements into a single HTML string with .join(''), and in this instance I take the various versions of that (one for each locomotive) and push them into the final HTML variable, which is later combined using .join() and put into the DOM.
@@ -131,7 +131,7 @@ train.ui.update = function() {
         var newHTMLstring = "<i onclick='train.build.add("
         newHTML.push(newHTMLstring)
         
-        var newHTMLstring = 'bundles["'
+        var newHTMLstring = 'bundles.locomotives["'
         newHTML.push(newHTMLstring)
         
         var newHTMLstring = currentBundle.roster.name; //This is the name from the roster

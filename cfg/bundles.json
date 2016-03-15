@@ -5,8 +5,10 @@ It is done using objects, but the syntax is very specific. You must adhere to th
 
 NOTE: If you add 
 */
+bundles = new Object();
 
-bundles = {
+//This object contains all the locomotives
+bundles.locomotives = {
     /*
     Example entry for my Athearn Genesis GP15-1 is shown below
     
@@ -21,6 +23,7 @@ bundles = {
     The decoder settings are not here because we can grab those straight from JMRI.
     */
     "CBQ2" : {
+        type: "locomotive",
         model:{
             speed:function(mph) {
                 mph = speed; //totally not correct but it is a functional example
@@ -273,6 +276,7 @@ bundles = {
     },
     
     "CBQ1":{
+        type: "locomotive",
         model:{
             speed:function(mph) {
                 mph = speed; //totally not correct but it is a functional example
