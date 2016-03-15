@@ -193,10 +193,16 @@ sim.accel = function() {
             
             //Another IF for the sound stuff
             if (train.all[i].prototype.realtime.air.compressor.running == 1) {
-                train.all[i].dcc.f.compressor.set(true);
+                //first check if the state has changed. If it hasn't we do nothing to avoid excessive loconet packets.
+                if (train.all[i].dcc.f.compressor.state == false) {
+                    train.all[i].dcc.f.compressor.set(true);
+                }
             }
             else {
-                train.all[i].dcc.f.compressor.set(false);
+                //check to see if the state actually changed to avoid excess loconet packets
+                if (train.all[i].dcc.f.compressor.state == true) {
+                    train.all[i].dcc.f.compressor.set(false);
+                }
             }
             
             /*
