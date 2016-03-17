@@ -143,7 +143,7 @@ sim.accel = function() {
             Then we calculate the flow rate.
             */
             var dumpValve = train.all[i].prototype.realtime.air.reservoir.main.dump; //check if the dump valve is open
-            console.log("DUMP VALVE : " + dumpValve)
+            //console.log("DUMP VALVE : " + dumpValve)
             if ((train.all[i].prototype.realtime.air.reservoir.main.psi.g <= train.all[i].prototype.air.compressor.limits.lower) && (dumpValve == false)) {
                 
                 

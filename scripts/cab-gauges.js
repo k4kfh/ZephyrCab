@@ -69,7 +69,7 @@ gauge.air.reservoir.main = function(value) {
     //This is just a wrapper so we can add additional functions that trigger if we need to.
     
     //This if statement saves resources by not updating the gauge if the value hasn't actually changed. We need this since the physics engine updates this function with a new value every 100ms.
-    console.log("Old Value = " + oldValue + ", New Value = " + value)
+    //console.log("Old Value = " + oldValue + ", New Value = " + value)
     if (oldValue != value) {
         gauge.air.reservoir.main.object.setValue(value)
     }

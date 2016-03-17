@@ -4,11 +4,11 @@ cfg = new Object();
 This file is used to store settings server-side. This is capable of storing an IP address to connect to automatically, as well as other things.
 */
 
-cfg.ip = "jmri-pc";
+cfg.ip = "10.10.39.85";
 cfg.port = 12080;
 
 cfg.disablePushNotifications = true;
 
 cfg.debugToasts = true;
 
-cfg.logallmessages = true; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "
+cfg.logallmessages = false; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "

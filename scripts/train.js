@@ -2,7 +2,10 @@
 train = new Object(); //first we must define these objects
 train.all = []; //THIS IS THE MAIN TRAIN LIST
 train.build = new Object();
-train.ui = new Object();
+train.ui = {
+    locomotives : {},
+    rollingstock : {},
+}
 
 /*
 This function adds the roster information to the bundles.locomotives file entries, and builds the train builder selection UI system thing based on all that information.
@@ -20,6 +23,9 @@ train.ui.setup = function() {
     for(i=0; i < locomotivesList.length; i++) {
         bundles.locomotives[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]];
     }
+    
+    //Real quick we need to add the rolling stock names to a list
+    train.ui.rollingstock.names = Object.keys(bundles.rollingstock)
     
     /*
     At this point we can confidently use the bundles.locomotives object to generate anything to do with locomotive availability. It now has all the JMRI roster stuff, so we can get the decoder info from it.
@@ -61,32 +67,42 @@ train.ui.update = function() {
         TODO: Once a standardized place to find images is agreed on, I'd like to make use of the great-looking "img" option of these chips.
         */
         
-        var newHTML = []
+        var newHTML = [];
         
         var newHTMLstring = "<div class='chip hoverable'>";
         newHTML.push(newHTMLstring);
         
-        var newHTMLstring = "<a onclick='";
-        newHTML.push(newHTMLstring);
+        //LOCOMOTIVES ONLY: This builds the "enter cab" link.
+        if (train.all[i].type == "locomotive") {
+            console.log("MARKER FOR TYPE==LOCOMOTIVE")
+            var newHTMLstring = "<i class='material-icons left'>train</i>"
+            newHTML.push(newHTMLstring)
+            var newHTMLstring = "<a onclick='";
+            newHTML.push(newHTMLstring);
         
-        var newHTMLstring = 'ui.cab.setCurrentLoco("';
-        newHTML.push(newHTMLstring);
+            var newHTMLstring = 'ui.cab.setCurrentLoco("';
+            newHTML.push(newHTMLstring);
         
-        var newHTMLstring = train.all[i].roster.name;
-        newHTML.push(newHTMLstring);
+            var newHTMLstring = train.all[i].roster.name;
+            newHTML.push(newHTMLstring);
         
-        var newHTMLstring = '")';
-        newHTML.push(newHTMLstring);
+            var newHTMLstring = '")';
+            newHTML.push(newHTMLstring);
         
-        var newHTMLstring = "' style='cursor:pointer'>";
-        newHTML.push(newHTMLstring);
+            var newHTMLstring = "' style='cursor:pointer'>";
+            newHTML.push(newHTMLstring);
         
-        var newHTMLstring = train.all[i].roster.name;
-        newHTML.push(newHTMLstring);
+            var newHTMLstring = train.all[i].roster.name;
+            newHTML.push(newHTMLstring);
         
-        var newHTMLstring = "</a>";
-        newHTML.push(newHTMLstring);
-        
+            var newHTMLstring = "</a>";
+            newHTML.push(newHTMLstring);
+        }
+        //This only shows the name, it doesn't bother with any kind of clickable links, at least not yet.
+        else if (train.all[i].type == "rollingstock") {
+            var newHTMLstring = train.all[i].roster.name;
+            newHTML.push(newHTMLstring)
+        }
         var newHTMLstring = "<i class='material-icons right' ";
         newHTML.push(newHTMLstring);
         
@@ -155,6 +171,30 @@ train.ui.update = function() {
     //console.log(finalHTML.join(''))
     
     /*
+    Next, we display the rolling stock palette.
+    */
+    var finalHTML = [] //reset this from above
+    /*
+    This loop goes through the list of rolling stock names, then generates HTML for their add buttons. You don't have a finite number of rolling stock, so these buttons never go away.
+    
+    In the future, integration with JMRI's OperationsPro rolling stock roster is planned. This will require a pretty significant amount of work, but it is not impossibly difficult with this implementation (I think/hope).
+    */
+    for (i=0; i < train.ui.rollingstock.names.length; i++) {
+        var name = train.ui.rollingstock.names[i];
+        var newHTML = '<div class="chip">'
+        finalHTML.push(newHTML);
+        var newHTML = "<i class='material-icons' onclick='"
+        finalHTML.push(newHTML);
+        var newHTML = 'train.build.add(bundles.rollingstock["' + name + '"])\'' //this line is really ugly, but the \ just escapes the quotation so the onclick attribute works properly. Sue me.
+        finalHTML.push(newHTML)
+        var newHTML = '>add</i>' + name + "</div>";
+        finalHTML.push(newHTML)
+    }
+    console.log("FINAL HTML: " + finalHTML.join(''))
+    $("#rollingstockPalette").html(finalHTML.join(''))
+    
+    
+    /*
     New Feature: Display locomotive name in CAB tab
     
     This feature looks at the roster entry name of the lead locomotive and displays it in the CAB tab's spot for names.
@@ -171,43 +211,48 @@ train.ui.update = function() {
 }
 
 /*
-This function is for adding a bundle object to the train. It doesn't matter if the bundle object is one straight from the bundle files, or if it is one from 
+This function is for adding a bundle object to the train. It doesn't matter if the bundle object is one straight from the bundle files, or if it is one from somewhere else. The beauty of this approach is that this function doesn't care if  you're adding locomotives, rolling stock, or some crazy insane new type of thing you made up while half-asleep the other day.
 */
 train.build.add = function(object) {
-    /*
-    First we need to define the decoder model and family straight from the roster object. We only do this for convenience.
+    if (object.type == "locomotive") { //This if statement checks if the input object is a locomotive or something else
+        /*
+        First we need to define the decoder model and family straight from the roster object. We only do this for convenience.
     
-    After we have this information, we begin actually constructing the new object.
-    */
-    var decoderModel = object.roster.decoderModel;
-    var decoderFamily = object.roster.decoderFamily;
+        After we have this information, we begin actually constructing the new object.
+        */
+        var decoderModel = object.roster.decoderModel;
+        var decoderFamily = object.roster.decoderFamily;
     
-    var address = object.roster.address; //We need this because the DCC decoder constructor and the throttle need this
+        var address = object.roster.address; //We need this because the DCC decoder constructor and the throttle need this
     
-    var trainPosition = train.all.length; //this is necessary because the DCC decoder constructor accepts a trainPosition argument
+        var trainPosition = train.all.length; //this is necessary because the DCC decoder constructor accepts a trainPosition argument
     
-    train.all.push(object)
-    /*
-    Because of the magical things built into the decoder constructor function spec, we don't need to call a separate create throttle thing. The throttle subobject is automatically created when we add the DCC decoder thing.
+        train.all.push(object)
+        /*
+        Because of the magical things built into the decoder constructor function spec, we don't need to call a separate create throttle thing.     The throttle subobject is automatically created when we add the DCC decoder thing.
     
+        This series of IF/ELSE statements is the mechanism for generic decoder fallback. If ZephyrCab doesn't have a specific object file for a given decoderModel/decoderFamily, it falls back to generic/generic. Otherwise, it just sets the variable decoderConstructor to the appropriate constructor object.
+        */
+        if (decoders[decoderFamily] == undefined) {
+            decoderConstructor = decoders["generic"]["generic"]
+        }
+        else {
+            var decoderConstructor = decoders[decoderFamily][decoderModel]
+        }
     
-    */
+        train.all[trainPosition].dcc = new decoderConstructor(address, trainPosition) //decoderConstructor here is just shorthand for the actual constructor. It's defined in the IF/ELSE statement above.
     
-    if (decoders[decoderFamily] == undefined) {
-        decoderConstructor = decoders["generic"]["generic"]
+        //Now that the entire new object is done, we need to move the locomotive name to the used list
+        train.ui.locomotives.used.push(object.roster.name)
+    
+        //Removing the locomotive from the unused list:
+        var index = train.ui.locomotives.unused.indexOf(object.roster.name)
+        train.ui.locomotives.unused.splice(index, 1)
     }
-    else {
-        var decoderConstructor = decoders[decoderFamily][decoderModel]
+    //If the input object is rolling stock, do this:
+    else if (object.type == "rollingstock") {
+        train.all.push(object) //since there's no decoder or executable object for rolling stock, we literally just add the object as-is
     }
-    
-    train.all[trainPosition].dcc = new decoderConstructor(address, trainPosition)
-    
-    //Now that the entire new object is done, we need to move the locomotive name to the used list
-    train.ui.locomotives.used.push(object.roster.name)
-    
-    //Removing the locomotive from the unused list:
-    var index = train.ui.locomotives.unused.indexOf(object.roster.name)
-    train.ui.locomotives.unused.splice(index, 1)
     
     //Now we need to update the train ui
     train.ui.update();
@@ -219,14 +264,18 @@ train.build.add = function(object) {
 train.build.remove = function(entryName) {
     
     var index = train.find.all(entryName)
+    var type = train.all[index].type
     train.all.splice(index, 1) //remove 1 element at the index, basically saying remove the index
     debugToast("Removing " + entryName + " from train.");
     
-    //Now we have to update the used/unused locomotive lists
-    var index = train.ui.locomotives.used.indexOf(entryName);
-    train.ui.locomotives.used.splice(index, 1);
-    //Now we've removed it from the used list, so we need to add it to the unused list.
-    train.ui.locomotives.unused.push(entryName)
+    //If the object to be removed is a locomotive, we need to update the list of used/unused locomotives. Otherwise, we're basically done.
+    if (type == "locomotive") {
+        //Now we have to update the used/unused locomotive lists
+        var index = train.ui.locomotives.used.indexOf(entryName);
+        train.ui.locomotives.used.splice(index, 1);
+        //Now we've removed it from the used list, so we need to add it to the unused list.
+        train.ui.locomotives.unused.push(entryName)
+    }
     
     train.ui.update();
 }
