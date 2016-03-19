@@ -22,6 +22,12 @@ jmri.throttle = function(address, throttleName) {
         this.address = address
         this.name = throttleName; //throttle name should always be the train position just for ease-of-development purposes
         this.speed = new Object(); //same reason as this.f for existing as a seemingly stupid object
+        //called when removing object from the train; it releases the throttle
+        this.release = function() {
+            releasecmd = '{"type":"throttle","data":{"throttle":"' + throttleName + '","release":null}}';
+            sendcmd(releasecmd);
+            debugToast("Sent command : " + releasecmd)
+        }
         this.speed.set = function(speed) {
             //set speed to given percent
             sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
