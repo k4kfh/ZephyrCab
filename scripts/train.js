@@ -264,10 +264,12 @@ train.build.add = function(object) {
 train.build.remove = function(entryName) {
     //figure out which number in the list we're dealing with, thanks to my magical searching function
     var index = train.find.all(entryName)
+    var type = train.all[index].type //this is important info for the rest of the script
     
-    //tell JMRI we're releasing this throttle
-    train.all[index].throttle.release();
-    var type = train.all[index].type
+    //tell JMRI we're releasing this throttle if it's a locomotive
+    if (type == "locomotive") {
+        train.all[index].throttle.release(); //note that you'll get a message from this if debugToasts are enabled.
+    }
     train.all.splice(index, 1) //remove 1 element at the index, basically saying remove the index
     debugToast("Removing " + entryName + " from train.");
     
