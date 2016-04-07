@@ -55,7 +55,8 @@ bundles.locomotives = {
                     */
                     //First we need to convert the speed to KM/HR.
                     var efficiency = 0.72
-                    var horsepower = train.all[trainPosition].prototype.realtime.horsepower * notch.state
+                    var horsepower = train.all[trainPosition].prototype.maxHP * (notch.state/8)
+                    train.all[trainPosition].prototype.realtime.horsepower = horsepower; //just so it's stored
                     var speedSI = speed * 1.60934
     
                     /*
