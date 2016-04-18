@@ -291,7 +291,6 @@ sim.accel = function() {
             var tractiveEffort = train.all[i].prototype.realtime.te; //output tractive effort of locomotive (in lbs, at the wheels)
             //TODO: eventually we need to add air resistance
             var netForce = rollingResistance + gradeResistance + tractiveEffort;
-            console.log("Net Force for  train.all[" + i + "] is " + netForce)
             train.all[0].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
         }
         else if (train.all[i].prototype.type == "rollingstock") {
