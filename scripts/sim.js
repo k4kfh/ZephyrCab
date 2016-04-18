@@ -310,6 +310,21 @@ sim.accel = function() {
             weight : train.total.weight + train.all[i].prototype.weight, //compounds the weight total
         }
     }
+    
+    /* Acceleration Calculation based on Net Force
+    
+    Now it's time to calculate the acceleration, and consequently the speed, of the whole train. It's calculated as one single mass now that we've got all the net forces put together into a single value.
+    
+    This happens here, outside of the main FOR loop, so that we don't do a bunch of BS calculations while we're half-cycled through the train.
+    
+    1. Convert to SI units.
+    2. Calculate using f=ma
+    3. Store resulting acceleration in SI units
+    4. Store acceleration in mph/sec
+    5. Find new speed in mph
+    */
+    var force = train.total.netForce * 4.44822;
+    
 }
 
 
