@@ -275,13 +275,32 @@ sim.accel = function() {
             var gradeResistance = -1 * gradePercent * tonnage * 20 //20 is for 20lbs per ton per % (Al Krug), -1 is to make it a negative since it's RESISTANCE.
             train.all[i].prototype.realtime.gradeResistance = gradeResistance;
             
-            
+            /*
+            NET FORCES
+            - The last thing done in this loop -
+            This code adds up all the forces acting on the element to produce one .prototype.realtime.netforce value, which will be used later on.
+            */
+            var rollingResistance = train.all[i].prototype.realtime.rollingResistance; //rolling resistance
+            var gradeResistance = train.all[i].prototype.realtime.gradeResistance; //gravitational effects on grade
+            var tractiveEffort = train.all[i].prototype.realtime.te; //output tractive effort of locomotive (in lbs, at the wheels)
+            //TODO: eventually we need to add air resistance
+            var netForce = rollingResistance + gradeResistance + tractiveEffort;
+            train.all[0].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
         }
         else if (train.all[i].prototype.type == "rollingstock") {
             //We are dealing with rolling stock.
             
         }
     }
+    
+    /*
+    TRAIN TOTALS
+    - Adds up all the values (such as whole train weight) in train.total
+    - DOES NOT compute net force, this is done in each element in the previous FOR loop
+    - Uses FOR loop to cycle through all of it quickly
+    - Probably will go away or become very different once things like coupler slack happen
+    */
+    
 }
 
 
