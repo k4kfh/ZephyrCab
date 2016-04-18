@@ -33,6 +33,12 @@ sim.time = {
     speed : 1,
 }
 
+//We need to go ahead and define all the stuff inside train.total and set it to 0
+train.total = {
+    netForce : 0,
+    weight : 0,
+}
+
 sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
     for(i = 0; i < train.all.length; i++) {
@@ -285,22 +291,26 @@ sim.accel = function() {
             var tractiveEffort = train.all[i].prototype.realtime.te; //output tractive effort of locomotive (in lbs, at the wheels)
             //TODO: eventually we need to add air resistance
             var netForce = rollingResistance + gradeResistance + tractiveEffort;
+            console.log("Net Force for  train.all[" + i + "] is " + netForce)
             train.all[0].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
         }
         else if (train.all[i].prototype.type == "rollingstock") {
             //We are dealing with rolling stock.
             
         }
+    
+        /*
+        TRAIN TOTALS
+        - Adds up all the values (such as whole train weight) in train.total
+        - DOES NOT compute individual elements' net force, only the total train net force (so like, net NET force)
+        - Uses FOR loop to cycle through all of it quickly
+        - Probably will go away or become very different once things like coupler slack happen
+        */
+        train.total = {
+            netForce : train.total.netForce + train.all[i].prototype.realtime.netForce,
+            weight : train.total.weight + train.all[i].prototype.weight, //compounds the weight total
+        }
     }
-    
-    /*
-    TRAIN TOTALS
-    - Adds up all the values (such as whole train weight) in train.total
-    - DOES NOT compute net force, this is done in each element in the previous FOR loop
-    - Uses FOR loop to cycle through all of it quickly
-    - Probably will go away or become very different once things like coupler slack happen
-    */
-    
 }
 
 
