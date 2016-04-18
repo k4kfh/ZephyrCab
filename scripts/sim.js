@@ -43,7 +43,7 @@ sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
     for(i = 0; i < train.all.length; i++) {
         //First, we need to find out what type of element we're dealing with.
-        if (train.all[i].prototype.type == "locomotive") {
+        if (train.all[i].type == "locomotive") {
             //We are dealing with a locomotive.
             
             //First thing we need to do is deal with engine RPM and notching.
@@ -293,9 +293,9 @@ sim.accel = function() {
             var netForce = rollingResistance + gradeResistance + tractiveEffort;
             train.all[0].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
         }
-        else if (train.all[i].prototype.type == "rollingstock") {
+        else if (train.all[i].type == "rollingstock") {
             //We are dealing with rolling stock.
-            
+            console.log("Element " + i + " is rolling stock.")
         }
     
         /*
