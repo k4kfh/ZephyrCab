@@ -41,6 +41,15 @@ train.total = {
 
 sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
+    
+    /*
+    Zeroing out stuff
+    - Starting with train.total, we need to zero out values from the last cycle
+    */
+    train.total = {
+        netForce : 0,
+        weight : 0,
+    }
     for(i = 0; i < train.all.length; i++) {
         //First, we need to find out what type of element we're dealing with.
         if (train.all[i].type == "locomotive") {
@@ -300,6 +309,7 @@ sim.accel = function() {
     
         /*
         TRAIN TOTALS
+        - Zeroes the values first (this actualls happens up before the FOR loop starts)
         - Adds up all the values (such as whole train weight) in train.total
         - DOES NOT compute individual elements' net force, only the total train net force (so like, net NET force)
         - Uses FOR loop to cycle through all of it quickly
