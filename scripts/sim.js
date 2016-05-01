@@ -34,10 +34,23 @@ sim.time = {
 }
 
 //We need to go ahead and define all the stuff inside train.total and set it to 0
+train.total = new Object();
 train.total = {
-    netForce : 0,
-    weight : 0,
-}
+        netForce : 0,
+        weight : 0,
+        accel : {
+            si : {
+                force : 0,
+                mass : 0,
+                acceleration : 0
+            },
+            acceleration_mph : 0,
+            speed : {
+                mph : 0,
+                ms : 0,
+            }
+        }
+    }
 
 sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
@@ -45,11 +58,23 @@ sim.accel = function() {
     /*
     Zeroing out stuff
     - Starting with train.total, we need to zero out values from the last cycle
-    */
     train.total = {
         netForce : 0,
         weight : 0,
+        accel : {
+            si : {
+                force : 0,
+                mass : 0,
+                acceleration : 0
+            },
+            acceleration_mph : 0,
+            speed : {}
+        }
     }
+    */
+    train.total.weight = 0;
+    train.total.netForce = 0;
+    
     for(i = 0; i < train.all.length; i++) {
         //First, we need to find out what type of element we're dealing with.
         if (train.all[i].type == "locomotive") {
@@ -88,7 +113,8 @@ sim.accel = function() {
             /*
             Now we can calculate tractive effort based on notch and speed. This is done using a function (left open to developers of prototype objects) from inside the train object's prototype subobject.
             */
-            var elementSpeed = train.all[i].prototype.realtime.speed
+            var elementSpeed = train.total.accel.speed.mph;
+            //var elementSpeed = train.all[i].prototype.realtime.speed this line will be replace the one above it once coupler slack is implemented. For now the whole train is treated as one solid unit.
             var trainPosition = i; //This is passed as an argument so the function can see ALL of its parent object's attributes
             var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
             train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning; //We multiply by engineRunning so if we're not running it's 0
@@ -274,7 +300,7 @@ sim.accel = function() {
             */
             train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
             //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
-            if (train.all[i].prototype.realtime.speed == 0) {
+            if (train.total.accel.speed.mph == 0) {
                 train.all[i].prototype.realtime.rollingResistance = 0
             }
             
@@ -300,7 +326,7 @@ sim.accel = function() {
             var tractiveEffort = train.all[i].prototype.realtime.te; //output tractive effort of locomotive (in lbs, at the wheels)
             //TODO: eventually we need to add air resistance
             var netForce = rollingResistance + gradeResistance + tractiveEffort;
-            train.all[0].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
+            train.all[i].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
         }
         else if (train.all[i].type == "rollingstock") {
             //We are dealing with rolling stock.
@@ -315,26 +341,36 @@ sim.accel = function() {
         - Uses FOR loop to cycle through all of it quickly
         - Probably will go away or become very different once things like coupler slack happen
         */
-        train.total = {
-            netForce : train.total.netForce + train.all[i].prototype.realtime.netForce,
-            weight : train.total.weight + train.all[i].prototype.weight, //compounds the weight total
-        }
+        train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
+        train.total.weight = train.total.weight + train.all[i].prototype.weight; //compounds the weight total
+    
+        /* Acceleration Calculation based on Net Force
+    
+        Now it's time to calculate the acceleration, and consequently the speed, of the whole train. It's calculated as one single mass now that we've got all the net forces put together into a single value.
+    
+        This happens here, outside of the main FOR loop, so that we don't do a bunch of BS calculations while we're half-cycled through the train.
+    
+        1. Convert to SI units.
+        2. Calculate using f=ma
+        3. Store resulting acceleration in SI units
+        4. Store acceleration in mph/sec
+        5. Find new speed in mph
+        */
+        var force = train.total.netForce * 4.44822;
+        var mass = train.total.weight * 453.592;
+        var acceleration_ms = force / mass; //acceleration in m/s/s
+        var acceleration_mph = acceleration_ms * 2.23694;
+        var speed = train.total.accel.speed.mph;
+        var newSpeed = speed + acceleration_mph;
+        train.total.accel.speed.mph = newSpeed;
+    
+        console.log("Force (N): " + force)
+        console.log("Mass (g): " + mass)
+        console.log("Weight (lbs): "  + train.total.weight)
+        console.log("Acceleration in mph/sec: " + acceleration_mph)
+        console.log("Current Speed: " + speed)
+        console.log("New Speed: " + newSpeed)
     }
-    
-    /* Acceleration Calculation based on Net Force
-    
-    Now it's time to calculate the acceleration, and consequently the speed, of the whole train. It's calculated as one single mass now that we've got all the net forces put together into a single value.
-    
-    This happens here, outside of the main FOR loop, so that we don't do a bunch of BS calculations while we're half-cycled through the train.
-    
-    1. Convert to SI units.
-    2. Calculate using f=ma
-    3. Store resulting acceleration in SI units
-    4. Store acceleration in mph/sec
-    5. Find new speed in mph
-    */
-    var force = train.total.netForce * 4.44822;
-    
 }
 
 
