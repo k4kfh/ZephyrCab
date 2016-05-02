@@ -117,7 +117,9 @@ sim.accel = function() {
             //var elementSpeed = train.all[i].prototype.realtime.speed this line will be replace the one above it once coupler slack is implemented. For now the whole train is treated as one solid unit.
             var trainPosition = i; //This is passed as an argument so the function can see ALL of its parent object's attributes
             var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
-            train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning; //We multiply by engineRunning so if we're not running it's 0
+            //This function checks to see if the locomotive is at/above the maximum speed at which its traction motors can rotate
+            train.all[i].prototype.calc.maxSpeed(trainPosition); //this ends up setting .prototype.realtime.exceeedingMaxSpeed, used below
+            train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning * train.all[i].prototype.realtime.exceedingMaxSpeed; //We multiply by engineRunning so if we're not running it's 0, and by exceedingMaxSpeed so that the TE becomes zero above the locomotive's maximum speed
             
             /*
             PRIME MOVER NOTCHING SOUNDS
