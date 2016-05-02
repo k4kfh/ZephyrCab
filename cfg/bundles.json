@@ -77,6 +77,17 @@ bundles.locomotives = {
                         teLbs = 56500 * (notch.state / 8) * reverser;
                     }
                     return teLbs;
+                },
+                /*
+                A locomotive's traction motors can only spin so fast with a given applied voltage, so even if there is theoretically enough power left the train can only continue to accelerate so much. This idea manifests itself as a "speed limit" built into the locomotive. The theory behind this may be subject to debate, so I (@k4kfh) chose to leave this up to a function.
+                
+                The function accepts the train position as its only argument, and it should be able to get the rest of the information it needs from that.
+                */
+                "maxSpeed" : function(trainPosition) {
+                    var speedPerNotch = 7.5; //I chose to make my function a simple linear calculation
+                    var notch = notch.state; //this is a global variable shared across the entire consist
+                    var maxSpeed = speedPerNotch * notch;
+                    //This is a simple linear calculation that seemed 'good enough' to me, but if you find actual numbers you could create a better way.
                 }
             },
             air : {
@@ -109,6 +120,7 @@ bundles.locomotives = {
                     }
                 }
             },
+            // This is for all the real-time, frequently-recalculated stuff.
             "realtime" : {
                 speed : 0, //This is defined just to be safe.
                 horsepower : 0, //This is the OUTPUT HP
@@ -260,7 +272,6 @@ bundles.locomotives = {
             },
             "coefficientOf" : {
                 rollingResistance : 0.0015,
-                
             },
             //this serves as a sort of "RAM", almost a junk folder...lol
             "tmp" :{
