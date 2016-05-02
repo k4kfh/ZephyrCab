@@ -357,11 +357,14 @@ sim.accel = function() {
         5. Find new speed in mph
         */
         var force = train.total.netForce * 4.44822;
-        var mass = train.total.weight * 453.592;
-        var acceleration_ms = force / mass; //acceleration in m/s/s
+        var mass = train.total.weight * 0.453592; //kilograms, not grams!
+        var acceleration_ms = (force / mass)/10; //acceleration in m/s/s, divided by ten to account for the fact that this function runs every 100ms
         var acceleration_mph = acceleration_ms * 2.23694;
         var speed = train.total.accel.speed.mph;
         var newSpeed = speed + acceleration_mph;
+        if ((speed > 0) && (newSpeed < 0)) {
+            newSpeed = 0;
+        }
         train.total.accel.speed.mph = newSpeed;
     
         console.log("Force (N): " + force)
@@ -370,6 +373,13 @@ sim.accel = function() {
         console.log("Acceleration in mph/sec: " + acceleration_mph)
         console.log("Current Speed: " + speed)
         console.log("New Speed: " + newSpeed)
+        
+        /*
+        SPEEDOMETER
+        
+        This is set here because I do not have separate speeds for different elements implemented. Eventually, this will be set sooner, but for now this works.
+        */
+        gauge.speedometer(train.total.accel.speed.mph)
     }
 }
 
