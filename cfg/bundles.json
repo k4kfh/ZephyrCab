@@ -85,7 +85,7 @@ bundles.locomotives = {
                 */
                 "maxSpeed" : function(trainPosition) {
                     var speedPerNotch = 7.5; //I chose to make my function a simple linear calculation
-                    var maxSpeed = speedPerNotch * notch.stat;
+                    var maxSpeed = speedPerNotch * notch.state;
                     //This is a simple linear calculation that seemed 'good enough' to me, but if you find actual numbers you could create a better way.
                     var actualSpeed = train.total.accel.speed.mph //TODO: Once coupler slack is implemented, this must change to the individual element's speed
                     if (actualSpeed > maxSpeed) {
