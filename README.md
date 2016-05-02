@@ -4,6 +4,7 @@
 
 * [Visit Main Project Site](http://k4kfh.github.io/ZephyrCab)
 * [Project Documentation](http://k4kfh.github.io/ZephyrCab/docs/site)
+* [Development Blog](http://zephyrcab.tumblr.com)
 
 [![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -11,7 +12,7 @@ ZephyrCab is an HTML/CSS/JavaScript app that is designed to simulate prototypica
 
 > Note: This project is still heavily under development. It is not recommended to try to use the project unless you are the adventurous type, and/or you understand JavaScript/JSON and are willing to tinker.
 >
-> Read more on [my blog.](http://evilgeniustech.com/tag/locothrottlejs/)
+> Read more on [my blog.](http://zephyrcab.tumblr.com)
 
 ## Installation
 
