@@ -368,6 +368,15 @@ sim.accel = function() {
             newSpeed = 0;
         }
         train.total.accel.speed.mph = newSpeed;
+        // After we've set the speed, we need to set the sim.direction variable to make sure everything knows what's up.
+        if (train.total.accel.speed.mph < 0) {
+            //if we're in reverse
+            sim.direction = -1;
+        }
+        else {
+            //if we're in forward
+            sim.direction = 1;
+        }
     
         console.log("Force (N): " + force)
         console.log("Mass (g): " + mass)
@@ -381,7 +390,7 @@ sim.accel = function() {
         
         This is set here because I do not have separate speeds for different elements implemented. Eventually, this will be set sooner, but for now this works.
         */
-        gauge.speedometer(train.total.accel.speed.mph)
+        gauge.speedometer(Math.abs(train.total.accel.speed.mph)) //we use abs so we don't show the users the negative number when in reverse
     }
 }
 
