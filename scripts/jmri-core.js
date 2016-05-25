@@ -33,9 +33,22 @@ jmri.throttle = function(address, throttleName) {
             sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
         }
         this.f = new Object(); //the reason we did this as an object with only one function was to leave room for future ability to store the states of the functions. I will add it if I need it, but its a pain so I haven't yet.
-        this.f.set = function(fnumber, state) {
-            //set the function number from fnumber to the state from state
-            sendcmd('{"type":"throttle","data":{"address":' + address + ', "F' + fnumber + '":' + state + ', "throttle":"' + throttleName + '"}}')
+        this.f.set = function(inputData) {
+            var finalCommand = []
+            //This long train of IF statements will set each function
+            for (i=0; i <= 28; i++) {
+                var valueName = "F" + i;
+                
+                //check to see if we got a definition for this function from the user
+                if (inputData[valueName]!=undefined) {
+                    var segment = ('"' + valueName + '" : ' + inputData[valueName]);
+                    finalCommand.push(segment);               
+                }
+            }
+            
+            var finalString = finalCommand.join(", ");
+            sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
+            console.error('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
         }
         
         //TODO - add command here so that when a throttle is acquired, all functions are set to off and the speed to 0
