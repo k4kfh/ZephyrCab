@@ -20,10 +20,13 @@ decoders = {
             }
             //bell
             this.f.bell = new Object();
-            this.f.bell.set = function(state) {
+            this.f.bell.set = function(state, force) {
+                if (force == undefined) {
+                    force = false;
+                }
                 var opsPressure = train.all[trainPosition].prototype.air.device.bell.operatingPressure
                 var allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition)
-                if (allowed == true) {
+                if ((allowed == true) || (force == true)) {
                     train.all[trainPosition].throttle.f.set({"F1":state})
                     train.all[trainPosition].dcc.f.bell.state = state;
                 }
@@ -35,10 +38,13 @@ decoders = {
                 
             //horn
             this.f.horn = new Object();
-            this.f.horn.set = function(state) {
+            this.f.horn.set = function(state, force) { //this "force" argument tells the function to ignore the air pressure. This is for system stuff, not users.
+                if (force == undefined) {
+                    force = false;
+                }
                 var opsPressure = train.all[trainPosition].prototype.air.device.horn.operatingPressure
                 var allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition)
-                if (allowed == true) {
+                if ((allowed == true) || (force == true)) {
                     train.all[trainPosition].throttle.f.set({"F2":state})
                     train.all[trainPosition].dcc.f.horn.state = state;
                     sim.f.air.horn(trainPosition, state);

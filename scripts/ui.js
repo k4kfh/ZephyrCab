@@ -139,10 +139,7 @@ ui = {
                     train.all[ui.cab.currentLoco].dcc.f.airDump.set(arg)
                     sim.f.air.dump(ui.cab.currentLoco, arg)
                     ui.cab.airDump.state = arg;
-                    
-                    //disable air devices
-                    ui.cab.shutOffAir()
-                    
+                    ui.cab.shutOffAir(); //turns off all the air appliances in sequence with a short break in between each one
                     return ui.cab.airDump.state;
                 }
                 else {
@@ -156,11 +153,8 @@ ui = {
             state : false //when true, the compressor won't kick on
         },
         
-        //shuts off the functions that use air (runs when air pressure is dumped)
-        shutOffAir : function() {
-            
-            //bell
-            train.all[ui.cab.currentLoco].dcc.f.bell.set(false)
+        shutOffAir: function() {
+            setTimeout(function(){train.all[ui.cab.currentLoco].dcc.f.bell.set(false, true)},100);
         },
         
         currentLoco : 0,
