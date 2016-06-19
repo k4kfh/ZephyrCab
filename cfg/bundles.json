@@ -289,11 +289,6 @@ bundles.locomotives = {
                 }
             }
         },
-        
-        //This is an object that needs to be created for use by various system tools
-        //TODO: Do we actually need this?
-        junk : {
-        }
     },
     
     "CBQ1":{
