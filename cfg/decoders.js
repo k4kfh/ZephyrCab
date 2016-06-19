@@ -6,7 +6,7 @@ decoders = {
         "LokSound Select EMD 567" : function(address, trainPosition) {
             //ESU LokSound Select V4
             //decoder object for ESU official EMD 567 Sound project
-            //By Hampton Morgan - k4kfh@github - May 2015
+            //By Hampton Morgan - k4kfh@github - Originally written in May 2015
             //evilgeniustech.com
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate()) //we use the train position as the throttle name for future lookup purposes
             
@@ -62,7 +62,11 @@ decoders = {
             this.f.airDump.set = function(state) {
                 var possible = (train.all[trainPosition].prototype.realtime.air.reservoir.main.psi.g != 0)
                 if (possible == true) {
-                    train.all[trainPosition].throttle.f.set(19, state)
+                    //turn on the compressor, turn off all the air devices (in one command)
+                    train.all[trainPosition].throttle.f.set({"F19":state, "F1":false})
+                    
+                    //now we send the higher-level command just to make the dashboard switch reflect the changes.
+                    train.all[trainPosition].dcc.f.bell.set(false);
                 }
                 else if ((possible == false) && (state == false)) {
                     train.all[trainPosition].throttle.f.set(19, state)
