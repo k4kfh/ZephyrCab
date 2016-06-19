@@ -48,7 +48,8 @@ jmri.throttle = function(address, throttleName) {
             
             var finalString = finalCommand.join(", ");
             sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
-            console.error('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
+            //Uncomment the below line to see every outgoing DCC function command as a console error
+            //console.error('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
         }
         
         //TODO - add command here so that when a throttle is acquired, all functions are set to off and the speed to 0
