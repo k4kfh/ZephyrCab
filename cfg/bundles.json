@@ -1,13 +1,13 @@
 /*
+BUNDLES
+
 This file is rather special. It bundles locomotive prototype entries and model entries to an entry in the JMRI roster.
 
 It is done using objects, but the syntax is very specific. You must adhere to this syntax or things will explode in fiery infernos.
-
-NOTE: If you add 
 */
 bundles = new Object();
 
-//This object contains all the locomotives
+//Locomotives - ARE currently tied to the JMRI roster - Please make sure your syntax is correct, and that the names of your entries match the JMRI roster entry names TO THE LETTER! It is case sensitive as well.
 bundles.locomotives = {
     /*
     Example entry for my Athearn Genesis GP15-1 is shown below
@@ -448,7 +448,7 @@ bundles.locomotives = {
     
 }
 
-//
+//Rolling Stock - NOT currently tied to the JMRI Roster
 bundles.rollingstock = {
     "Generic Boxcar":{
         /*
