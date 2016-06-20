@@ -1,3 +1,9 @@
+/*
+TRAIN
+
+This file contains all the functions for manipulating and constructing the train. This includes the train builder UI and its backbone! Also defined at the top of this file are the base train objects themselves; they are defined here for organizational purposes.
+*/
+
 //functions dealing with the train go in here, this is for organization
 train = new Object(); //first we must define these objects
 train.all = []; //THIS IS THE MAIN TRAIN LIST

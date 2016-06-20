@@ -1,3 +1,9 @@
+/*
+CAB GAUGES
+
+This file contains all the code for manipulating the cab gauges. These functions work with k4kfh/canv-gauge (my personal fork of the original canv-gauge, tailored for this project). They're called by other scripts, such as ui.js and sim.js, to keep the gauges up to date while providing an abstraction layer between the rest of the system and canv-gauge.
+*/
+
 gauge = new Object();
 
 gauge.createAll = function() {

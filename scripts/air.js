@@ -1,7 +1,7 @@
 /*
 AIR UTILITIES
 
-These are specifically designed to make working with air systems easier.
+These are specifically designed to make working with air systems easier. They provide an easy abstraction layer for all the math behind pneumatic simulations.
 */
 
 air = {

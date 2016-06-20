@@ -1,8 +1,10 @@
-//this contains decoder-agnostic functions for JMRI
+/*
+JMRI CORE
 
-//a few global variables conveniently defined here for now
-var reverser //this is just set here because reasons
-var notch = 0
+This file contains what amounts to a scratchbuilt JMRI interface. I opted to build my own interface for greater flexibility than using the provided JMRI jQuery plugin, which at the time of this file's creation I did not know about.
+
+This is not the lowest level portion of the interface, however. websockets.js contains most of the direct interface, and handles things like the layout connection initiation/termination. This file does not deal directly with the network; it is responsible for relaying info between the rest of ZephyrCab and the JMRI JSON servlet.
+*/
 
 jmri = new Object();
 

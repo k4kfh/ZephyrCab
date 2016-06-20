@@ -1,4 +1,10 @@
-//This file uses JMRI's decoderFamily and decoderModel variables to categorize and organize the different decoder constructors. Read more @ github.com
+/*
+DECODERS
+
+This file is user-editable. It contains all the decoder objects. For developers: these objects are constructors that are called any time a locomotive is added to the train with a corresponding decoder. The decoder functions all go in train.all[number].dcc . These decoder objects provide the necessary abstraction layer for the rest of ZephyrCab to have easy access to all the sound features, such as compressors, air dumps, bells, and horns. Decoder information is not ingested from manual user input anymore; it is automatically fetched from the  JMRI roster. The corresponding decoder object is looked up in this file using JMRI's naming convention. This means it is imperative that the names of your decoder objects be precisely correct.
+
+If ZephyrCab can't find a decoder object for a locomotive in your roster, it will fall back to a "generic" entry which has no sound support and limited lighting/direction/speed support. DO NOT DELETE THE GENERIC ENTRY! **This feature is currently a work in progress as of June 2016. Learn more on the project's GitHub page.**
+*/
 decoders = {
     //product "LokSound Select"
     "ESU LokSound Select":{

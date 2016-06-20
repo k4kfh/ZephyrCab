@@ -1,3 +1,11 @@
+/*
+WEBSOCKETS
+
+This is something of a homemade WebSockets packet management system. It handles the raw sending/recieving, the layout connection status, and other low-level functions.
+
+It supports timestamped logs for debugging, which you can enable in this file.
+*/
+
 //when you enable this, it logs all replies from the server to the console, except for the heartbeats which are just ignored
 logallreplies = true
 

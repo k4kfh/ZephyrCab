@@ -1,3 +1,11 @@
+/*
+
+UI
+
+This file, as the name suggests, deals with the components of the ZephyrCab UI. While most of the objects here handle the various inputs in the cab, there are also other UI components present here, such as the layout power switch's backend, and a few shortcut functions for various UI/UX things.
+
+One very important function located here is debugToast, which is for use in debugging the program. If you have enabled debugToasts in settings.json, the toasts fed into the debugToast function will appear just like normal toasts. However, when disabled, there is no indication of these toasts ever being attempted. This is an excellent way to enable/disable a debug mode for your work quickly, without disturbing users.
+*/
 ui = {
     cab : {
         gauges : {
