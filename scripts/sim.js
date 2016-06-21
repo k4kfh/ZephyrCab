@@ -74,12 +74,11 @@ sim.accel = function() {
     */
     train.total.weight = 0;
     train.total.netForce = 0;
-    
-    for(i = 0; i < train.all.length; i++) {
+    train.total.wheelSlip = {};
+    for(var i = 0; i < train.all.length; i++) { //This is a bit of  an unusual FOR loop since I is a local variable. I'm no expert, so maybe this is the norm, but defining it globally caused it to randomly change at times. Defining it in this scope fixed issue 
         //First, we need to find out what type of element we're dealing with.
         if (train.all[i].type == "locomotive") {
             //We are dealing with a locomotive.
-            
             //First thing we need to do is deal with engine RPM and notching.
             //From there, we'll calculate fuel stuff, and then deal with tractive effort.
             
@@ -100,7 +99,6 @@ sim.accel = function() {
                     }
                 }
             }
-            
             if (train.all[i].prototype.engineRunning == 1) {
                 train.all[i].prototype.realtime.rpm = train.all[i].prototype.notchRPM[notch.state] //This uses the notch (global variable) to lookup the rpm in an array of RPMs by notches.
             }
@@ -117,6 +115,8 @@ sim.accel = function() {
             //var elementSpeed = train.all[i].prototype.realtime.speed this line will be replace the one above it once coupler slack is implemented. For now the whole train is treated as one solid unit.
             var trainPosition = i; //This is passed as an argument so the function can see ALL of its parent object's attributes
             var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
+            //TEMPORARY
+            console.debug("Tractive Effort of Element " + trainPosition + ": " + te + " lbs")
             //This function checks to see if the locomotive is at/above the maximum speed at which its traction motors can rotate
             train.all[i].prototype.calc.maxSpeed(trainPosition); //this ends up setting .prototype.realtime.exceeedingMaxSpeed, used below
             train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning * train.all[i].prototype.realtime.exceedingMaxSpeed; //We multiply by engineRunning so if we're not running it's 0, and by exceedingMaxSpeed so that the TE becomes zero above the locomotive's maximum speed
@@ -329,10 +329,22 @@ sim.accel = function() {
             //TODO: eventually we need to add air resistance
             var netForce = rollingResistance + gradeResistance + tractiveEffort;
             train.all[i].prototype.realtime.netForce = netForce; //set the real value equal to our localized shorthand variable's value
+            
+            //Wheel Slip internal and external forces
+            var internalForces = tractiveEffort; //for right now, it's just TE. once brakes come  along, they'll play a part too.
+            var externalForces = 0;
+            for(c = 0; c < train.all.length; c++){
+                if (c != i) {
+                    externalForces = externalForces + train.all[c].prototype.realtime.netForce;
+                    //TODO: create all these properties far in advance
+                }
+            }
         }
         else if (train.all[i].type == "rollingstock") {
             //We are dealing with rolling stock.
             console.log("Element " + i + " is rolling stock.")
+            
+            
         }
     
         /*
@@ -340,11 +352,11 @@ sim.accel = function() {
         - Zeroes the values first (this actualls happens up before the FOR loop starts)
         - Adds up all the values (such as whole train weight) in train.total
         - DOES NOT compute individual elements' net force, only the total train net force (so like, net NET force)
-        - Uses FOR loop to cycle through all of it quickly
         - Probably will go away or become very different once things like coupler slack happen
         */
         train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
         train.total.weight = train.total.weight + train.all[i].prototype.weight; //compounds the weight total
+        train.total.wheelSlip.internalForce = train.total.wheelSlip.internalForce + train.all[i].prototype.realtime.te
     
         /* Acceleration Calculation based on Net Force
     
