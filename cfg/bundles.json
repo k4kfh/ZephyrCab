@@ -130,6 +130,7 @@ bundles.locomotives = {
             },
             // This is for all the real-time, frequently-recalculated stuff.
             "realtime" : {
+                netForce: 0, //defined to make it work later
                 speed : 0, //This is defined just to be safe.
                 exceedingMaxSpeed : 1, //This is a boolean stored as a number by .prototype.calc.maxSpeed . If the locomotive has reached its max speed, this becomes zero to nullify the tractive effort. If not, it remains 1.
                 horsepower : 0, //This is the OUTPUT HP

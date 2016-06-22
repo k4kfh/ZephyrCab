@@ -19,4 +19,7 @@ brake = {
     autoBrakeValve : {
         
     },
+    cycle : function(trainPosition) {
+        
+    }
 }
