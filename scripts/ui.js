@@ -220,14 +220,14 @@ ui = {
     
     page : {
         set : function(goTo) {
-            $("div." + ui.page.currentPage).fadeTo(500, 0, "easeInOutQuint").hide();
-            $("div." + goTo).css("opacity","0")
-            $("div." + goTo).fadeTo(500, 1, "easeInOutQuint");
-            $("li." + ui.page.currentPage).removeClass("active");
-            ui.page.currentPage = goTo;
-            $("li." + goTo).addClass("active");
+            if (goTo != ui.page.currentPage) {
+                $("div." + ui.page.currentPage).fadeOut(200, function(){$("div." + goTo).fadeIn(200);});
+                $("li." + ui.page.currentPage).removeClass("active");
+                $("li." + goTo).addClass("active"); //set the newly selected menu entry to active
+                ui.page.currentPage = goTo;
+            }
         },
-        currentPage : "connection",
+        currentPage : "cab",
     }
 }
 
