@@ -164,6 +164,10 @@ bundles.locomotives = {
                             },
                             dump : false, //set to true when the dump valve is open
                         }
+                    },
+                    brake:{
+                        cylinderPressure:0, //cylinder pressure in psi
+                        clampForce:0, //force pressing the shoe against the wheel
                     }
                 },
             }, //This is used by the physics engine to store current information, we just go ahead and define it
@@ -283,6 +287,12 @@ bundles.locomotives = {
             "coefficientOf" : {
                 rollingResistance : 0.0015,
             },
+            "brake":{
+                cylinders:2, //number of brake cylinders
+                cylinder:{
+                    pistonArea:10, //sq inches
+                }
+            }
             //this serves as a sort of "RAM", almost a junk folder...lol
             "tmp" :{
                 "intervals" : {
