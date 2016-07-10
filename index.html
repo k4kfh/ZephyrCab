@@ -73,22 +73,40 @@
         
         <div class="cab">
             <div class="container">
-                <h3 class="center">Locomotive Cab</h3>
-                <div class="throttle">
+                <div class="throttle row">
                     <div class="card grey darken-4">
                         <div class="card-content">
-                            <div class="notch-numbers white-text">
-                                <span>IDLE</span>
-                                <span>RUN1</span>
-                                <span>RUN2</span>
-                                <span>RUN3</span>
-                                <span>RUN4</span>
-                                <span>RUN5</span>
-                                <span>RUN6</span>
-                                <span>RUN7</span>
-                                <span>RUN8</span>
-                            </div>
+                            <div class="cutive" style="padding-bottom:10px, text-align:left;">POWER<a style="opacity:0">B</a>THROTTLE</div>
+                            <div class="center"><a class="indicator-counter">0</a></div>
+                            
                             <input class="notch-slider" type="range" min="0" max="8">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="reverser col s4">
+                        <div class="card grey darken-4">
+                            <div class="card-content">
+                                <div class="range-numbers white-text">
+                                    <span>REV</span>
+                                    <span>NEUTRAL</span>
+                                    <span>FWD</span>
+                                </div>
+                                <input class="notch-slider" type="range" min="0" max="2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dynbrake col s8">
+                        <div class="card grey darken-4">
+                            <div class="card-content center">
+                                <a class='center white-text' style="font-family:'Cutive',serif;">DYNAMIC BRAKE</a>
+                                <div class="range-numbers white-text">
+                                    <span>REV</span>
+                                    <span>NEUTRAL</span>
+                                    <span>FWD</span>
+                                </div>
+                                <input class="notch-slider" type="range" min="0" max="2">
+                            </div>
                         </div>
                     </div>
                 </div>

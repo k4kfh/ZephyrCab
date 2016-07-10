@@ -20,12 +20,32 @@ html {
     padding-left: 20px
 }
 
-.notch-numbers {
+.range-numbers {
     display: flex;
     justify-content: space-between;
     font-family: 'Cutive', serif;
     padding-top: 10px;
     padding-bottom: 5px;
+}
+
+.cutive {
+    font-family: 'Cutive',serif;
+    color:white;
+}
+
+.indicator-counter {
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    border-style: solid;
+    border-radius: 3px;
+    border-color: dimgray;
+    border-width: 3px;
+    text-align: center;
+    color: black;
+    background-color: white;
+    font-family: 'Cutive', serif;
 }
 
 input[type=range].notch-slider {
