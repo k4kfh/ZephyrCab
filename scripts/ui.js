@@ -216,6 +216,16 @@ ui = {
                 },
             }
         }
+    },
+    
+    page : {
+        set : function(goTo) {
+            $("." + ui.page.currentPage).fadeTo(500, 0, "easeInOutQuint").hide();
+            $("." + goTo).css("opacity","0")
+            $("." + goTo).fadeTo(500, 1, "easeInOutQuint");
+            ui.page.currentPage = goTo;
+        },
+        currentPage : "connection",
     }
 }
 

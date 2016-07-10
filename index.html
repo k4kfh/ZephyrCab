@@ -36,6 +36,7 @@
         <script src="scripts/sim.js"></script>
         <script src="scripts/air.js"></script>
 -->
+        <script src="scripts/ui.js"></script>
 
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -47,26 +48,37 @@
         <script src="thirdparty/canv-gauge-master/gauge.min.js"></script>
     </head>
 
-    <body class="black">
+    <body class="">
         <!---navbar--->
-        <nav>
-            <div class="nav-wrapper black">
+        <nav class="blue">
+            <div class="nav-wrapper">
                 <a href="#" class="brand-logo center zephyr">ZephyrCab</a>
-                <ul id="nav-desktop" class="left hide-on-med-and-down">
-                    <li><a href="sass.html">Sass</a></li>
-                    <li><a href="badges.html">Components</a></li>
-                    <li><a href="collapsible.html">JavaScript</a></li>
+                <ul id="nav-desktop" class="left hide-on-med-and-down" style="padding-left:20px">
+                    <li><a onclick="ui.page.set('cab')">Cab</a></li>
+                    <li><a onclick="ui.page.set('trainSettings')">Train Settings</a></li>
+                    <li><a onclick="ui.page.set('connectionSettings')">Connection Settings</a></li>
                 </ul>
-                
+                <ul id="slide-out" class="side-nav">
+                    <li><a href="#!">First Sidebar Link</a></li>
+                    <li><a href="#!">Second Sidebar Link</a></li>
+                </ul>
+                <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
             </div>
         </nav>
         <div class="container">
             
         </div>
+        
+        <div class="cab">
+            Some stuff
+        </div>
+        <div class="connectionSettings">Some other stuff</div>
     </body>
 
 
-
+    <script>
+        $(".button-collapse").sideNav();
+    </script>
 
 
 </html>

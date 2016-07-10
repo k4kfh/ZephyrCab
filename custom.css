@@ -15,3 +15,7 @@ This keeps the scrollbar on the longer pages from screwing with the alignment of
 html {
   overflow-y: scroll;
 }
+
+.button-collapse {
+    padding-left: 20px
+}
