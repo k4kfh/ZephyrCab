@@ -54,13 +54,14 @@
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo center zephyr">ZephyrCab</a>
                 <ul id="nav-desktop" class="left hide-on-med-and-down" style="padding-left:20px">
-                    <li><a onclick="ui.page.set('cab')">Cab</a></li>
-                    <li><a onclick="ui.page.set('trainSettings')">Train Settings</a></li>
-                    <li><a onclick="ui.page.set('connectionSettings')">Connection Settings</a></li>
+                    <li class="cab"><a onclick="ui.page.set('cab')">Cab</a></li>
+                    <li class="trainSettings"><a onclick="ui.page.set('trainSettings')">Train Settings</a></li>
+                    <li class="connectionSettings"><a onclick="ui.page.set('connectionSettings')">Connection Settings</a></li>
                 </ul>
                 <ul id="slide-out" class="side-nav">
-                    <li><a href="#!">First Sidebar Link</a></li>
-                    <li><a href="#!">Second Sidebar Link</a></li>
+                    <li class="cab"><a onclick="ui.page.set('cab')">Cab</a></li>
+                    <li class="trainSettings"><a onclick="ui.page.set('trainSettings')">Train Settings</a></li>
+                    <li class="connectionSettings"><a onclick="ui.page.set('connectionSettings')">Connection Settings</a></li>
                 </ul>
                 <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
             </div>
@@ -70,7 +71,9 @@
         </div>
         
         <div class="cab">
-            Some stuff
+            <div class="container">
+                <h3 class="center">Locomotive Cab</h3>
+            </div>
         </div>
         <div class="connectionSettings">Some other stuff</div>
     </body>

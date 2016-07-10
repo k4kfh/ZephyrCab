@@ -220,10 +220,12 @@ ui = {
     
     page : {
         set : function(goTo) {
-            $("." + ui.page.currentPage).fadeTo(500, 0, "easeInOutQuint").hide();
-            $("." + goTo).css("opacity","0")
-            $("." + goTo).fadeTo(500, 1, "easeInOutQuint");
+            $("div." + ui.page.currentPage).fadeTo(500, 0, "easeInOutQuint").hide();
+            $("div." + goTo).css("opacity","0")
+            $("div." + goTo).fadeTo(500, 1, "easeInOutQuint");
+            $("li." + ui.page.currentPage).removeClass("active");
             ui.page.currentPage = goTo;
+            $("li." + goTo).addClass("active");
         },
         currentPage : "connection",
     }
