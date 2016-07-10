@@ -471,6 +471,10 @@ bundles.rollingstock = {
             },
             air : {
                 //air brake equipment information
+            },
+            coefficientOf: {
+                rollingResistance : 0.01, //rolling resistance
+                genResistance: 0, //arbitrary other resistance value that is left to account for friction bearings/roller bearings etc.
             }
         }
     }
