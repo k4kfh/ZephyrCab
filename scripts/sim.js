@@ -343,7 +343,17 @@ sim.accel = function() {
         else if (train.all[i].type == "rollingstock") {
             //We are dealing with rolling stock.
             console.log("Element " + i + " is rolling stock.")
-            
+            /*
+            Calculations  for rolling stock, in order of execution:
+            - Rolling Resistance
+            - GenResistance (arbitrary car-specific value to account for bearings and other misc. stuff)
+            - Braking
+                - Train Pipe PSI
+                - Triple Valve Logical State
+                - Reservoir PSI
+                - Cylinder PSI
+                - Effective Linear Retarding Force
+            - Net Force on Car
             
         }
     
