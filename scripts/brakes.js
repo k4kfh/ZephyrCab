@@ -3,23 +3,46 @@ This file is to keep the new braking code separate, at least until it's stable e
 */
 
 brake = {
-    eqReservoir : {
-        psi:{
-            abs:14.6959, //this is set to 1atm of pressure just because nobody likes a vacuum.
-            g:0,
-        },
-    }, //this will represent the "current" train brake line pressure. Since all the cars may have different pressures at times due to the air pressure drop, it's necessary to have a global "master" value.
-    feedValve : {
-        state : cfg.brakes.defaultFeedValveSetting, //this makes it easy for the user to set a default.
-        set : function(pressure) {
-            //this is really only a function on the off chance that additional functionality is needed. It seems pointless now, but I don't want to have to rewrite 1000 lines because in 4 months I need one thing to happen when the feed valve is set.
-            brake.feedValve.state = pressure;
+    feedValvePSI: 90, //this seems to be the norm
+    eqReservoirPSI: 90, //set both of these to the same thing ^^^
+    init :  function() {
+        
+    },
+    //sends a signal down the brake pipe and recalculates pressure
+    propagate : function(speed) {
+        
+    },
+    //finds the equalization pressure AND full service brake application for a brake pipe with feed valve set at ARG psi
+    findEQpressure : function(psi) {
+        /*
+        Read more about equalization pressure here: http://alkrugsite.evilgeniustech.com/rrfacts/brakes.htm
+        
+        Algebra behind this function:
+        Since a brake reservoir is 2.5 times the size of a brake cylinder, we can set up a problem to find the equalization pressure like this (for a 90psi brake pipe):
+        
+        90 - x  = 2.5x
+        
+        This can be rearranged to:
+        
+        90 = 3.5x
+        
+        x is the full service brake REDUCTION. To find the equalizing pressure, subtract x from the pipe pressure. So for this,
+        
+        x = 26
+        
+        90 - 26 = 64psi
+        
+        So for a 90psi brake pipe, you can only make up to a 26psi reduction. At that reduction, the brake pipe pressure, reservoir pressure, and cylinder pressure equalize, so you can't move any more air without releasing the brakes.
+        
+        This function is a programming implementation of that same math.
+        */
+        var fullServiceReduction = psi/3.5;
+        var EQpressure = psi - fullServiceReduction;
+        
+        var output = {
+            EQpressure : EQpressure,
+            fullServiceReduction : fullServiceReduction,
         }
-    },
-    autoBrakeValve : {
-        
-    },
-    cycle : function(trainPosition) {
-        
+        return output;
     }
 }
