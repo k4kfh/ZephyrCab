@@ -54,6 +54,10 @@ train.total = {
 
 sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
+    //To that^^^^^ end, I created a really  ugly and hopefully temporary solution for a big problem. The loop needs to basically not run when the train is empty, so here's my awful  solution:
+    if (train.all.length == 0) {
+        return null;
+    }
     
     /*
     Zeroing out stuff
@@ -348,72 +352,103 @@ sim.accel = function() {
             - Rolling Resistance
             - GenResistance (arbitrary car-specific value to account for bearings and other misc. stuff)
             - Braking
-                - Train Pipe PSI
+                - SKIP Train Pipe PSI: It is handled by external function. Just read the value out
                 - Triple Valve Logical State
                 - Reservoir PSI
                 - Cylinder PSI
                 - Effective Linear Retarding Force
             - Net Force on Car
+            */
             
+            //Define function-local variables
+            var rollingResistance;
+            var weight;
+            var coeffRollingResistance;
+            var genResistance;
+            var coeffGenResistance;
+            //netForce is not defined here just to decrease unnecessary searching around  in  the code
+            
+            //Rolling Resistance
+            if (train.total.accel.speed.mph == 0) {
+                rollingResistance = 0;
+            }
+            else {
+                coeffRollingResistance = train.all[i].prototype.coefficientOf.rollingResistance; //dimensionless coefficient
+                weight = train.all[i].prototype.weight; //in lbs
+                rollingResistance = -1 * coeffRollingResistance * weight * sim.direction;
+                train.all[i].prototype.realtime.netForce = rollingResistance;
+            }
+            
+            //GenResistance
+            if (train.total.accel.speed.mph == 0) { //if we're not moving...
+                genResistance = 0;
+            }
+            else {
+                coeffGenResistance = train.all[i].prototype.coefficientOf.genResistance;
+                genResistance = -1 * coeffGenResistance * weight  * sim.direction;
+                train.all[i].prototype.realtime.netForce = rollingResistance;
+            }
+            
+            //Net Force
+            var netForce = genResistance + rollingResistance; //eventually we will add force from the brakes
+            train.all[i].prototype.realtime.netForce = netForce;
         }
-    
         /*
-        TRAIN TOTALS
-        - Zeroes the values first (this actualls happens up before the FOR loop starts)
-        - Adds up all the values (such as whole train weight) in train.total
-        - DOES NOT compute individual elements' net force, only the total train net force (so like, net NET force)
-        - Probably will go away or become very different once things like coupler slack happen
-        */
-        train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
-        train.total.weight = train.total.weight + train.all[i].prototype.weight; //compounds the weight total
-        train.total.wheelSlip.internalForce = train.total.wheelSlip.internalForce + train.all[i].prototype.realtime.te
+            TRAIN TOTALS
+            - Zeroes the values first (this actualls happens up before the FOR loop starts)
+            - Adds up all the values (such as whole train weight) in train.total
+            - DOES NOT compute individual elements' net force, only the total train net force (so like, net NET force)
+            - Probably will go away or become very different once things like coupler slack happen
+            */
+            train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
+            train.total.weight = train.total.weight + train.all[i].prototype.weight; //compounds the weight total 
+            console.debug("train.total.weight = " + train.total.weight)
+            train.total.wheelSlip.internalForce = train.total.wheelSlip.internalForce + train.all[i].prototype.realtime.te  
+    }      
+    /* Acceleration Calculation based on Net Force
     
-        /* Acceleration Calculation based on Net Force
+    Now it's time to calculate the acceleration, and consequently the speed, of the whole train. It's calculated as one single mass now that we've got all the net forces put together into a single value.
     
-        Now it's time to calculate the acceleration, and consequently the speed, of the whole train. It's calculated as one single mass now that we've got all the net forces put together into a single value.
+    This happens here, outside of the main FOR loop, so that we don't do a bunch of BS calculations while we're half-cycled through the train.
     
-        This happens here, outside of the main FOR loop, so that we don't do a bunch of BS calculations while we're half-cycled through the train.
-    
-        1. Convert to SI units.
-        2. Calculate using f=ma
-        3. Store resulting acceleration in SI units
-        4. Store acceleration in mph/sec
-        5. Find new speed in mph
-        */
-        var force = train.total.netForce * 4.44822;
-        var mass = train.total.weight * 0.453592; //kilograms, not grams!
-        var acceleration_ms = (force / mass)/10; //acceleration in m/s/s, divided by ten to account for the fact that this function runs every 100ms
-        var acceleration_mph = acceleration_ms * 2.23694;
-        var speed = train.total.accel.speed.mph;
-        var newSpeed = speed + acceleration_mph;
-        if ((speed > 0) && (newSpeed < 0)) {
-            newSpeed = 0;
-        }
-        train.total.accel.speed.mph = newSpeed;
-        // After we've set the speed, we need to set the sim.direction variable to make sure everything knows what's up.
-        if (train.total.accel.speed.mph < 0) {
-            //if we're in reverse
-            sim.direction = -1;
-        }
-        else {
-            //if we're in forward
-            sim.direction = 1;
-        }
-    
-        console.log("Force (N): " + force)
-        console.log("Mass (g): " + mass)
-        console.log("Weight (lbs): "  + train.total.weight)
-        console.log("Acceleration in mph/sec: " + acceleration_mph)
-        console.log("Current Speed: " + speed)
-        console.log("New Speed: " + newSpeed)
-        
-        /*
-        SPEEDOMETER
-        
-        This is set here because I do not have separate speeds for different elements implemented. Eventually, this will be set sooner, but for now this works.
-        */
-        gauge.speedometer(Math.abs(train.total.accel.speed.mph)) //we use abs so we don't show the users the negative number when in reverse
+    1. Convert to SI units.
+    2. Calculate using f=ma
+    3. Store resulting acceleration in SI units
+    4. Store acceleration in mph/sec
+    5. Find new speed in mph
+    */
+    var force = train.total.netForce * 4.44822; console.debug("netforce = " + force)
+    var mass = train.total.weight * 0.453592; //kilograms, not grams!
+    var acceleration_ms = (force / mass)/10; //acceleration in m/s/s, divided by ten to account for the fact that this function runs every 100ms
+    var acceleration_mph = acceleration_ms * 2.23694;
+    var speed = train.total.accel.speed.mph;
+    var newSpeed = speed + acceleration_mph;
+    if ((speed > 0) && (newSpeed < 0)) {
+        newSpeed = 0;
     }
+    train.total.accel.speed.mph = newSpeed;
+    // After we've set the speed, we need to set the sim.direction variable to make sure everything knows what's up.
+    if (train.total.accel.speed.mph < 0) {
+        //if we're in reverse
+        sim.direction = -1;
+    }
+    else {
+        //if we're in forward
+        sim.direction = 1;
+    }
+    console.log("Force (N): " + force)
+    console.log("Mass (g): " + mass)
+    console.log("Weight (lbs): "  + train.total.weight)
+    console.log("Acceleration in mph/sec: " + acceleration_mph)
+    console.log("Current Speed: " + speed)
+    console.log("New Speed: " + newSpeed)
+        
+    /*
+    SPEEDOMETER
+        
+    This is set here because I do not have separate speeds for different elements implemented. Eventually, this will be set sooner, but for now this works.
+    */
+    gauge.speedometer(Math.abs(train.total.accel.speed.mph)) //we use abs so we don't show the users the negative number when in reverse
 }
 
 
