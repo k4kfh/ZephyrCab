@@ -221,7 +221,7 @@ This function is for adding a bundle object to the train. It doesn't matter if t
 */
 train.build.add = function(objectSource) {
     //CLONE THE OBJECT TO AVOID REFERENCING ISSUES - See issue #13 on GitHub for more information on this code
-    object = $.extend({}, objectSource)
+    object = $.extend(true, {}, objectSource) //the first argument here is true to enable recursive "deep copy". Without that, it's useless and doesn't solve the referencing problem
     if (object.type == "locomotive") { //This if statement checks if the input object is a locomotive or something else
         /*
         First we need to define the decoder model and family straight from the roster object. We only do this for convenience.
