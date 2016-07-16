@@ -388,6 +388,15 @@ sim.accel = function() {
                 genResistance = -1 * coeffGenResistance * weight  * sim.direction;
                 train.all[i].prototype.realtime.netForce = rollingResistance;
             }
+            Materialize.toast("At car " + i, 2000)
+            //Automatic Brake system
+            console.log("Local brake line at car " + i + " equals " + train.all[i].prototype.brake.linePSI)
+            if (train.all[i].prototype.brake.linePSI != brake.eqReservoirPSI) {
+                //time for a pressure change
+                console.log("Difference in pressure at car " + i);
+                //train.all[i].prototype.brake.linePSI = brake.eqReservoirPSI;
+                console.log("Pressure at next car: " + train.all[i + 1].prototype.brake.linePSI)
+            }
             
             //Net Force
             var netForce = genResistance + rollingResistance; //eventually we will add force from the brakes
@@ -519,7 +528,7 @@ wheel = function(trainNumber, mass, radius) {
 }
 
 //Once ALL this is loaded, we start the calculation loop, which runs every 100ms.
-sim.recalcInterval = setInterval(function() {sim.accel()}, 100)
+//sim.recalcInterval = setInterval(function() {sim.accel()}, 1000)
 
 sim.f = {
     air : {

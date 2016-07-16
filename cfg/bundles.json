@@ -469,12 +469,101 @@ bundles.rollingstock = {
             realtime : {
                 //realtime data for things like braking and coupler slack goes in here
             },
-            air : {
+            brake : {
                 //air brake equipment information
+                lineLength : 50, //train line length, in feet, to be used with timing
+                signalSpeed: 100, //time it takes to propagate a signal through the car, in milliseconds
+                //makes a brake reduction on ``trainPosition`` by ``psi``, and calculates the braking force resulting
+                reduction: function(trainPosition, psi) {
+                    
+                },
+                tripleValveCycle : function(trainPosition) {
+                    var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
+                    var linePSI = train.all[trainPosition].prototype.brake.linePSI;
+                    if (reservoirPSI > linePSI) {
+                        //triple valve APPLY
+                        train.all[trainPosition].prototype.brake.tripleValve  = "A";
+                        
+                    }
+                    else if (reservoirPSI < linePSI) {
+                        //triple valve RELEASE
+                        train.all[trainPosition].prototype.brake.tripleValve  = "R";
+                        
+                    }
+                    else if (reservoirPSI == linePSI) {
+                        //triple valve LAP
+                        train.all[trainPosition].prototype.brake.tripleValve  = "L";
+                        
+                    }
+                },
+                reservoirPSI: 90, //reservoir psi
+                cylinderPSI: 0, //brake cylinder psi
+                linePSI: 90, //brake pipe psi
+                tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
             },
             coefficientOf: {
                 rollingResistance : 0.01, //rolling resistance
                 genResistance: 0, //arbitrary other resistance value that is left to account for friction bearings/roller bearings etc.
+            },
+            tmp: {//junk for intervals and such to use as storage
+            }
+        }
+    },
+    "Generic Boxcar 2":{
+        /*
+        This is rather misleading. As of 3/16/16, there is ZERO integration with the JMRI roster for rolling stock.
+        
+        This object only has such a misleading naming convention to maintain backwards compatibility with some train.build stuff. If we specify the name inside .roster.name, it eliminates the need for a cumbersome if statement to deal with naming in train.ui HTML generation. It just works.
+        
+        In the future, integration with JMRI's OperationsPro is planned, and will likely make use of .roster to contain its information for a specific car.
+        */
+        roster : {
+            name : "Generic Boxcar 2"
+        },
+        type : "rollingstock",
+        prototype : {
+            axles : 4,
+            weight : 210000,
+            realtime : {
+                //realtime data for things like braking and coupler slack goes in here
+            },
+            brake : {
+                //air brake equipment information
+                lineLength : 50, //train line length, in feet, to be used with timing
+                signalSpeed: 100, //time it takes to propagate a signal through the car, in milliseconds
+                //makes a brake reduction on ``trainPosition`` by ``psi``, and calculates the braking force resulting
+                reduction: function(trainPosition, psi) {
+                    
+                },
+                tripleValveCycle : function(trainPosition) {
+                    var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
+                    var linePSI = train.all[trainPosition].prototype.brake.linePSI;
+                    if (reservoirPSI > linePSI) {
+                        //triple valve APPLY
+                        train.all[trainPosition].prototype.brake.tripleValve  = "A";
+                        
+                    }
+                    else if (reservoirPSI < linePSI) {
+                        //triple valve RELEASE
+                        train.all[trainPosition].prototype.brake.tripleValve  = "R";
+                        
+                    }
+                    else if (reservoirPSI == linePSI) {
+                        //triple valve LAP
+                        train.all[trainPosition].prototype.brake.tripleValve  = "L";
+                        
+                    }
+                },
+                reservoirPSI: 90, //reservoir psi
+                cylinderPSI: 0, //brake cylinder psi
+                linePSI: 90, //brake pipe psi
+                tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
+            },
+            coefficientOf: {
+                rollingResistance : 0.01, //rolling resistance
+                genResistance: 0, //arbitrary other resistance value that is left to account for friction bearings/roller bearings etc.
+            },
+            tmp: {//junk for intervals and such to use as storage
             }
         }
     }

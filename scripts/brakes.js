@@ -5,7 +5,7 @@ This file is to keep the new braking code separate, at least until it's stable e
 brake = {
     feedValvePSI: 90, //this seems to be the norm
     eqReservoirPSI: 90, //set both of these to the same thing ^^^
-    init :  function() {
+    charge :  function() {
         
     },
     //sends a signal down the brake pipe and recalculates pressure
@@ -44,5 +44,14 @@ brake = {
             fullServiceReduction : fullServiceReduction,
         }
         return output;
+    },
+    //change the brake pipe pressure, 
+    propagate : function(newPressure) {
+        var baseTime = 0;
+        
+    },
+    //Send an emergency brake signal, which travels faster than the normal signals
+    emergency : function() {
+        
     }
 }
