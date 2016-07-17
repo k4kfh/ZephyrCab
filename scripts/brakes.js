@@ -53,5 +53,37 @@ brake = {
     //Send an emergency brake signal, which travels faster than the normal signals
     emergency : function() {
         
+    },
+    //Called from sim.js with ARG car representing the element of the train to parse
+    cycle : function(carNumber) {
+        /*
+        Braking Cycle
+        -- Steps --
+        - Check the element before us's linePSI property, and see if theirs is different than ours
+        - If no difference, do nothing. If difference, 
+        
+        */
+        
+        // IF this isn't the first car and it hasn't already been set up with a setTimeout
+        if ((carNumber != 0) && (train.all[carNumber].prototype.brake.waitingOnChange == false)) {
+            var frontNeighbor = train.all[(carNumber - 1)]; //represents the car in front of us (or locomotive in  front of us)
+            var car = train.all[carNumber]; //represents the car specified in the car argument
+            //Check to see if frontNeighbor has a different pipe pressure than us
+            //console.debug("frontNeighbor number = " + (carNumber - 1))
+            if (frontNeighbor.prototype.brake.linePSI != car.prototype.brake.linePSI) {
+                //if there is a pressure difference, setTimeout for when we should change this car's PSI
+                var timeToWait = car.prototype.brake.latency; //the time it takes for the car to propagate the signal
+                car.prototype.tmp.brakePSIchangeTimeout = setTimeout(function() {
+                    //code to run after the proper time has elapsed
+                    Materialize.toast("Changing linePSI on " + carNumber + " to " + frontNeighbor.prototype.brake.linePSI, 2000);
+                    car.prototype.brake.linePSI = frontNeighbor.prototype.brake.linePSI;
+                    car.prototype.brake.waitingOnChange = false;
+                }, timeToWait)
+                car.prototype.brake.waitingOnChange = true; //this variable gets set to false once  the psi finished propagating
+            }
+        }
+        else if (carNumber == 0) {
+            //special version  of this cycle for the leading element; WIP
+        }
     }
 }
