@@ -119,8 +119,6 @@ sim.accel = function() {
             //var elementSpeed = train.all[i].prototype.realtime.speed this line will be replace the one above it once coupler slack is implemented. For now the whole train is treated as one solid unit.
             var trainPosition = i; //This is passed as an argument so the function can see ALL of its parent object's attributes
             var te = train.all[i].prototype.calc.te(elementSpeed, trainPosition)
-            //TEMPORARY
-            console.debug("Tractive Effort of Element " + trainPosition + ": " + te + " lbs")
             //This function checks to see if the locomotive is at/above the maximum speed at which its traction motors can rotate
             train.all[i].prototype.calc.maxSpeed(trainPosition); //this ends up setting .prototype.realtime.exceeedingMaxSpeed, used below
             train.all[i].prototype.realtime.te = te * train.all[i].prototype.engineRunning * train.all[i].prototype.realtime.exceedingMaxSpeed; //We multiply by engineRunning so if we're not running it's 0, and by exceedingMaxSpeed so that the TE becomes zero above the locomotive's maximum speed
@@ -346,7 +344,7 @@ sim.accel = function() {
         }
         else if (train.all[i].type == "rollingstock") {
             //We are dealing with rolling stock.
-            console.log("Element " + i + " is rolling stock.")
+            //console.log("Element " + i + " is rolling stock.")
             /*
             Calculations  for rolling stock, in order of execution:
             - Rolling Resistance
@@ -388,14 +386,12 @@ sim.accel = function() {
                 genResistance = -1 * coeffGenResistance * weight  * sim.direction;
                 train.all[i].prototype.realtime.netForce = rollingResistance;
             }
-            Materialize.toast("At car " + i, 2000)
+            
+            
             //Automatic Brake system
-            console.log("Local brake line at car " + i + " equals " + train.all[i].prototype.brake.linePSI)
-            if (train.all[i].prototype.brake.linePSI != brake.eqReservoirPSI) {
-                //time for a pressure change
-                console.log("Difference in pressure at car " + i);
-                //train.all[i].prototype.brake.linePSI = brake.eqReservoirPSI;
-                console.log("Pressure at next car: " + train.all[i + 1].prototype.brake.linePSI)
+            //Because of the responsiveness needed for this brake system to be realistic, every one rolling stock cycle will go through the entire train's brake system
+            for (var car = 0; car < train.all.length; car++) {
+                brake.cycle(car);
             }
             
             //Net Force
@@ -411,7 +407,7 @@ sim.accel = function() {
             */
             train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
             train.total.weight = train.total.weight + train.all[i].prototype.weight; //compounds the weight total 
-            console.debug("train.total.weight = " + train.total.weight)
+            //console.debug("train.total.weight = " + train.total.weight)
             train.total.wheelSlip.internalForce = train.total.wheelSlip.internalForce + train.all[i].prototype.realtime.te  
     }      
     /* Acceleration Calculation based on Net Force
@@ -426,7 +422,7 @@ sim.accel = function() {
     4. Store acceleration in mph/sec
     5. Find new speed in mph
     */
-    var force = train.total.netForce * 4.44822; console.debug("netforce = " + force)
+    var force = train.total.netForce * 4.44822; //console.debug("netforce = " + force)
     var mass = train.total.weight * 0.453592; //kilograms, not grams!
     var acceleration_ms = (force / mass)/10; //acceleration in m/s/s, divided by ten to account for the fact that this function runs every 100ms
     var acceleration_mph = acceleration_ms * 2.23694;
@@ -445,12 +441,15 @@ sim.accel = function() {
         //if we're in forward
         sim.direction = 1;
     }
-    console.log("Force (N): " + force)
-    console.log("Mass (g): " + mass)
-    console.log("Weight (lbs): "  + train.total.weight)
-    console.log("Acceleration in mph/sec: " + acceleration_mph)
-    console.log("Current Speed: " + speed)
-    console.log("New Speed: " + newSpeed)
+    
+    /*
+    console.debug("Force (N): " + force)
+    console.debug("Mass (g): " + mass)
+    console.debug("Weight (lbs): "  + train.total.weight)
+    console.debug("Acceleration in mph/sec: " + acceleration_mph)
+    console.debug("Current Speed: " + speed)
+    console.debug("New Speed: " + newSpeed)
+    */
         
     /*
     SPEEDOMETER
@@ -527,8 +526,15 @@ wheel = function(trainNumber, mass, radius) {
     }
 }
 
-//Once ALL this is loaded, we start the calculation loop, which runs every 100ms.
-//sim.recalcInterval = setInterval(function() {sim.accel()}, 1000)
+sim.stop = function() {
+    clearInterval(sim.recalcInterval);
+}
+
+sim.start = function(timing) {
+    sim.recalcInterval = setInterval(function() {sim.accel()}, timing);
+}
+
+sim.start(200);
 
 sim.f = {
     air : {
