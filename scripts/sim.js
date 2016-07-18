@@ -531,10 +531,14 @@ sim.stop = function() {
 }
 
 sim.start = function(timing) {
+    if (timing == undefined) {
+        timing = sim.time.interval; //if the user doesn't specify, we use the last one we used
+    }
     sim.recalcInterval = setInterval(function() {sim.accel()}, timing);
+    sim.time.interval = timing; //store this for later
 }
 
-sim.start(200);
+sim.start(100);
 
 sim.f = {
     air : {
