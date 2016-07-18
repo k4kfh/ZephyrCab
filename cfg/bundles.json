@@ -315,6 +315,7 @@ bundles.locomotives = {
                 linePSI: 90, //brake pipe psi
                 tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
                 waitingOnChange: false, //tells brake.cycle() whether or not this car is already undergoing a change
+                applicationRate: 0.5, //in psi/sec FROM RESERVOIR
             },
             //this serves as a sort of "RAM", almost a junk folder...lol
             "tmp" :{

@@ -5,8 +5,28 @@ This file is to keep the new braking code separate, at least until it's stable e
 brake = {
     feedValvePSI: 90, //this seems to be the norm
     eqReservoirPSI: 90, //set both of these to the same thing ^^^
+    //changing the feed valve resets the brake system to fully charged and 0% braking
     charge :  function() {
-        
+        console.log("Stopping sim to reset brake system...")
+        sim.stop(); //pause the sim while we do this to keep it from screwing with the physics
+        for (var i=0; i<train.all.length;i++) {
+            var car = train.all[i].prototype;
+            //first set the equalizing reservoir
+            brake.eqReservoirPSI = brake.feedValvePSI; //set the global equalizing reservoir first
+            //set the brake line pressure to feedvalve pressure
+            car.brake.linePSI = brake.feedValvePSI;
+            //set the aux. reservoir psi
+            car.brake.reservoirPSI = brake.feedValvePSI;
+            car.brake.tripleValve = "R"; //set the triple valve to "release and charge"
+            //set cylinder psi to 0 (meaning no brakes)
+            car.brake.cylinderPSI = 0;
+            //Run updated force calculation to reflect no braking pressure
+            //THIS FUNCTIONALITY NOT IMPLEMENTED YET
+        }
+        console.log("Starting sim after brake reset...");
+        sim.start(100); //TODO, some kind of a setting
+        console.log("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi");
+        Materialize.toast("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi", 3000);
     },
     //sends a signal down the brake pipe and recalculates pressure
     propagate : function(speed) {
@@ -80,10 +100,17 @@ brake = {
                     car.prototype.brake.waitingOnChange = false;
                 }, timeToWait)
                 car.prototype.brake.waitingOnChange = true; //this variable gets set to false once  the psi finished propagating
+                // WIP car.prototype.tmp.brakeApplicationInterval = setInterval(function())
             }
         }
         else if (carNumber == 0) {
-            //special version  of this cycle for the leading element; WIP
+            //special version  of this cycle for the leading element, which is always assumed to be a locomotive
+            var eqReservoirPSI = brake.eqReservoirPSI; //find the psi of the equalizing reservoir
+            var linePSI = train.all[0].prototype.brake.linePSI; //find train brake line PSI
+            var waitingOnChange = train.all[0].prototype.brake.waitingOnChange; //this lets us know whether or not any differences in pressure have already been dealt with
+            if ((eqReservoirPSI != linePSI) || (waitingOnChange == false)) {
+                train.all[0].prototype.brake.linePSI = eqReservoirPSI; //Is this realistic enough? Not sure.
+            }
         }
-    }
+    },
 }
