@@ -113,4 +113,16 @@ brake = {
             }
         }
     },
+    //called by the train builder whenever a new car is added to fix the pressure on it
+    fixNewElement : function(elNumber) {
+        //pause the sim
+        console.log("Pausing sim to set up new brakes on element " + elNumber + "...")
+        sim.stop();
+        //set the reservoirPSI
+        train.all[elNumber].prototype.brake.linePSI = brake.eqReservoirPSI //set to the equalizing reservoir PSI just to be easy and simple
+        train.all[elNumber].prototype.brake.reservoirPSI = brake.eqReservoirPSI //same as above
+        //cylinder psi should already be zero on a fresh element, so no need to set that
+        console.log("Completed brake setup for element " + elNumber + ". Restarting sim...");
+        sim.start();
+    }
 }

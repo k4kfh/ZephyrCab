@@ -265,6 +265,9 @@ train.build.add = function(objectSource) {
     //Now we need to update the train ui
     train.ui.update();
     
+    //We also need to make sure the brakes on this thing are set up right, in case the user has set the feed valve to something other than 90
+    brake.fixNewElement((train.all.length - 1)) //call this function on the last car
+    
     //We only call the gauges.createAll() function when we ADD something, because if there's nothing on the train it'll break things.
     gauge.createAll();
 }
