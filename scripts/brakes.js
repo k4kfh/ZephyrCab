@@ -124,5 +124,15 @@ brake = {
         //cylinder psi should already be zero on a fresh element, so no need to set that
         console.log("Completed brake setup for element " + elNumber + ". Restarting sim...");
         sim.start();
+    },
+    //when called, takes the average of all the localized brake pipe pressures and combines them into one average, which will show on the engineer's gauge.
+    avgLinePSI : function() {
+        var totalPSI = 0;
+        for (var elNumber = 0; elNumber < train.all.length; elNumber++) {
+            var linePSI = train.all[elNumber].prototype.brake.linePSI;
+            totalPSI = totalPSI + linePSI;
+        }
+        var avg = totalPSI / train.all.length; //divide the sum of the pressures by the number of the cars
+        return avg;
     }
 }
