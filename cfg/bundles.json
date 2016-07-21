@@ -532,7 +532,15 @@ bundles.rollingstock = {
                     }
                     
                     //Code for gradual application
-                    //TODO
+                    //TODO - temporarily using setTimeout
+                    var timeToWait = 1000*(psi / train.all[trainPosition].prototype.brake.applicationRate);
+                    console.debug("Waiting " + timeToWait + "ms before setting new brake pressure")
+                    setTimeout(function() {
+                        //set new pressure values
+                        train.all[trainPosition].prototype.brake.cylinderPSI = resultingCylinderPSI;
+                        train.all[trainPosition].prototype.brake.reservoirPSI = resultingReservoirPSI;
+                        console.debug("Reservoir PSI: " + resultingReservoirPSI + ", Cylinder PSI: " + resultingCylinderPSI)
+                    }, timeToWait)
                 },
                 tripleValveCycle : function(trainPosition) {
                     var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
