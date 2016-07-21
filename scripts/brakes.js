@@ -56,8 +56,8 @@ brake = {
         
         This function is a programming implementation of that same math.
         */
-        var fullServiceReduction = psi/3.5;
-        var EQpressure = psi - fullServiceReduction;
+        var fullServiceReduction = Math.round(psi/3.5);
+        var EQpressure = Math.round(psi - fullServiceReduction);
         
         var output = {
             EQpressure : EQpressure,
@@ -98,6 +98,8 @@ brake = {
                     Materialize.toast("Changing linePSI on " + carNumber + " to " + frontNeighbor.prototype.brake.linePSI, 2000);
                     car.prototype.brake.linePSI = frontNeighbor.prototype.brake.linePSI;
                     car.prototype.brake.waitingOnChange = false;
+                    //now we change the triple valve state
+                    car.prototype.brake.tripleValveCycle(carNumber);
                 }, timeToWait)
                 car.prototype.brake.waitingOnChange = true; //this variable gets set to false once  the psi finished propagating
                 // WIP car.prototype.tmp.brakeApplicationInterval = setInterval(function())
@@ -134,5 +136,5 @@ brake = {
         }
         var avg = totalPSI / train.all.length; //divide the sum of the pressures by the number of the cars
         return avg;
-    }
+    },
 }

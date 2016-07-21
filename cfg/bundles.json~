@@ -513,26 +513,7 @@ bundles.rollingstock = {
                 latency: 100, //time it takes to propagate a signal through the car, in milliseconds
                 //makes a brake reduction on ``trainPosition`` by ``psi``, and calculates the braking force resulting
                 reduction: function(trainPosition, psi) {
-                    //find the full service reduction, then make sure we can actually make the reduction
-                    var EQpressure = brake.findEQpressure(brake.feedValvePSI).EQpressure;
-                    var fullService = brake.findEQpressure(brake.feedValvePSI).fullServiceReduction
-                    var resultingReservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI - psi;
-                    if (resultingReservoirPSI <= EQpressure) {
-                        psi = fullService; //we can't go any further than this no matter how much the train pipe is reduced
-                    }
                     
-                    //Now we can actually perform the reduction
-                    resultingReservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI - psi; //recompute this in case psi was just redefined
-                    var resultingCylinderPSI; //define this here to get it in the right scope
-                    if (psi == fullService) { //to make sure there are no issues due to rounding
-                        resultingCylinderPSI = EQpressure;
-                    }
-                    else {
-                        resultingCylinderPSI = psi * 2.5; //cylinder is 2.5x smaller than the reservoir
-                    }
-                    
-                    //Code for gradual application
-                    //TODO
                 },
                 tripleValveCycle : function(trainPosition) {
                     var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
@@ -540,19 +521,17 @@ bundles.rollingstock = {
                     if (reservoirPSI > linePSI) {
                         //triple valve APPLY
                         train.all[trainPosition].prototype.brake.tripleValve  = "A";
-                        //Figure out how much of a reduction is needed
-                        var reductionAmount = reservoirPSI - linePSI;
-                        train.all[trainPosition].prototype.brake.reduction(trainPosition, reductionAmount)
+                        
                     }
                     else if (reservoirPSI < linePSI) {
                         //triple valve RELEASE
                         train.all[trainPosition].prototype.brake.tripleValve  = "R";
-                        console.debug("Element " + trainPosition + ": Triple Valve RELEASE")
+                        
                     }
                     else if (reservoirPSI == linePSI) {
                         //triple valve LAP
                         train.all[trainPosition].prototype.brake.tripleValve  = "L";
-                        console.debug("Element " + trainPosition + ": Triple Valve LAP")
+                        
                     }
                 },
                 reservoirPSI: 90, //reservoir psi
@@ -560,7 +539,6 @@ bundles.rollingstock = {
                 linePSI: 90, //brake pipe psi
                 tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
                 waitingOnChange: false,
-                applicationRate: 0.5, //in psi/sec FROM RESERVOIR
             },
             coefficientOf: {
                 rollingResistance : 0.01, //rolling resistance
