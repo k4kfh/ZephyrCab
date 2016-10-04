@@ -38,7 +38,7 @@ air = {
             },
             
             take : function(cfeet, atPressure, locomotive) {
-                console.log("TAKING " + cfeet + "@" + atPressure + "PSI FROM MAIN RESERVOIR ON LOCOMOTIVE " + locomotive)
+                console.debug("TAKING " + cfeet + "@" + atPressure + "PSI FROM MAIN RESERVOIR ON LOCOMOTIVE " + locomotive)
                 //Define some shorthand variables
                 var mainReservoir = new Object();
                 mainReservoir.psi = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g;

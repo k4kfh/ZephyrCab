@@ -364,6 +364,7 @@ sim.accel = function() {
             var coeffRollingResistance;
             var genResistance;
             var coeffGenResistance;
+            var brakeForce;
             //netForce is not defined here just to decrease unnecessary searching around  in  the code
             
             //Rolling Resistance
@@ -393,9 +394,11 @@ sim.accel = function() {
             for (var car = 0; car < train.all.length; car++) {
                 brake.cycle(car);
             }
+            //find the brake force for the one car we're dealing with here
+            var brakeForce = train.all[i].prototype.brake.brakingForce * sim.direction;
             
             //Net Force
-            var netForce = genResistance + rollingResistance; //eventually we will add force from the brakes
+            var netForce = genResistance + rollingResistance + brakeForce;
             train.all[i].prototype.realtime.netForce = netForce;
         }
         /*

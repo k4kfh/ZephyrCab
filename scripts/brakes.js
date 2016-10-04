@@ -28,10 +28,6 @@ brake = {
         console.log("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi");
         Materialize.toast("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi", 3000);
     },
-    //sends a signal down the brake pipe and recalculates pressure
-    propagate : function(speed) {
-        
-    },
     //finds the equalization pressure AND full service brake application for a brake pipe with feed valve set at ARG psi
     findEQpressure : function(psi) {
         /*
@@ -86,6 +82,7 @@ brake = {
         
         // IF this isn't the first car and it hasn't already been set up with a setTimeout
         if ((carNumber != 0) && (train.all[carNumber].prototype.brake.waitingOnChange == false)) {
+            
             var frontNeighbor = train.all[(carNumber - 1)]; //represents the car in front of us (or locomotive in  front of us)
             var car = train.all[carNumber]; //represents the car specified in the car argument
             //Check to see if frontNeighbor has a different pipe pressure than us
