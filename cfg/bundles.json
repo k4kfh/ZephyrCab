@@ -524,11 +524,9 @@ bundles.rollingstock = {
                     if (resultingReservoirPSI <= EQpressure) {
                         psi = fullService; //we can't go any further than this no matter how much the train pipe is reduced
                     }
-                    console.debug("resultingReservoirPSI :: " + resultingReservoirPSI);
                     
                     //Now we can actually perform the reduction
                     resultingReservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI - psi; //recompute this in case psi was just redefined
-                    console.debug("resultingReservoirPSI (after potential redefinition) :: " + resultingReservoirPSI)
                     var resultingCylinderPSI; //define this here to get it in the right scope
                     if (psi == fullService) { //to make sure there are no issues due to rounding
                         resultingCylinderPSI = EQpressure;
@@ -541,7 +539,6 @@ bundles.rollingstock = {
                     
                     //now if we've already made a full service reduction, we can just exit.
                     if (resultingCylinderPSI == train.all[trainPosition].prototype.brake.cylinderPSI) {
-                        alert("Stopping early!")
                         return undefined; //stop the function
                     }
                     
@@ -563,7 +560,6 @@ bundles.rollingstock = {
                             train.all[trainPosition].prototype.brake.waitingOnApplication = false;
                             //set the new reservoir PSI
                             train.all[trainPosition].prototype.brake.reservoirPSI = resultingReservoirPSI;
-                            alert("Set the reservoirpsi to " + resultingReservoirPSI)
                         }
                     });
                 },

@@ -38,9 +38,9 @@ air = {
             },
             
             take : function(cfeet, atPressure, locomotive) {
-                console.debug("TAKING " + cfeet + "@" + atPressure + "PSI FROM MAIN RESERVOIR ON LOCOMOTIVE " + locomotive)
+                console.debug("TAKING " + cfeet + "@" + atPressure + "PSI FROM MAIN RESERVOIR ON LOCOMOTIVE " + locomotive);
                 //Define some shorthand variables
-                var mainReservoir = new Object();
+                var mainReservoir = {};
                 mainReservoir.psi = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g;
                 mainReservoir.cap = train.all[locomotive].prototype.air.reservoir.main.capacity;
                 mainReservoir.atmAirVol = train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume;
@@ -73,11 +73,11 @@ air = {
             
             //returns true or false whether an air device can operate with the current reservoir pressure
             pressureCheck : function(opsPressure, locomotive) {
-                var resPressure = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g
-                var result = (resPressure >= opsPressure)
-                if (result == false) {Materialize.toast("Not enough air pressure!", 2000)}
+                var resPressure = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g;
+                var result = (resPressure >= opsPressure);
+                if (result == false) {Materialize.toast("Not enough air pressure!", 2000);}
                 return result;
             }
         }
     }
-}
+};

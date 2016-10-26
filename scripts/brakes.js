@@ -2,14 +2,15 @@
 This file is to keep the new braking code separate, at least until it's stable enough to move over into sim.js
 */
 
+/*global brake:true, console*/
 brake = {
     feedValvePSI: 90, //this seems to be the norm
     eqReservoirPSI: 90, //set both of these to the same thing ^^^
     //changing the feed valve resets the brake system to fully charged and 0% braking
-    charge :  function() {
-        console.log("Stopping sim to reset brake system...")
+    charge :  function () {
+        console.log("Stopping sim to reset brake system...");
         sim.stop(); //pause the sim while we do this to keep it from screwing with the physics
-        for (var i=0; i<train.all.length;i++) {
+        for (var i=0; i < train.all.length; i++) {
             var car = train.all[i].prototype;
             //first set the equalizing reservoir
             brake.eqReservoirPSI = brake.feedValvePSI; //set the global equalizing reservoir first
@@ -29,7 +30,7 @@ brake = {
         Materialize.toast("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi", 3000);
     },
     //finds the equalization pressure AND full service brake application for a brake pipe with feed valve set at ARG psi
-    findEQpressure : function(psi) {
+    findEQpressure : function(psi) { 
         /*
         Read more about equalization pressure here: http://alkrugsite.evilgeniustech.com/rrfacts/brakes.htm
         
