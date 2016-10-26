@@ -59,7 +59,7 @@ function connect(ip, port, automaticornot) {
     //when the connection opens,
     ws.onopen = function() {
         wsStatus = true
-        ui.connection.status.set(true)
+        //ui.connection.status.set(true)
         console.log("Connection opened.")
         //start the heartbeats to keep it alive
         var heartbeatInterval = setInterval(heartbeats, 6000)
