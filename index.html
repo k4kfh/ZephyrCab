@@ -64,173 +64,174 @@
         <div class="container">
             <!---beginning of actual page, this is the drive portion--->
             <div id="cab">
-                <!---drive page header--->
                 <div class="row">
                     <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <h4>Cab</h4>
-                                <div class="hoverable chip" id="ui.locoName">Not Set</div>
-                            </div>
+                        <div class="col s3">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Speed</b></td>
+                                        <td>0mph</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Load (Amperes)</b></td>
+                                        <td>N/A</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s3">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Brake Pipe</b></td>
+                                        <td>90psi</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Brake Cylinder</b></td>
+                                        <td>0psi</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s3">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Main Reservoir</b></td>
+                                        <td>140psi</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Equalizing Reservoir</b></td>
+                                        <td>90psi</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s3 center">
+                            <a class="chip" id="wheel-slip">Wheel Slip</a>
+                            <a class="chip" id="pcs-open">PCS Open</a>
+                            <a class="chip" id="dyn-brake-warning">Dynamic Brake</a>
+                            <a class="chip" id="error">Error</a>
                         </div>
                     </div>
                 </div>
-
-                <!---Indications row---->
                 <div class="row">
-                    <div class="col s12">
-                        <!---Card with gauges and indicators--->
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="section">
-                                    <h6><i class="material-icons left small">view_module</i><b>My Dash</b></h6>
+                    <div class="col s6">
+                        <div class="col s2">
+                            <a class="btn-floating btn-large waves-effect waves-light teal"><i class="material-icons">volume_up</i></a>
+                        </div>
+                        <div class="col s5">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Bell</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
+                                                    <input id="bell" type="checkbox">
+                                                    <span class="lever"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Headlight</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
+                                                    <input id="headlight" type="checkbox">
+                                                    <span class="lever"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <div class="col s5">
+                                <table class="striped">
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Sand</b></td>
+                                                <td>
+                                                    <div class="switch">
+                                                        <label>
+                                                            <input id="sand" type="checkbox">
+                                                            <span class="lever"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="chip">EMERGENCY</div>
+                                        <b class="right">Automatic Brake</b>
+                                        <input type="range" value=0 min=0 max=90>
+                                    </div>
                                 </div>
-
-                                <div class="row">
-                                    <!---First Row of Gauges--->
-                                    <canvas id="gauge.speedometer"></canvas>
-                                    <canvas id="gauge.rpm"></canvas>
-                                    <canvas id="gauge.fuel"></canvas>
-                                    <canvas id="gauge.air.reservoir.main"></canvas>
+                            </div>
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="left">
+                                            <input type="checkbox" class="filled-in" id="bail-off" checked="true"/>
+                                            <label for="bail-off">Bail Off</label>
+                                        </div>
+                                        <b class="right">Independent Brake</b>
+                                        <input type="range" value=0 min=0 max=90>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="row">
                                 <div class="col s12">
                                     <div class="card">
                                         <div class="card-content">
-                                            <!---First row of small indicators (lights mostly)--->
-                                            <a id="ui.cab.compressor" class="btn-flat grey lighten-3">Compressor</a>
-                                            <a id="ui.cab.wheelSlip" class="btn-flat grey lighten-3">Wheel Slip</a>
-                                            
+                                            <div class="chip left"><b>UNAVAILABLE</b></div>
+                                            <b class="right">Dynamic Brake</b>
+                                            <input type="range" min=0 max=8 value=0>
                                         </div>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div id="throttle-indicator" class="chip left">IDLE</div>
+                                            <b class="right">Power Throttle</b>
+                                            <input id="throttle" type="range" min=0 max=8 value=0>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    <!--builders plate mockup-->
+                                    <div class="card">
+                                        <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
+                                    </div>
+                                </div>
+                        
+                                <div class="col s6">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="chip left" id="reverser-indicator">NEU</div>
+                                            <b class="right">Reverser</b>
+                                            <input id="reverser" type="range" min="-1" max="1" value=0>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--second row of controls section-->
-                <div class="row">
-
-                    <!---Card with horn, headlight, bell, and other accessory functions--->
-                    <div class="col s2">
-                        <div class="card">
-                            <div class="card-content">
-                            <h6><b>Devices</b></h6>
-                                <!---Special section class for airhorn--->
-                                <div class="section">
-                                    <a id="ui.cab.horn" onmousedown = "ui.cab.horn.set(true)" onmouseup="ui.cab.horn.set(false)" class="waves-effect waves-light btn-floating btn-large red tooltipped" data-position="left" data-delay="50" data-tooltip="Hold to sound horn."><i class="material-icons left tiny">volume_up</i></a>
-                                    Air Horn
-                                </div>
-                                <!---the rest of the devices--->
-                                <div class="section">
-                                    <div class="switch">
-                                        <label>
-                                            <input id="ui.cab.bell" type="checkbox" onclick="ui.cab.bell.set(this.checked)">
-                                            <span class="lever"></span>Bell
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="section">
-                                    <div class="switch">
-                                        <label>
-                                            <input id="ui.cab.headlight" type="checkbox" onclick="ui.cab.headlight.set(this.checked)">
-                                            <span class="lever"></span>Headlight
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="section">
-                                    <div class="switch">
-                                        <label>
-                                            <input id="ui.cab.airDump" type="checkbox" onclick="ui.cab.airDump.set(this.checked)">
-                                            <span class="lever"></span>Air Dump
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!---Card with Prime Mover controls--->
-                    <div class="col s8">
-                        <!---the big card with the two smaller ones in it--->
-                        <div class="card">
-                            <div class="card-content">
-                                <h6><b>Prime Mover</b></h6>
-                                <!---the startup card--->
-                                <div class="col s3">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <h6><i class="material-icons tiny left">vpn_key</i>Startup</h6>
-                                            <div class="switch">
-                                                <label>
-                                                    <input id="ui.cab.engine.start" type="checkbox" onchange="ui.cab.engine.start.set(this.checked)">
-                                                    <span class="lever"></span>On/Off
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!---The notch card--->
-                                <div class="col s9">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <!---actual notch slider crap--->
-                                            <form action="#">
-                                                <p class="range-field"><i class="material-icons right">settings_backup_restore</i>Notch
-                                                    <input type="range" value="0" id="notch" min="0" max="8" onchange="ui.cab.notch.set(this.value)"/>
-                                                </p>
-                                            </form>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!---reverser card--->
-                    <div class="col s2">
-                        <div class="card">
-                            <div class="card-content">
-                                <h6><i class="material-icons left">swap_vert</i>Reverser</h6>
-                                <!---HTML radio buttons for reverser
-The section class must surround it or the alignment is wrong and it looks funky--->
-                                <div class="section">
-                                 <form action="#">
-                                        <p>
-                                            <input onclick='ui.cab.reverser.set(1)' name="reverser" type="radio" id="ui.cab.reverser.forward" />
-                                            <label for="ui.cab.reverser.forward">Forward</label>
-                                        </p>
-                                        <p>
-                                            <input checked="true" onclick='ui.cab.reverser.set(0)' name="reverser"  type="radio" id="ui.cab.reverser.neutral" />
-                                            <label for="ui.cab.reverser.neutral">Neutral</label>
-                                        </p>
-                                        <p>
-                                            <input onclick='ui.cab.reverser.set(-1)' name="reverser"  type="radio" id="ui.cab.reverser.reverse"  />
-                                            <label for="ui.cab.reverser.reverse">Reverse</label>
-                                        </p>
-                                    </form>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                        <div class="col s12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <h6><b>Brakes</b></h6>
-                                    <p>Coming soon!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
             </div>
 
             <!--connection settings area--->
