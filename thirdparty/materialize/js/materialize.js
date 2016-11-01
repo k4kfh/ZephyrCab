@@ -2663,7 +2663,8 @@ $(document).ready(function(){
     var range_type = 'input[type=range]';
     var range_mousedown = false;
     var left;
-
+      
+      /* Commented out thumb code for range inputs
     $(range_type).each(function () {
       var thumb = $('<span class="thumb"><span class="value"></span></span>');
       $(this).after(thumb);
@@ -2755,7 +2756,7 @@ $(document).ready(function(){
         }
         thumb.removeClass('active');
       }
-    });
+    }); */
 
   }); // End of $(document).ready
 
