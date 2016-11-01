@@ -194,29 +194,6 @@ ui = {
             document.getElementById("ui.cab.headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
         }
     },
-    
-    connection : {
-        status : {
-            
-            //Called when websockets connection is opened.
-            set : function(connectionState) {
-                if (connectionState == true) {
-                    $("#connectionStatus").html("Connected!").css("color", "green")
-                }
-            }
-        }
-    },
-    
-    layout : {
-        power : {
-            status : {
-                update : function() {
-                    var status = jmri.trkpower.state
-                    document.getElementById("jmri.trkpower").checked = status;
-                },
-            }
-        }
-    }
 }
 
 
