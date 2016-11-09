@@ -19,7 +19,7 @@ This function should not be used by anything except the core train builder stuff
 jmri.throttle = function(address, throttleName) {
     if (wsStatus == true) {
         //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
-        sendcmd('{"type":"throttle","data":{"throttle":"' + throttleName + '","address":' + address + '}}')
+        link.send('{"type":"throttle","data":{"throttle":"' + throttleName + '","address":' + address + '}}')
         console.log("Requested throttle " + throttleName + " for locomotive #" + address)
         this.address = address
         this.name = throttleName; //throttle name should always be the train position just for ease-of-development purposes
@@ -27,12 +27,12 @@ jmri.throttle = function(address, throttleName) {
         //called when removing object from the train; it releases the throttle
         this.release = function() {
             releasecmd = '{"type":"throttle","data":{"throttle":"' + throttleName + '","release":null}}';
-            sendcmd(releasecmd);
+            link.send(releasecmd);
             debugToast("Sent command : " + releasecmd)
         }
         this.speed.set = function(speed) {
             //set speed to given percent
-            sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
+            link.send('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
         }
         this.f = new Object(); //the reason we did this as an object with only one function was to leave room for future ability to store the states of the functions. I will add it if I need it, but its a pain so I haven't yet.
         this.f.set = function(inputData) {
@@ -49,7 +49,7 @@ jmri.throttle = function(address, throttleName) {
             }
             
             var finalString = finalCommand.join(", ");
-            sendcmd('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
+            link.send('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
             //Uncomment the below line to see every outgoing DCC function command as a console error
             //console.error('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
         }
@@ -66,12 +66,12 @@ jmri.throttle = function(address, throttleName) {
 //call with state as boolean
 jmri.trkpower = function(option) {
     if (option == true) {
-        sendcmd('{"type":"power","data":{"state":2}}')
+        link.send('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
         ui.layout.power.status.update();
     }
     else if (option == false) {
-        sendcmd('{"type":"power","data":{"state":4}}')
+        link.send('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
         ui.layout.power.status.update();
     }
@@ -79,13 +79,13 @@ jmri.trkpower = function(option) {
     else if (option == "toggle") {
         //if track power is currently on, turn it off
         if (layoutTrackPower_state == true) {
-            sendcmd('{"type":"power","data":{"state":4}}')
+            link.send('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
         ui.layout.power.status.update();
         }
         //if its currently off, turn it on
         else if (layoutTrackPower_state == false) {
-            sendcmd('{"type":"power","data":{"state":2}}')
+            link.send('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
         ui.layout.power.status.update();
         }
@@ -101,12 +101,12 @@ jmri.handleType.power = function(string) {
     if (json.data.state == 2) {
         jmri.trkpower.state = true
         console.log("Updated layout track power status to TRUE")
-        ui.layout.power.status.update();
+        $("#jmri.trkpower").checked = json.data.state;
     }
     else if (json.data.state == 4) {
         jmri.trkpower.state = false
         console.log("Updated layout track power status to FALSE")
-        ui.layout.power.status.update();
+        $("#jmri.trkpower").checked = json.data.state;
     }
 }
 

@@ -503,7 +503,7 @@ bundles.rollingstock = {
         type : "rollingstock",
         prototype : {
             axles : 4,
-            weight : 150000,
+            weight : 210000,
             realtime : {
                 //realtime data for things like braking and coupler slack goes in here
             },
@@ -513,58 +513,6 @@ bundles.rollingstock = {
                 latency: 100, //time it takes to propagate a signal through the car, in milliseconds
                 //makes a brake reduction on ``trainPosition`` by ``psi``, and calculates the braking force resulting
                 reduction: function(trainPosition, psi) {
-                    //exit the function before doing anything if we already have a $.animate() routine running for this car
-                    if (train.all[trainPosition].prototype.brake.waitingOnApplication == true) {
-                        return undefined;
-                    }
-                    //find the full service reduction, then make sure we can actually make the reduction
-                    var EQpressure = brake.findEQpressure(brake.feedValvePSI).EQpressure;
-                    var fullService = brake.findEQpressure(brake.feedValvePSI).fullServiceReduction
-                    var resultingReservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI - psi;                    
-                    if (resultingReservoirPSI <= EQpressure) {
-                        psi = fullService; //we can't go any further than this no matter how much the train pipe is reduced
-                    }
-                    
-                    //Now we can actually perform the reduction
-                    resultingReservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI - psi; //recompute this in case psi was just redefined
-                    var resultingCylinderPSI; //define this here to get it in the right scope
-                    if (psi == fullService) { //to make sure there are no issues due to rounding
-                        resultingCylinderPSI = EQpressure;
-                    }
-                    else {
-                        resultingCylinderPSI = train.all[trainPosition].prototype.brake.cylinderPSI + (psi * 2.5);
-                        //cylinder is 2.5x smaller than the reservoir, which is where the *2.5 comes from
-                        //we add it to the existing PSI so that you can make multiple reductions in a row
-                    }
-                    
-                    //now if we've already made a full service reduction, we can just exit.
-                    if (resultingCylinderPSI == train.all[trainPosition].prototype.brake.cylinderPSI) {
-                        return undefined; //stop the function
-                    }
-                    
-                    //Code for gradual application
-                    //TODO - temporarily using setTimeout
-                    var timeToWait = 1000*(psi / train.all[trainPosition].prototype.brake.applicationRate);
-                    console.debug("Application will take " + timeToWait + "ms")
-                    train.all[trainPosition].prototype.brake.waitingOnApplication = true;
-                    $({ n: train.all[trainPosition].prototype.brake.cylinderPSI }).animate({ n: resultingCylinderPSI}, {
-                        duration: timeToWait,
-                        step: function(now, fx) {
-                            train.all[trainPosition].prototype.brake.cylinderPSI = now;
-                            //console.debug("BRAKE CYLINDER @" + trainPosition + "$.animate : " + now)
-                            //find braking force resulting from this pressure
-                            train.all[trainPosition].prototype.brake.calcForce(trainPosition, now);
-                            //console.debug("BRAKING FORCE @" + trainPosition + " : " + train.all[trainPosition].prototype.brake.brakingForce)
-                        },
-                        complete: function() {
-                            train.all[trainPosition].prototype.brake.waitingOnApplication = false;
-                            //set the new reservoir PSI
-                            train.all[trainPosition].prototype.brake.reservoirPSI = resultingReservoirPSI;
-                        }
-                    });
-                },
-                //this takes no arguments since North American freight air brakes won't gradually release
-                release : function() {
                     
                 },
                 tripleValveCycle : function(trainPosition) {
@@ -573,46 +521,27 @@ bundles.rollingstock = {
                     if (reservoirPSI > linePSI) {
                         //triple valve APPLY
                         train.all[trainPosition].prototype.brake.tripleValve  = "A";
-                        //Figure out how much of a reduction is needed
-                        var reductionAmount = reservoirPSI - linePSI;
-                        train.all[trainPosition].prototype.brake.reduction(trainPosition, reductionAmount)
+                        
                     }
-                    else if (reservoirPSI < (linePSI - 2)) { //the -2 is because once the line is 2psi above the reservoir, the triple valve releases
+                    else if (reservoirPSI < linePSI) {
                         //triple valve RELEASE
                         train.all[trainPosition].prototype.brake.tripleValve  = "R";
-                        console.debug("Element " + trainPosition + ": Triple Valve RELEASE")
+                        
                     }
                     else if (reservoirPSI == linePSI) {
                         //triple valve LAP
                         train.all[trainPosition].prototype.brake.tripleValve  = "L";
-                        console.debug("Element " + trainPosition + ": Triple Valve LAP")
+                        
                     }
-                },
-                //calculates the force based on the psi in the brake cylinder
-                calcForce : function(trainPosition, psi) {
-                    //Easy Tunables for customizing your car's brakes
-                    var pistonArea = 15; //15 square inch piston surface area
-                    var shoeFrictionCoeff = 0.4; //brake shoe coefficient of friction
-                    
-                    //find linear force from cylinder and multiply by friction coefficient
-                    var brakeTorque = (pistonArea * psi) * shoeFrictionCoeff;
-                    
-                    train.all[trainPosition].prototype.brake.brakingForce = -1 * brakeTorque; //multiply by -1 since it's against the trainn's motive force
-                    return train.all[trainPosition].prototype.brake.brakingForce;
                 },
                 reservoirPSI: 90, //reservoir psi
                 cylinderPSI: 0, //brake cylinder psi
                 linePSI: 90, //brake pipe psi
                 tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
                 waitingOnChange: false,
-                applicationRate: 0.5, //in psi/sec FROM RESERVOIR
-                waitingOnApplication: false, //this is true when the $.animate() routine runs for this element
-                brakingForce: 0, //linear braking force acting on the railcar, in lbs
-                chargeRate: 0.000001, //psi per millisecond when charging. Should be a really tiny number
-                releaseRate: 0.001, //psi per millisecond rate of release. Should be tiny, but larger than the charge rate
             },
             coefficientOf: {
-                rollingResistance : 0.005, //rolling resistance
+                rollingResistance : 0.01, //rolling resistance
                 genResistance: 0, //arbitrary other resistance value that is left to account for friction bearings/roller bearings etc.
             },
             tmp: {//junk for intervals and such to use as storage

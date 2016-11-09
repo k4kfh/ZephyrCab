@@ -194,29 +194,6 @@ ui = {
             document.getElementById("ui.cab.headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
         }
     },
-    
-    connection : {
-        status : {
-            
-            //Called when websockets connection is opened.
-            set : function(connectionState) {
-                if (connectionState == true) {
-                    $("#connectionStatus").html("Connected!").css("color", "green")
-                }
-            }
-        }
-    },
-    
-    layout : {
-        power : {
-            status : {
-                update : function() {
-                    var status = jmri.trkpower.state
-                    document.getElementById("jmri.trkpower").checked = status;
-                },
-            }
-        }
-    }
 }
 
 
@@ -224,5 +201,172 @@ ui = {
 function debugToast(toast, time) {
     if (cfg.debugToasts == true) {
         Materialize.toast("Debug: " + toast, time)
+    }
+}
+
+//UI Change Events for NEW MATERIALIZE UI
+
+
+/*
+List of Important UI Elements:
+
+---
+Inputs:
+#horn
+#bell
+#sand
+#headlight
+#dyn-brake
+#ind-brake
+#auto-brake
+#throttle
+#reverser
+
+---
+
+Indicators:
+#throttle-indicator
+#reverser-indicator
+#wheel-slip
+#pcs-open
+#dyn-brake-warning
+#error
+*/
+
+//Reverser
+$('#reverser').change( function() {
+    //play sound
+    (new buzz.sound("/soundfx/click.mp3")).play()
+    //Change indicator
+    if ($(this).val() == 0) {
+        $("#reverser-indicator").html("NEU");
+    }
+    else if ($(this).val() == 1) {
+        $("#reverser-indicator").html("FWD");
+    }
+    else if ($(this).val() == -1) {
+        $("#reverser-indicator").html("REV");
+    }
+});
+
+//Throttle
+$('#throttle').change( function() {
+    //play sound effect
+    (new buzz.sound("/soundfx/click.mp3")).play()
+    //Change indicator
+    if($(this).val() == 0) {
+        $("#throttle-indicator").html("IDLE")
+    }
+    else if ($(this).val() > 0 && $(this).val() <= 8) {
+        $("#throttle-indicator").html("RUN" + $(this).val())
+    }
+    
+    //call simulation functions
+    notch.set($(this).val())
+    console.debug("Setting notch to " + $(this).val())
+});
+
+//Bell
+$('#bell').change( function() {
+    //play sound
+    (new buzz.sound("/soundfx/switch.mp3")).play()
+});
+
+//Sand
+$('#sand').change( function() {
+    //play sound
+    (new buzz.sound("/soundfx/switch.mp3")).play()
+});
+
+//Headlight
+$('#headlight').change( function() {
+    //play sound
+    (new buzz.sound("/soundfx/switch.mp3")).play()
+});
+
+ui = {
+    wheelSlip : {
+        set : function(arg) {
+            //end early if no real change
+            if (arg == ui.wheelSlip.state) {
+                return undefined;
+            }
+            //play sound of relay
+            (new buzz.sound("/soundfx/switch.mp3")).play()
+            //set indicator color
+            if (arg == true) {
+                $("#wheel-slip").addClass("red").addClass("white-text");
+                ui.wheelSlip.state = true;
+            }
+            else if (arg == false) {
+                $("#wheel-slip").removeClass("red").removeClass("white-text");
+                ui.wheelSlip.state = false;
+            }
+            
+        },
+        state : false,
+    },
+    pcsOpen : {
+        set : function(arg) {
+            //end early if no real change
+            if (arg == ui.pcsOpen.state) {
+                return undefined;
+            }
+            //play sound of relay
+            (new buzz.sound("/soundfx/switch.mp3")).play()
+            //set indicator color
+            if (arg == true) {
+                $("#pcs-open").addClass("red").addClass("white-text");
+                ui.pcsOpen.state = true;
+            }
+            else if (arg == false) {
+                $("#pcs-open").removeClass("red").removeClass("white-text");
+                ui.pcsOpen.state = false;
+            }
+            
+        },
+        state : false,
+    },
+    dynBrakeWarning : {
+        set : function(arg) {
+            //end early if no real change
+            if (arg == ui.dynBrakeWarning.state) {
+                return undefined;
+            }
+            //play sound of relay
+            (new buzz.sound("/soundfx/switch.mp3")).play()
+            //set indicator color
+            if (arg == true) {
+                $("#dyn-brake-warning").addClass("red").addClass("white-text");
+                ui.dynBrakeWarning.state = true;
+            }
+            else if (arg == false) {
+                $("#dyn-brake-warning").removeClass("red").removeClass("white-text");
+                ui.dynBrakeWarning.state = false;
+            }
+            
+        },
+        state : false,
+    },
+    error : {
+        set : function(arg) {
+            //end early if no real change
+            if (arg == ui.error.state) {
+                return undefined;
+            }
+            //play sound of relay
+            (new buzz.sound("/soundfx/switch.mp3")).play()
+            //set indicator color
+            if (arg == true) {
+                $("#error").addClass("red").addClass("white-text");
+                ui.error.state = true;
+            }
+            else if (arg == false) {
+                $("#error").removeClass("red").removeClass("white-text");
+                ui.error.state = false;
+            }
+            
+        },
+        state : false,
     }
 }
