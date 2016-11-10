@@ -90,16 +90,16 @@ sim.accel = function() {
             Before we do anything we need to check and see if the engine is started.
             The first IF statement here checks to see if the locomotive that this FOR loop is dealing with is the locomotive being controlled by ui.cab. If it is, then we move on to start the engine.
             */
-            if (ui.cab.currentLoco == i) {
+            if (cab.current == i) {
                 //If we're dealing with the currentLoco here...
-                if (ui.cab.engine.start.state != train.all[ui.cab.currentLoco].dcc.f.engine.state) {
+                if (ui.cab.engine.start.state != train.all[cab.current].dcc.f.engine.state) {
                     //If the engine state is DIFFERENT than the one indicated by the switch...
-                    train.all[ui.cab.currentLoco].dcc.f.engine.set(ui.cab.engine.start.state); //Set it to match the switch position
+                    train.all[cab.current].dcc.f.engine.set(ui.cab.engine.start.state); //Set it to match the switch position
                     if (ui.cab.engine.start.state == true) {
-                        train.all[ui.cab.currentLoco].prototype.engineRunning = 1;
+                        train.all[cab.current].prototype.engineRunning = 1;
                     }
                     else if (ui.cab.engine.start.state == false) {
-                        train.all[ui.cab.currentLoco].prototype.engineRunning = 0;
+                        train.all[cab.current].prototype.engineRunning = 0;
                     }
                 }
             }
@@ -110,7 +110,10 @@ sim.accel = function() {
                 //If the engine is off...
                 train.all[i].prototype.realtime.rpm = 0;
             }
+            /*
+            This is disabled since the tach has been removed
             gauge.rpm(train.all[i].prototype.realtime.rpm) //Now we update the gauge using the value we just found
+            */
             
             /*
             Now we can calculate tractive effort based on notch and speed. This is done using a function (left open to developers of prototype objects) from inside the train object's prototype subobject.
@@ -165,8 +168,8 @@ sim.accel = function() {
             if (train.all[i].prototype.realtime.fuel.status < 0) {
                 train.all[i].prototype.realtime.fuel.status = 0;
             }
-            if (i == ui.cab.currentLoco) {
-                gauge.fuel(train.all[ui.cab.currentLoco].prototype.realtime.fuel.status)
+            if (i == cab.current) {
+                gauge.fuel(train.all[cab.current].prototype.realtime.fuel.status)
             }
             if (train.all[i].prototype.realtime.fuel.status <= 0) {
                 //If we're out of fuel...
@@ -200,7 +203,7 @@ sim.accel = function() {
                         //If the engine is running, this code executes
                         train.all[i].prototype.realtime.air.compressor.running = 1;
                         //If we're dealing with the cabbed locomotive
-                        if (i == ui.cab.currentLoco) {
+                        if (i == cab.current) {
                             light.compressor(true);
                         }
                         
@@ -213,7 +216,7 @@ sim.accel = function() {
                 else if (train.all[i].prototype.air.compressor.needsEngine == false) {
                     train.all[i].prototype.realtime.air.compressor.running = 1;
                         //If we're dealing with the cabbed locomotive
-                        if (i == ui.cab.currentLoco) {
+                        if (i == cab.current) {
                             light.compressor(true);
                         }
                 }
@@ -223,7 +226,7 @@ sim.accel = function() {
                 train.all[i].prototype.realtime.air.compressor.running = 0;
                 
                 //If user is in this locomotive's cab
-                if (i == ui.cab.currentLoco) {
+                if (i == cab.current) {
                     light.compressor(false);
                 }
             }
@@ -231,7 +234,7 @@ sim.accel = function() {
             //the compressor won't run when the dump valve is open, that's a waste
             if (dumpValve == true) {
                 train.all[i].prototype.realtime.air.compressor.running = 0;
-                if (i == ui.cab.currentLoco) {
+                if (i == cab.current) {
                     light.compressor(false)
                 }
             }
@@ -293,7 +296,7 @@ sim.accel = function() {
             air.reservoir.main.updatePSI(i)
             
             //If we are dealing with the current cab locomotive, we need to update the gauge.
-            if (ui.cab.currentLoco == i) {
+            if (cab.current == i) {
                 //if we're in this locomotive
                 gauge.air.reservoir.main(train.all[i].prototype.realtime.air.reservoir.main.psi.g)
             }

@@ -58,7 +58,7 @@ var air = {
                 train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume = mainReservoir.newVol;
                 
                 //update the gauge to reflect our changes
-                if (locomotive == ui.cab.currentLoco) {
+                if (locomotive == cab.current) {
                     gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g);
                 }
                 

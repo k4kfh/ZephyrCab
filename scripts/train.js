@@ -86,7 +86,7 @@ train.ui.update = function() {
             var newHTMLstring = "<a onclick='";
             newHTML.push(newHTMLstring);
         
-            var newHTMLstring = 'ui.cab.setCurrentLoco("';
+            var newHTMLstring = 'cab.setCurrentLoco("';
             newHTML.push(newHTMLstring);
         
             var newHTMLstring = train.all[i].roster.name;
@@ -208,12 +208,14 @@ train.ui.update = function() {
     The IF statement is so that if there IS no lead locomotive, we can set the name to "Not Set"
     */
     if (train.all[0] != undefined) {
-        var locoName = train.all[ui.cab.currentLoco].roster.name;
+        var locoName = train.all[cab.current].roster.name;
     }
     else {
         var locoName = "No Lead Locomotive Found";
     }
+    /*
     ui.cab.locoName.update(locoName)
+    */
 }
 
 /*
@@ -221,7 +223,7 @@ This function is for adding a bundle object to the train. It doesn't matter if t
 */
 train.build.add = function(objectSource) {
     //CLONE THE OBJECT TO AVOID REFERENCING ISSUES - See issue #13 on GitHub for more information on this code
-    object = $.extend(true, {}, objectSource) //the first argument here is true to enable recursive "deep copy". Without that, it's useless and doesn't solve the referencing problem
+    var object = $.extend(true, {}, objectSource) //the first argument here is true to enable recursive "deep copy". Without that, it's useless and doesn't solve the referencing problem
     if (object.type == "locomotive") { //This if statement checks if the input object is a locomotive or something else
         /*
         First we need to define the decoder model and family straight from the roster object. We only do this for convenience.
@@ -234,7 +236,6 @@ train.build.add = function(objectSource) {
         var address = object.roster.address; //We need this because the DCC decoder constructor and the throttle need this
     
         var trainPosition = train.all.length; //this is necessary because the DCC decoder constructor accepts a trainPosition argument
-    
         train.all.push(object)
         /*
         Because of the magical things built into the decoder constructor function spec, we don't need to call a separate create throttle thing.     The throttle subobject is automatically created when we add the DCC decoder thing.

@@ -146,8 +146,8 @@ var link = {
         //If it's configured, try to connect
         if (cfg.ip !== undefined) {
             link.connect(cfg.ip, cfg.port, true); //the third argument tells the connect() that it's being called automatically
-            $("#ip").html(cfg.ip);
-            $("#port").html(cfg.port);
+            $("#link-ip").val(cfg.ip);
+            $("#link-port").val(cfg.port);
                     
             //These two lines go over to the trainsettings tab and scroll up to the top of the page.
             $("#tab_trainsettings").click();

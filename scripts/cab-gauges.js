@@ -7,7 +7,7 @@ This file contains all the code for manipulating the cab gauges. These functions
 gauge = new Object();
 
 gauge.createAll = function() {
-    if (train.all[ui.cab.currentLoco] != undefined) {
+    if (train.all[cab.current] != undefined) {
         gauge.speedometer.create();
         gauge.rpm.create();
         gauge.fuel.create();
@@ -22,7 +22,7 @@ gauge.speedometer = function(value) {
 
 gauge.speedometer.create = function() {
     //Pulls options from lead locomotive's prototype.gauges object
-    var options = train.all[ui.cab.currentLoco].prototype.gauges.speedometer;
+    var options = train.all[cab.current].prototype.gauges.speedometer;
     options.renderTo = "gauge.speedometer";
     gauge.speedometer.object = new Gauge(options);
     gauge.speedometer.object.draw();
@@ -40,7 +40,7 @@ gauge.rpm = function(value) {
 
 gauge.rpm.create = function() {
     //Pulls options from lead locomotive's prototype.gauges object
-    var options = train.all[ui.cab.currentLoco].prototype.gauges.rpm;
+    var options = train.all[cab.current].prototype.gauges.rpm;
     options.renderTo = "gauge.rpm";
     gauge.rpm.object = new Gauge(options);
     gauge.rpm.object.draw();
@@ -58,7 +58,7 @@ gauge.fuel= function(value) {
 
 gauge.fuel.create = function() {
     //Pulls options from lead locomotive's prototype.gauges object
-    var options = train.all[ui.cab.currentLoco].prototype.gauges.fuel;
+    var options = train.all[cab.current].prototype.gauges.fuel;
     options.renderTo = "gauge.fuel";
     gauge.fuel.object = new Gauge(options);
     gauge.fuel.object.draw();
@@ -83,7 +83,7 @@ gauge.air.reservoir.main = function(value) {
 
 gauge.air.reservoir.main.create = function() {
     //Pulls options from lead locomotive's prototype.gauges object
-    var options = train.all[ui.cab.currentLoco].prototype.gauges.air.reservoir.main;
+    var options = train.all[cab.current].prototype.gauges.air.reservoir.main;
     options.renderTo = "gauge.air.reservoir.main";
     gauge.air.reservoir.main.object = new Gauge(options);
     gauge.air.reservoir.main.object.draw();

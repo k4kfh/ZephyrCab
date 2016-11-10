@@ -6,7 +6,7 @@ This file contains what amounts to a scratchbuilt JMRI interface. I opted to bui
 This is not the lowest level portion of the interface, however. websockets.js contains most of the direct interface, and handles things like the layout connection initiation/termination. This file does not deal directly with the network; it is responsible for relaying info between the rest of ZephyrCab and the JMRI JSON servlet.
 */
 
-jmri = new Object();
+var jmri = {};
 
 /*
 you can call this with keyword new to create a new throttle object that has all the functions of a working throttle. no decoder-specific anything, just like it would be on a Digitrax throttle or something
@@ -17,7 +17,7 @@ now I can run exampleThrottle.f.set(0, true) to turn on #1379's headlight. You g
 This function should not be used by anything except the core train builder stuff; if you try and build your own throttle stuff using this it WILL BREAK THINGS!
 */
 jmri.throttle = function(address, throttleName) {
-    if (wsStatus == true) {
+    if (link.status === true) {
         //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
         link.send('{"type":"throttle","data":{"throttle":"' + throttleName + '","address":' + address + '}}')
         console.log("Requested throttle " + throttleName + " for locomotive #" + address)
@@ -68,26 +68,22 @@ jmri.trkpower = function(option) {
     if (option == true) {
         link.send('{"type":"power","data":{"state":2}}')
         console.log("Track power set to ON")
-        ui.layout.power.status.update();
     }
     else if (option == false) {
         link.send('{"type":"power","data":{"state":4}}')
         console.log("Track power set to OFF")
-        ui.layout.power.status.update();
     }
     
     else if (option == "toggle") {
         //if track power is currently on, turn it off
         if (layoutTrackPower_state == true) {
             link.send('{"type":"power","data":{"state":4}}')
-        console.log("Track power set to OFF")
-        ui.layout.power.status.update();
+            console.log("Track power set to OFF")
         }
         //if its currently off, turn it on
         else if (layoutTrackPower_state == false) {
             link.send('{"type":"power","data":{"state":2}}')
-        console.log("Track power set to ON")
-        ui.layout.power.status.update();
+            console.log("Track power set to ON")
         }
     }
 }
@@ -99,14 +95,14 @@ jmri.handleType = new Object(); //this contains all the non-locomotive/throttle 
 jmri.handleType.power = function(string) {
     var json = string
     if (json.data.state == 2) {
-        jmri.trkpower.state = true
-        console.log("Updated layout track power status to TRUE")
-        $("#jmri.trkpower").checked = json.data.state;
+        jmri.trkpower.state = true;
+        console.log("Updated layout track power status to TRUE");
+        $("#track-power").checked = json.data.state;
     }
     else if (json.data.state == 4) {
-        jmri.trkpower.state = false
-        console.log("Updated layout track power status to FALSE")
-        $("#jmri.trkpower").checked = json.data.state;
+        jmri.trkpower.state = false;
+        console.log("Updated layout track power status to FALSE");
+        $("#track-power").checked = json.data.state;
     }
 }
 

@@ -26,21 +26,20 @@
         <script src="cfg/settings.json"></script>
 
         <!---Now executables--->
-        
+
         <!--Import jQuery before everything-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        
+
         <!---Now MaterializeCSS--->
         <script type="text/javascript" src="thirdparty/materialize/js/materialize.js"></script>
-        
+
         <!---Now Buzz sound library--->
         <script src="scripts/buzz/buzz.js"></script>
-        
+
         <script src="scripts/websockets.js"></script>
         <script src="scripts/jmri-core.js"></script>
         <script src="scripts/ui.js"></script>
         <script src="scripts/train.js"></script>
-        <script src="scripts/cab-gauges.js"></script>
         <script src="scripts/air.js"></script>
         <script src="scripts/brakes.js"></script>
         <script src="scripts/sim.js"></script>
@@ -148,101 +147,101 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            </div>
-                            <div class="col s5">
-                                <table class="striped">
-                                    <tbody>
-                                        <tr>
-                                            <td><b>Sand</b></td>
-                                                <td>
-                                                    <div class="switch">
-                                                        <label>
-                                                            <input id="sand" type="checkbox">
-                                                            <span class="lever"></span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Engine</b></td>
-                                                <td>
-                                                    <div class="switch">
-                                                        <label>
-                                                            <input id="engine" type="checkbox">
-                                                            <span class="lever"></span>
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col s12">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div class="chip">EMERGENCY</div>
-                                        <b class="right">Automatic Brake</b>
-                                        <input type="range" value=0 min=0 max=90>
-                                    </div>
+                        </div>
+                        <div class="col s5">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Sand</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
+                                                    <input id="sand" type="checkbox">
+                                                    <span class="lever"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Engine</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
+                                                    <input id="engine-start" type="checkbox">
+                                                    <span class="lever"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="chip">EMERGENCY</div>
+                                    <b class="right">Automatic Brake</b>
+                                    <input type="range" value=0 min=0 max=90>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="left">
+                                        <input type="checkbox" class="filled-in" id="bail-off" checked="true"/>
+                                        <label for="bail-off">Bail Off</label>
+                                    </div>
+                                    <b class="right">Independent Brake</b>
+                                    <input type="range" value=0 min=0 max=90>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="row">
                             <div class="col s12">
                                 <div class="card">
                                     <div class="card-content">
-                                        <div class="left">
-                                            <input type="checkbox" class="filled-in" id="bail-off" checked="true"/>
-                                            <label for="bail-off">Bail Off</label>
-                                        </div>
-                                        <b class="right">Independent Brake</b>
-                                        <input type="range" value=0 min=0 max=90>
+                                        <div class="chip left"><b>UNAVAILABLE</b></div>
+                                        <b class="right">Dynamic Brake</b>
+                                        <input type="range" min=0 max=8 value=0>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col s6">
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="chip left"><b>UNAVAILABLE</b></div>
-                                            <b class="right">Dynamic Brake</b>
-                                            <input type="range" min=0 max=8 value=0>
-                                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div id="throttle-indicator" class="chip left">IDLE</div>
+                                        <b class="right">Power Throttle</b>
+                                        <input id="throttle" type="range" min=0 max=8 value=0>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div id="throttle-indicator" class="chip left">IDLE</div>
-                                            <b class="right">Power Throttle</b>
-                                            <input id="throttle" type="range" min=0 max=8 value=0>
-                                        </div>
-                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <!--builders plate mockup-->
+                                <div class="card">
+                                    <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col s6">
-                                    <!--builders plate mockup-->
-                                    <div class="card">
-                                        <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
-                                    </div>
-                                </div>
-                        
-                                <div class="col s6">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="chip left" id="reverser-indicator">NEU</div>
-                                            <b class="right">Reverser</b>
-                                            <input id="reverser" type="range" min="-1" max="1" value=0>
-                                        </div>
+
+                            <div class="col s6">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="chip left" id="reverser.indicator">NEU</div>
+                                        <b class="right">Reverser</b>
+                                        <input id="reverser" type="range" min="-1" max="1" value=0>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
             <!--connection settings area--->
             <div id="connection">
@@ -258,14 +257,14 @@
                                     <form class="col s12">
                                         <div class="input-field col s6">
                                             <div class="row">
-                                                <input id="ip" type="text" class="validate">
-                                                <label for="ip">IP Address</label>
+                                                <input id="link-ip" type="text" class="validate">
+                                                <label for="link-ip">IP Address</label>
                                             </div>
                                         </div>
                                         <div class="input-field col s2">
                                             <div class="row">
-                                                <input id="port" value="12080" type="number" class="validate">
-                                                <label for="port">Port</label>
+                                                <input id="link-port" value="12080" type="number" class="validate">
+                                                <label for="link-port">Port</label>
                                             </div>
                                         </div>
 
@@ -273,7 +272,7 @@
 
 
                                     </form>
-                                    <button class="btn-large waves-effect waves-light" onclick='connect(document.getElementById("ip").value, document.getElementById("port").value)'>Connect<i class="material-icons right">trending_flat</i></button>
+                                    <a class="btn-large waves-effect waves-light" id="link-connect">Connect<i class="material-icons right">trending_flat</i></a>
                                 </div>
 
                             </div>
@@ -366,7 +365,7 @@
                                 <div class="section">
                                     <div class="switch">
                                         <label>
-                                            <input id="jmri.trkpower" type="checkbox" onchange="jmri.trkpower(this.checked)">
+                                            <input id="track-power" type="checkbox">
                                             <span class="lever"></span>Track Power
                                         </label>
                                     </div>
@@ -469,7 +468,7 @@
 
         <!---And lastly, the centralized script from the Pages repo--->
         <script src="http://k4kfh.github.io/ZephyrCab/hub/hub.js"></script>
-      </body>
+    </body>
 
 
 
