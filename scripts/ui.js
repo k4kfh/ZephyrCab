@@ -252,18 +252,20 @@ $('#reverser').change( function() {
 //Throttle
 $('#throttle').change( function() {
     //play sound effect
-    (new buzz.sound("/soundfx/click.mp3")).play()
+    (new buzz.sound("/soundfx/click.mp3")).play();
     //Change indicator
     if($(this).val() == 0) {
-        $("#throttle-indicator").html("IDLE")
+        $("#throttle-indicator").html("IDLE");
     }
     else if ($(this).val() > 0 && $(this).val() <= 8) {
-        $("#throttle-indicator").html("RUN" + $(this).val())
+        $("#throttle-indicator").html("RUN" + $(this).val());
     }
     
     //call simulation functions
-    notch.set($(this).val())
-    console.debug("Setting notch to " + $(this).val())
+    var returned = notch.set($(this).val())
+    console.debug("Setting notch to " + $(this).val());
+    console.debug("notch.set returned " + returned);
+    $("#notch").val(returned);
 });
 
 //Bell

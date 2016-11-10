@@ -4,7 +4,7 @@ AIR UTILITIES
 These are specifically designed to make working with air systems easier. They provide an easy abstraction layer for all the math behind pneumatic simulations.
 */
 
-air = {
+var air = {
     reservoir : {
         main : {
             /*
@@ -18,7 +18,7 @@ air = {
             Returns:
             nothing. nothing at all. nice and simple.
             */
-            updatePSI : function(locomotive) {
+            updatePSI : function (locomotive) {
                 var capacity = train.all[locomotive].prototype.air.reservoir.main.capacity;
                 var atmAirVolume = train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume;
                 

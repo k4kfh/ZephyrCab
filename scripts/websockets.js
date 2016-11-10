@@ -1,8 +1,8 @@
 //JSlint Crap
 /*global
-foo, WebSocket, $, Materialize, console, cfg, train, jmri, ui
+foo, WebSocket, $, Materialize, console, cfg, train, jmri, ui, air, sim
 */
-/*jslint browser:true*/
+/*jslint browser:true, white:true, plusplus:true*/
 var link = {
     status: false,
     latestMessage: "",
