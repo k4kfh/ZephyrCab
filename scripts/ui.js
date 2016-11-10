@@ -34,6 +34,7 @@ Indicators:
 #error
 */
 $( document ).ready(function() {
+    
     //Reverser
     $('#reverser').change( function() {
         //play sound
@@ -54,7 +55,10 @@ $( document ).ready(function() {
             //change actual reverser global
             reverser = -1;
         }
+        //DEBUGGING
+        console.debug("Change event fired with reverser handle in " + $(this).val() + " position. Set reverser global to " + reverser);
     });
+    
     //Throttle
     $('#throttle').change( function() {
         //play sound effect
@@ -83,7 +87,7 @@ $( document ).ready(function() {
         //play sound
         (new buzz.sound("/soundfx/switch.mp3")).play()
         //make sure we have a cab locomotive before doing anything else
-        if (cab.current !== undefined) {
+        if (train.all[cab.current] !== undefined) {
             //check if we have enough air pressure to run the bell
             var operatingPressure = train.all[cab.current].prototype.air.device.bell.operatingPressure
             var allowed = air.reservoir.main.pressureCheck(operatingPressure, cab.current);
@@ -93,6 +97,10 @@ $( document ).ready(function() {
             else {
                 train.all[cab.current].dcc.f.bell.set(false)
             }
+        }
+        else {
+            //just let the debug console know
+            console.debug("Bell function called; doing nothing since we have no cab locomotive.");
         }
     });
 
@@ -114,12 +122,18 @@ $( document ).ready(function() {
     $('#sand').change( function() {
         //play sound
         (new buzz.sound("/soundfx/switch.mp3")).play()
+        Materialize.toast("Sand is not implemented yet!");
     });
 
     //Headlight
     $('#headlight').change( function() {
         //play sound
         (new buzz.sound("/soundfx/switch.mp3")).play()
+        if (train.all[cab.current] !== undefined) {
+            var value = $(this).is(":checked");
+            train.all[cab.current].dcc.f.headlight.set(value);
+            console.debug("Setting headlight to " + value);
+        }
     });
     
     //WebSockets Connect Button
@@ -249,11 +263,10 @@ var cab = {
             ui.cab.locoName.update(name);
             Materialize.toast("<i class='material-icons left'>directions_railway</i>Entered cab of " + name, 2500)
             
-            /*
+
             //This resets all the switches (engine startup, bell, etc.) to their ACTUAL values as opposed to the last value they were at.
-            document.getElementById("ui.cab.engine.start").checked = train.all[ui.cab.currentLoco].dcc.f.engine.state;
-            document.getElementById("ui.cab.bell").checked = train.all[ui.cab.currentLoco].dcc.f.bell.state;
-            document.getElementById("ui.cab.headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
-            */
+            $("#engine-start").checked = train.all[ui.cab.currentLoco].dcc.f.engine.state;
+            $("#bell").checked = train.all[ui.cab.currentLoco].dcc.f.bell.state;
+            $("#headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
     }
 }

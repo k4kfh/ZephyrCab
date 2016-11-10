@@ -8,20 +8,9 @@ set() is called with a number as it's only argument. If a user tries to raise th
 notch = new Object();
 notch.state = 0 //Notch defaults to 0, which is idling.
 notch.set = function(newNotch) {
-    //First, we need to check and make sure we're not adjusting the notch by more than 1.
-    var differenceInNotch = Math.abs(notch.state - newNotch)
-    if (differenceInNotch == 1) {
-        //The user is only moving the notch 1 click, so we can continue with setting it
-        notch.state = newNotch;
-        
-        //and finally we return the new notch
-        return notch.state;
-    }
-    else {
-        //User is trying to move the notch by more than 1 click, which can't happen. We simply return the existing notch, which causes the slider to move back, and notify them.
-        Materialize.toast("<i class='material-icons left'>error</i>You can't adjust the notch by more than 1 click at a time!", 5000)
-        return notch.state;
-    }
+    //This function used to limit notch changes to 1 click at a time, but that got to be cumbersome on a touch screen. So it's basically a dummy function now, I just would rather have the abstraction layer for notch.state leftover if I decide I need it for something. Because ain't nobody got time to do massive codebase changes.
+    notch.state = newNotch;
+    return notch.state;
 }
 
 //We also go ahead and define the reverser so the math works
