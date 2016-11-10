@@ -45,7 +45,7 @@ sim.accel = function() {
     //This FOR loop goes through every train element. If there are none, it just does nothing.
     //To that^^^^^ end, I created a really  ugly and hopefully temporary solution for a big problem. The loop needs to basically not run when the train is empty, so here's my awful  solution:
     if (train.all.length == 0) {
-        return null;
+        return undefined;
     }
     
     /*
