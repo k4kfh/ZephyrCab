@@ -1,18 +1,6 @@
 site_name: ZephyrCab Docs
 pages:
-- Home: index.md
-- User Guide:
-  - Installation Guide: userguide/installation-guide.md
-  - General Configuration: userguide/general-configuration.md
-  - Configure Locomotives: userguide/configure-locomotives.md
-- Developers:
-  - WebSockets Interface: devguide/websockets.md
-  - jmri Object: devguide/jmri-object.md
-- Standards:
-  - Prototype Object: standards/prototype.md
-  - Model Object: standards/model.md
-  - Decoder Object: standards/decoder.md
+- Quick Start: index.md
 
-theme: cosmo
-repo_url: http://github.com/k4kfh/ZephyrCab
+theme: 'material'
 copyright: ZephyrCab is free software, released with no license.
