@@ -3,70 +3,10 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2015-11-25</lastmod>
+     <loc>/</loc>
+     <lastmod>2016-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
-        
-    <url>
-     <loc>None/userguide/installation-guide/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/userguide/general-configuration/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/userguide/configure-locomotives/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>None/devguide/websockets/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/devguide/jmri-object/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>None/standards/prototype/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/standards/model/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/standards/decoder/</loc>
-     <lastmod>2015-11-25</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
     
 
 </urlset>
