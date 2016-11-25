@@ -68,5 +68,5 @@ Any and all contributions are welcome. I am working on better documentation for 
 Hats off to:
 - [Mr. Bruce Kingsley](http://brucekmodeltrains.com), for _incredible_ help and insight on the physics
 - Mr. Al Krug, for excellent reading material, particularly on railway brakes
-- [JMRI][http://jmri.org), for the excellent JSON/WebSockets API that makes this project possible
+- [JMRI](http://jmri.org), for the excellent JSON/WebSockets API that makes this project possible
 - [MaterializeCSS](http://materializecss.com), for a wonderful free Material Design CSS framework
