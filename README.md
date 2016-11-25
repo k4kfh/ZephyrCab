@@ -15,26 +15,58 @@ ZephyrCab is a web app that simulates prototypically accurate controls for model
 >
 > Read more on [my blog.](http://zephyrcab.tumblr.com)
 
-## Installation
+# Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-- Understand very basic JSON/JavaScript syntax
-- A simple web server. lighttpd, nginx, or Apache should all work fine.
-- A layout connected to JMRI with the JMRI JSON WebSockets service enabled
+You'll need a computer running [JMRI](http://jmri.org). You can run JMRI and ZephyrCab on the same computer, or you can use two separate computers, but they _must_ be on the same network. ZephyrCab can't traverse the Internet. You'll also need some OS-specific stuff, listed below.
 
-The simplest way to install ZephyrCab is to download the ZIP from this page and extract it onto a web server of your choice. There is no server-side code, so you do not need a sophisticated web server to run it. Once you have extracted it to a directory of your choice, see the setup procedure below.
+### Linux (Debian/Ubuntu)
 
-## Setup
+You'll need a simple web server. No extensions/modules are needed, as ZephyrCab is totally client-side. It's also helpful to have ``git``.
+```
+sudo apt-get install apache2 git
+```
 
-**Note that the documentation linked below is being rewritten. Some docs may be inaccurate or outdated at this time. If you have trouble, make an issue. Sorry for the inconvenience.**
+### Windows
 
-Before using the program:
+You'll need to download a web server, such as Apache. (IIS might work, no promises) For ease of installation I recommend [Apache Portable](https://sourceforge.net/projects/apache2portable/). You won't need any modules since ZephyrCab is entirely static, client-side code.
 
-- You MUST set up ``bundles.json``. Follow [this guide](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/configure-locomotives/) to learn how.
+## Installing
 
-- It is recommended that you set up ``settings.json``. This file makes your life easier by allowing you to configure some general settings, such as autoconnection to JMRI. See [this guide](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/general-configuration/) for setup information.
+### Windows
 
-## Usage
+If you installed Apache Portable as recommended above, [download the latest development copy of ZephyrCab](https://github.com/k4kfh/ZephyrCab/archive/master.zip) and unzip it to your web server directory. Then just use Chrome to open ``http://localhost`` and you should get ZephyrCab's "Connection Settings" screen.
 
-When you first log in after setting up `bundles.json`, you'll need to connect to your JMRI PC (unless you set up autoconnection, which I highly recommend. [See this guide.](http://k4kfh.github.io/ZephyrCab/docs/site/userguide/general-configuration/)). You can do this by inputting the IP of the PC, with the port of the JMRI web interface. By default, locoThrottle.js uses port 12080, which is the default for JMRI.
+### Mac OSX
+
+I don't own a Mac, so I can't give specific instructions for Mac users. (If you own a Mac, feel free to fork/PR an update to this README!) The general idea is:
+1. Install a  web server
+2. Unzip ZephyrCab to web server
+3. Open web server in a browser (preferably Chrome)
+
+## Configuring
+
+More instructions coming soon!
+
+## Built With
+
+* [MaterializeCSS](http://materializecss.com)
+* [jQuery](http://jquery.com)
+* [JMRI](http://jmri.org)
+* [mkDocs](http://www.mkdocs.org/)
+* [mkDocs Material Theme by squidFunk](http://squidfunk.github.io/mkdocs-material/)
+
+## Contributing
+
+Any and all contributions are welcome. I am working on better documentation for contributors, but in the meantime feel free to make an issue if you have questions about contributing.
+
+## Acknowledgments
+
+Hats off to:
+- [Mr. Bruce Kingsley](http://brucekmodeltrains.com), for _incredible_ help and insight on the physics
+- Mr. Al Krug, for excellent reading material, particularly on railway brakes
+- [JMRI][http://jmri.org), for the excellent JSON/WebSockets API that makes this project possible
+- [MaterializeCSS](http://materializecss.com), for a wonderful free Material Design CSS framework
