@@ -3,6 +3,11 @@
 ---
 
 # Quickstart Guide
+
+**If you have experience with railway equipment and/or the physics behind it, your knowledge can help improve the software. Please make an account on [GitHub](https://github.com) and [make an issue](https://github.com/k4kfh/ZephyrCab/issues/new) to introduce yourself and ask for help. I will be glad to help you get a copy of ZephyrCab working for evaluation and testing if you can critique the program based on real railway experience.**
+
+**However, if you are a normal user and you are not sure how to set up a web server, I do not recommend trying ZephyrCab at this time. It will only cause you immense frustration, as it is not ready for production use yet.**
+
 ## Prerequisites
 
 - **A DCC layout connected to JMRI.**
