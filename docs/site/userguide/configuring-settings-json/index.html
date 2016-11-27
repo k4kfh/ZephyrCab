@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>Basic Configuration - ZephyrCab Docs</title>
+      
+      
+      
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="ZephyrCab Docs">
+    <meta property="og:image" content="None/../../">
+    <meta name="apple-mobile-web-app-title" content="ZephyrCab Docs">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../../assets/fonts/icon.eot?52m981');
+      	src: url('../../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+    <script src="../../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class=" ">
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+          </span>
+        
+        Basic Configuration
+      </div>
+    </div>
+    
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="/" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          ZephyrCab Docs
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Quick Start" href="../..">
+      Quick Start
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="current" title="Basic Configuration" href="./">
+      Basic Configuration
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Automatic Layout Connection" href="#automatic-layout-connection">
+                Automatic Layout Connection
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Default Brake System Pressure (feed valve)" href="#default-brake-system-pressure-feed-valve">
+                Default Brake System Pressure (feed valve)
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Disable Push Notifications" href="#disable-push-notifications">
+                Disable Push Notifications
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Developer Options" href="#developer-options">
+                Developer Options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Log All WebSockets Messages" href="#log-all-websockets-messages">
+                Log All WebSockets Messages
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Debugging Toasts" href="#debugging-toasts">
+                Debugging Toasts
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Troubleshooting" href="#troubleshooting">
+                Troubleshooting
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Feature Requests" href="#feature-requests">
+                Feature Requests
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <h1 id="configuring-basic-settings-with-settingsjson">Configuring Basic Settings with <code>settings.json</code><a class="headerlink" href="#configuring-basic-settings-with-settingsjson" title="Permanent link">#</a></h1>
+<p>ZephyrCab has a few basic configuration options in <code>/cfg/settings.json</code>.</p>
+<p>The config file <em>does not</em> require any programming knowledge to edit; simply follow this guide. Be sure to match the syntax exactly (i.e. put quotes where there are quotes, semicolons where there are semicolons, etc)</p>
+<h2 id="automatic-layout-connection">Automatic Layout Connection<a class="headerlink" href="#automatic-layout-connection" title="Permanent link">#</a></h2>
+<p>ZephyrCab can automatically connect to your layout each time you open it. This is convenient (nobody likes to remember IP addresses).</p>
+<p>To enable this feature, simply add the IP address of your JMRI computer and the port of your JMRI web server. By default, the JMRI web server runs on port 12080. Make sure to end each line with a semicolon. If you don't know your computer's IP address, you can find it with the <code>ipconfig</code> command in Windows or the <code>ifconfig</code> command on Linux.</p>
+<pre class="code"><code class="language-javascript">cfg.ip = &quot;192.168.1.12&quot;;
+cfg.port = 12080;</code></pre>
+
+
+<p>To disable this feature, simply remove the right side of those two lines, as shown below. This will allow you to specify an IP address and connect manually.</p>
+<pre class="code"><code class="language-javascript">cfg.ip;
+cfg.port;</code></pre>
+
+
+<h2 id="default-brake-system-pressure-feed-valve">Default Brake System Pressure (feed valve)<a class="headerlink" href="#default-brake-system-pressure-feed-valve" title="Permanent link">#</a></h2>
+<p>North American freight train brakes operate based on an inverse relationship between brake line pressure and brake cylinder pressure. When the brake line pressure decreases, the brake cylinder pressure increases, applying the brakes.</p>
+<p>All brake systems have a maximum brake line pressure, which will release the brakes completely. This is set via the feed valve in the locomotive cab. ZephyrCab's default feed valve setting is 90psi, the most common pressure. However, some railroads use different pressures, and if you are modeling such a railroad it may be inconvenient for you to change the feed valve pressure every time you use ZephyrCab.</p>
+<p><strong>By adjusting the <code>cfg.brakes.defaultFeedValveSetting</code> option, you can change the default feed valve pressure of 90psi.</strong> Simply edit the integer value. In the example below, we change the default feed valve pressure to 110psi.</p>
+<pre class="code"><code class="language-javascript">cfg.brakes.defaultFeedValveSetting = 110;</code></pre>
+
+
+<p><em>Do not include "psi" on the end of your number!</em></p>
+<h2 id="disable-push-notifications">Disable Push Notifications<a class="headerlink" href="#disable-push-notifications" title="Permanent link">#</a></h2>
+<p><em>This is an experimental feature and has not been documented yet, as it may be removed in future releases.</em></p>
+<h2 id="developer-options">Developer Options<a class="headerlink" href="#developer-options" title="Permanent link">#</a></h2>
+<p>The options below are specifically geared towards developers tinkering with the program. Normal users shouldn't need these features.</p>
+<h2 id="log-all-websockets-messages">Log All WebSockets Messages<a class="headerlink" href="#log-all-websockets-messages" title="Permanent link">#</a></h2>
+<p>This is useful in debugging communication between JMRI and ZephyrCab. When <code>cfg.logallmessages === true</code>, ZephyrCab will dump all WebSockets messages to the console via <code>console.log()</code>. A timestamp is also included for each log entry.</p>
+<p>To enable WebSockets logging, set <code>cfg.logallmessages</code> to <code>true</code>, as shown below.</p>
+<pre class="code"><code class="language-javascript">cfg.logallmessages = true;</code></pre>
+
+
+<p>It is not recommended to enable this unless you need it, as it sometimes creates an absurd amount of <code>console.log()</code> calls, and may bog down your browser.</p>
+<h2 id="debugging-toasts">Debugging Toasts<a class="headerlink" href="#debugging-toasts" title="Permanent link">#</a></h2>
+<p>ZephyrCab utilizes the excellent <a href="http://materializecss.org">MaterializeCSS Framework</a>, which provides a notification function called a toast. You can create a toast with <code>Materialize.toast()</code>. See this page on the Materialize documentation to learn more.</p>
+<h3 id="what-are-debug-toasts">What are debug toasts?<a class="headerlink" href="#what-are-debug-toasts" title="Permanent link">#</a></h3>
+<p>ZephyrCab has a small global function called <code>debugToast</code> that is a wrapper for the toast function. It is used to give the user information in instances where <code>console.log</code> is not ideal. When the <code>cfg.debugToasts</code> boolean is <code>false</code>, the function simply does nothing. However, when <code>cfg.debugToasts</code> is set to <code>true</code>, the debug toasts are passed through to <code>Materialize.toast()</code> as normal.</p>
+<p><strong>In short, setting <code>cfg.debugToasts</code> to <code>true</code> will turn on small pop-up debugging messages built in to some parts of the ZephyrCab code.</strong> If you are using ZephyrCab locally in a development environment, I recommend leaving debugToasts on, as they are relatively unobtrusive and provide useful information.</p>
+<pre class="code"><code class="language-javascript">cfg.logallmessages = true; //enables debug toasts
+
+cfg.logallmessages = false; //disables debug toasts</code></pre>
+
+
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
+<p>If ZephyrCab misbehaves after an edit to the config file, please double check your syntax.</p>
+<p>If you encounter a problem with your config file, please <a href="https://github.com/k4kfh/ZephyrCab/issues/new">make an issue on GitHub</a> and I will do my best to assist you.</p>
+<h2 id="feature-requests">Feature Requests<a class="headerlink" href="#feature-requests" title="Permanent link">#</a></h2>
+<p>If you have something you'd like to add to <code>settings.json</code>, please <a href="https://github.com/k4kfh/ZephyrCab/issues/new">make an issue on GitHub</a> with your feature request, or better yet build it yourself and fork/pull request. All contributions are welcome!</p>
+          <aside class="copyright" role="note">
+            
+              ZephyrCab is free software, released with no license. &ndash;
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../.." title="Quick Start">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                Quick Start
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '../..';
+      var repo_id  = '';
+    </script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
+    
+    
+  </body>
+</html>

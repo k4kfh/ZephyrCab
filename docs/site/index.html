@@ -172,6 +172,15 @@
   </li>
 
           
+            
+  <li>
+    <a class="" title="Basic Configuration" href="userguide/configuring-settings-json/">
+      Basic Configuration
+    </a>
+    
+  </li>
+
+          
         </ul>
         
       </div>
@@ -184,8 +193,8 @@
           
           <p><img alt="ZephyrCab Logo" src="http://i.imgur.com/n07xxtI.png" /></p>
 <hr />
-<h1 id="quickstart-guide">Quickstart Guide</h1>
-<h2 id="prerequisites">Prerequisites</h2>
+<h1 id="quickstart-guide">Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Permanent link">#</a></h1>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ul>
 <li>
 <p><strong>A DCC layout connected to JMRI.</strong></p>
@@ -200,19 +209,19 @@
 </li>
 <li><strong>Basic JavaScript/JSON knowledge.</strong> Due to the work-in-progress nature of the project, you will have to edit a few JSON files to configure it.</li>
 </ul>
-<h2 id="installation">Installation</h2>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
 <ol>
 <li>Download ZephyrCab from GitHub as a zipped archive.</li>
 <li>Extract with your favorite archiving program, and save the contents in your web server root. On Linux this is typically <code>/var/www</code>.</li>
 <li>Test by visiting <code>localhost</code> in a web browser. You should be greeted with a "Connection Settings" page. If so, you've installed ZephyrCab correctly!</li>
 </ol>
-<h2 id="setup">Setup</h2>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
 <p>Some JavaScript/JSON knowledge is highly recommended. Eventually I will bundle tools for easy setup, but right now the project is still very much under development, and requires editing some JSON files to configure it.</p>
 <p><strong>1. Make sure JMRI's web server is running.</strong> See <a href="http://jmri.org/help/en/html/web/">JMRI Documentation</a> for more information.</p>
 <p><strong>2. Configure automatic connection to your layout in <code>/cfg/settings.json</code>.</strong> Simply edit the <code>cfg.ip</code> and <code>cfg.port</code> lines like this:</p>
-<pre><code class="javascript">cfg.ip = &quot;10.10.39.85&quot;;
-cfg.port = 12080;
-</code></pre>
+<pre class="code"><code class="language-javascript">cfg.ip = &quot;10.10.39.85&quot;;
+cfg.port = 12080;</code></pre>
+
 
 <p>Once that's done, ZephyrCab should automatically connect to your JMRI install every time you open it.</p>
 <p><strong>3. Configure <code>bundles.json</code> with your locomotive roster and DCC decoder information.</strong> This requires some knowledge of JSON syntax, and I am in the process of rewriting docs for this. Currently, the only supported locomotive is the EMD F7-A. I will update the documentation once the process of configuring <code>bundles.json</code> has been refined.</p>
@@ -233,6 +242,31 @@ cfg.port = 12080;
           
             <footer class="footer">
               
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+    </div>
+    <div class="next">
+      
+        <a href="userguide/configuring-settings-json/" title="Basic Configuration">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                Basic Configuration
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
             </footer>
           
         </div>

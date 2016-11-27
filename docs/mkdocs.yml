@@ -1,6 +1,13 @@
 site_name: ZephyrCab Docs
 pages:
 - Quick Start: index.md
+- Basic Configuration: userguide/configuring-settings-json.md
+
+markdown_extensions:
+  - codehilite(css_class=code)
+  - admonition
+  - toc:
+      permalink: '#'
 
 theme: 'material'
 copyright: ZephyrCab is free software, released with no license.

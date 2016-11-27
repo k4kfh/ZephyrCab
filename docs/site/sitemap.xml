@@ -4,7 +4,15 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2016-11-24</lastmod>
+     <lastmod>2016-11-27</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/userguide/configuring-settings-json/</loc>
+     <lastmod>2016-11-27</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
