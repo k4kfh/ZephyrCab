@@ -4,7 +4,9 @@
 
 # Quickstart Guide
 
-**If you have experience with railway equipment and/or the physics behind it, your knowledge can help improve the software. Please make an account on [GitHub](https://github.com) and [make an issue](https://github.com/k4kfh/ZephyrCab/issues/new) to introduce yourself and ask for help. I will be glad to help you get a copy of ZephyrCab working for evaluation and testing if you can critique the program based on real railway experience.**
+**If you have experience with railway equipment and/or the physics behind it, your knowledge can help improve the software. Please make an account on [GitHub](https://github.com) and [make an issue](https://github.com/k4kfh/ZephyrCab/issues/new) or [join the Gitter chat](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to introduce yourself and ask for help. I will be glad to help you get a copy of ZephyrCab working for evaluation and testing if you can critique the program based on real railway experience.**
+
+[![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **However, if you are a normal user and you are not sure how to set up a web server, I do not recommend trying ZephyrCab at this time. It will only cause you immense frustration, as it is not ready for production use yet.**
 
@@ -26,7 +28,7 @@
 
 ## Setup
 
-Some JavaScript/JSON knowledge is highly recommended. Eventually I will bundle tools for easy setup, but right now the project is still very much under development, and requires editing some JSON files to configure it.
+Some JavaScript/JSON knowledge is highly recommended. Eventually I will bundle tools for easy setup, but right now the project is still very much under development, and requires editing some JSON files to configure it. Be prepared for a little tinkering, but don't worry, you can always make an issue on GitHub or join the Gitter chat if you encounter a problem.
 
 **1. Make sure JMRI's web server is running.** See [JMRI Documentation](http://jmri.org/help/en/html/web/) for more information.
 

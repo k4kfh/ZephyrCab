@@ -17,4 +17,28 @@
     </url>
     
 
+    
+    <url>
+     <loc>/userguide/how-it-works/</loc>
+     <lastmod>2016-11-27</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/userguide/configuring-bundles-json/</loc>
+     <lastmod>2016-11-27</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/reference/supported/</loc>
+     <lastmod>2016-11-27</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
 </urlset>

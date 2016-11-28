@@ -2,6 +2,9 @@ site_name: ZephyrCab Docs
 pages:
 - Quick Start: index.md
 - Basic Configuration: userguide/configuring-settings-json.md
+- How ZephyrCab works: userguide/how-it-works.md
+- Adding your Locomotives: userguide/configuring-bundles-json.md
+- Supported Locomotives/Decoders: reference/supported.md
 
 markdown_extensions:
   - codehilite(css_class=code)

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>Adding your Locomotives - ZephyrCab Docs</title>
+      
+      
+      
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="ZephyrCab Docs">
+    <meta property="og:image" content="None/../../">
+    <meta name="apple-mobile-web-app-title" content="ZephyrCab Docs">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../../assets/fonts/icon.eot?52m981');
+      	src: url('../../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+    <script src="../../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class=" ">
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+          </span>
+        
+        Adding your Locomotives
+      </div>
+    </div>
+    
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="/" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          ZephyrCab Docs
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Quick Start" href="../..">
+      Quick Start
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Basic Configuration" href="../configuring-settings-json/">
+      Basic Configuration
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="How ZephyrCab works" href="../how-it-works/">
+      How ZephyrCab works
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="current" title="Adding your Locomotives" href="./">
+      Adding your Locomotives
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="What's a bundle?" href="#whats-a-bundle">
+                What's a bundle?
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Setting up a locomotive bundle" href="#setting-up-a-locomotive-bundle">
+                Setting up a locomotive bundle
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Example Setup" href="#example-setup">
+                Example Setup
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Supported Locomotives/Decoders" href="../../reference/supported/">
+      Supported Locomotives/Decoders
+    </a>
+    
+  </li>
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <h1 id="adding-your-locomotives-with-bundlesjson">Adding your locomotives with <code>bundles.json</code><a class="headerlink" href="#adding-your-locomotives-with-bundlesjson" title="Permanent link">#</a></h1>
+<p>ZephyrCab requires a substantial amount of information for each locomotive in order to produce an accurate simulation. Everything from weight, horsepower, length, drivetrain efficiency, and more is taken into account. It also requires information on DCC decoder functions to produce the correct sound/lighting on your model, and a speed table for your model to produce scale speeds*.</p>
+<h2 id="whats-a-bundle">What's a bundle?<a class="headerlink" href="#whats-a-bundle" title="Permanent link">#</a></h2>
+<p>ZephyrCab stores this information in "bundles," which are each linked to a specific roster entry in your JMRI roster. This allows ZephyrCab to easily bind all the required information to a single locomotive on your layout, making it quick and easy to select a locomotive.</p>
+<h2 id="setting-up-a-locomotive-bundle">Setting up a locomotive bundle<a class="headerlink" href="#setting-up-a-locomotive-bundle" title="Permanent link">#</a></h2>
+<p>Bundles are stored in JSON (JavaScript Object Notation). Basic syntax is shown below, and you can <a href="http://www.w3schools.com/js/js_json_intro.asp">learn more about JSON here.</a></p>
+<pre class="code"><code class="language-json">{
+    &quot;item&quot;:&quot;value&quot;,
+    &quot;parent-item&quot;: {
+        &quot;child&quot;:&quot;some string of text&quot;,
+        &quot;anotherchild&quot;:42,
+    },
+    &quot;some boolean&quot;:true,
+}</code></pre>
+
+
+<p>As you may have guessed, <code>/cfg/bundles.json</code> contains all your bundles. However, the information stored here doesn't tell everything. ZephyrCab relies on <code>/cfg/decoders.js</code> for the DCC decoder abstraction layer, so you'll need to make sure your decoder is supported.</p>
+<h2 id="example-setup">Example Setup<a class="headerlink" href="#example-setup" title="Permanent link">#</a></h2>
+<p>Here, I'll go through the entire process for adding a locomotive to your <code>bundles.json</code> file.</p>
+<p>Make a copy of your <code>bundles.json</code> and save it somewhere else in case you need to undo your changes.</p>
+<p><strong>1. Determine if your combination of prototype, model, and DCC decoder are supported.</strong> For this example, I have a Bachmann F7-A with a LokSound Select DCC decoder in it. So my specs are:</p>
+<ul>
+<li><strong>Model:</strong> Bachmann F7-A</li>
+<li><strong>Prototype:</strong> EMD F7-A</li>
+<li><strong>DCC Decoder:</strong> LokSound Select with EMD 567 Sound File</li>
+</ul>
+<p>By checking the Supported Locomotives/Decoders table, I confirm my specs are supported.</p>
+<p><strong>2. Create a JSON object with your prototype bundle and your model's JMRI roster name.</strong> You'll need to use a text editor to do this. If you're on Windows, use <a href="https://notepad-plus-plus.org/">Notepad++</a>. If you're not familiar with basic JSON syntax, it would help you to <a href="http://www.w3schools.com/js/js_json_intro.asp">read this.</a></p>
+<p>The object should be structured like this (remember that lines with <code>//</code> are comments):</p>
+<pre class="code"><code class="language-json">&quot;Your JMRI Roster Entry Name&quot;:{
+    type:&quot;locomotive&quot;,
+    model:{
+        //Scale speed function. This is a WIP
+        speed:function(mph) {
+            speed = mph;
+            return speed;
+        }
+    }
+    //prototype entry stuff
+}</code></pre>
+
+
+<p>Once I add the appropriate information, my code looks like this. I cut off the majority of the prototype code to save space on the page, but you get the idea.</p>
+<pre class="code"><code class="language-json">&quot;CBQ2&quot; : { //my JMRI roster name is &quot;CBQ2&quot; (without the quotes)
+        type: &quot;locomotive&quot;,
+        model:{
+            speed:function(mph) {
+                mph = speed; //totally not correct but it is a functional example
+                return speed;
+            }
+        },
+
+        //This begins the actual prototype object, which you'll probably want to copy and paste from one of our supported locomotives, though it is possible to make your own.
+        prototype:{
+            &quot;builder&quot; : &quot;EMD&quot;, //This is displayed to the client and can be anything
+            &quot;name&quot; : &quot;F7-A&quot;, //This is also displayed to the client and can be anything
+            &quot;type&quot; : &quot;locomotive&quot;, //This must be &quot;locomotive&quot;
+            &quot;weight&quot; : 250000, //Weight of the locomotive in lbs
+            &quot;maxHP&quot; : 1500, //Horsepower of the locomotive
+            &quot;notchRPM&quot; : [300, 362, 425, 487, 550, 613, 675, 738, 800],
+            &quot;notchMaxSpeeds&quot; : [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
+            &quot;engineRunning&quot;: 0, //0 or 1 - 1 is on, 0 is off
+            fuel : {
+                usage : [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //array in gal/hr, by notch
+                capacity : 1200, //fuel tank in GAL
+            },
+
+            //tons more code in here; I cut it out for readability
+        },
+    },</code></pre>
+
+
+<p>Now we have the code to add to the <code>bundles.locomotives</code> object.</p>
+<p><strong>3. Add the code to the <code>bundles.locomotives</code> object, inside <code>cfg/bundles.json</code>.</strong></p>
+<p>This is where it's helpful to know basic JSON syntax. The hierarchy here is something like this:</p>
+<pre class="code"><code class="language-json">bundles.locomotives = {
+    &quot;Some Roster Entry&quot;:{
+        //all the information
+    },
+    &quot;Another Roster Entry&quot;:{
+        //information
+    }
+}</code></pre>
+
+
+<p>Just add the code above into your file. Mine looked like this (sample below shows only the top).</p>
+<pre class="code"><code class="language-json">bundles.locomotives = {
+    &quot;CBQ2&quot; : {
+        type: &quot;locomotive&quot;,
+        model:{
+            speed:function(mph) {
+                mph = speed; //totally not correct but it is a functional example
+                return speed;
+            }
+        },
+        prototype:{
+            &quot;builder&quot; : &quot;EMD&quot;, //This is displayed to the client and can be anything
+            &quot;name&quot; : &quot;F7-A&quot;, //This is also displayed to the client and can be anything
+            &quot;type&quot; : &quot;locomotive&quot;, //This must be &quot;locomotive&quot;
+            &quot;weight&quot; : 250000, //Weight of the locomotive in lbs
+            &quot;maxHP&quot; : 1500, //Horsepower of the locomotive</code></pre>
+
+
+<p>Now you should be able to load up ZephyrCab and connect to your layout. Once you've connected, a list of whatever roster entries you've added will appear as locomotives you can add to your train. Roster entries you don't set up in <code>bundles.json</code> will simply be ignored. You should be able to add the locomotive to your train and start driving it. Have fun!</p>
+<hr />
+<p>If you encounter a problem at any point in this guide, please <a href="https://github.com/k4kfh/ZephyrCab/issues/new">make an issue on GitHub</a>, and I'll be glad to assist you.</p>
+          <aside class="copyright" role="note">
+            
+              ZephyrCab is free software, released with no license. &ndash;
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../how-it-works/" title="How ZephyrCab works">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                How ZephyrCab works
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../../reference/supported/" title="Supported Locomotives/Decoders">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                Supported Locomotives/Decoders
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '../..';
+      var repo_id  = '';
+    </script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
+    
+    
+  </body>
+</html>

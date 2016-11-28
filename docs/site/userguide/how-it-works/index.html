@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>How ZephyrCab works - ZephyrCab Docs</title>
+      
+      
+      
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="ZephyrCab Docs">
+    <meta property="og:image" content="None/../../">
+    <meta name="apple-mobile-web-app-title" content="ZephyrCab Docs">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../../assets/fonts/icon.eot?52m981');
+      	src: url('../../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+    <script src="../../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class=" ">
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+          </span>
+        
+        How ZephyrCab works
+      </div>
+    </div>
+    
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="/" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>
+          ZephyrCab Docs
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Quick Start" href="../..">
+      Quick Start
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Basic Configuration" href="../configuring-settings-json/">
+      Basic Configuration
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="current" title="How ZephyrCab works" href="./">
+      How ZephyrCab works
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="DCC Decoders" href="#dcc-decoders">
+                DCC Decoders
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Models" href="#models">
+                Models
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Prototype Information" href="#prototype-information">
+                Prototype Information
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Developer Information" href="#developer-information">
+                Developer Information
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Adding your Locomotives" href="../configuring-bundles-json/">
+      Adding your Locomotives
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Supported Locomotives/Decoders" href="../../reference/supported/">
+      Supported Locomotives/Decoders
+    </a>
+    
+  </li>
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <h1 id="how-zephyrcab-works">How ZephyrCab works<a class="headerlink" href="#how-zephyrcab-works" title="Permanent link">#</a></h1>
+<p><img alt="" src="http://i.imgur.com/1cMqe2G.png" /></p>
+<p>ZephyrCab ties sophisticated layout control through JMRI with a built-from-scratch physics engine to create realistic controls and behavior for your models. Unfortunately, many of the features listed here are still unstable, or lack proper documentation. Please make an issue on GitHub or join the Gitter chatroom if you have questions.</p>
+<p><a href="https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img alt="Join the chat at https://gitter.im/k4kfh/LocoThrottleJS" src="https://badges.gitter.im/Join%20Chat.svg" /></a></p>
+<h2 id="dcc-decoders">DCC Decoders<a class="headerlink" href="#dcc-decoders" title="Permanent link">#</a></h2>
+<p>ZephyrCab has an internal abstraction layer for DCC decoder functions, making it easy to support advanced features like manual notching sounds on a variety of DCC decoders. This means that if the air compressor is F21 on a LokSound, and F17 on a Tsunami (making this up) then we can solve that difference in software and both decoders will function just fine.</p>
+<p>Unfortunately, this means your decoder <em>must</em> be supported by the abstraction layer. Check the Supported Decoders list to see if your decoder is currently supported.</p>
+<p><em>Have a decoder you want supported? Building a decoder object simply requires basic JavaScript skills, and helps improve the project dramatically. Make an issue on GitHub for more information!</em></p>
+<h2 id="models">Models<a class="headerlink" href="#models" title="Permanent link">#</a></h2>
+<p><em>This feature is still unstable. Scale speed is simply set in DCC speed steps right now. I hope to fix this soon!</em></p>
+<p>In order to accurately mimic scale speed, ZephyrCab must have a "speed table" for your model.</p>
+<h2 id="prototype-information">Prototype Information<a class="headerlink" href="#prototype-information" title="Permanent link">#</a></h2>
+<p>ZephyrCab utilizes a laundry list of data from the prototype locomotive to create a realistic simulation of the locomotive's behavior. These values are stored in JavaScript Objects (JSON), and are each linked to a JMRI roster entry. For more information see <a href="../../userguide/configuring-bundles-json/">Configuring Locomotives in <code>bundles.json</code>.</a></p>
+<h2 id="developer-information">Developer Information<a class="headerlink" href="#developer-information" title="Permanent link">#</a></h2>
+<ul>
+<li><strong>Layout Communication:</strong> ZephyrCab uses <a href="http://jmri.sourceforge.net/help/en/html/web/JsonServlet.shtml">JMRI's JSON WebSockets server</a> to communicate with your layout. Any JMRI-connected layout is compatible. Low-level communication is handled in <code>scripts/websockets.js</code> and higher-level JMRI tasks are handled in <code>scripts/jmri-core.js</code>.</li>
+<li><strong>DCC Decoders:</strong> ZephyrCab has its own abstraction layer for common DCC decoder functions, allowing support for a wide range of decoders, including advanced features like manual notching. This is handled in <code>decoders.js</code>.</li>
+<li><strong>Physics Simulation:</strong> ZephyrCab's physics engine is built from scratch. At this time it is unfinished, though I am making progress. It is found in <code>scripts/sim.js</code>.</li>
+<li><strong>UI CSS/JS Backend:</strong> MaterializeCSS is used for the majority of the UI, with some small modifications and custom scripts. jQuery is used extensively.</li>
+</ul>
+          <aside class="copyright" role="note">
+            
+              ZephyrCab is free software, released with no license. &ndash;
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../configuring-settings-json/" title="Basic Configuration">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                Basic Configuration
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../configuring-bundles-json/" title="Adding your Locomotives">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                Adding your Locomotives
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '../..';
+      var repo_id  = '';
+    </script>
+    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
+    
+    
+  </body>
+</html>
