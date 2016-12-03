@@ -97,12 +97,12 @@ jmri.handleType.power = function(string) {
     if (json.data.state == 2) {
         jmri.trkpower.state = true;
         console.log("Updated layout track power status to TRUE");
-        $("#track-power").checked = json.data.state;
+        $("#track-power").prop("checked", true);
     }
     else if (json.data.state == 4) {
         jmri.trkpower.state = false;
         console.log("Updated layout track power status to FALSE");
-        $("#track-power").checked = json.data.state;
+        $("#track-power").prop("checked", false);
     }
 }
 

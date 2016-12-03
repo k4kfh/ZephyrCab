@@ -49,7 +49,7 @@ I don't own a Mac, so I can't give specific instructions for Mac users. (If you 
 
 ## Configuring
 
-More instructions coming soon!
+Please see [the ZephyrCab documentation](http://k4kfh.github.io/ZephyrCab/docs/site) for detailed information on configuration tasks such as setting up automatic connection, adding locomotives, tweaking brake system defaults, and other options.
 
 ## Built With
 
