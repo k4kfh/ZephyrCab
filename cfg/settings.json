@@ -6,8 +6,16 @@ This file is used to store settings server-side. This is capable of storing an I
 
 BEGIN USER-EDITABLE CONTENT
 */
-cfg.ip = "10.10.39.85";
-cfg.port = 12080;
+
+/*
+CONNECTION SETTINGS
+By default, these settings  assume that ZephyrCab is running on a local JMRI instance, via the built-in Jetty web server, and ignores the cfg.ip/cfg.port settings. This is the recommended method.
+
+If you'd prefer to use an external web server, set cfg.webServer to "external" and cfg.ip/cfg.port to your JMRI PC's IP and port. This is not recommended except for experienced users/developers.
+*/
+cfg.webServer = "jmri";
+cfg.ip = "jmri"; //ignored when cfg.webServer is set to "jmri"
+cfg.port = 12080; //ignored when cfg.webServer is set to "jmri"
 
 cfg.disablePushNotifications = true;
 

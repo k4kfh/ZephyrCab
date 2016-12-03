@@ -6,12 +6,12 @@ foo, WebSocket, $, Materialize, console, cfg, train, jmri, ui, air, sim
 var link = {
     status: false,
     latestMessage: "",
-    logTimestamp: function (type) {
+    logTimestamp: function(type) {
         'use strict';
         if (type === undefined) {
             type = 24;
         }
-        
+
         //define variables
         var currentDate = new Date(),
             hours = currentDate.getHours(), //we'll change this if the function is using 12 hour time
@@ -19,7 +19,7 @@ var link = {
             seconds = currentDate.getSeconds(),
             ampm = "", //if using 12 hour time, we'll set this to "AM" or "PM"
             finalString = ""; //what's going to get returned
-        
+
         if (type === 24) {
             finalString = hours + ":" + minutes + ":" + seconds;
         } else if (type === 12) {
@@ -41,21 +41,21 @@ var link = {
         }
         return finalString;
     },
-    
+
     //Connects to WebSockets server and creates the link.socket object
-    connect: function (ip, port, automaticornot) {
+    connect: function(ip, port, automaticornot) {
         //jslint crap
         'use strict';
-        
+
         //check if the function is being called during an autoconnect
         if (automaticornot !== true) {
             //This is not being called automatically, so set the parameter to false
             automaticornot = false;
         }
-        
+
         //Initialize a new WebSocket...all JMRI installs will use /json as the path
         link.socket = new WebSocket("ws://" + ip + ":" + port + "/json/");
-        
+
         /*
         On connection open...
         - Indicate newly opened connection status
@@ -63,32 +63,32 @@ var link = {
         - Create listeners so JMRI will continually update us with new info on relevant things
         - Display a Materialize.toast about the connection
         */
-        link.socket.onopen = function () {
+        link.socket.onopen = function() {
             link.status = true;
             //indicate the connection in the UI
             $("#connectionStatus").html("Connected!").css("color", "green");
-            
+
             //enter it in the log
             console.log("Connection opened with " + cfg.ip + ":" + cfg.port);
-            
+
             //TODO - fix global
             //start the heartbeats to keep it alive
             var heartbeatInterval = setInterval(
                 //Heartbeats function embedded into this setInterval call
-                function () {
+                function() {
                     link.send('{"type":"ping"}');
                 },
                 6000
             );
             console.log("Beginning heartbeats...");
-            
+
             /*
             LISTENERS - Send a blank command as a request, and JMRI will continually update us on the status of whatever thing...
             - Read more on this at JMRI WebSockets documentation
             */
             link.send('{"type":"power","data":{}}');
             link.send('{"list":"roster"}');
-        
+
             //Display the appropriate connection message
             if (automaticornot === true) {
                 //If this connection attempt was automatic
@@ -98,9 +98,9 @@ var link = {
                 Materialize.toast("Connected manually to ws://" + cfg.ip + ":" + cfg.port, 3000);
             }
         };
-    
+
         //Upon receiving a message, log it if logging is enabled, then send it off to the handler
-        link.socket.onmessage = function (event) {
+        link.socket.onmessage = function(event) {
             var data = JSON.parse(event.data),
                 stringified;
             if (cfg.logallmessages === true) {
@@ -109,16 +109,16 @@ var link = {
             }
             link.process(data);
         };
-    
+
         //Simple function to throw an error if the WebSocket closes
-        link.socket.onclose = function () {
+        link.socket.onclose = function() {
             console.error("WebSocket Closed...");
             Materialize.toast("<i class='material-icons left'>warning</i>Lost connection to JMRI! Please refresh the page and reconnect. <a class='btn-flat orange-text' onclick='location.reload(true)'>Reload</a>");
         };
     },
-    
+
     //Simple wrapper function providing errors/logging for sending WebSockets commands
-    send : function (command) {
+    send: function(command) {
         'use strict';
         //If we're connected, send the command
         if (link.status === true) {
@@ -127,49 +127,70 @@ var link = {
             if (cfg.logallmessages === true) {
                 console.log("[" + link.logTimestamp() + "] SENT : " + command);
             }
-            
-        //If we're not connected, throw an error
+
+            //If we're not connected, throw an error
         } else {
             Materialize.toast("<i class='material-icons left'>error</i>You need to connect to JMRI first!", 4000);
             console.error("Cannot send commands - no JMRI connection!");
         }
     },
-    
+
     /*
     AUTOCONNECT
     
     This function is what makes the auto connect feature work. It is at the bottom of index.html, so it runs when the page loads.
     It looks at the cfg object to see if the variables we need are configured or not, and connects if they are set up.
     */
-    autoconnect : function () {
+    autoconnect: function() {
         'use strict';
-        //If it's configured, try to connect
-        if (cfg.ip !== undefined) {
+        //if we know it's  running on an external webserver based on the cfg settings
+        if (cfg.webServer === "external") {
+            //If it's configured, try to connect
+            if (cfg.ip !== undefined) {
+                link.connect(cfg.ip, cfg.port, true); //the third argument tells the connect() that it's being called automatically
+                $("#link-ip").val(cfg.ip);
+                $("#link-port").val(cfg.port);
+
+                //These two lines go over to the trainsettings tab and scroll up to the top of the page.
+                $("#tab_trainsettings").click();
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+                //If not, tell the user to connect manually
+            } else if (cfg.ip === undefined) {
+                console.log("No autoconnection settings found!");
+                Materialize.toast("<i class='material-icons left'>info</i>Couldn't find any settings for auto-connection, please connect manually.");
+
+                //These two lines go over to the trainsettings tab and scroll up to the top of the page.
+                $("#tab_trainsettings").click();
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }
+        }
+        //if we're assuming it's running on a JMRI Jetty web server
+        else {
+            //set IP:Port to local JMRI instance
+            cfg.ip = location.hostname;
+            if (location.port === "") { //if there is no port, recognize that it's actually port 80
+                cfg.port = 80;
+            }
+            else { //otherwise, use the port provided by the browser
+                cfg.port = Number(location.port);
+            }
             link.connect(cfg.ip, cfg.port, true); //the third argument tells the connect() that it's being called automatically
             $("#link-ip").val(cfg.ip);
             $("#link-port").val(cfg.port);
-                    
-            //These two lines go over to the trainsettings tab and scroll up to the top of the page.
-            $("#tab_trainsettings").click();
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-            
-        //If not, tell the user to connect manually
-        } else if (cfg.ip === undefined) {
-            console.log("No autoconnection settings found!");
-            Materialize.toast("<i class='material-icons left'>info</i>Couldn't find any settings for auto-connection, please connect manually.");
-                    
+
             //These two lines go over to the trainsettings tab and scroll up to the top of the page.
             $("#tab_trainsettings").click();
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         }
     },
-    
+
     /*
     MESSAGE HANDLER
     
     This function is called whenever the WebSocket instance (at link.socket) receives a message. It handles passing said message data on to the appropriate recipient based on its "type" field.
     */
-    process : function (ev) {
+    process: function(ev) {
         'use strict';
         link.latestMessage = ev;
 
@@ -200,7 +221,7 @@ var link = {
             if (ev[0].type === "rosterEntry") {
                 jmri.roster.raw = ev;
                 jmri.roster.entries = jmri.roster.reformat(jmri.roster.raw); //rebuild the reformatted roster every time we get new roster data
-        
+
                 //Now that the roster has been edited, we need to update the UI for the train
                 train.ui.setup();
                 train.ui.update();
@@ -208,6 +229,3 @@ var link = {
         }
     }
 };
-
-
-

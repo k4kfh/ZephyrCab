@@ -38,7 +38,7 @@ $( document ).ready(function() {
     //Reverser
     $('#reverser').change( function() {
         //play sound
-        (new buzz.sound("/soundfx/click.mp3")).play()
+        (new buzz.sound("soundfx/click.mp3")).play()
         //Change indicator
         if ($(this).val() == 0) {
             $("#reverser.indicator").html("NEU");
@@ -62,7 +62,7 @@ $( document ).ready(function() {
     //Throttle
     $('#throttle').change( function() {
         //play sound effect
-        (new buzz.sound("/soundfx/click.mp3")).play();    
+        (new buzz.sound("soundfx/click.mp3")).play();    
         //call simulation functions
         var returned = notch.set($(this).val())
 
@@ -85,7 +85,7 @@ $( document ).ready(function() {
     //Bell
     $('#bell').change( function() {
         //play sound
-        (new buzz.sound("/soundfx/switch.mp3")).play()
+        (new buzz.sound("soundfx/switch.mp3")).play()
         //make sure we have a cab locomotive before doing anything else
         if (train.all[cab.current] !== undefined) {
             //check if we have enough air pressure to run the bell
@@ -107,28 +107,28 @@ $( document ).ready(function() {
     //Engine Start
     $('#engine-start').change( function() {
         //play sound
-        (new buzz.sound("/soundfx/switch.mp3")).play()
+        (new buzz.sound("soundfx/switch.mp3")).play()
 
     });
 
     //Track Power
     $('#track-power').change( function() {
         //play sound
-        (new buzz.sound("/soundfx/switch.mp3")).play();
+        (new buzz.sound("soundfx/switch.mp3")).play();
         jmri.trkpower($('#track-power').is(":checked"));
     });
 
     //Sand
     $('#sand').change( function() {
         //play sound
-        (new buzz.sound("/soundfx/switch.mp3")).play()
+        (new buzz.sound("soundfx/switch.mp3")).play()
         Materialize.toast("Sand is not implemented yet!");
     });
 
     //Headlight
     $('#headlight').change( function() {
         //play sound
-        (new buzz.sound("/soundfx/switch.mp3")).play()
+        (new buzz.sound("soundfx/switch.mp3")).play()
         if (train.all[cab.current] !== undefined) {
             var value = $(this).is(":checked");
             train.all[cab.current].dcc.f.headlight.set(value);
@@ -160,7 +160,7 @@ ui = {
                 return undefined;
             }
             //play sound of relay
-            (new buzz.sound("/soundfx/switch.mp3")).play()
+            (new buzz.sound("soundfx/switch.mp3")).play()
             //set indicator color
             if (arg == true) {
                 $("#wheel-slip").addClass("red").addClass("white-text");
@@ -181,7 +181,7 @@ ui = {
                 return undefined;
             }
             //play sound of relay
-            (new buzz.sound("/soundfx/switch.mp3")).play()
+            (new buzz.sound("soundfx/switch.mp3")).play()
             //set indicator color
             if (arg == true) {
                 $("#pcs-open").addClass("red").addClass("white-text");
@@ -202,7 +202,7 @@ ui = {
                 return undefined;
             }
             //play sound of relay
-            (new buzz.sound("/soundfx/switch.mp3")).play()
+            (new buzz.sound("soundfx/switch.mp3")).play()
             //set indicator color
             if (arg == true) {
                 $("#dyn-brake-warning").addClass("red").addClass("white-text");
@@ -223,7 +223,7 @@ ui = {
                 return undefined;
             }
             //play sound of relay
-            (new buzz.sound("/soundfx/switch.mp3")).play()
+            (new buzz.sound("soundfx/switch.mp3")).play()
             //set indicator color
             if (arg == true) {
                 $("#error").addClass("red").addClass("white-text");
