@@ -6,20 +6,14 @@ The config file _does not_ require any programming knowledge to edit; simply fol
 
 ## Automatic Layout Connection
 
-ZephyrCab can automatically connect to your layout each time you open it. This is convenient (nobody likes to remember IP addresses).
+**_Not recommended for most users!_**
 
-To enable this feature, simply add the IP address of your JMRI computer and the port of your JMRI web server. By default, the JMRI web server runs on port 12080. Make sure to end each line with a semicolon. If you don't know your computer's IP address, you can find it with the ``ipconfig`` command in Windows or the ``ifconfig`` command on Linux.
+By default, ZephyrCab assumes it's running on a JMRI web server, and it will automatically connect to that. If for some reason you're running ZephyrCab on an external web server, you can configure automatic connection by setting the following values:
 
-```javascript
-cfg.ip = "192.168.1.12";
-cfg.port = 12080;
 ```
-
-To disable this feature, simply remove the right side of those two lines, as shown below. This will allow you to specify an IP address and connect manually.
-
-```javascript
-cfg.ip;
-cfg.port;
+cfg.webServer = "external"; //not setting this or setting it to "jmri" invokes the default behavior
+cfg.ip = "192.168.1.10"; //your JMRI PC's IP address
+cfg.port = 12080; //your JMRI web server's port
 ```
 
 ## Default Brake System Pressure (feed valve)
