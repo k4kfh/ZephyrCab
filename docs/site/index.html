@@ -160,12 +160,6 @@
               </a>
             </li>
           
-            <li class="anchor">
-              <a title="Setup" href="#setup">
-                Setup
-              </a>
-            </li>
-          
         </ul>
       
     
@@ -226,36 +220,48 @@
 <p><strong>However, if you are a normal user and you are not sure how to set up a web server, I do not recommend trying ZephyrCab at this time. It will only cause you immense frustration, as it is not ready for production use yet.</strong></p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ul>
-<li>
-<p><strong>A DCC layout connected to JMRI.</strong></p>
-</li>
-<li>
-<p><strong>A web server.</strong> I recommend using a Linux machine (such as the Raspberry Pi) for this, but you can run it on any OS you like.</p>
-<ul>
-<li><a href="https://www.sitepoint.com/how-to-install-apache-on-windows/">How to set up Apache web server on Windows</a></li>
-<li><a href="https://help.ubuntu.com/community/lighttpd">How to set up lighttpd web server on Linux</a> - Ignore the part about installing PHP</li>
-<li>Mac OSX is not covered in this guide, but if you install any simple web server it should work fine.</li>
-</ul>
-</li>
+<li><strong>A DCC layout connected to JMRI.</strong></li>
 <li><strong>Basic JavaScript/JSON knowledge.</strong> Due to the work-in-progress nature of the project, you will have to edit a few JSON files to configure it.</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
+<p>The screenshots below are from a machine running Linux, so they may look a little different, but the procedure will be essentially the same for Windows, Mac, and Linux.</p>
 <ol>
-<li>Download ZephyrCab from GitHub as a zipped archive.</li>
-<li>Extract with your favorite archiving program, and save the contents in your web server root. On Linux this is typically <code>/var/www</code>.</li>
-<li>Test by visiting <code>localhost</code> in a web browser. You should be greeted with a "Connection Settings" page. If so, you've installed ZephyrCab correctly!</li>
+<li><a href="https://github.com/k4kfh/ZephyrCab/archive/master.zip"><strong>Download the latest ZephyrCab release here.</strong></a></li>
+<li>
+<p><strong>Find your JMRI profile directory.</strong> You can do this by opening JMRI and clicking Help &gt; Locations, as shown below.</p>
+<p><img alt="" src="http://imgur.com/enSiiful.png" /></p>
+</li>
+<li>
+<p><strong>Open your JMRI profile directory.</strong> You can just click "Open profile location" from inside the JMRI Locations dialog. In my case, my profile directory was <code>/home/hampton/.jmri/My_JMRI_Railroad</code>, but yours may be a little different.</p>
+<p><img alt="" src="http://imgur.com/HwbhQ8nl.png" /></p>
+</li>
+<li>
+<p><strong>Create a folder called <code>web</code> inside the profile location.</strong> Your system may already have this folder, but if it doesn't, just make a new folder called <code>web</code>.</p>
+<p><br></p>
+<p><img alt="" src="http://imgur.com/TqVgcEbl.png" /></p>
+</li>
+<li>
+<p><strong>Extract the ZephyrCab download into the <code>web</code> folder.</strong> When you downloaded ZephyrCab, you should have gotten a ZIP file, so just extract its contents into <code>/wherever/your/JMRI/profile/is/web</code>.</p>
+</li>
+<li>
+<p><strong>Rename the folder to <code>zephyrcab</code>.</strong> This step is technically optional, but makes things easier, so I recommend it.</p>
+</li>
+<li>
+<p><strong>If you haven't used it before, start your JMRI web server.</strong> You can do this in Edit &gt; Preferences &gt; Web Server. Check the box for "Start automatically with application".</p>
+<p><img alt="" src="http://i.imgur.com/5R3EMtE.png" /></p>
+</li>
+<li>
+<p><strong>Open your ZephyrCab in a web browser.</strong> Google Chrome is officially supported, though Firefox will probably work. No promises otherwise.</p>
+<ul>
+<li>If you're opening it from your JMRI machine, you can just use <a href="http://localhost:12080/web/zephyrcab"><code>http://localhost:12080/web/zephyrcab</code></a></li>
+<li>Otherwise, the URL will be <code>http://your-jmri-ip-address:12080/web/zephyrcab</code> if you've followed this guide correctly.</li>
+<li>If you don't know your JMRI PC's IP address, <a href="http://www.howtogeek.com/236838/how-to-find-any-devices-ip-address-mac-address-and-other-network-connection-details/">click here to learn how to find it.</a> It will probably be in the form <code>192.168.1.something</code> or <code>172.16.something.something</code>, but could be different.</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure <code>bundles.json</code> with your locomotive roster and DCC decoder information.</strong> This requires some knowledge of JSON syntax, and I am in the process of rewriting docs for this. Currently, the only supported locomotive is the EMD F7-A. For now, <a href="./userguide/configuring-bundles-json/">click here to  learn how to set this up.</a></p>
+</li>
 </ol>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
-<p>Some JavaScript/JSON knowledge is highly recommended. Eventually I will bundle tools for easy setup, but right now the project is still very much under development, and requires editing some JSON files to configure it. Be prepared for a little tinkering, but don't worry, you can always make an issue on GitHub or join the Gitter chat if you encounter a problem.</p>
-<p><strong>1. Make sure JMRI's web server is running.</strong> See <a href="http://jmri.org/help/en/html/web/">JMRI Documentation</a> for more information.</p>
-<p><strong>2. Configure automatic connection to your layout in <code>/cfg/settings.json</code>.</strong> Simply edit the <code>cfg.ip</code> and <code>cfg.port</code> lines like this:</p>
-<pre class="code"><code class="language-javascript">cfg.ip = &quot;10.10.39.85&quot;;
-cfg.port = 12080;</code></pre>
-
-
-<p>Once that's done, ZephyrCab should automatically connect to your JMRI install every time you open it.</p>
-<p><strong>3. Configure <code>bundles.json</code> with your locomotive roster and DCC decoder information.</strong> This requires some knowledge of JSON syntax, and I am in the process of rewriting docs for this. Currently, the only supported locomotive is the EMD F7-A. I will update the documentation once the process of configuring <code>bundles.json</code> has been refined.</p>
-<hr />
 <p>Once you have your <code>bundles.json</code> set up, you should be able to use the program normally. Connect to your JMRI PC (if you don't know the IP, you will need to find that) using the "Connection" tab, and everything should work. If you run into problems, post an issue on <a href="http://github.com/k4kfh/ZephyrCab">the project's GitHub page</a>.</p>
           <aside class="copyright" role="note">
             

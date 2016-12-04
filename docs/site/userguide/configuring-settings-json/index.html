@@ -252,15 +252,11 @@
 <p>ZephyrCab has a few basic configuration options in <code>/cfg/settings.json</code>.</p>
 <p>The config file <em>does not</em> require any programming knowledge to edit; simply follow this guide. Be sure to match the syntax exactly (i.e. put quotes where there are quotes, semicolons where there are semicolons, etc)</p>
 <h2 id="automatic-layout-connection">Automatic Layout Connection<a class="headerlink" href="#automatic-layout-connection" title="Permanent link">#</a></h2>
-<p>ZephyrCab can automatically connect to your layout each time you open it. This is convenient (nobody likes to remember IP addresses).</p>
-<p>To enable this feature, simply add the IP address of your JMRI computer and the port of your JMRI web server. By default, the JMRI web server runs on port 12080. Make sure to end each line with a semicolon. If you don't know your computer's IP address, you can find it with the <code>ipconfig</code> command in Windows or the <code>ifconfig</code> command on Linux.</p>
-<pre class="code"><code class="language-javascript">cfg.ip = &quot;192.168.1.12&quot;;
-cfg.port = 12080;</code></pre>
-
-
-<p>To disable this feature, simply remove the right side of those two lines, as shown below. This will allow you to specify an IP address and connect manually.</p>
-<pre class="code"><code class="language-javascript">cfg.ip;
-cfg.port;</code></pre>
+<p><strong><em>Not recommended for most users!</em></strong></p>
+<p>By default, ZephyrCab assumes it's running on a JMRI web server, and it will automatically connect to that. If for some reason you're running ZephyrCab on an external web server, you can configure automatic connection by setting the following values:</p>
+<pre class="code"><code>cfg.webServer = &quot;external&quot;; //not setting this or setting it to &quot;jmri&quot; invokes the default behavior
+cfg.ip = &quot;192.168.1.10&quot;; //your JMRI PC's IP address
+cfg.port = 12080; //your JMRI web server's port</code></pre>
 
 
 <h2 id="default-brake-system-pressure-feed-valve">Default Brake System Pressure (feed valve)<a class="headerlink" href="#default-brake-system-pressure-feed-valve" title="Permanent link">#</a></h2>
