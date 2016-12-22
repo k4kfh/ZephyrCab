@@ -105,7 +105,7 @@ var link = {
                 stringified;
             if (cfg.logallmessages === true) {
                 stringified = JSON.stringify(data);
-                console.log("[" + link.logTimestamp() + "] RECIEVED : " + stringified);
+                console.debug("[" + link.logTimestamp() + "] RECIEVED : " + stringified);
             }
             link.process(data);
         };
@@ -125,7 +125,7 @@ var link = {
             link.socket.send(command);
             //If logging is enabled, make a console.log entry
             if (cfg.logallmessages === true) {
-                console.log("[" + link.logTimestamp() + "] SENT : " + command);
+                console.debug("[" + link.logTimestamp() + "] SENT : " + command);
             }
 
             //If we're not connected, throw an error
