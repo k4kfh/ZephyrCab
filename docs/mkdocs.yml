@@ -5,6 +5,7 @@ pages:
 - How ZephyrCab works: userguide/how-it-works.md
 - Adding your Locomotives: userguide/configuring-bundles-json.md
 - Supported Locomotives/Decoders: reference/supported.md
+- Developer Reference: dev-reference/index.md
 
 markdown_extensions:
   - codehilite(css_class=code)
