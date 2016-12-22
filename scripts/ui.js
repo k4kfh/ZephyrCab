@@ -22,6 +22,7 @@ Inputs:
 #auto-brake
 #throttle
 #reverser
+#engine-start
 
 ---
 
@@ -108,7 +109,24 @@ $( document ).ready(function() {
     $('#engine-start').change( function() {
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-
+        /*
+        Business end of this code
+        - Cycle through all train elements
+        - If element is locomotive, set .prototype.engineRunning to the state of the #engine-start checkbox
+        - If element is locomotive, call .dcc.f.engine.set(boolean)
+        */
+        for (var i = 0; i < train.all.length; i++) {
+            var element = train.all[i]
+            if (element.type == "locomotive") {
+                if (!(element.prototype.realtime.fuel.status <= 0)) { //make sure there's fuel before we allow it to start
+                    element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
+                    console.log("Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
+                }
+                else { //if we can't start because of no fuel then flip the switch back over
+                    $( "#engine-start" ).prop( "checked", false ); //uncheck the switch
+                }
+            }
+        }
     });
 
     //Track Power
@@ -140,8 +158,7 @@ $( document ).ready(function() {
     $('#link-connect').bind("click", function() {
         //Grab information from the form inputs
         var ip = $('#link-ip').val(),
-            port = $('#link-port').val()
-        
+            port = $('#link-port').val();
         //Double check if the user actually typed in an IP or not
         if (ip !== "") {
             link.connect(ip, port);

@@ -269,8 +269,9 @@ train.build.add = function(objectSource) {
     //We also need to make sure the brakes on this thing are set up right, in case the user has set the feed valve to something other than 90
     brake.fixNewElement((train.all.length - 1)) //call this function on the last car
     
+    //DEPRECATED - Left behind for temporary reference
     //We only call the gauges.createAll() function when we ADD something, because if there's nothing on the train it'll break things.
-    gauge.createAll();
+    //gauge.createAll();
 }
 
 train.build.remove = function(entryName) {
