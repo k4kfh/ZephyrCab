@@ -55,9 +55,9 @@ sim.accel = function() {
                 If the engine is running:
                 - Calculate RPM and tractive effort
                 - Figure out notching sounds on applicable decoders
-                - Figure out fuel usage
-                - Subtract fuel usage for this cycle
-                - Stop the engine if it runs out of fuel, and notify the engineer
+                - COMMENTED OUT RIGHT NOW (Figure out fuel usage)
+                - COMMENTED OUT RIGHT NOW (Subtract fuel usage for this cycle)
+                - COMMENTED OUT RIGHT NOW (Stop the engine if it runs out of fuel, and notify the engineer)
                 - Start or stop the air compressor depending on reservoir pressure
 
                 If the engine is not running (the else statement):
@@ -67,7 +67,7 @@ sim.accel = function() {
                 - Stop the air compressor
                 */
                 if (train.all[i].prototype.engineRunning === 1) {
-                    //Calculates the engine RPM
+                    //Calculates the engine RPM, which is necessary for compressor flow rate
                     train.all[i].prototype.realtime.rpm = train.all[i].prototype.engineRunning * train.all[i].prototype.notchRPM[notch.state];
 
                     //Checks if the train is exceeding its max speed for this notch
@@ -79,6 +79,9 @@ sim.accel = function() {
                         train.all[i].prototype.realtime.te = 0;
                     }
 
+                    /*
+                    FUEL USAGE CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
+                    
                     //Grab fuel usage in gallons/hr for this notch
                     var fuelUsagePerHour = train.all[i].prototype.fuel.usage[notch.state];
                     //Set usage per hour variable
@@ -104,6 +107,7 @@ sim.accel = function() {
                             train.all[i].prototype.realtime.fuel.notifiedOfEmptyTank = true;
                         }
                     }
+                    */
 
 
                     /*
@@ -134,11 +138,13 @@ sim.accel = function() {
                         if (psi < lowerLimit) {
                             //Turn on compressor
                             compressor.running = 1;
+                             train.all[i].dcc.f.compressor.set(true);
                         }
                         //If pressure is too high, stop compressor
                         else if (psi > upperLimit) {
                             //Turn off compressor
                             compressor.running = 0;
+                             train.all[i].dcc.f.compressor.set(false);
                             //Set flow rate to 0cfm
 
                         }

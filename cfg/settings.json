@@ -14,7 +14,7 @@ By default, these settings  assume that ZephyrCab is running on a local JMRI ins
 If you'd prefer to use an external web server, set cfg.webServer to "external" and cfg.ip/cfg.port to your JMRI PC's IP and port. This is not recommended except for experienced users/developers.
 */
 cfg.webServer = "external";
-cfg.ip = "jmri"; //ignored when cfg.webServer is set to "jmri"
+cfg.ip = "10.10.39.85"; //ignored when cfg.webServer is set to "jmri"
 cfg.port = 12080; //ignored when cfg.webServer is set to "jmri"
 
 cfg.disablePushNotifications = true;

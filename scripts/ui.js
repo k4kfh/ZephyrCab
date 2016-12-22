@@ -118,6 +118,13 @@ $( document ).ready(function() {
         for (var i = 0; i < train.all.length; i++) {
             var element = train.all[i]
             if (element.type == "locomotive") {
+                element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
+                console.log("Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
+                
+                /*
+                FUEL USAGE RELATED CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
+                
+                This if statement would handle denying engine start when out of fuel.
                 if (!(element.prototype.realtime.fuel.status <= 0)) { //make sure there's fuel before we allow it to start
                     element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
                     console.log("Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
@@ -125,6 +132,7 @@ $( document ).ready(function() {
                 else { //if we can't start because of no fuel then flip the switch back over
                     $( "#engine-start" ).prop( "checked", false ); //uncheck the switch
                 }
+                */
             }
         }
     });

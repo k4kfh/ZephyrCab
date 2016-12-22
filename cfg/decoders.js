@@ -35,16 +35,18 @@ var decoders = {
             //bell
             this.f.bell = {};
             this.f.bell.set = function (state, force) {
-                if (force === undefined) {
+                if (state !== train.all[trainPosition].dcc.f.bell.state) {
+                    if (force === undefined) {
                     force = false;
                 }
-                var opsPressure = train.all[trainPosition].prototype.air.device.bell.operatingPressure,
-                    allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition);
-                if ((allowed === true) || (force === true)) {
-                    train.all[trainPosition].throttle.f.set({"F1": state});
-                    train.all[trainPosition].dcc.f.bell.state = state;
-                } else {
-                    console.log("NOT ENOUGH PRESSURE");
+                    var opsPressure = train.all[trainPosition].prototype.air.device.bell.operatingPressure,
+                        allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition);
+                    if ((allowed === true) || (force === true)) {
+                        train.all[trainPosition].throttle.f.set({"F1": state});
+                        train.all[trainPosition].dcc.f.bell.state = state;
+                    } else {
+                        console.log("NOT ENOUGH PRESSURE");
+                    }
                 }
             };
             this.f.bell.state = false;
@@ -70,8 +72,10 @@ var decoders = {
             //compressor
             this.f.compressor = {};
             this.f.compressor.set = function (state) {
-                train.all[trainPosition].throttle.f.set({"F20":state});
-                train.all[trainPosition].dcc.f.compressor.state = state;
+                if (state !== train.all[trainPosition].dcc.f.compressor.state) {
+                    train.all[trainPosition].throttle.f.set({"F20":state});
+                    train.all[trainPosition].dcc.f.compressor.state = state;
+                }
             };
             this.f.compressor.state = false;
                 
@@ -91,14 +95,14 @@ var decoders = {
             this.f.dynbrakes = {};
             this.f.dynbrakes.set = function (state) {
                     
-                };
+            };
             this.f.dynbrakes.state = false;
                 
             //engine on/off
             this.f.engine = {};
             this.f.engine.set = function (state) {
-                //This IF makes the entire function useless if you're out of fuel.
-                if (train.all[trainPosition].prototype.realtime.fuel.status !== 0){
+                //This IF makes the entire function useless if you're out of fuel, or if the state argument is no different than the current actual state 
+                if ( (train.all[trainPosition].prototype.realtime.fuel.status !== 0) && (state !== train.all[trainPosition].dcc.f.compressor.state) ){
                     train.all[trainPosition].throttle.f.set({"F8":state});
                     train.all[trainPosition].dcc.f.engine.state = state;
                     //This code sets engineRunning to 0 or 1 depending on the state
