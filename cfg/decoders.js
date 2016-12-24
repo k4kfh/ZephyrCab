@@ -31,19 +31,21 @@ var decoders = {
             this.f.headlight.set = function (state) {
                 train.all[trainPosition].throttle.f.set({"F0": state});
                 train.all[trainPosition].dcc.f.headlight.state = state;
+                console.log("DCC: Setting headlight to " + state + " on Train#" + trainPosition)
             };
             //bell
             this.f.bell = {};
             this.f.bell.set = function (state, force) {
                 if (state !== train.all[trainPosition].dcc.f.bell.state) {
                     if (force === undefined) {
-                    force = false;
-                }
+                        force = false;
+                    }
                     var opsPressure = train.all[trainPosition].prototype.air.device.bell.operatingPressure,
                         allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition);
                     if ((allowed === true) || (force === true)) {
                         train.all[trainPosition].throttle.f.set({"F1": state});
                         train.all[trainPosition].dcc.f.bell.state = state;
+                        console.log("DCC: Setting bell to " + state + " on Train#" + trainPosition)
                     } else {
                         console.log("NOT ENOUGH PRESSURE");
                     }
@@ -63,6 +65,7 @@ var decoders = {
                     train.all[trainPosition].throttle.f.set({"F2": state});
                     train.all[trainPosition].dcc.f.horn.state = state;
                     sim.f.air.horn(trainPosition, state);
+                    console.log("DCC: Setting horn to " + state + " on Train#" + trainPosition)
                 } else {
                     console.log("CANT DO IT, NOT ENOUGH PRESSURE");
                 }
@@ -72,9 +75,10 @@ var decoders = {
             //compressor
             this.f.compressor = {};
             this.f.compressor.set = function (state) {
-                if (state !== train.all[trainPosition].dcc.f.compressor.state) {
+                if (state != train.all[trainPosition].dcc.f.compressor.state) {
                     train.all[trainPosition].throttle.f.set({"F20":state});
                     train.all[trainPosition].dcc.f.compressor.state = state;
+                    console.log("DCC: Setting compressor to " + state + " on Train#" + trainPosition)
                 }
             };
             this.f.compressor.state = false;
@@ -85,9 +89,11 @@ var decoders = {
                 var possible = (train.all[trainPosition].prototype.realtime.air.reservoir.main.psi.g !== 0);
                 if (possible === true) {
                     train.all[trainPosition].throttle.f.set({"F19":state});
+                    console.log("DCC: Setting airDump to " + state + " on Train#" + trainPosition)
                 }
                 else if ((possible === false) && (state === false)) {
                     train.all[trainPosition].throttle.f.set({"F19":state});
+                    console.log("DCC: Setting airDump to " + state + " on Train#" + trainPosition)
                 }
             };
                 
@@ -105,6 +111,7 @@ var decoders = {
                 if ( (train.all[trainPosition].prototype.realtime.fuel.status !== 0) && (state !== train.all[trainPosition].dcc.f.compressor.state) ){
                     train.all[trainPosition].throttle.f.set({"F8":state});
                     train.all[trainPosition].dcc.f.engine.state = state;
+                    console.log("DCC: Setting engine to " + state + " on Train#" + trainPosition)
                     //This code sets engineRunning to 0 or 1 depending on the state
                     if (state === true) {
                         train.all[trainPosition].prototype.engineRunning = 1;
@@ -129,7 +136,8 @@ var decoders = {
                     //This is inside an IF statement to make sure we don't try to notch OVER 8. If that happens, ESU decoders get confused.
                     var newNotch = (train.all[trainPosition].dcc.f.notch.state + 1);
                     if (newNotch <= 8) {
-                         train.all[trainPosition].dcc.f.notch.state++; //THIS HAS TO RUN INSTANTLY OR SIM.JS IS STUPID
+                        train.all[trainPosition].dcc.f.notch.state++; //THIS HAS TO RUN INSTANTLY OR SIM.JS IS STUPID
+                        console.log("DCC: Increasing notch on Train#" + trainPosition)
                         setTimeout(function () {
                             train.all[trainPosition].throttle.f.set({"F9":true});
                         }, 500);
@@ -144,6 +152,7 @@ var decoders = {
                     var newNotch = (train.all[trainPosition].dcc.f.notch.state - 1);
                     if (newNotch >= 0) {
                         train.all[trainPosition].dcc.f.notch.state--; //THIS MUST RUN INSTANTLY OR SIM.JS DOES WEIRD STUFF
+                        console.log("DCC: Decreasing notch on Train#" + trainPosition)
                         setTimeout(function () { train.all[trainPosition].throttle.f.set({"F10":true});}, 500);
                         setTimeout(function () { train.all[trainPosition].throttle.f.set({"F10":true});}, 1750);
                     }

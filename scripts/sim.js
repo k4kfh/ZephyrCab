@@ -22,27 +22,27 @@ reverser = 0; //NEUTRAL not FWD
 sim = new Object();
 sim.direction = 1 //1 means forward, -1 means reverse. This is the ACTUAL direction, which is not necessarily the reverser's direction.
 sim.time = {
-    speed : 1,
+    speed: 1,
 }
 
 //We need to go ahead and define all the stuff inside train.total and set it to 0
 train.total = new Object();
 train.total = {
-        netForce : 0,
-        weight : 0,
-        accel : {
-            si : {
-                force : 0,
-                mass : 0,
-                acceleration : 0
-            },
-            acceleration_mph : 0,
-            speed : {
-                mph : 0,
-                ms : 0,
-            }
+    netForce: 0,
+    weight: 0,
+    accel: {
+        si: {
+            force: 0,
+            mass: 0,
+            acceleration: 0
+        },
+        acceleration_mph: 0,
+        speed: {
+            mph: 0,
+            ms: 0,
         }
     }
+}
 
 sim.accel = function() {
     //make sure the train actually has elements
@@ -132,36 +132,66 @@ sim.accel = function() {
                         psi = train.all[i].prototype.realtime.air.reservoir.main.psi.g,
                         cfmRpmRatio = train.all[i].prototype.air.compressor.flowrate, //ratio of cfm per rpm
                         rpm = train.all[i].prototype.realtime.rpm;
-                    //Check if dump valve is open or closed
+                    /*
+                    IF/ELSE Tasks
+                    1. See if dump valve is open
+                    2. Turn compressor on or off based on current pressure
+                    */
                     if (dumpValve == false) {
                         //If pressure is too low, start compressor
                         if (psi < lowerLimit) {
                             //Turn on compressor
                             compressor.running = 1;
-                             train.all[i].dcc.f.compressor.set(true);
+                            train.all[i].dcc.f.compressor.set(true);
                         }
                         //If pressure is too high, stop compressor
                         else if (psi > upperLimit) {
                             //Turn off compressor
                             compressor.running = 0;
-                             train.all[i].dcc.f.compressor.set(false);
+                            train.all[i].dcc.f.compressor.set(false);
                             //Set flow rate to 0cfm
 
                         }
                     }
                     //If dump valve is open, make sure compressor is off
                     else {
-                        compressor.running = 0;
+                        compressor.running = 0; //we set this variable for the functions in air.js to use
                     }
 
-                }
-                else {
+                    /*
+                    TASKS
+                    3. Find compressor output flow rate (in cubic feet per physics cycle).
+                    */
+                    train.all[i].prototype.realtime.air.compressor.flowrate.cfm = rpm * cfmRpmRatio
+                    train.all[i].prototype.realtime.air.compressor.flowrate.perCycle = (rpm * cfmRpmRatio) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms)
+
+                    //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
+                    //This huge long statement really just says (atmAirVolume = atmAirVolume + flowratePerCycle)
+                    train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume + train.all[i].prototype.realtime.air.compressor.flowrate.perCycle;
+
+                    //Subtract leak rate in cubic feet before calculating pressure
+                    var volumeInTank = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume;
+                    var leakRate = train.all[i].prototype.air.reservoir.main.leakRate; //this is loss in cubic feet per cycle
+                    //The business end of this messy code here
+                    var volumeInTank = volumeInTank - leakRate;
+                    //More jostling variables around
+                    train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume = volumeInTank;
+
+                    //Make sure the volume isn't below the capacity of the reservoir (otherwise we'll have a vacuum)
+                    if (train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume < train.all[i].prototype.air.reservoir.main.capacity) {
+                        //if the volume is less than the minimum (the capacity) then fix it
+                        train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
+                    }
+                    air.reservoir.main.updatePSI(i) //this takes all those numbers we just figured out and calculates the PSI, then updates the gauge
+                    
+                } else {
                     /*
                     If the engine is NOT running:
                     - Set RPM and Tractive Effort to 0
                     - Don't do anything with notching sounds
                     - Set fuel consumption to 0
                     - Stop the air compressor
+                    - Still find the PSI of the main reservoir and the brake cylinder and whatnot
                     */
                     train.all[i].prototype.realtime.rpm = 0;
                     train.all[i].prototype.realtime.te = 0;
@@ -171,11 +201,12 @@ sim.accel = function() {
                     train.all[i].dcc.f.compressor.set(false);
                     //Turn off air compressor simulation
                     train.all[i].prototype.realtime.air.compressor.running = 0;
+                    //update PSI for main reservoir based on the numbers we have, just so the number is still there
+                    air.reservoir.main.updatePSI(i)
                 }
 
 
-            }
-            else if (train.all[i].type === 'rollingstock') {
+            } else if (train.all[i].type === 'rollingstock') {
                 //Rolling Stock Specific Stuff
             }
         }
@@ -192,10 +223,43 @@ sim.start = function(timing) {
     if (timing == undefined) {
         timing = sim.time.interval; //if the user doesn't specify, we use the last one we used
     }
-    sim.recalcInterval = setInterval(function() {sim.accel()}, timing);
+    sim.recalcInterval = setInterval(function() {
+        sim.accel()
+    }, timing);
     sim.time.interval = timing; //store this for later
 }
 
 sim.start(100); //runs the sim every 100ms by default
 
 
+//Externally Accessible Methods
+sim.f = {
+    air: {
+        horn: function(trainPosition, state) {
+            //define a shorthand variable for the usage in cubic feet per millisecond, and for the corresponding pressure
+            var usagePerMs = train.all[trainPosition].prototype.air.device.horn.usagePerMs;
+            var hornOpsPressure = train.all[trainPosition].prototype.air.device.horn.operatingPressure;
+
+            //if we are turning the horn on, create the interval to run every 1ms
+            if (state == true) {
+                //intervals are stored in .prototype.tmp.intervals
+                train.all[trainPosition].prototype.tmp.intervals.horn = setInterval(function() {
+                    air.reservoir.main.take(usagePerMs, hornOpsPressure, trainPosition)
+                }, 1)
+            }
+            //if we are turning the horn off, clear the interval
+            else if (state == false) {
+                clearInterval(train.all[trainPosition].prototype.tmp.intervals.horn);
+            }
+
+        },
+        dump: function(trainPosition, state) {
+            if (state == true) {
+                train.all[trainPosition].prototype.realtime.air.reservoir.main.atmAirVolume = train.all[trainPosition].prototype.air.reservoir.main.capacity;
+                train.all[trainPosition].prototype.realtime.air.reservoir.main.dump = true;
+            } else {
+                train.all[trainPosition].prototype.realtime.air.reservoir.main.dump = false;
+            }
+        }
+    }
+}

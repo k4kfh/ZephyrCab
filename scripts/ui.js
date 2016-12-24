@@ -82,6 +82,30 @@ $( document ).ready(function() {
             $("#throttle-indicator").html("RUN" + returned);
         }
     });
+    
+    //Horn
+    //Mousedown event starts the horn
+     $('#horn').mousedown( function() {
+        //play sound
+        (new buzz.sound("soundfx/switch.mp3")).play()
+        //make sure we have a cab locomotive before doing anything else
+        if (train.all[cab.current] !== undefined) {
+            train.all[cab.current].dcc.f.horn.set(true);
+        }
+        else {
+            //just let the debug console know
+            console.error("Horn mousedown method called; doing nothing since we have no cab locomotive!")
+        }
+    });
+    //Mouseup event starts the horn
+    $('#horn').mouseup( function() {
+        //play sound
+        (new buzz.sound("soundfx/switch.mp3")).play()
+        //make sure we have a cab locomotive before doing anything else
+        if (train.all[cab.current] !== undefined) {
+            train.all[cab.current].dcc.f.horn.set(false);
+        }
+    });
 
     //Bell
     $('#bell').change( function() {
@@ -93,7 +117,7 @@ $( document ).ready(function() {
             var operatingPressure = train.all[cab.current].prototype.air.device.bell.operatingPressure
             var allowed = air.reservoir.main.pressureCheck(operatingPressure, cab.current);
             if (allowed == true) {
-                train.all[cab.current].dcc.f.bell.set(arg)
+                train.all[cab.current].dcc.f.bell.set($('#bell').is(":checked"))
             }
             else {
                 train.all[cab.current].dcc.f.bell.set(false)
@@ -102,11 +126,18 @@ $( document ).ready(function() {
         else {
             //just let the debug console know
             console.debug("Bell function called; doing nothing since we have no cab locomotive.");
+            $('#bell').prop('checked', false);
         }
     });
 
     //Engine Start
     $('#engine-start').change( function() {
+        //If we have no cab locomotive, don't allow anything to happen
+        if (train.all[cab.current] === undefined) {
+            $('#engine-start').prop('checked', false);
+            return null;
+        }
+        
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
         /*
@@ -146,6 +177,11 @@ $( document ).ready(function() {
 
     //Sand
     $('#sand').change( function() {
+        //If we have no cab locomotive, don't allow anything to happen
+        if (train.all[cab.current] === undefined) {
+            $('#sand').prop('checked', false);
+            return null;
+        }
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
         Materialize.toast("Sand is not implemented yet!");
@@ -153,9 +189,14 @@ $( document ).ready(function() {
 
     //Headlight
     $('#headlight').change( function() {
+        //If we have no cab locomotive, don't allow anything to happen
+        if (train.all[cab.current] === undefined) {
+            $('#headlight').prop('checked', false);
+            return null;
+        }
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-        if (train.all[cab.current] !== undefined) {
+        if (train.all[cab.current] === undefined) {
             var value = $(this).is(":checked");
             train.all[cab.current].dcc.f.headlight.set(value);
             console.debug("Setting headlight to " + value);
@@ -293,5 +334,48 @@ var cab = {
             $("#engine-start").checked = train.all[ui.cab.currentLoco].dcc.f.engine.state;
             $("#bell").checked = train.all[ui.cab.currentLoco].dcc.f.bell.state;
             $("#headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
+    }
+}
+
+/*
+GAUGES
+
+This is a backwards-compatible (mostly) implementation of the previous incredibly complex <canvas> gauges system. I opted to use tables since screen real estate is a precious commodity on mobile devices, and tables are much easier to deal with than someone else's custom gauges library.
+
+Gauges are all contained in a table, and thus the actual gauge values are accessed via <td> elements. Units are added to the strings in the methods below; they are NOT hardcoded into the HTML.
+
+IDs of the gauge elements:
+- Speed         #gauge-speed
+- Current       #gauge-amps
+- Brake Pipe    #gauge-brakePipe
+- Brake Cyl.    #gauge-brakeCylinder
+- Main Res.     #gauge-mainReservoir
+- EQ Res.       #gauge-equalizingReservoir
+*/
+
+gauge = {
+    air : {
+        reservoir : {
+            //Main Air Reservoir Gauge
+            main : function(val) {
+                val = Math.round(val) + "psi"; //add units
+                $("#gauge-mainReservoir").html(val);
+            },
+            equalizing : function(val) {
+                val = val + "psi"; //add units
+                $("#gauge-equalizingReservoir").html(val);
+            }
+        }
+    },
+    speedometer : function(val) {
+        val = val + "psi"; //add units
+        $("#gauge-mainReservoir").html(val);
+    },
+    current : function(val) {
+        val = val + "psi"; //add units
+        $("#gauge-mainReservoir").html(val);
+    },
+    rpm : function(val) {
+        //does nothing, simply a placeholder for the future
     }
 }
