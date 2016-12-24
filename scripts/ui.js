@@ -324,16 +324,14 @@ var cab = {
                 return undefined;
             }
             
-            ui.cab.currentLoco = number;
-            gauge.createAll();
-            ui.cab.locoName.update(name);
+            cab.current = number;
             Materialize.toast("<i class='material-icons left'>directions_railway</i>Entered cab of " + name, 2500)
             
 
             //This resets all the switches (engine startup, bell, etc.) to their ACTUAL values as opposed to the last value they were at.
-            $("#engine-start").checked = train.all[ui.cab.currentLoco].dcc.f.engine.state;
-            $("#bell").checked = train.all[ui.cab.currentLoco].dcc.f.bell.state;
-            $("#headlight").checked = train.all[ui.cab.currentLoco].dcc.f.headlight.state;
+            $("#engine-start").checked = train.all[cab.current].dcc.f.engine.state;
+            $("#bell").checked = train.all[cab.current].dcc.f.bell.state;
+            $("#headlight").checked = train.all[cab.current].dcc.f.headlight.state;
     }
 }
 

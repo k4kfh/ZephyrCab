@@ -308,7 +308,6 @@ train.find.all = function(entryName) {
     
     for (i = 0; i < train.all.length; i++ ) {
         var name = train.all[i].roster.name
-        console.log("Name = " + name)
         if (name == entryName) {
             position = i;
             break;
