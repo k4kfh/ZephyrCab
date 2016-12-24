@@ -21,7 +21,7 @@ cfg.disablePushNotifications = true;
 
 cfg.debugToasts = false;
 
-cfg.logallmessages = true; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "
+cfg.logallmessages = false; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "
 
 cfg.brakes = new Object();
 cfg.brakes.defaultFeedValveSetting = 90; //integer, in psi, for the feed valve to default to. The feed valve can be adjusted once you enter the cab, this just provides an easy way to set a preferred default.

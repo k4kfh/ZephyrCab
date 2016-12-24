@@ -125,7 +125,7 @@ $( document ).ready(function() {
         }
         else {
             //just let the debug console know
-            console.debug("Bell function called; doing nothing since we have no cab locomotive.");
+            console.log("UI: Bell function called; doing nothing since we have no cab locomotive.");
             $('#bell').prop('checked', false);
         }
     });
@@ -150,7 +150,7 @@ $( document ).ready(function() {
             var element = train.all[i]
             if (element.type == "locomotive") {
                 element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
-                console.log("Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
+                console.log("UI: Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
                 
                 /*
                 FUEL USAGE RELATED CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
@@ -158,7 +158,7 @@ $( document ).ready(function() {
                 This if statement would handle denying engine start when out of fuel.
                 if (!(element.prototype.realtime.fuel.status <= 0)) { //make sure there's fuel before we allow it to start
                     element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
-                    console.log("Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
+                    console.log("UI: UI: Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
                 }
                 else { //if we can't start because of no fuel then flip the switch back over
                     $( "#engine-start" ).prop( "checked", false ); //uncheck the switch
@@ -368,8 +368,8 @@ gauge = {
         }
     },
     speedometer : function(val) {
-        val = val + "psi"; //add units
-        $("#gauge-mainReservoir").html(val);
+        val = Math.round(val) + "mph"; //add units
+        $("#gauge-speed").html(val);
     },
     current : function(val) {
         val = val + "psi"; //add units

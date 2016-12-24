@@ -47,6 +47,16 @@ train.total = {
 sim.accel = function() {
     //make sure the train actually has elements
     if (train.all.length !== 0) {
+
+        //We have to clear these variables on start, otherwise the train will progressively get heavier as we walk the array a few times. We do this the ugly way instead of the json way because doing it the json way also resets the speed to zero.
+        train.total.netForce = 0;
+        train.total.weight = 0;
+        train.total.accel.si.force = 0;
+        train.total.accel.si.mass = 0;
+        train.total.accel.si.acceleration = 0;
+        train.total.accel.acceleration_mph = 0;
+
+        //Now we increment over every train object
         for (var i = 0; i < train.all.length; i++) {
             if (train.all[i].type === 'locomotive') {
                 //Locomotive Specific Stuff
@@ -70,14 +80,8 @@ sim.accel = function() {
                     //Calculates the engine RPM, which is necessary for compressor flow rate
                     train.all[i].prototype.realtime.rpm = train.all[i].prototype.engineRunning * train.all[i].prototype.notchRPM[notch.state];
 
-                    //Checks if the train is exceeding its max speed for this notch
-                    if (train.all[i].prototype.exceedingMaxSpeed === 1) {
-                        //If not, we find the tractive effort
-                        train.all[i].prototype.realtime.te = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i);
-                    } else {
-                        //If it is exceeding its max speed, set tractive effort to 0
-                        train.all[i].prototype.realtime.te = 0;
-                    }
+                    //call the tractive effort calculation function of the locomotive's bundle
+                    train.all[i].prototype.realtime.te = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i);
 
                     /*
                     FUEL USAGE CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
@@ -109,6 +113,16 @@ sim.accel = function() {
                     }
                     */
 
+                    /*
+                    ROLLING RESISTANCE AND GENERAL DRAG
+                    
+                    This is where rolling resistance, along with a general drag coefficient (WIP!) to account for bearings and the like, is calculated.
+                    */
+                    train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
+                    //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
+                    if (train.total.accel.speed.mph == 0) {
+                        train.all[i].prototype.realtime.rollingResistance = 0
+                    }
 
                     /*
                     COMPRESSOR AND AIR RESERVOIR(S)
@@ -183,7 +197,6 @@ sim.accel = function() {
                         train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
                     }
                     air.reservoir.main.updatePSI(i) //this takes all those numbers we just figured out and calculates the PSI, then updates the gauge
-                    
                 } else {
                     /*
                     If the engine is NOT running:
@@ -205,9 +218,47 @@ sim.accel = function() {
                     air.reservoir.main.updatePSI(i)
                 }
 
+                /*Locomotive-Only Totaling Math
+                Steps:
+                1. Add weight to total weight
+                2. Add tractive effort to total net force
+                3. Add braking force to total braking force (TODO)
+                */
+                train.total.weight = train.total.weight + train.all[i].prototype.weight; //weight = weight + element.weight
+                train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance;
 
             } else if (train.all[i].type === 'rollingstock') {
                 //Rolling Stock Specific Stuff
+            }
+
+            //convert mass from pounds to kg
+            train.total.accel.si.mass = train.total.weight * 0.453592;
+            //convert netForce from pounds to Newtons
+            train.total.accel.si.force = train.total.netForce * 4.44822;
+
+            //Final Net force/speed calculations
+            //Defining shorthand variables for clarity
+            var netForce = train.total.accel.si.force;
+            var mass = train.total.accel.si.mass;
+
+            //leveraging f=ma to find acceleration, in meters per second per second
+            train.total.accel.si.acceleration = netForce / mass;
+            //first we compute the new speed in meters per second
+            train.total.accel.speed.ms = train.total.accel.speed.ms + train.total.accel.si.acceleration;
+
+            //we store the acceleration in mph per second
+            train.total.accel.acceleration_mph = train.total.accel.si.acceleration * 2.23694; //convert from m/s/s to mph/s
+
+            //now figure out how much speed to add/subtract by converting that acceleration to miles per hour per sim.time
+            var accelerationPerCycle = train.total.accel.acceleration_mph * (sim.time.interval / 1000);
+            train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
+            gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
+            //also set the sim.direction (actual direction) variable
+            if (train.total.accel.speed.mph > 0) {
+                sim.direction = 1;
+            }
+            else if (train.total.accel.speed.mph < 0) {
+                sim.direction = -1;
             }
         }
     }
