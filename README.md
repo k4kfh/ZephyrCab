@@ -19,33 +19,37 @@ ZephyrCab is a web app that simulates prototypically accurate controls for model
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+## Installation
 
-You'll need a computer running [JMRI](http://jmri.org). You can run JMRI and ZephyrCab on the same computer, or you can use two separate computers, but they _must_ be on the same network. ZephyrCab can't traverse the Internet. You'll also need some OS-specific stuff, listed below.
+The screenshots below are from a machine running Linux, so they may look a little different, but the procedure will be essentially the same for Windows, Mac, and Linux.
 
-### Linux (Debian/Ubuntu)
+1. [**Download the latest ZephyrCab release here.**](https://github.com/k4kfh/ZephyrCab/archive/master.zip)
+2. **Find your JMRI profile directory.** You can do this by opening JMRI and clicking Help > Locations, as shown below.
 
-You'll need a simple web server. No extensions/modules are needed, as ZephyrCab is totally client-side. It's also helpful to have ``git``.
-```
-sudo apt-get install apache2 git
-```
+    ![](http://imgur.com/enSiiful.png)
 
-### Windows
+3. **Open your JMRI profile directory.** You can just click "Open profile location" from inside the JMRI Locations dialog. In my case, my profile directory was ``/home/hampton/.jmri/My_JMRI_Railroad``, but yours may be a little different.
 
-You'll need to download a web server, such as Apache. (IIS might work, no promises) For ease of installation I recommend [Apache Portable](https://sourceforge.net/projects/apache2portable/). You won't need any modules since ZephyrCab is entirely static, client-side code.
+    ![](http://imgur.com/HwbhQ8nl.png)
 
-## Installing
+4. **Create a folder called ``web`` inside the profile location.** Your system may already have this folder, but if it doesn't, just make a new folder called ``web``.
 
-### Windows
+    <br>
+    
+    ![](http://imgur.com/TqVgcEbl.png)
 
-If you installed Apache Portable as recommended above, [download the latest development copy of ZephyrCab](https://github.com/k4kfh/ZephyrCab/archive/master.zip) and unzip it to your web server directory. Then just use Chrome to open ``http://localhost`` and you should get ZephyrCab's "Connection Settings" screen.
+5. **Extract the ZephyrCab download into the ``web`` folder.** When you downloaded ZephyrCab, you should have gotten a ZIP file, so just extract its contents into ``/wherever/your/JMRI/profile/is/web``.
 
-### Mac OSX
+6. **Rename the folder to ``zephyrcab``.** This step is technically optional, but makes things easier, so I recommend it.
 
-I don't own a Mac, so I can't give specific instructions for Mac users. (If you own a Mac, feel free to fork/PR an update to this README!) The general idea is:
-1. Install a  web server
-2. Unzip ZephyrCab to web server
-3. Open web server in a browser (preferably Chrome)
+7. **If you haven't used it before, start your JMRI web server.** You can do this in Edit > Preferences > Web Server. Check the box for "Start automatically with application".
+
+    ![](http://i.imgur.com/5R3EMtE.png)
+    
+8. **Open your ZephyrCab in a web browser.** Google Chrome is officially supported, though Firefox will probably work. No promises otherwise.
+    - If you're opening it from your JMRI machine, you can just use [``http://localhost:12080/web/zephyrcab``](http://localhost:12080/web/zephyrcab)
+    - Otherwise, the URL will be ``http://your-jmri-ip-address:12080/web/zephyrcab`` if you've followed this guide correctly.
+    - If you don't know your JMRI PC's IP address, [click here to learn how to find it.](http://www.howtogeek.com/236838/how-to-find-any-devices-ip-address-mac-address-and-other-network-connection-details/) It will probably be in the form ``192.168.1.something`` or ``172.16.something.something``, but could be different.
 
 ## Configuring
 
