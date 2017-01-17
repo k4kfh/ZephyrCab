@@ -122,7 +122,7 @@ var decoders = {
                 }
                 else {
                     //This code means that if you're out of fuel, regardless of what state you fed into this function it will turn the engine off.
-                    train.all[trainPosition].throttle.f.set(8, false);
+                    train.all[trainPosition].throttle.f.set({"F8":false});
                     train.all[trainPosition].prototype.engineRunning = 0;
                     train.all[trainPosition].dcc.f.engine.state = false;
                 }
