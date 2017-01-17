@@ -26,8 +26,8 @@ bundles.locomotives = {
         type: "locomotive",
         model:{
             speed:function(mph) {
-                mph = speed; //totally not correct but it is a functional example
-                return speed;
+                return mph/128; //totally not correct but it is a functional example
+                
             }
         },
         prototype:{
@@ -75,10 +75,10 @@ bundles.locomotives = {
                     var teLbs = 0.224809 * teNewtons * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
                     //This is a measure of protection since the equation creates a curve that moves upwards too sharply
                     if (speed < 8.9) {
-                        teLbs = 56500 * (notch.state / 8) * reverser;
+                        teLbs = 56500 * (notch.state / 8) * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
                     }
                     
-                    return teLbs;
+                    return teLbs; //the abs is to protect against returning -0
                 },
                 /*
                 A locomotive's traction motors can only spin so fast with a given applied voltage, so even if there is theoretically enough power left the train can only continue to accelerate so much. This idea manifests itself as a "speed limit" built into the locomotive. The theory behind this may be subject to debate, so I (@k4kfh) chose to leave this up to a function.
@@ -89,7 +89,8 @@ bundles.locomotives = {
                     var speedPerNotch = 7.5; //I chose to make my function a simple linear calculation
                     var maxSpeed = speedPerNotch * notch.state;
                     //This is a simple linear calculation that seemed 'good enough' to me, but if you find actual numbers you could create a better way.
-                    var actualSpeed = train.total.accel.speed.mph //TODO: Once coupler slack is implemented, this must change to the individual element's speed
+                    var actualSpeed = Math.abs(train.total.accel.speed.mph) //TODO: Once coupler slack is implemented, this must change to the individual element's speed
+                    console.debug("Actual Speed: " + actualSpeed)
                     if (actualSpeed > maxSpeed) {
                         //if we're exceeding it
                         train.all[trainPosition].prototype.realtime.exceedingMaxSpeed = 0;

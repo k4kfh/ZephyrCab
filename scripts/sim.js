@@ -79,6 +79,23 @@ sim.accel = function() {
                 if (train.all[i].prototype.engineRunning === 1) {
                     //Calculates the engine RPM, which is necessary for compressor flow rate
                     train.all[i].prototype.realtime.rpm = train.all[i].prototype.engineRunning * train.all[i].prototype.notchRPM[notch.state];
+                    
+                    //SETTING NOTCHING SOUNDS
+                    if (train.all[i].dcc.f.notch.state != notch.state) {
+                        //console.debug("TRIGGERED")
+                        //We know it's changed, now we have to figure out which direction (up or down) to move it.
+                        var difference = notch.state - train.all[i].dcc.f.notch.state; //This will equal 1 or -1, telling us the    direction to notch
+                        //console.log("Difference in notch: " + difference)
+                        if (difference == 1) {
+                            train.all[i].dcc.f.notch.up();
+                        }
+                        else if (difference == -1) {
+                            train.all[i].dcc.f.notch.down();
+                        }
+                    }
+                    else {
+                        //console.log("No notch difference found")
+                    }
 
                     //call the tractive effort calculation function of the locomotive's bundle
                     train.all[i].prototype.realtime.te = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i);
@@ -259,6 +276,16 @@ sim.accel = function() {
             }
             else if (train.total.accel.speed.mph < 0) {
                 sim.direction = -1;
+            }
+            
+            //Finally we actually make the locomotive(s) go this speed
+            for (var i = 0; i < train.all.length; i++) {
+                //walk over each train element and ignore rolling stock
+                if (train.all[i].type == "locomotive") {
+                    //set direction first
+                    train.all[i].throttle.direction.set(sim.direction);
+                    train.all[i].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph)); //we use ABS here because the direction is set separately from the actual speed
+                }
             }
         }
     }

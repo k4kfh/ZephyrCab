@@ -23,7 +23,8 @@ jmri.throttle = function(address, throttleName) {
         console.log("Requested throttle " + throttleName + " for locomotive #" + address)
         this.address = address
         this.name = throttleName; //throttle name should always be the train position just for ease-of-development purposes
-        this.speed = new Object(); //same reason as this.f for existing as a seemingly stupid object
+        this.speed = {}; //same reason as this.f for existing as a seemingly stupid object
+        this.direction = {};
         //called when removing object from the train; it releases the throttle
         this.release = function() {
             releasecmd = '{"type":"throttle","data":{"throttle":"' + throttleName + '","release":null}}';
@@ -33,6 +34,12 @@ jmri.throttle = function(address, throttleName) {
         this.speed.set = function(speed) {
             //set speed to given percent
             link.send('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "speed":' + speed + '}}')
+        }
+        
+        //Takes a 1 or a -1 as an argument
+        this.direction.set = function(direction) {
+            var forwardOrNot = (direction === 1); //create a boolean that's true when forward/false when reverse
+            link.send('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '", "forward":' + forwardOrNot + '}}')
         }
         this.f = new Object(); //the reason we did this as an object with only one function was to leave room for future ability to store the states of the functions. I will add it if I need it, but its a pain so I haven't yet.
         this.f.set = function(inputData) {
