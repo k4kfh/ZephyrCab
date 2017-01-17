@@ -154,7 +154,7 @@ var decoders = {
                         train.all[trainPosition].dcc.f.notch.state--; //THIS MUST RUN INSTANTLY OR SIM.JS DOES WEIRD STUFF
                         console.log("DCC: Decreasing notch on Train#" + trainPosition)
                         setTimeout(function () { train.all[trainPosition].throttle.f.set({"F10":true});}, 500);
-                        setTimeout(function () { train.all[trainPosition].throttle.f.set({"F10":true});}, 1750);
+                        setTimeout(function () { train.all[trainPosition].throttle.f.set({"F10":false});}, 1750);
                     }
                 },
                 state: 0 //This should reflect the current notching state of the sound decoder. You should increment this up or down 1 when your up() and down() functions finish, or sim.js's functions will be horribly confused and mess up your sounds.
