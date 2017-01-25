@@ -42,17 +42,17 @@ $( document ).ready(function() {
         (new buzz.sound("soundfx/click.mp3")).play()
         //Change indicator
         if ($(this).val() == 0) {
-            $("#reverser.indicator").html("NEU");
+            $("#reverser-indicator").html("NEU");
             //change actual reverser global
             reverser = 0;
         }
         else if ($(this).val() == 1) {
-            $("#reverser.indicator").html("FWD");
+            $("#reverser-indicator").html("FWD");
             //change actual reverser global
             reverser = 1;
         }
         else if ($(this).val() == -1) {
-            $("#reverser.indicator").html("REV");
+            $("#reverser-indicator").html("REV");
             //change actual reverser global
             reverser = -1;
         }
