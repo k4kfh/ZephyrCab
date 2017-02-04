@@ -268,6 +268,17 @@ sim.accel = function() {
 
             //now figure out how much speed to add/subtract by converting that acceleration to miles per hour per sim.time
             var accelerationPerCycle = train.total.accel.acceleration_mph * (sim.time.interval / 1000);
+            //Forced zero crossing code (keeps the train from going back and forth when it should just stop)
+            if (train.total.accel.speed.mph > 0 && train.total.accel.speed.mph + accelerationPerCycle < 0) {
+                //if we're going from positive to negative
+                train.total.accel.speed.mph = 0;
+                console.info('ZERO CROSSING!')
+            }
+            else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
+                //if we're going from negative to positive
+                train.total.accel.speed.mph = 0;
+                console.info('ZERO CROSSING!')
+            }
             train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
             gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
             //also set the sim.direction (actual direction) variable
