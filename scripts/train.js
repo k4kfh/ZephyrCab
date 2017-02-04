@@ -106,6 +106,7 @@ train.ui.update = function() {
         }
         //This only shows the name, it doesn't bother with any kind of clickable links, at least not yet.
         else if (train.all[i].type == "rollingstock") {
+            console.log("MARKER FOR TYPE==ROLLINGSTOCK")
             var newHTMLstring = train.all[i].roster.name;
             newHTML.push(newHTMLstring)
         }

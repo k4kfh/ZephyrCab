@@ -58,9 +58,10 @@ sim.accel = function() {
 
         //Now we increment over every train object
         for (var i = 0; i < train.all.length; i++) {
+            console.info("For this cycle, i=" + i)
             if (train.all[i].type === 'locomotive') {
                 //Locomotive Specific Stuff
-
+                console.info("LOCOMOTIVE CYCLE")
                 /*
                 If the engine is running:
                 - Calculate RPM and tractive effort
@@ -79,7 +80,7 @@ sim.accel = function() {
                 if (train.all[i].prototype.engineRunning === 1) {
                     //Calculates the engine RPM, which is necessary for compressor flow rate
                     train.all[i].prototype.realtime.rpm = train.all[i].prototype.engineRunning * train.all[i].prototype.notchRPM[notch.state];
-                    
+
                     //SETTING NOTCHING SOUNDS
                     if (train.all[i].dcc.f.notch.state != notch.state) {
                         //console.debug("TRIGGERED")
@@ -88,12 +89,10 @@ sim.accel = function() {
                         //console.log("Difference in notch: " + difference)
                         if (difference == 1) {
                             train.all[i].dcc.f.notch.up();
-                        }
-                        else if (difference == -1) {
+                        } else if (difference == -1) {
                             train.all[i].dcc.f.notch.down();
                         }
-                    }
-                    else {
+                    } else {
                         //console.log("No notch difference found")
                     }
 
@@ -136,7 +135,7 @@ sim.accel = function() {
                     This is where rolling resistance, along with a general drag coefficient (WIP!) to account for bearings and the like, is calculated.
                     */
                     train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
-                    //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
+                        //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
                     if (train.total.accel.speed.mph == 0) {
                         train.all[i].prototype.realtime.rollingResistance = 0
                     }
@@ -235,6 +234,9 @@ sim.accel = function() {
                     air.reservoir.main.updatePSI(i)
                 }
 
+                //BRAKES
+
+
                 /*Locomotive-Only Totaling Math
                 Steps:
                 1. Add weight to total weight
@@ -244,8 +246,22 @@ sim.accel = function() {
                 train.total.weight = train.total.weight + train.all[i].prototype.weight; //weight = weight + element.weight
                 train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance;
 
-            } else if (train.all[i].type === 'rollingstock') {
+            }
+            if (train.all[i].type == "rollingstock") {
                 //Rolling Stock Specific Stuff
+                
+                console.info("rolling stock CYCLE")
+                //Automatic Brake system
+                //Because of the responsiveness needed for this brake system to be realistic, every one rolling stock cycle will go through the entire train's brake system
+                for (var car = 0; car < train.all.length; car++) {
+                    brake.cycle(car);
+                }
+                //find the brake force for the one car we're dealing with here
+                var brakeForce = train.all[i].prototype.brake.brakingForce * sim.direction;
+
+                //Net Force
+                var netForce = brakeForce;
+                train.all[i].prototype.realtime.netForce = netForce;
             }
 
             //convert mass from pounds to kg
@@ -273,8 +289,7 @@ sim.accel = function() {
                 //if we're going from positive to negative
                 train.total.accel.speed.mph = 0;
                 console.info('ZERO CROSSING!')
-            }
-            else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
+            } else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
                 //if we're going from negative to positive
                 train.total.accel.speed.mph = 0;
                 console.info('ZERO CROSSING!')
@@ -284,18 +299,17 @@ sim.accel = function() {
             //also set the sim.direction (actual direction) variable
             if (train.total.accel.speed.mph > 0) {
                 sim.direction = 1;
-            }
-            else if (train.total.accel.speed.mph < 0) {
+            } else if (train.total.accel.speed.mph < 0) {
                 sim.direction = -1;
             }
-            
+
             //Finally we actually make the locomotive(s) go this speed
-            for (var i = 0; i < train.all.length; i++) {
+            for (var x = 0; x < train.all.length; x++) {
                 //walk over each train element and ignore rolling stock
-                if (train.all[i].type == "locomotive") {
+                if (train.all[x].type == "locomotive") {
                     //set direction first
-                    train.all[i].throttle.direction.set(sim.direction);
-                    train.all[i].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph)); //we use ABS here because the direction is set separately from the actual speed
+                    train.all[x].throttle.direction.set(sim.direction);
+                    train.all[x].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph)); //we use ABS here because the direction is set separately from the actual speed
                 }
             }
         }
