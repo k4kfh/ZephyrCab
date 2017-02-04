@@ -58,10 +58,10 @@ sim.accel = function() {
 
         //Now we increment over every train object
         for (var i = 0; i < train.all.length; i++) {
-            console.info("For this cycle, i=" + i)
+
             if (train.all[i].type === 'locomotive') {
                 //Locomotive Specific Stuff
-                console.info("LOCOMOTIVE CYCLE")
+
                 /*
                 If the engine is running:
                 - Calculate RPM and tractive effort
@@ -250,7 +250,6 @@ sim.accel = function() {
             if (train.all[i].type == "rollingstock") {
                 //Rolling Stock Specific Stuff
                 
-                console.info("rolling stock CYCLE")
                 //Automatic Brake system
                 //Because of the responsiveness needed for this brake system to be realistic, every one rolling stock cycle will go through the entire train's brake system
                 for (var car = 0; car < train.all.length; car++) {
@@ -262,6 +261,9 @@ sim.accel = function() {
                 //Net Force
                 var netForce = brakeForce;
                 train.all[i].prototype.realtime.netForce = netForce;
+                
+                //add net force to total
+                train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
             }
 
             //convert mass from pounds to kg
@@ -288,11 +290,11 @@ sim.accel = function() {
             if (train.total.accel.speed.mph > 0 && train.total.accel.speed.mph + accelerationPerCycle < 0) {
                 //if we're going from positive to negative
                 train.total.accel.speed.mph = 0;
-                console.info('ZERO CROSSING!')
+                //console.info('ZERO CROSSING!')
             } else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
                 //if we're going from negative to positive
                 train.total.accel.speed.mph = 0;
-                console.info('ZERO CROSSING!')
+                //console.info('ZERO CROSSING!')
             }
             train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
             gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
