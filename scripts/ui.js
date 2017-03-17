@@ -33,6 +33,7 @@ Indicators:
 #pcs-open
 #dyn-brake-warning
 #error
+#bailoff (this changes color when a bail-off is possible)
 */
 $( document ).ready(function() {
     
@@ -281,6 +282,19 @@ ui = {
 
         },
         state : false,
+    },
+    bailoff : { //this button changes color when a bail-off is possible to let the user know
+        set : function(arg) {
+            $bailoff = $("#bailoff");
+            if (arg == true) {
+                $bailoff.removeClass("grey lighten-2"); //remove the normal styling
+                $bailoff.addClass("red white-text"); //turn it red to let user know a bail-off is possible now
+            }
+            else if (arg == false) {
+                $bailoff.addClass("grey lighten-2"); //remove the normal styling
+                $bailoff.removeClass("red white-text"); //turn it red to let user know a bail-off is possible now
+            }
+        }
     },
     error : {
         set : function(arg) {
