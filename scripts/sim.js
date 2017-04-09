@@ -20,7 +20,7 @@ notch.set = function(newNotch) {
 reverser = 0; //NEUTRAL not FWD
 
 sim = new Object();
-sim.direction = 1 //1 means forward, -1 means reverse. This is the ACTUAL direction, which is not necessarily the reverser's direction.
+sim.direction = 1 //1 means forward, -1 means reverse, 0 means we're currently stopped. This is the ACTUAL direction, which is not necessarily the reverser's direction.
 sim.time = {
     speed: 1,
 }
@@ -264,6 +264,9 @@ sim.accel = function() {
                 
                 //add net force to total
                 train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
+                
+                //also ensure we're factoring in this car's weight
+                train.total.weight = train.total.weight + train.all[i].prototype.weight; //weight = weight + element.weight
             }
 
             //convert mass from pounds to kg
@@ -290,19 +293,24 @@ sim.accel = function() {
             if (train.total.accel.speed.mph > 0 && train.total.accel.speed.mph + accelerationPerCycle < 0) {
                 //if we're going from positive to negative
                 train.total.accel.speed.mph = 0;
-                //console.info('ZERO CROSSING!')
+                console.info('ZERO CROSSING!')
             } else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
                 //if we're going from negative to positive
                 train.total.accel.speed.mph = 0;
-                //console.info('ZERO CROSSING!')
+                console.info('ZERO CROSSING!')
             }
-            train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
+            else { //if we're not going to cross 0, just handle acceleration like normal
+                train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
+            }
             gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
             //also set the sim.direction (actual direction) variable
             if (train.total.accel.speed.mph > 0) {
                 sim.direction = 1;
             } else if (train.total.accel.speed.mph < 0) {
                 sim.direction = -1;
+            }
+            else {
+                sim.direction = 0;
             }
 
             //Finally we actually make the locomotive(s) go this speed
