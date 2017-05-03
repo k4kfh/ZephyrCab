@@ -45,7 +45,6 @@ bundles.locomotives = {
                   upper : 140, //This is the point at which the compressor will turn off (psi)
               },
               flowrate : 0.28, //This is cfm/rpm, derived from "255cfm @ 900rpm for an SD45" according to Mr. Al Krug
-              needsEngine : true, //TODO: remove for now; don't let the perfect spoil the good?
 
           },
           device : //TODO: maybe remove completely to make things simpler?
