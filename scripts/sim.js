@@ -101,7 +101,7 @@ sim.accel = function() {
 
                     /*
                     FUEL USAGE CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
-                    
+
                     //Grab fuel usage in gallons/hr for this notch
                     var fuelUsagePerHour = train.all[i].prototype.fuel.usage[notch.state];
                     //Set usage per hour variable
@@ -131,7 +131,7 @@ sim.accel = function() {
 
                     /*
                     ROLLING RESISTANCE AND GENERAL DRAG
-                    
+
                     This is where rolling resistance, along with a general drag coefficient (WIP!) to account for bearings and the like, is calculated.
                     */
                     train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
@@ -249,7 +249,7 @@ sim.accel = function() {
             }
             if (train.all[i].type == "rollingstock") {
                 //Rolling Stock Specific Stuff
-                
+
                 //Automatic Brake system
                 //Because of the responsiveness needed for this brake system to be realistic, every one rolling stock cycle will go through the entire train's brake system
                 for (var car = 0; car < train.all.length; car++) {
@@ -261,7 +261,7 @@ sim.accel = function() {
                 //Net Force
                 var netForce = brakeForce;
                 train.all[i].prototype.realtime.netForce = netForce;
-                
+
                 //add net force to total
                 train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
                 
@@ -343,36 +343,3 @@ sim.start = function(timing) {
 }
 
 sim.start(100); //runs the sim every 100ms by default
-
-
-//Externally Accessible Methods
-sim.f = {
-    air: {
-        horn: function(trainPosition, state) {
-            //define a shorthand variable for the usage in cubic feet per millisecond, and for the corresponding pressure
-            var usagePerMs = train.all[trainPosition].prototype.air.device.horn.usagePerMs;
-            var hornOpsPressure = train.all[trainPosition].prototype.air.device.horn.operatingPressure;
-
-            //if we are turning the horn on, create the interval to run every 1ms
-            if (state == true) {
-                //intervals are stored in .prototype.tmp.intervals
-                train.all[trainPosition].prototype.tmp.intervals.horn = setInterval(function() {
-                    air.reservoir.main.take(usagePerMs, hornOpsPressure, trainPosition)
-                }, 1)
-            }
-            //if we are turning the horn off, clear the interval
-            else if (state == false) {
-                clearInterval(train.all[trainPosition].prototype.tmp.intervals.horn);
-            }
-
-        },
-        dump: function(trainPosition, state) {
-            if (state == true) {
-                train.all[trainPosition].prototype.realtime.air.reservoir.main.atmAirVolume = train.all[trainPosition].prototype.air.reservoir.main.capacity;
-                train.all[trainPosition].prototype.realtime.air.reservoir.main.dump = true;
-            } else {
-                train.all[trainPosition].prototype.realtime.air.reservoir.main.dump = false;
-            }
-        }
-    }
-}

@@ -23,7 +23,7 @@ var decoders = {
             //evilgeniustech.com
             'use strict';
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate()); //we use the train position as the throttle name for future lookup purposes
-            
+
             //FUNCTIONS
             this.f = {};
             //light
@@ -35,43 +35,22 @@ var decoders = {
             };
             //bell
             this.f.bell = {};
-            this.f.bell.set = function (state, force) {
-                if (state !== train.all[trainPosition].dcc.f.bell.state) {
-                    if (force === undefined) {
-                        force = false;
-                    }
-                    var opsPressure = train.all[trainPosition].prototype.air.device.bell.operatingPressure,
-                        allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition);
-                    if ((allowed === true) || (force === true)) {
-                        train.all[trainPosition].throttle.f.set({"F1": state});
-                        train.all[trainPosition].dcc.f.bell.state = state;
-                        console.log("DCC: Setting bell to " + state + " on Train#" + trainPosition)
-                    } else {
-                        console.log("NOT ENOUGH PRESSURE");
-                    }
-                }
+            this.f.bell.set = function (state) {
+              train.all[trainPosition].throttle.f.set({"F1": state});
+              train.all[trainPosition].dcc.f.bell.state = state;
+              console.log("DCC: Setting bell to " + state + " on Train#" + trainPosition)
             };
             this.f.bell.state = false;
-                
+
             //horn
             this.f.horn = {};
-            this.f.horn.set = function (state, force) { //this "force" argument tells the function to ignore the air pressure. This is for system stuff, not users.
-                if (force === undefined) {
-                    force = false;
-                }
-                var opsPressure = train.all[trainPosition].prototype.air.device.horn.operatingPressure,
-                    allowed = air.reservoir.main.pressureCheck(opsPressure, trainPosition);
-                if ((allowed === true) || (force === true)) {
-                    train.all[trainPosition].throttle.f.set({"F2": state});
-                    train.all[trainPosition].dcc.f.horn.state = state;
-                    sim.f.air.horn(trainPosition, state);
-                    console.log("DCC: Setting horn to " + state + " on Train#" + trainPosition)
-                } else {
-                    console.log("CANT DO IT, NOT ENOUGH PRESSURE");
-                }
+            this.f.horn.set = function (state) {
+              train.all[trainPosition].throttle.f.set({"F2": state});
+              train.all[trainPosition].dcc.f.horn.state = state;
+              console.log("DCC: Setting headlight to " + state + " on Train#" + trainPosition)
             };
             this.f.horn.state = false;
-                
+
             //compressor
             this.f.compressor = {};
             this.f.compressor.set = function (state) {
@@ -82,7 +61,7 @@ var decoders = {
                 }
             };
             this.f.compressor.state = false;
-                
+
             //air release
             this.f.airDump = {};
             this.f.airDump.set = function (state) {
@@ -96,18 +75,18 @@ var decoders = {
                     console.log("DCC: Setting airDump to " + state + " on Train#" + trainPosition)
                 }
             };
-                
+
             //dyn brake fans
             this.f.dynbrakes = {};
             this.f.dynbrakes.set = function (state) {
-                    
+
             };
             this.f.dynbrakes.state = false;
-                
+
             //engine on/off
             this.f.engine = {};
             this.f.engine.set = function (state) {
-                //This IF makes the entire function useless if you're out of fuel, or if the state argument is no different than the current actual state 
+                //This IF makes the entire function useless if you're out of fuel, or if the state argument is no different than the current actual state
                 if ( (train.all[trainPosition].prototype.realtime.fuel.status !== 0) && (state !== train.all[trainPosition].dcc.f.compressor.state) ){
                     train.all[trainPosition].throttle.f.set({"F8":state});
                     train.all[trainPosition].dcc.f.engine.state = state;
@@ -128,7 +107,7 @@ var decoders = {
                 }
             };
             this.f.engine.state = false;
-                
+
             //notch sound stuff.
             this.f.notch = {
                 up: function () {
@@ -159,8 +138,8 @@ var decoders = {
                 },
                 state: 0 //This should reflect the current notching state of the sound decoder. You should increment this up or down 1 when your up() and down() functions finish, or sim.js's functions will be horribly confused and mess up your sounds.
             };
-                
-            
+
+
             //SPEED SETTING
             this.speed = {};
             this.speed.state = 0;
@@ -171,20 +150,20 @@ var decoders = {
             this.speed.setMPH = function (mph) {
                 var speed = train.all[trainPosition].model.speed(mph);
                 train.all[trainPosition].dcc.speed.set(speed);
-            };  
+            };
         }
     },
-    
+
     //GENERIC FALLBACK SCRIPT - DO NOT REMOVE!!
     "generic":{
         "generic" : function (address, trainPosition) {
             'use strict';
             //GENERIC FALLBACK
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate());
-            
+
             //FUNCTIONS
             this.f = {};
-            
+
             //light
             this.f.headlight = {};
             this.f.headlight.set = function (state) {
@@ -192,7 +171,7 @@ var decoders = {
                 train.all[trainPosition].dcc.f.headlight.state = state;
             };
             this.f.headlight.state = false;
-            
+
             //bell
             this.f.bell = {};
             this.f.bell.set = function (state) {
@@ -200,7 +179,7 @@ var decoders = {
                 train.all[trainPosition].dcc.f.bell.state = state;
             };
             this.f.bell.state = false;
-                
+
             //horn
             this.f.horn = {};
             this.f.horn.set = function (state) {
@@ -208,7 +187,7 @@ var decoders = {
                 train.all[trainPosition].dcc.f.horn.state = state;
             };
             this.f.horn.state = false;
-                
+
             //compressor
             this.f.compressor = {};
             this.f.compressor.set = function (state) {
@@ -216,26 +195,26 @@ var decoders = {
                 train.all[trainPosition].dcc.f.compressor.state = state;
             };
             this.f.compressor.state = false;
-                
+
             //air release
             this.f.airdump = {};
             this.f.airdump.set = function (state) {
-                    
+
             };
             this.f.airdump.state = false;
-                
+
             //dyn brake fans
             this.f.dynbrakes = {};
             this.f.dynbrakes.set = function (state) {
-                
+
             };
             this.f.dynbrakes.state = false;
-                
+
             //engine on/off
             this.f.engine = {};
             this.f.engine.set = function (state) {
                 //This function is almost exactly the same as the one in my ESU LokSound EMD 567 decoder constructor, the difference is this one never actually sends a DCC command (it's basically dummy function that the physics engine thinks is legit)
-                
+
                 //This IF makes the entire function useless if you're out of fuel.
                 if (train.all[trainPosition].prototype.realtime.fuel.status !== 0){
                     train.all[trainPosition].dcc.f.engine.state = state;
@@ -254,7 +233,7 @@ var decoders = {
                 }
             };
             this.f.engine.state = false;
-                
+
             //notch sound stuff.
             this.f.notch = {
                 up : function () {
@@ -275,8 +254,8 @@ var decoders = {
                 },
                 state : 0 //This should reflect the current notching state of the sound decoder. You should increment this up or down 1 when your up() and down() functions finish, or sim.js's functions will be horribly confused and mess up your sounds.
             };
-                
-            
+
+
             //SPEED SETTING
             this.speed = {};
             this.speed.state = 0;
@@ -288,8 +267,8 @@ var decoders = {
                 var speed = train.all[trainPosition].model.speed(mph);
                 train.all[trainPosition].dcc.speed.set(speed);
             };
-                
-            
+
+
             //SPEED SETTING
             this.speed = {};
             this.speed.state = 0;
@@ -300,8 +279,7 @@ var decoders = {
             this.speed.setMPH = function (mph) {
                 var speed = train[trainPosition].model.speed(mph);
                 train[trainPosition].dcc.speed.set(speed);
-            };            
+            };
         }
     }
 };
-

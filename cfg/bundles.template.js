@@ -47,19 +47,6 @@ bundles.locomotives = {
               flowrate : 0.28, //This is cfm/rpm, derived from "255cfm @ 900rpm for an SD45" according to Mr. Al Krug
 
           },
-          device : //TODO: maybe remove completely to make things simpler?
-          {
-              horn : {
-                  cfm : 70, //air consumption rate in cfm
-                  usagePerMs : 0.001167, //usage in cubic feet, per millisecond (should be an absurdly small number)
-                  operatingPressure : 100, //this horn runs at 100psi
-              },
-              bell : { //TODO: remove from sim and from here because it's negligible
-                  cfm : 0, //temporary until I get actual numbers
-                  usagePerMs : 0, //^^^
-                  operatingPressure : 10, //mental approximation courtesy of Bruce Kingsley
-              }
-          },
       },
 
       "realtime" : { //TODO: remove completely and consolidate redundant objects?
