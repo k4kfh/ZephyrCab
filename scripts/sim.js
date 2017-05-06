@@ -66,15 +66,11 @@ sim.accel = function() {
                 If the engine is running:
                 - Calculate RPM and tractive effort
                 - Figure out notching sounds on applicable decoders
-                - COMMENTED OUT RIGHT NOW (Figure out fuel usage)
-                - COMMENTED OUT RIGHT NOW (Subtract fuel usage for this cycle)
-                - COMMENTED OUT RIGHT NOW (Stop the engine if it runs out of fuel, and notify the engineer)
                 - Start or stop the air compressor depending on reservoir pressure
 
                 If the engine is not running (the else statement):
                 - Set RPM and Tractive Effort to 0
                 - Don't do anything with notching sounds
-                - Set fuel consumption to 0
                 - Stop the air compressor
                 */
                 if (train.all[i].prototype.engineRunning === 1) {
@@ -98,36 +94,6 @@ sim.accel = function() {
 
                     //call the tractive effort calculation function of the locomotive's bundle
                     train.all[i].prototype.realtime.te = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i);
-
-                    /*
-                    FUEL USAGE CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
-
-                    //Grab fuel usage in gallons/hr for this notch
-                    var fuelUsagePerHour = train.all[i].prototype.fuel.usage[notch.state];
-                    //Set usage per hour variable
-                    train.all[i].prototype.realtime.fuelUsagePerHour = fuelUsagePerHour;
-                    //Set usage per cycle variable, which by default is gallons per 100ms.
-                    train.all[i].prototype.realtime.fuel.usagePerCycle = (fuelUsagePerHour / (36000)) * sim.time.speed; //The 36,000 is the conversion factor for hours to 100ms increments
-
-                    //Subtract the fuel usage we just calculated from  the current fuel tank
-                    train.all[i].prototype.realtime.fuel.status = train.all[i].prototype.realtime.fuel.status - train.all[i].prototype.realtime.fuel.usagePerCycle;
-                    //Make sure the above calculation isn't less than 0
-                    if (train.all[i].prototype.realtime.fuel.status < 0) {
-                        train.all[i].prototype.realtime.fuel.status = 0;
-                    }
-
-                    //TODO - Add fuel gauge and update it here
-
-                    //Stop the engine if it runs out of fuel, and alert the user
-                    if (train.all[i].prototype.realtime.fuel.status === 0) {
-                        train.all[i].dcc.f.engine.set(false); //Turn off engine sounds, which sets running to 0, making the TE of this loco nothing
-                        //This if statement checks if we've already notified the user, and if we haven't, it does.
-                        if (train.all[i].prototype.realtime.fuel.notifiedOfEmptyTank === false) {
-                            Materialize.toast("<i class='material-icons left'>warning</i>" + train.all[i].roster.name + " has run out of fuel!")
-                            train.all[i].prototype.realtime.fuel.notifiedOfEmptyTank = true;
-                        }
-                    }
-                    */
 
                     /*
                     ROLLING RESISTANCE AND GENERAL DRAG
@@ -155,11 +121,11 @@ sim.accel = function() {
                     More information on all this to come.
                     */
                     //Define some shorthand variables for readability
-                    var compressor = train.all[i].prototype.realtime.air.compressor,
-                        dumpValve = train.all[i].prototype.realtime.air.reservoir.main.dump,
+                    var compressor = train.all[i].prototype.air.compressor,
+                        dumpValve = train.all[i].prototype.air.reservoir.main.dump,
                         upperLimit = train.all[i].prototype.air.compressor.limits.upper,
                         lowerLimit = train.all[i].prototype.air.compressor.limits.lower,
-                        psi = train.all[i].prototype.realtime.air.reservoir.main.psi.g,
+                        psi = train.all[i].prototype.air.reservoir.main.psi.g,
                         cfmRpmRatio = train.all[i].prototype.air.compressor.flowrate, //ratio of cfm per rpm
                         rpm = train.all[i].prototype.realtime.rpm;
                     /*
@@ -192,25 +158,25 @@ sim.accel = function() {
                     TASKS
                     3. Find compressor output flow rate (in cubic feet per physics cycle).
                     */
-                    train.all[i].prototype.realtime.air.compressor.flowrate.cfm = rpm * cfmRpmRatio
-                    train.all[i].prototype.realtime.air.compressor.flowrate.perCycle = (rpm * cfmRpmRatio) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms)
+                    train.all[i].prototype.air.compressor.flowrate.cfm = rpm * cfmRpmRatio
+                    train.all[i].prototype.air.compressor.flowrate.perCycle = (rpm * cfmRpmRatio) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms)
 
                     //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
                     //This huge long statement really just says (atmAirVolume = atmAirVolume + flowratePerCycle)
-                    train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume + train.all[i].prototype.realtime.air.compressor.flowrate.perCycle;
+                    train.all[i].prototype.air.reservoir.main.atmAirVolume = train.all[i].prototype.air.reservoir.main.atmAirVolume + train.all[i].prototype.air.compressor.flowrate.perCycle;
 
                     //Subtract leak rate in cubic feet before calculating pressure
-                    var volumeInTank = train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume;
+                    var volumeInTank = train.all[i].prototype.air.reservoir.main.atmAirVolume;
                     var leakRate = train.all[i].prototype.air.reservoir.main.leakRate; //this is loss in cubic feet per cycle
                     //The business end of this messy code here
                     var volumeInTank = volumeInTank - leakRate;
                     //More jostling variables around
-                    train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume = volumeInTank;
+                    train.all[i].prototype.air.reservoir.main.atmAirVolume = volumeInTank;
 
                     //Make sure the volume isn't below the capacity of the reservoir (otherwise we'll have a vacuum)
-                    if (train.all[i].prototype.realtime.air.reservoir.main.atmAirVolume < train.all[i].prototype.air.reservoir.main.capacity) {
+                    if (train.all[i].prototype.air.reservoir.main.atmAirVolume < train.all[i].prototype.air.reservoir.main.capacity) {
                         //if the volume is less than the minimum (the capacity) then fix it
-                        train.all[i].prototype.realtime.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
+                        train.all[i].prototype.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
                     }
                     air.reservoir.main.updatePSI(i) //this takes all those numbers we just figured out and calculates the PSI, then updates the gauge
                 } else {
@@ -224,12 +190,10 @@ sim.accel = function() {
                     */
                     train.all[i].prototype.realtime.rpm = 0;
                     train.all[i].prototype.realtime.te = 0;
-                    //Set fuel consumption to zero
-                    train.all[i].prototype.realtime.fuel.usagePerCycle = 0;
                     //Turn off air compressor sound
                     train.all[i].dcc.f.compressor.set(false);
                     //Turn off air compressor simulation
-                    train.all[i].prototype.realtime.air.compressor.running = 0;
+                    train.all[i].prototype.air.compressor.running = 0;
                     //update PSI for main reservoir based on the numbers we have, just so the number is still there
                     air.reservoir.main.updatePSI(i)
                 }
