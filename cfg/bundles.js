@@ -26,7 +26,10 @@ bundles.locomotives = {
         type: "locomotive",
         model: //all functions dealing with virtual-->model physics
         {
-            speed: function(mph) {} //converts speed in mph to JMRI speed %
+            speed: function(mph) {
+                //complete BS math but it's just an example
+                return mph;
+            } //converts speed in mph to JMRI speed %
         },
         prototype: {
             "builder": "EMD",

@@ -20,7 +20,7 @@ var air = {
             */
             updatePSI : function (locomotive) {
                 var capacity = train.all[locomotive].prototype.air.reservoir.main.capacity;
-                var atmAirVolume = train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume;
+                var atmAirVolume = train.all[locomotive].prototype.air.reservoir.main.atmAirVolume;
                 
                 //atmosphere air is at 14.696psi, so:
                 var psiAbs = (atmAirVolume / capacity) + 13.696; //this means that if atmAirVolume and capacity are equal, then the psi will be 14.696psi (1atm)
@@ -33,8 +33,8 @@ var air = {
                 }
                 
                 //now we actually set the train objects to the newly calculated values
-                train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g = psig;
-                train.all[locomotive].prototype.realtime.air.reservoir.main.psi.abs = psiAbs;
+                train.all[locomotive].prototype.air.reservoir.main.psi.g = psig;
+                train.all[locomotive].prototype.air.reservoir.main.psi.abs = psiAbs;
                 //and then we update the gauge
                 gauge.air.reservoir.main(psig)
             },
@@ -43,9 +43,9 @@ var air = {
                 console.log("AIR: Taking " + cfeet + "@" + atPressure + "PSI from Main Reservoir on train.all[" + locomotive + "]");
                 //Define some shorthand variables
                 var mainReservoir = {};
-                mainReservoir.psi = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g;
+                mainReservoir.psi = train.all[locomotive].prototype.reservoir.main.psi.g;
                 mainReservoir.cap = train.all[locomotive].prototype.air.reservoir.main.capacity;
-                mainReservoir.atmAirVol = train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume;
+                mainReservoir.atmAirVol = train.all[locomotive].prototype.reservoir.main.atmAirVolume;
                 
                 //using Boyle's law, figure out how much cubic feet @ the reservoir pressure is equal to cfeet @ atPressure
                 var cfeetToTake = (cfeet * atPressure) / mainReservoir.psi;
@@ -57,11 +57,11 @@ var air = {
                 
                 console.log("AIR: New Main Reservoir Volume : " + mainReservoir.newVol);
                 
-                train.all[locomotive].prototype.realtime.air.reservoir.main.atmAirVolume = mainReservoir.newVol;
+                train.all[locomotive].prototype.reservoir.main.atmAirVolume = mainReservoir.newVol;
                 
                 //update the gauge to reflect our changes
                 if (locomotive == cab.current) {
-                    gauge.air.reservoir.main(train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g);
+                    gauge.air.reservoir.main(train.all[locomotive].prototype.reservoir.main.psi.g);
                 }
                 
                 //Return true or false based on whether or not it was able to do it
@@ -75,7 +75,7 @@ var air = {
             
             //returns true or false whether an air device can operate with the current reservoir pressure
             pressureCheck : function(opsPressure, locomotive) {
-                var resPressure = train.all[locomotive].prototype.realtime.air.reservoir.main.psi.g;
+                var resPressure = train.all[locomotive].prototype.reservoir.main.psi.g;
                 var result = (resPressure >= opsPressure);
                 if (result == false) {Materialize.toast("Not enough air pressure!", 2000);}
                 return result;
