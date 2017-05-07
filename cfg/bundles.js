@@ -48,8 +48,53 @@ bundles.locomotives = {
 
             calc: //this contains functions left open to developers to implement for a given locomotive
             {
-                te: function(speed, trainPosition) {}, //returns tractive effort in lbs
-                maxSpeed: function(trainPosition) {}, //sets exceedingMaxSpeed (a coefficient to nullify TE) to 0 if we're exceeding traction motor's speed capabilities
+                te: function(speed, trainPosition) {/*
+                    This example uses an equation from a Virginia Tech paper.
+                    
+                    It is important to note that the value from this function will be used, unaltered, in the physics engine. You cannot forget to take into account the reverser. This is easy; all you have to do is multiply your calculated value by the global variable: reverser . If we're in neutral, this will yield 0. In forward, it will do nothing. In reverse, it will make your number negative. Simple, but very important.
+                    */
+                    //First we need to convert the speed to KM/HR.
+                    var efficiency = 0.72
+                    var horsepower = train.all[trainPosition].prototype.maxHP * (notch.state/8)
+                    train.all[trainPosition].prototype.realtime.horsepower = horsepower; //just so it's stored
+                    var speedSI = speed * 1.60934
+    
+                    /*
+                    Now we must actually use the formula from the Virginia Tech paper. It states:
+                    T = 2650((np/v))
+    
+                    T is tractive effort in Newtons.
+                    n is the efficiency coefficient (unitless)
+                    p is the output horsepower
+                    v is the speed in km/hr
+                    */
+                    var teNewtons = 2650 * ( (efficiency * horsepower)/(speedSI) )
+    
+                    //Now that we have the tractive effort in Newtons, we must convert it to pounds. We also include the exceedingMaxSpeed variable, which becomes 0 when we exceed the maximum electrically possible speed for a given notch, and thus makes the TE zero
+                    train.all[trainPosition].prototype.calc.maxSpeed(trainPosition);
+                    var teLbs = 0.224809 * teNewtons * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
+                    //This is a measure of protection since the equation creates a curve that moves upwards too sharply
+                    if (speed < 8.9) {
+                        teLbs = 56500 * (notch.state / 8) * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
+                    }
+                    
+                    return teLbs; //the abs is to protect against returning -0, //returns tractive effort in lbs
+                },
+                maxSpeed: function(trainPosition) {
+                    var speedPerNotch = 7.5; //I chose to make my function a simple linear calculation
+                    var maxSpeed = speedPerNotch * notch.state;
+                    //This is a simple linear calculation that seemed 'good enough' to me, but if you find actual numbers you could create a better way.
+                    var actualSpeed = Math.abs(train.total.accel.speed.mph) //TODO: Once coupler slack is implemented, this must change to the individual element's speed
+                    console.debug("Actual Speed: " + actualSpeed)
+                    if (actualSpeed > maxSpeed) {
+                        //if we're exceeding it
+                        train.all[trainPosition].prototype.realtime.exceedingMaxSpeed = 0;
+                    }
+                    else {
+                        //if all is well
+                        train.all[trainPosition].prototype.realtime.exceedingMaxSpeed = 1; //this is an inverted boolean, see sim.js's math for the reason why
+                    }
+                }, //sets exceedingMaxSpeed (a coefficient to nullify TE) to 0 if we're exceeding traction motor's speed capabilities
             },
 
             air: //holds static and realtime data about pneumatics
@@ -332,10 +377,10 @@ bundles.rollingstock = {
             weight: 150000,
             realtime: {
                 //realtime data for things like braking and coupler slack goes in here
+                rollingResistance: 0,
             },
             brake: {
                 //air brake equipment information
-                lineLength: 50, //train line length, in feet, to be used with timing
                 latency: 100, //time it takes to propagate a signal through the car, in milliseconds
                 //makes a brake reduction on ``trainPosition`` by ``psi``, and calculates the braking force resulting
                 reduction: function(trainPosition, psi) {
@@ -417,14 +462,17 @@ bundles.rollingstock = {
                 },
                 //calculates the force based on the psi in the brake cylinder
                 calcForce: function(trainPosition, psi) {
-                    //Easy Tunables for customizing your car's brakes
-                    var pistonArea = 15; //15 square inch piston surface area
-                    var shoeFrictionCoeff = 0.4; //brake shoe coefficient of friction
-
-                    //find linear force from cylinder and multiply by friction coefficient
-                    var brakeTorque = (pistonArea * psi) * shoeFrictionCoeff;
-
-                    train.all[trainPosition].prototype.brake.brakingForce = -1 * brakeTorque; //multiply by -1 since it's against the trainn's motive force
+                    /*
+                    This "Magic Number" variable is an interesting concept. It's essentially an approximate constant for converting from pressure in the cylinders to brake force at the wheels. I found it by looking at a study on "brake ratio" for loaded vs empty cars. Brake ratio is a ratio of the braking force to the car's weight, and Load/Empty Sensors (explained on Al Krug's page) adjust the brake system to modify this ratio to avoid slipping when the car is not loaded. I basically took data from this study (which included 4 similar 1970s steel hoppers) and used my knowledge of the cylinder pressure during the tests, and algebra-ed my way to a constant for converting cylinder pressure to braking force. I did it for each car and then averaged the factors together (they didn't differ much) and got 404.
+                    
+                    Whether the above method is totally accurate is not conclusively proven, but it's a heck of a lot easier than the alternative and it SEEMS mathematically sound, so I'm trying it for now. Results so far seem to indicate that 404 may be a little high.
+                    */
+                    var magicNumber = 404;
+                    train.all[trainPosition].prototype.brake.brakingForce = psi * magicNumber * -1; //multiply by -1 since it's against the trainn's motive force
+                    if (train.total.accel.speed.mph == 0) {
+                        train.all[trainPosition].prototype.brake.brakingForce = 0;
+                        return 0;
+                    }
                     return train.all[trainPosition].prototype.brake.brakingForce;
                 },
                 reservoirPSI: 90, //reservoir psi
@@ -438,7 +486,7 @@ bundles.rollingstock = {
                 chargeRate: 0.000001, //psi per millisecond when charging. Should be a really tiny number
                 releaseRate: 0.001, //psi per millisecond rate of release. Should be tiny, but larger than the charge rate
             },
-            coefficientOf: {
+            coeff: {
                 rollingResistance: 0.005, //rolling resistance
                 genResistance: 0, //arbitrary other resistance value that is left to account for friction bearings/roller bearings etc.
             },

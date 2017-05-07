@@ -59,7 +59,7 @@ sim.accel = function() {
         //Now we increment over every train object
         for (var i = 0; i < train.all.length; i++) {
 
-            if (train.all[i].type === 'locomotive') {
+            if (train.all[i].type == 'locomotive') {
                 //Locomotive Specific Stuff
 
                 /*
@@ -76,7 +76,6 @@ sim.accel = function() {
                 if (train.all[i].prototype.engineRunning === 1) {
                     //Calculates the engine RPM, which is necessary for compressor flow rate
                     train.all[i].prototype.realtime.rpm = train.all[i].prototype.engineRunning * train.all[i].prototype.notchRPM[notch.state];
-
                     //SETTING NOTCHING SOUNDS
                     if (train.all[i].dcc.f.notch.state != notch.state) {
                         //console.debug("TRIGGERED")
@@ -100,7 +99,7 @@ sim.accel = function() {
 
                     This is where rolling resistance, along with a general drag coefficient (WIP!) to account for bearings and the like, is calculated.
                     */
-                    train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coefficientOf.rollingResistance * train.all[i].prototype.weight
+                    train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coeff.rollingResistance * train.all[i].prototype.weight
                         //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
                     if (train.total.accel.speed.mph == 0) {
                         train.all[i].prototype.realtime.rollingResistance = 0
@@ -126,7 +125,7 @@ sim.accel = function() {
                         upperLimit = train.all[i].prototype.air.compressor.limits.upper,
                         lowerLimit = train.all[i].prototype.air.compressor.limits.lower,
                         psi = train.all[i].prototype.air.reservoir.main.psi.g,
-                        cfmRpmRatio = train.all[i].prototype.air.compressor.flowrate, //ratio of cfm per rpm
+                        cfmRpmRatio = train.all[i].prototype.air.compressor.flowrateCoeff, //ratio of cfm per rpm
                         rpm = train.all[i].prototype.realtime.rpm;
                     /*
                     IF/ELSE Tasks
@@ -158,23 +157,22 @@ sim.accel = function() {
                     TASKS
                     3. Find compressor output flow rate (in cubic feet per physics cycle).
                     */
-                    train.all[i].prototype.air.compressor.flowrate.cfm = rpm * cfmRpmRatio
-                    train.all[i].prototype.air.compressor.flowrate.perCycle = (rpm * cfmRpmRatio) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms)
+                    var flowratePerCycle = (rpm * cfmRpmRatio) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms). Store this locally only since we won't need it again
 
                     //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
-                    //This huge long statement really just says (atmAirVolume = atmAirVolume + flowratePerCycle)
-                    train.all[i].prototype.air.reservoir.main.atmAirVolume = train.all[i].prototype.air.reservoir.main.atmAirVolume + train.all[i].prototype.air.compressor.flowrate.perCycle;
+                    //This huge long statement really just says (currentAtmAirVolume = currentAtmAirVolume + flowratePerCycle)
+                    train.all[i].prototype.air.reservoir.main.currentAtmAirVolume = train.all[i].prototype.air.reservoir.main.currentAtmAirVolume + flowratePerCycle;
 
                     //Subtract leak rate in cubic feet before calculating pressure
-                    var volumeInTank = train.all[i].prototype.air.reservoir.main.atmAirVolume;
+                    var volumeInTank = train.all[i].prototype.air.reservoir.main.currentAtmAirVolume;
                     var leakRate = train.all[i].prototype.air.reservoir.main.leakRate; //this is loss in cubic feet per cycle
                     //The business end of this messy code here
                     var volumeInTank = volumeInTank - leakRate;
                     //More jostling variables around
-                    train.all[i].prototype.air.reservoir.main.atmAirVolume = volumeInTank;
+                    train.all[i].prototype.air.reservoir.main.currentAtmAirVolume = volumeInTank;
 
                     //Make sure the volume isn't below the capacity of the reservoir (otherwise we'll have a vacuum)
-                    if (train.all[i].prototype.air.reservoir.main.atmAirVolume < train.all[i].prototype.air.reservoir.main.capacity) {
+                    if (train.all[i].prototype.air.reservoir.main.currentAtmAirVolume < train.all[i].prototype.air.reservoir.main.capacity) {
                         //if the volume is less than the minimum (the capacity) then fix it
                         train.all[i].prototype.air.reservoir.main.airVolumeInTank = train.all[i].prototype.air.reservoir.main.capacity;
                     }
@@ -221,9 +219,19 @@ sim.accel = function() {
                 }
                 //find the brake force for the one car we're dealing with here
                 var brakeForce = train.all[i].prototype.brake.brakingForce * sim.direction;
+                
+                //Find rolling resistance
+                var rollingResistance = train.all[i].prototype.coeff.rollingResistance * train.all[i].prototype.weight * -1 * sim.direction; //multiply by -1 since it's backwards force
+                if (train.total.accel.speed.mph == 0) {
+                    train.all[i].prototype.realtime.rollingResistance = 0;
+                }
+                train.all[i].prototype.realtime.rollingResistance = rollingResistance;
 
                 //Net Force
-                var netForce = brakeForce;
+                var netForce = brakeForce + rollingResistance;
+                if (train.total.accel.speed.mph == 0) {
+                    netForce = 0;
+                }
                 train.all[i].prototype.realtime.netForce = netForce;
 
                 //add net force to total
@@ -257,24 +265,31 @@ sim.accel = function() {
             if (train.total.accel.speed.mph > 0 && train.total.accel.speed.mph + accelerationPerCycle < 0) {
                 //if we're going from positive to negative
                 train.total.accel.speed.mph = 0;
-                console.info('ZERO CROSSING!')
+                console.log("SIM DIRECTION = " + sim.direction)
+                console.dir(train)
+                console.info('ZERO CROSSING! (from positive side)')
+                sim.direction = 0;
             } else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
                 //if we're going from negative to positive
                 train.total.accel.speed.mph = 0;
-                console.info('ZERO CROSSING!')
+                console.log("SIM DIRECTION = " + sim.direction)
+                console.dir(train)
+                console.info('ZERO CROSSING! (from negative side)')
+                sim.direction = 0;
             }
             else { //if we're not going to cross 0, just handle acceleration like normal
                 train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
             }
             gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
             //also set the sim.direction (actual direction) variable
-            if (train.total.accel.speed.mph > 0) {
-                sim.direction = 1;
-            } else if (train.total.accel.speed.mph < 0) {
-                sim.direction = -1;
-            }
-            else {
+            if (train.total.accel.speed.mph == 0) {
                 sim.direction = 0;
+            }
+            else if (train.total.accel.speed.mph > 0) {
+                sim.direction = 1;
+            }
+            else if (train.total.accel.speed.mph < 0) {
+                sim.direction = -1;
             }
 
             //Finally we actually make the locomotive(s) go this speed
