@@ -87,7 +87,7 @@ var decoders = {
             this.f.engine = {};
             this.f.engine.set = function (state) {
                 //This IF makes the entire function useless if you're out of fuel, or if the state argument is no different than the current actual state
-                if ( (train.all[trainPosition].prototype.realtime.fuel.status !== 0) && (state !== train.all[trainPosition].dcc.f.compressor.state) ){
+                if (state !== train.all[trainPosition].dcc.f.engine.state) {
                     train.all[trainPosition].throttle.f.set({"F8":state});
                     train.all[trainPosition].dcc.f.engine.state = state;
                     console.log("DCC: Setting engine to " + state + " on Train#" + trainPosition)
