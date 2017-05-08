@@ -219,16 +219,16 @@ sim.accel = function() {
                 }
                 //find the brake force for the one car we're dealing with here
                 var brakeForce = train.all[i].prototype.brake.brakingForce * sim.direction;
-                
-                //Find rolling resistance
-                var rollingResistance = train.all[i].prototype.coeff.rollingResistance * train.all[i].prototype.weight * -1 * sim.direction; //multiply by -1 since it's backwards force
+
+                //Rolling Resistance
+                train.all[i].prototype.realtime.rollingResistance = sim.direction * -1 * train.all[i].prototype.coeff.rollingResistance * train.all[i].prototype.weight
+                    //This IF statement makes sure we dont accidentally have it pull the train backwards if it's sitting still.
                 if (train.total.accel.speed.mph == 0) {
-                    train.all[i].prototype.realtime.rollingResistance = 0;
+                    train.all[i].prototype.realtime.rollingResistance = 0
                 }
-                train.all[i].prototype.realtime.rollingResistance = rollingResistance;
 
                 //Net Force
-                var netForce = brakeForce + rollingResistance;
+                var netForce = brakeForce + train.all[i].prototype.realtime.rollingResistance;
                 if (train.total.accel.speed.mph == 0) {
                     netForce = 0;
                 }
@@ -236,70 +236,64 @@ sim.accel = function() {
 
                 //add net force to total
                 train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
-                
+
                 //also ensure we're factoring in this car's weight
                 train.total.weight = train.total.weight + train.all[i].prototype.weight; //weight = weight + element.weight
             }
+        }
+        //THE FOR LOOP ENDS HERE
+        //now we total up all the math we did during the for loop
+        //convert mass from pounds to kg
+        train.total.accel.si.mass = train.total.weight * 0.453592;
+        //convert netForce from pounds to Newtons
+        train.total.accel.si.force = train.total.netForce * 4.44822;
 
-            //convert mass from pounds to kg
-            train.total.accel.si.mass = train.total.weight * 0.453592;
-            //convert netForce from pounds to Newtons
-            train.total.accel.si.force = train.total.netForce * 4.44822;
+        //Final Net force/speed calculations
+        //Defining shorthand variables for clarity
+        var netForce = train.total.accel.si.force;
+        var mass = train.total.accel.si.mass;
 
-            //Final Net force/speed calculations
-            //Defining shorthand variables for clarity
-            var netForce = train.total.accel.si.force;
-            var mass = train.total.accel.si.mass;
+        //leveraging f=ma to find acceleration, in meters per second per second
+        train.total.accel.si.acceleration = netForce / mass;
+        //first we compute the new speed in meters per second
+        train.total.accel.speed.ms = train.total.accel.speed.ms + train.total.accel.si.acceleration;
 
-            //leveraging f=ma to find acceleration, in meters per second per second
-            train.total.accel.si.acceleration = netForce / mass;
-            //first we compute the new speed in meters per second
-            train.total.accel.speed.ms = train.total.accel.speed.ms + train.total.accel.si.acceleration;
+        //we store the acceleration in mph per second
+        train.total.accel.acceleration_mph = train.total.accel.si.acceleration * 2.23694; //convert from m/s/s to mph/s
 
-            //we store the acceleration in mph per second
-            train.total.accel.acceleration_mph = train.total.accel.si.acceleration * 2.23694; //convert from m/s/s to mph/s
+        //now figure out how much speed to add/subtract by converting that acceleration to miles per hour per sim.time
+        var accelerationPerCycle = train.total.accel.acceleration_mph * (sim.time.interval / 1000);
+        //Forced zero crossing code (keeps the train from going back and forth when it should just stop)
+        if (train.total.accel.speed.mph > 0 && train.total.accel.speed.mph + accelerationPerCycle < 0) {
+            //if we're going from positive to negative
+            train.total.accel.speed.mph = 0;
+            console.info('ZERO CROSSING! (from positive side)')
+            sim.direction = 0;
+        } else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
+            //if we're going from negative to positive
+            train.total.accel.speed.mph = 0;
+            console.info('ZERO CROSSING! (from negative side)')
+            sim.direction = 0;
+        } else { //if we're not going to cross 0, just handle acceleration like normal
+            train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
+        }
+        gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
+        //also set the sim.direction (actual direction) variable
+        if (train.total.accel.speed.mph == 0) {
+            sim.direction = 0;
+        } else if (train.total.accel.speed.mph > 0) {
+            sim.direction = 1;
+        } else if (train.total.accel.speed.mph < 0) {
+            sim.direction = -1;
+        }
 
-            //now figure out how much speed to add/subtract by converting that acceleration to miles per hour per sim.time
-            var accelerationPerCycle = train.total.accel.acceleration_mph * (sim.time.interval / 1000);
-            //Forced zero crossing code (keeps the train from going back and forth when it should just stop)
-            if (train.total.accel.speed.mph > 0 && train.total.accel.speed.mph + accelerationPerCycle < 0) {
-                //if we're going from positive to negative
-                train.total.accel.speed.mph = 0;
-                console.log("SIM DIRECTION = " + sim.direction)
-                console.dir(train)
-                console.info('ZERO CROSSING! (from positive side)')
-                sim.direction = 0;
-            } else if (train.total.accel.speed.mph < 0 && train.total.accel.speed.mph + accelerationPerCycle > 0) {
-                //if we're going from negative to positive
-                train.total.accel.speed.mph = 0;
-                console.log("SIM DIRECTION = " + sim.direction)
-                console.dir(train)
-                console.info('ZERO CROSSING! (from negative side)')
-                sim.direction = 0;
-            }
-            else { //if we're not going to cross 0, just handle acceleration like normal
-                train.total.accel.speed.mph = train.total.accel.speed.mph + accelerationPerCycle;
-            }
-            gauge.speedometer(Math.abs(train.total.accel.speed.mph)); //abs in case we're going backwards and it's negative
-            //also set the sim.direction (actual direction) variable
-            if (train.total.accel.speed.mph == 0) {
-                sim.direction = 0;
-            }
-            else if (train.total.accel.speed.mph > 0) {
-                sim.direction = 1;
-            }
-            else if (train.total.accel.speed.mph < 0) {
-                sim.direction = -1;
-            }
-
-            //Finally we actually make the locomotive(s) go this speed
-            for (var x = 0; x < train.all.length; x++) {
-                //walk over each train element and ignore rolling stock
-                if (train.all[x].type == "locomotive") {
-                    //set direction first
-                    train.all[x].throttle.direction.set(sim.direction);
-                    train.all[x].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph)); //we use ABS here because the direction is set separately from the actual speed
-                }
+        //Finally we actually make the locomotive(s) go this speed
+        for (var x = 0; x < train.all.length; x++) {
+            //walk over each train element and ignore rolling stock
+            if (train.all[x].type == "locomotive") {
+                //set direction first
+                train.all[x].throttle.direction.set(sim.direction);
+                train.all[x].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph)); //we use ABS here because the direction is set separately from the actual speed
             }
         }
     }
