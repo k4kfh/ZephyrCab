@@ -377,6 +377,16 @@ gauge = {
                 val = val + "psi"; //add units
                 $("#gauge-equalizingReservoir").html(val);
             }
+        },
+        brake : {
+            pipe : function(val) {
+                val = val + "psi"; //add units
+                $("#gauge-brakePipe").html(val);
+            },
+            cylinder : function(val) {
+                val = val + "psi"; //add units
+                $("#gauge-brake").html(val);
+            }
         }
     },
     speedometer : function(val) {

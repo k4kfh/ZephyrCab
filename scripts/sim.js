@@ -286,6 +286,11 @@ sim.accel = function() {
         } else if (train.total.accel.speed.mph < 0) {
             sim.direction = -1;
         }
+        
+        //AIR GAUGES
+        gauge.air.reservoir.equalizing(brake.eqReservoirPSI);
+        gauge.air.brake.pipe(Math.round(brake.avgLinePSI()));
+        gauge.air.brake.cylinder(train.all[cab.current].prototype.brake.cylinderPSI);
 
         //Finally we actually make the locomotive(s) go this speed
         for (var x = 0; x < train.all.length; x++) {

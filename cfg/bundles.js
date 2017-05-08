@@ -155,9 +155,6 @@ bundles.locomotives = {
                 tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
                 waitingOnChange: false, //tells brake.cycle() whether or not this car is already undergoing a change
                 applicationRate: 0.5, //in psi/sec FROM RESERVOIR
-                reduction: function(trainPosition, psi) {
-
-                },
                 tripleValveCycle: function(trainPosition) {
                     var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
                     var linePSI = train.all[trainPosition].prototype.brake.linePSI;
@@ -409,6 +406,7 @@ bundles.rollingstock = {
 
                     //now if we've already made a full service reduction, we can just exit.
                     if (resultingCylinderPSI == train.all[trainPosition].prototype.brake.cylinderPSI) {
+                        train.all[trainPosition].prototype.brake.tripleValveCycle(trainPosition);
                         return undefined; //stop the function
                     }
 
@@ -434,18 +432,35 @@ bundles.rollingstock = {
                             train.all[trainPosition].prototype.brake.waitingOnApplication = false;
                             //set the new reservoir PSI
                             train.all[trainPosition].prototype.brake.reservoirPSI = resultingReservoirPSI;
+                            train.all[trainPosition].prototype.brake.tripleValveCycle(trainPosition);
                         }
                     });
                 },
                 //this takes no arguments since North American freight air brakes won't gradually release
-                release: function() {
-
+                release: function(trainPosition) {
+                    train.all[trainPosition].prototype.brake.cylinderPSI = 0;
+                    train.all[trainPosition].prototype.brake.calcForce(trainPosition, 0);
+                    var chargeInterval = setInterval(
+                    function(){
+                        if (train.all[trainPosition].prototype.brake.reservoirPSI >= train.all[trainPosition].prototype.brake.linePSI) {
+                            clearInterval(chargeInterval);
+                            train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.linePSI;
+                            train.all[trainPosition].prototype.brake.tripleValveCycle(trainPosition);
+                            console.log("ELEMENT " +trainPosition+" FINISHED RELEASING; RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
+                            return undefined; //break out of the function here
+                        }
+                        //gradually increase the brake pressure
+                        train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI + (train.all[trainPosition].prototype.brake.chargeRate * 100);
+                        console.log("NEW RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
+                        
+                    }, 100);
                 },
                 tripleValveCycle: function(trainPosition) {
                     var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
                     var linePSI = train.all[trainPosition].prototype.brake.linePSI;
                     if (reservoirPSI > linePSI) {
                         //triple valve APPLY
+                        console.debug("Element " + trainPosition + ": Triple Valve APPLY")
                         train.all[trainPosition].prototype.brake.tripleValve = "A";
                         //Figure out how much of a reduction is needed
                         var reductionAmount = reservoirPSI - linePSI;
@@ -453,6 +468,7 @@ bundles.rollingstock = {
                     } else if (reservoirPSI < (linePSI - 2)) { //the -2 is because once the line is 2psi above the reservoir, the triple valve releases
                         //triple valve RELEASE
                         train.all[trainPosition].prototype.brake.tripleValve = "R";
+                        train.all[trainPosition].prototype.brake.release(trainPosition);
                         console.debug("Element " + trainPosition + ": Triple Valve RELEASE")
                     } else if (reservoirPSI == linePSI) {
                         //triple valve LAP
@@ -467,7 +483,7 @@ bundles.rollingstock = {
                     
                     Whether the above method is totally accurate is not conclusively proven, but it's a heck of a lot easier than the alternative and it SEEMS mathematically sound, so I'm trying it for now. Results so far seem to indicate that 404 may be a little high.
                     */
-                    var magicNumber = 404;
+                    var magicNumber = 350;
                     train.all[trainPosition].prototype.brake.brakingForce = psi * magicNumber * -1; //multiply by -1 since it's against the trainn's motive force
                     if (train.total.accel.speed.mph == 0) {
                         train.all[trainPosition].prototype.brake.brakingForce = 0;
@@ -483,7 +499,7 @@ bundles.rollingstock = {
                 applicationRate: 0.5, //in psi/sec FROM RESERVOIR
                 waitingOnApplication: false, //this is true when the $.animate() routine runs for this element
                 brakingForce: 0, //linear braking force acting on the railcar, in lbs
-                chargeRate: 0.000001, //psi per millisecond when charging. Should be a really tiny number
+                chargeRate: 0.0001, //psi per millisecond when charging. Should be a really tiny number
                 releaseRate: 0.001, //psi per millisecond rate of release. Should be tiny, but larger than the charge rate
             },
             coeff: {
