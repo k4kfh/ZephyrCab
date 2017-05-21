@@ -27,8 +27,9 @@ bundles.locomotives = {
         model: //all functions dealing with virtual-->model physics
         {
             speed: function(mph) {
-                //complete BS math but it's just an example
-                return mph;
+                //this number is specific to a Bachmann FT-A with a LokSound decoder installed. I derived it from tests with a scale speedometer.
+                var speedSteps = mph/0.7261
+                return (speedSteps/126);
             } //converts speed in mph to JMRI speed %
         },
         prototype: {
@@ -184,8 +185,10 @@ bundles.locomotives = {
         type: "locomotive",
         model: {
             speed: function(mph) {
-                mph = speed; //totally not correct but it is a functional example
-                return speed;
+                //this number is specific to a Bachmann FT-A with a LokSound decoder installed. I derived it from tests with a scale speedometer.
+                var speedSteps = mph/0.7261
+                console.debug("Model Speed: ")
+                return (speedSteps/126);
             }
         },
         prototype: {
