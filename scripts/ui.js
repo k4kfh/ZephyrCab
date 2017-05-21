@@ -114,15 +114,7 @@ $( document ).ready(function() {
         (new buzz.sound("soundfx/switch.mp3")).play()
         //make sure we have a cab locomotive before doing anything else
         if (train.all[cab.current] !== undefined) {
-            //check if we have enough air pressure to run the bell
-            var operatingPressure = train.all[cab.current].prototype.air.device.bell.operatingPressure
-            var allowed = air.reservoir.main.pressureCheck(operatingPressure, cab.current);
-            if (allowed == true) {
-                train.all[cab.current].dcc.f.bell.set($('#bell').is(":checked"))
-            }
-            else {
-                train.all[cab.current].dcc.f.bell.set(false)
-            }
+            train.all[cab.current].dcc.f.bell.set($('#bell').is(":checked"))
         }
         else {
             //just let the debug console know
@@ -197,10 +189,9 @@ $( document ).ready(function() {
         }
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-        if (train.all[cab.current] === undefined) {
+        if (train.all[cab.current] !== undefined) {
             var value = $(this).is(":checked");
             train.all[cab.current].dcc.f.headlight.set(value);
-            console.debug("Setting headlight to " + value);
         }
     });
     
