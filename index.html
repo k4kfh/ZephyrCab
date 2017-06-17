@@ -179,9 +179,16 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="chip">EMERGENCY</div>
+                                    <div id="autobrake-chip" class="chip">EMERGENCY</div>
                                     <b class="right">Automatic Brake</b>
-                                    <input type="range" value=0 min=0 max=90>
+                                    <input id="autobrake" type="range" value=0 min=0 max=100>
+                                    <table>
+                                        <tr>
+                                            <td id="autobrake-table-release" width="20%" class="white-text green center z-depth-2"><b>RELEASE</b></td>
+                                            <td id="autobrake-table-service" width="60%" class="white-text orange center"><b>SERVICE</b></td>
+                                            <td id="autobrake-table-emergency" width="20%" class="white-text red center"><i class="material-icons">new_releases</i></td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>

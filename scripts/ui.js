@@ -35,24 +35,22 @@ Indicators:
 #error
 #bailoff (this changes color when a bail-off is possible)
 */
-$( document ).ready(function() {
-    
+$(document).ready(function() {
+
     //Reverser
-    $('#reverser').change( function() {
+    $('#reverser').change(function() {
         //play sound
         (new buzz.sound("soundfx/click.mp3")).play()
-        //Change indicator
+            //Change indicator
         if ($(this).val() == 0) {
             $("#reverser-indicator").html("NEU");
             //change actual reverser global
             reverser = 0;
-        }
-        else if ($(this).val() == 1) {
+        } else if ($(this).val() == 1) {
             $("#reverser-indicator").html("FWD");
             //change actual reverser global
             reverser = 1;
-        }
-        else if ($(this).val() == -1) {
+        } else if ($(this).val() == -1) {
             $("#reverser-indicator").html("REV");
             //change actual reverser global
             reverser = -1;
@@ -60,11 +58,11 @@ $( document ).ready(function() {
         //DEBUGGING
         console.debug("Change event fired with reverser handle in " + $(this).val() + " position. Set reverser global to " + reverser);
     });
-    
+
     //Throttle
-    $('#throttle').change( function() {
+    $('#throttle').change(function() {
         //play sound effect
-        (new buzz.sound("soundfx/click.mp3")).play();    
+        (new buzz.sound("soundfx/click.mp3")).play();
         //call simulation functions
         var returned = notch.set($(this).val())
 
@@ -76,47 +74,108 @@ $( document ).ready(function() {
 
         $("#throttle").val(returned);
         //Change indicator
-        if(returned == 0) {
+        if (returned == 0) {
             $("#throttle-indicator").html("IDLE");
-        }
-        else if (returned > 0 && returned <= 8) {
+        } else if (returned > 0 && returned <= 8) {
             $("#throttle-indicator").html("RUN" + returned);
         }
     });
-    
+
+
+    $("#autobrake").on("input", function() {
+        //RELEASE
+        if ($(this).val() <= 20) {
+            $("#autobrake-table-release").addClass("z-depth-2");
+            $("#autobrake-table-service").removeClass("z-depth-2");
+            $("#autobrake-table-emergency").removeClass("z-depth-2");
+            $("#autobrake-chip").html("RELEASE")
+        }
+        //SERVICE
+        else if ($(this).val() <= 80) {
+            $("#autobrake-table-release").removeClass("z-depth-2");
+            $("#autobrake-table-service").addClass("z-depth-2");
+            $("#autobrake-table-emergency").removeClass("z-depth-2");
+            //if we're in service mode, we need to indicate how far the cursor will reduce the brakes
+            var servicePercentageInt = Math.round((($(this).val() - 20) / 60) * 100);
+            var servicePercentageDecimal = servicePercentageInt / 100;
+            var fullServiceReduction = brake.findEQpressure(brake.feedValvePSI).fullServiceReduction;
+            var targetReduction = Math.round(servicePercentageDecimal * fullServiceReduction);
+
+            console.debug("Service Application Percentage: " + servicePercentageInt);
+            console.debug("Target Reduction : " + targetReduction)
+
+            $("#autobrake-chip").html("SERVICE (" + targetReduction + "PSI)")
+        }
+        //EMERGENCY
+        else {
+            $("#autobrake-table-release").removeClass("z-depth-2");
+            $("#autobrake-table-service").removeClass("z-depth-2");
+            $("#autobrake-table-emergency").addClass("z-depth-2");
+            $("#autobrake-chip").html("EMERGENCY")
+        }
+
+        //brake.ui.update($(this).val())
+    })
+
+    $("#autobrake").change(function() {
+
+        //RELEASE
+        if ($(this).val() <= 20) {
+            //RELEASE BRAKES
+            console.debug("BRAKES RELEASE MODE")
+            brake.eqReservoirPSI = brake.feedValvePSI; //charge up the EQ reservoir to release the brakes and begin charging the train reservoirs
+        }
+        //SERVICE
+        else if ($(this).val() <= 80) {
+            console.debug("BRAKES SERVICE MODE")
+            //do this math again so we can actually apply it
+            var servicePercentageInt = Math.round((($(this).val() - 20) / 60) * 100);
+            var servicePercentageDecimal = servicePercentageInt / 100;
+            var fullServiceReduction = brake.findEQpressure(brake.feedValvePSI).fullServiceReduction;
+            var targetReduction = Math.round(servicePercentageDecimal * fullServiceReduction);
+
+            //now we actually set the equalizing reservoir to the pressure our brake valve dictates
+            brake.eqReservoirPSI = brake.feedValvePSI - targetReduction;
+        }
+        //EMERGENCY
+        else {
+            console.debug("BRAKES EMERGENCY MODE")
+            //for now we'll just have EMERGENCY be a full service reduction
+            brake.eqReservoirPSI = brake.findEQpressure().fullServiceReduction;
+        }
+    })
+
     //Horn
     //Mousedown event starts the horn
-     $('#horn').mousedown( function() {
+    $('#horn').mousedown(function() {
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-        //make sure we have a cab locomotive before doing anything else
+            //make sure we have a cab locomotive before doing anything else
         if (train.all[cab.current] !== undefined) {
             train.all[cab.current].dcc.f.horn.set(true);
-        }
-        else {
+        } else {
             //just let the debug console know
             console.error("Horn mousedown method called; doing nothing since we have no cab locomotive!")
         }
     });
     //Mouseup event starts the horn
-    $('#horn').mouseup( function() {
+    $('#horn').mouseup(function() {
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-        //make sure we have a cab locomotive before doing anything else
+            //make sure we have a cab locomotive before doing anything else
         if (train.all[cab.current] !== undefined) {
             train.all[cab.current].dcc.f.horn.set(false);
         }
     });
 
     //Bell
-    $('#bell').change( function() {
+    $('#bell').change(function() {
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-        //make sure we have a cab locomotive before doing anything else
+            //make sure we have a cab locomotive before doing anything else
         if (train.all[cab.current] !== undefined) {
             train.all[cab.current].dcc.f.bell.set($('#bell').is(":checked"))
-        }
-        else {
+        } else {
             //just let the debug console know
             console.log("UI: Bell function called; doing nothing since we have no cab locomotive.");
             $('#bell').prop('checked', false);
@@ -124,27 +183,27 @@ $( document ).ready(function() {
     });
 
     //Engine Start
-    $('#engine-start').change( function() {
+    $('#engine-start').change(function() {
         //If we have no cab locomotive, don't allow anything to happen
         if (train.all[cab.current] === undefined) {
             $('#engine-start').prop('checked', false);
             return null;
         }
-        
+
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play()
-        /*
-        Business end of this code
-        - Cycle through all train elements
-        - If element is locomotive, set .prototype.engineRunning to the state of the #engine-start checkbox
-        - If element is locomotive, call .dcc.f.engine.set(boolean)
-        */
+            /*
+            Business end of this code
+            - Cycle through all train elements
+            - If element is locomotive, set .prototype.engineRunning to the state of the #engine-start checkbox
+            - If element is locomotive, call .dcc.f.engine.set(boolean)
+            */
         for (var i = 0; i < train.all.length; i++) {
             var element = train.all[i]
             if (element.type == "locomotive") {
                 element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
                 console.log("UI: Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
-                
+
                 /*
                 FUEL USAGE RELATED CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
                 
@@ -162,14 +221,14 @@ $( document ).ready(function() {
     });
 
     //Track Power
-    $('#track-power').change( function() {
+    $('#track-power').change(function() {
         //play sound
         (new buzz.sound("soundfx/switch.mp3")).play();
         jmri.trkpower($('#track-power').is(":checked"));
     });
 
     //Sand
-    $('#sand').change( function() {
+    $('#sand').change(function() {
         //If we have no cab locomotive, don't allow anything to happen
         if (train.all[cab.current] === undefined) {
             $('#sand').prop('checked', false);
@@ -181,7 +240,7 @@ $( document ).ready(function() {
     });
 
     //Headlight
-    $('#headlight').change( function() {
+    $('#headlight').change(function() {
         //If we have no cab locomotive, don't allow anything to happen
         if (train.all[cab.current] === undefined) {
             $('#headlight').prop('checked', false);
@@ -194,7 +253,7 @@ $( document ).ready(function() {
             train.all[cab.current].dcc.f.headlight.set(value);
         }
     });
-    
+
     //WebSockets Connect Button
     $('#link-connect').bind("click", function() {
         //Grab information from the form inputs
@@ -203,110 +262,104 @@ $( document ).ready(function() {
         //Double check if the user actually typed in an IP or not
         if (ip !== "") {
             link.connect(ip, port);
-        }
-        else {
+        } else {
             Materialize.toast("You need to input an IP address!", 2000); //If they didn't type an IP, let them know
         }
     });
 });
 
 ui = {
-    wheelSlip : {
-        set : function(arg) {
+    wheelSlip: {
+        set: function(arg) {
             //end early if no real change
             if (arg == ui.wheelSlip.state) {
                 return undefined;
             }
             //play sound of relay
             (new buzz.sound("soundfx/switch.mp3")).play()
-            //set indicator color
+                //set indicator color
             if (arg == true) {
                 $("#wheel-slip").addClass("red").addClass("white-text");
                 ui.wheelSlip.state = true;
-            }
-            else if (arg == false) {
+            } else if (arg == false) {
                 $("#wheel-slip").removeClass("red").removeClass("white-text");
                 ui.wheelSlip.state = false;
             }
 
         },
-        state : false,
+        state: false,
     },
-    pcsOpen : {
-        set : function(arg) {
+    pcsOpen: {
+        set: function(arg) {
             //end early if no real change
             if (arg == ui.pcsOpen.state) {
                 return undefined;
             }
             //play sound of relay
             (new buzz.sound("soundfx/switch.mp3")).play()
-            //set indicator color
+                //set indicator color
             if (arg == true) {
                 $("#pcs-open").addClass("red").addClass("white-text");
                 ui.pcsOpen.state = true;
-            }
-            else if (arg == false) {
+            } else if (arg == false) {
                 $("#pcs-open").removeClass("red").removeClass("white-text");
                 ui.pcsOpen.state = false;
             }
 
         },
-        state : false,
+        state: false,
     },
-    dynBrakeWarning : {
-        set : function(arg) {
+    dynBrakeWarning: {
+        set: function(arg) {
             //end early if no real change
             if (arg == ui.dynBrakeWarning.state) {
                 return undefined;
             }
             //play sound of relay
             (new buzz.sound("soundfx/switch.mp3")).play()
-            //set indicator color
+                //set indicator color
             if (arg == true) {
                 $("#dyn-brake-warning").addClass("red").addClass("white-text");
                 ui.dynBrakeWarning.state = true;
-            }
-            else if (arg == false) {
+            } else if (arg == false) {
                 $("#dyn-brake-warning").removeClass("red").removeClass("white-text");
                 ui.dynBrakeWarning.state = false;
             }
 
         },
-        state : false,
+        state: false,
     },
-    bailoff : { //this button changes color when a bail-off is possible to let the user know
-        set : function(arg) {
+    bailoff: { //this button changes color when a bail-off is possible to let the user know
+        set: function(arg) {
             $bailoff = $("#bailoff");
             if (arg == true) {
                 $bailoff.removeClass("grey lighten-2"); //remove the normal styling
                 $bailoff.addClass("red white-text"); //turn it red to let user know a bail-off is possible now
-            }
-            else if (arg == false) {
+            } else if (arg == false) {
                 $bailoff.addClass("grey lighten-2"); //remove the normal styling
                 $bailoff.removeClass("red white-text"); //turn it red to let user know a bail-off is possible now
             }
         }
     },
-    error : {
-        set : function(arg) {
+    error: {
+        set: function(arg) {
             //end early if no real change
             if (arg == ui.error.state) {
                 return undefined;
             }
             //play sound of relay
             (new buzz.sound("soundfx/switch.mp3")).play()
-            //set indicator color
+                //set indicator color
             if (arg == true) {
                 $("#error").addClass("red").addClass("white-text");
                 ui.error.state = true;
-            }
-            else if (arg == false) {
+            } else if (arg == false) {
                 $("#error").removeClass("red").removeClass("white-text");
                 ui.error.state = false;
             }
 
         },
-        state : false,
+        state: false,
     }
 }
 
@@ -314,29 +367,29 @@ var cab = {
     current: 0, //this is set to 0 by default to assume that we're in the cab of the leading locomotive
     setCurrentLoco: function(name) {
         if (name == undefined) {
-                if (train.all[0] == undefined) {
-                    return undefined; //This makes the entire function not do anything if we have no lead loco
-                }
-                //Set name to the name of the lead loco
-                var name = train.all[0].roster.name;
-                
-                //Now the function can move on as normal, but it will revert to the lead locomotive.
+            if (train.all[0] == undefined) {
+                return undefined; //This makes the entire function not do anything if we have no lead loco
             }
-            var number = train.find.all(name);
-            
-            //This stops the function mid-execution if it is trying to work with a nonexistant locomotive.
-            if (number == undefined) {
-                return undefined;
-            }
-            
-            cab.current = number;
-            Materialize.toast("<i class='material-icons left'>directions_railway</i>Entered cab of " + name, 2500)
-            
+            //Set name to the name of the lead loco
+            var name = train.all[0].roster.name;
 
-            //This resets all the switches (engine startup, bell, etc.) to their ACTUAL values as opposed to the last value they were at.
-            $("#engine-start").checked = train.all[cab.current].dcc.f.engine.state;
-            $("#bell").checked = train.all[cab.current].dcc.f.bell.state;
-            $("#headlight").checked = train.all[cab.current].dcc.f.headlight.state;
+            //Now the function can move on as normal, but it will revert to the lead locomotive.
+        }
+        var number = train.find.all(name);
+
+        //This stops the function mid-execution if it is trying to work with a nonexistant locomotive.
+        if (number == undefined) {
+            return undefined;
+        }
+
+        cab.current = number;
+        Materialize.toast("<i class='material-icons left'>directions_railway</i>Entered cab of " + name, 2500)
+
+
+        //This resets all the switches (engine startup, bell, etc.) to their ACTUAL values as opposed to the last value they were at.
+        $("#engine-start").checked = train.all[cab.current].dcc.f.engine.state;
+        $("#bell").checked = train.all[cab.current].dcc.f.bell.state;
+        $("#headlight").checked = train.all[cab.current].dcc.f.headlight.state;
     }
 }
 
@@ -357,38 +410,38 @@ IDs of the gauge elements:
 */
 
 gauge = {
-    air : {
-        reservoir : {
+    air: {
+        reservoir: {
             //Main Air Reservoir Gauge
-            main : function(val) {
+            main: function(val) {
                 val = Math.round(val) + "psi"; //add units
                 $("#gauge-mainReservoir").html(val);
             },
-            equalizing : function(val) {
+            equalizing: function(val) {
                 val = val + "psi"; //add units
                 $("#gauge-equalizingReservoir").html(val);
             }
         },
-        brake : {
-            pipe : function(val) {
+        brake: {
+            pipe: function(val) {
                 val = val + "psi"; //add units
                 $("#gauge-brakePipe").html(val);
             },
-            cylinder : function(val) {
+            cylinder: function(val) {
                 val = val + "psi"; //add units
                 $("#gauge-brake").html(val);
             }
         }
     },
-    speedometer : function(val) {
+    speedometer: function(val) {
         val = Math.round(val) + "mph"; //add units
         $("#gauge-speed").html(val);
     },
-    current : function(val) {
+    current: function(val) {
         val = val + "psi"; //add units
         $("#gauge-mainReservoir").html(val);
     },
-    rpm : function(val) {
+    rpm: function(val) {
         //does nothing, simply a placeholder for the future
     }
 }

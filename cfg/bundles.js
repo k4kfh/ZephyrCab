@@ -441,9 +441,10 @@ bundles.rollingstock = {
                 },
                 //this takes no arguments since North American freight air brakes won't gradually release
                 release: function(trainPosition) {
-                    train.all[trainPosition].prototype.brake.cylinderPSI = 0;
-                    train.all[trainPosition].prototype.brake.calcForce(trainPosition, 0);
-                    var chargeInterval = setInterval(
+                    Materialize.toast("Element #" + trainPosition + " brakes released & charging...", 3000)
+                    train.all[trainPosition].prototype.brake.cylinderPSI = 0; //release the cylinder pressure in the car
+                    train.all[trainPosition].prototype.brake.calcForce(trainPosition, 0); //set car's brake force to zero
+                    var chargeInterval = setInterval( //start the slow charging process for the car's reservoir
                     function(){
                         if (train.all[trainPosition].prototype.brake.reservoirPSI >= train.all[trainPosition].prototype.brake.linePSI) {
                             clearInterval(chargeInterval);
