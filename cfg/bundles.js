@@ -37,6 +37,7 @@ bundles.locomotives = {
             "name": "F7-A",
             "weight": 250000, //Weight of the locomotive in lbs
             "maxHP": 1500, //Horsepower of the locomotive
+            "maxAmps" : 900, //Max current of the locomotive
             "notchRPM": [300, 362, 425, 487, 550, 613, 675, 738, 800],
             "notchMaxSpeeds": [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off

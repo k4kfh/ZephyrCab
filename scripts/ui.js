@@ -434,7 +434,7 @@ gauge = {
         }
     },
     speedometer: function(val) {
-        val = Math.round(val) + "mph"; //add units
+        val = (Math.round(val * 10)/10).toFixed(1) + "mph"; //add units
         $("#gauge-speed").html(val);
     },
     current: function(val) {
