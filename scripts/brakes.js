@@ -93,7 +93,7 @@ brake = {
                 var timeToWait = car.prototype.brake.latency; //the time it takes for the car to propagate the signal
                 car.prototype.tmp.brakePSIchangeTimeout = setTimeout(function() {
                     //code to run after the proper time has elapsed
-                    Materialize.toast("Changing linePSI on " + carNumber + " to " + frontNeighbor.prototype.brake.linePSI, 2000);
+                    console.debug("Changing linePSI on " + carNumber + " to " + frontNeighbor.prototype.brake.linePSI, 2000);
                     car.prototype.brake.linePSI = frontNeighbor.prototype.brake.linePSI;
                     car.prototype.brake.waitingOnChange = false;
                     //now we change the triple valve state

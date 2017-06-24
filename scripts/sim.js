@@ -67,6 +67,7 @@ sim.accel = function() {
                 - Calculate RPM and tractive effort
                 - Figure out notching sounds on applicable decoders
                 - Start or stop the air compressor depending on reservoir pressure
+                - Calculate amperage
 
                 If the engine is not running (the else statement):
                 - Set RPM and Tractive Effort to 0
@@ -93,7 +94,10 @@ sim.accel = function() {
 
                     //call the tractive effort calculation function of the locomotive's bundle
                     train.all[i].prototype.realtime.te = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i);
-
+                    
+                    //Now that we've calculated TE, we calculate amps!
+                    train.all[i].prototype.calc.amps(i);
+                    gauge.amps(train.all[i].prototype.realtime.amps)
                     /*
                     ROLLING RESISTANCE AND GENERAL DRAG
 
@@ -194,6 +198,9 @@ sim.accel = function() {
                     train.all[i].prototype.air.compressor.running = 0;
                     //update PSI for main reservoir based on the numbers we have, just so the number is still there
                     air.reservoir.main.updatePSI(i)
+                    //set amps to zero
+                    train.all[i].prototype.realtime.amps = 0;
+                    gauge.amps(train.all[i].prototype.realtime.amps)
                 }
 
                 //BRAKES

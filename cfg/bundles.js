@@ -27,21 +27,21 @@ bundles.locomotives = {
         model: //all functions dealing with virtual-->model physics
         {
             speed: function(mph) {
-                //this number is specific to a Bachmann FT-A with a LokSound decoder installed. I derived it from tests with a scale speedometer.
-                var speedSteps = mph/0.7261
-                return (speedSteps/126);
-            } //converts speed in mph to JMRI speed %
+                    //this number is specific to a Bachmann FT-A with a LokSound decoder installed. I derived it from tests with a scale speedometer.
+                    var speedSteps = mph / 0.7261
+                    return (speedSteps / 126);
+                } //converts speed in mph to JMRI speed %
         },
         prototype: {
             "builder": "EMD",
             "name": "F7-A",
             "weight": 250000, //Weight of the locomotive in lbs
             "maxHP": 1500, //Horsepower of the locomotive
-            "maxAmps" : 900, //Max current of the locomotive
+            "maxAmps": 900, //Max current of the locomotive
             "notchRPM": [300, 362, 425, 487, 550, 613, 675, 738, 800],
             "notchMaxSpeeds": [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
-
+            "startingTE": 56500,
             fuel: {
                 usage: [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //array in gal/hr, by notch
                 capacity: 1200, //fuel tank in GAL
@@ -50,17 +50,21 @@ bundles.locomotives = {
 
             calc: //this contains functions left open to developers to implement for a given locomotive
             {
-                te: function(speed, trainPosition) {/*
-                    This example uses an equation from a Virginia Tech paper.
-                    
-                    It is important to note that the value from this function will be used, unaltered, in the physics engine. You cannot forget to take into account the reverser. This is easy; all you have to do is multiply your calculated value by the global variable: reverser . If we're in neutral, this will yield 0. In forward, it will do nothing. In reverse, it will make your number negative. Simple, but very important.
-                    */
+                te: function(speed, trainPosition, overrideMaxSpeedForAmperage) {
+                    /*
+                                        This example uses an equation from a Virginia Tech paper.
+                                        
+                                        It is important to note that the value from this function will be used, unaltered, in the physics engine. You cannot forget to take into account the reverser. This is easy; all you have to do is multiply your calculated value by the global variable: reverser . If we're in neutral, this will yield 0. In forward, it will do nothing. In reverse, it will make your number negative. Simple, but very important.
+                                        */
+                    if (overrideMaxSpeedForAmperage == undefined) { //this option will not send a TE of 0 even if we're exceeding the maximum speed
+                        overrideMaxSpeedForAmperage = false;
+                    }
                     //First we need to convert the speed to KM/HR.
                     var efficiency = 0.72
-                    var horsepower = train.all[trainPosition].prototype.maxHP * (notch.state/8)
+                    var horsepower = train.all[trainPosition].prototype.maxHP * (notch.state / 8)
                     train.all[trainPosition].prototype.realtime.horsepower = horsepower; //just so it's stored
                     var speedSI = speed * 1.60934
-    
+
                     /*
                     Now we must actually use the formula from the Virginia Tech paper. It states:
                     T = 2650((np/v))
@@ -70,16 +74,21 @@ bundles.locomotives = {
                     p is the output horsepower
                     v is the speed in km/hr
                     */
-                    var teNewtons = 2650 * ( (efficiency * horsepower)/(speedSI) )
-    
+                    var teNewtons = 2650 * ((efficiency * horsepower) / (speedSI))
+
                     //Now that we have the tractive effort in Newtons, we must convert it to pounds. We also include the exceedingMaxSpeed variable, which becomes 0 when we exceed the maximum electrically possible speed for a given notch, and thus makes the TE zero
                     train.all[trainPosition].prototype.calc.maxSpeed(trainPosition);
                     var teLbs = 0.224809 * teNewtons * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
-                    //This is a measure of protection since the equation creates a curve that moves upwards too sharply
-                    if (speed < 8.9) {
-                        teLbs = 56500 * (notch.state / 8) * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
+                    if (overrideMaxSpeedForAmperage) { //the amperage calculator uses this option to get an unmodified raw TE value
+                        var teLbs = 0.224809 * teNewtons
                     }
-                    
+                    //This is a measure of protection since the equation creates a curve that moves upwards too sharply
+                    if (speed < 8.9 && overrideMaxSpeedForAmperage !== true) {
+                        teLbs = 56500 * (notch.state / 8) * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
+                    } else if (speed < 8.9 && overrideMaxSpeedForAmperage) {
+                        teLbs = 56500 * (notch.state / 8)
+                    }
+
                     return teLbs; //the abs is to protect against returning -0, //returns tractive effort in lbs
                 },
                 maxSpeed: function(trainPosition) {
@@ -91,12 +100,18 @@ bundles.locomotives = {
                     if (actualSpeed > maxSpeed) {
                         //if we're exceeding it
                         train.all[trainPosition].prototype.realtime.exceedingMaxSpeed = 0;
-                    }
-                    else {
+                    } else {
                         //if all is well
                         train.all[trainPosition].prototype.realtime.exceedingMaxSpeed = 1; //this is an inverted boolean, see sim.js's math for the reason why
                     }
                 }, //sets exceedingMaxSpeed (a coefficient to nullify TE) to 0 if we're exceeding traction motor's speed capabilities
+                amps: function(trainPosition) {
+                    var maxAmps = train.all[trainPosition].prototype.maxAmps;
+                    var maxTE = train.all[trainPosition].prototype.startingTE;
+                    var speed = train.total.accel.speed.mph;
+                    var currentTE = train.all[trainPosition].prototype.calc.te(speed, trainPosition, true); //calls this with override option
+                    train.all[trainPosition].prototype.realtime.amps = (currentTE/maxTE) * maxAmps;
+                }
             },
 
             air: //holds static and realtime data about pneumatics
@@ -187,9 +202,9 @@ bundles.locomotives = {
         model: {
             speed: function(mph) {
                 //this number is specific to a Bachmann FT-A with a LokSound decoder installed. I derived it from tests with a scale speedometer.
-                var speedSteps = mph/0.7261
+                var speedSteps = mph / 0.7261
                 console.debug("Model Speed: ")
-                return (speedSteps/126);
+                return (speedSteps / 126);
             }
         },
         prototype: {
@@ -201,6 +216,7 @@ bundles.locomotives = {
             "notchRPM": [300, 362, 425, 487, 550, 613, 675, 738, 800],
             "notchMaxSpeeds": [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
+            "startingTE": 56500, //for amp calculation
             fuel: {
                 usage: [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //array in gal/hr, by notch
                 capacity: 1200, //fuel tank in GAL
@@ -442,23 +458,22 @@ bundles.rollingstock = {
                 },
                 //this takes no arguments since North American freight air brakes won't gradually release
                 release: function(trainPosition) {
-                    Materialize.toast("Element #" + trainPosition + " brakes released & charging...", 3000)
                     train.all[trainPosition].prototype.brake.cylinderPSI = 0; //release the cylinder pressure in the car
                     train.all[trainPosition].prototype.brake.calcForce(trainPosition, 0); //set car's brake force to zero
                     var chargeInterval = setInterval( //start the slow charging process for the car's reservoir
-                    function(){
-                        if (train.all[trainPosition].prototype.brake.reservoirPSI >= train.all[trainPosition].prototype.brake.linePSI) {
-                            clearInterval(chargeInterval);
-                            train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.linePSI;
-                            train.all[trainPosition].prototype.brake.tripleValveCycle(trainPosition);
-                            console.log("ELEMENT " +trainPosition+" FINISHED RELEASING; RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
-                            return undefined; //break out of the function here
-                        }
-                        //gradually increase the brake pressure
-                        train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI + (train.all[trainPosition].prototype.brake.chargeRate * 100);
-                        console.log("NEW RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
-                        
-                    }, 100);
+                        function() {
+                            if (train.all[trainPosition].prototype.brake.reservoirPSI >= train.all[trainPosition].prototype.brake.linePSI) {
+                                clearInterval(chargeInterval);
+                                train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.linePSI;
+                                train.all[trainPosition].prototype.brake.tripleValveCycle(trainPosition);
+                                console.log("ELEMENT " + trainPosition + " FINISHED RELEASING; RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
+                                return undefined; //break out of the function here
+                            }
+                            //gradually increase the brake pressure
+                            train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI + (train.all[trainPosition].prototype.brake.chargeRate * 100);
+                            console.log("ELEMENT #" + trainPosition + " NEW RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
+
+                        }, 100);
                 },
                 tripleValveCycle: function(trainPosition) {
                     var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
@@ -466,6 +481,7 @@ bundles.rollingstock = {
                     if (reservoirPSI > linePSI) {
                         //triple valve APPLY
                         console.debug("Element " + trainPosition + ": Triple Valve APPLY")
+                        toast.brakeNotification("Applying brakes on #" + trainPosition);
                         train.all[trainPosition].prototype.brake.tripleValve = "A";
                         //Figure out how much of a reduction is needed
                         var reductionAmount = reservoirPSI - linePSI;
@@ -474,11 +490,14 @@ bundles.rollingstock = {
                         //triple valve RELEASE
                         train.all[trainPosition].prototype.brake.tripleValve = "R";
                         train.all[trainPosition].prototype.brake.release(trainPosition);
-                        console.debug("Element " + trainPosition + ": Triple Valve RELEASE")
+                        console.debug("Element " + trainPosition + ": Triple Valve RELEASE");
+                        toast.brakeNotification("Releasing brakes on #" + trainPosition);
+
                     } else if (reservoirPSI == linePSI) {
                         //triple valve LAP
                         train.all[trainPosition].prototype.brake.tripleValve = "L";
                         console.debug("Element " + trainPosition + ": Triple Valve LAP")
+                        toast.brakeNotification("Lapping brakes on #" + trainPosition);
                     }
                 },
                 //calculates the force based on the psi in the brake cylinder

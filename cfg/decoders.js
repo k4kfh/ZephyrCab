@@ -65,15 +65,8 @@ var decoders = {
             //air release
             this.f.airDump = {};
             this.f.airDump.set = function (state) {
-                var possible = (train.all[trainPosition].prototype.realtime.air.reservoir.main.psi.g !== 0);
-                if (possible === true) {
-                    train.all[trainPosition].throttle.f.set({"F19":state});
+                train.all[trainPosition].throttle.f.set({"F19":state});
                     console.log("DCC: Setting airDump to " + state + " on Train#" + trainPosition)
-                }
-                else if ((possible === false) && (state === false)) {
-                    train.all[trainPosition].throttle.f.set({"F19":state});
-                    console.log("DCC: Setting airDump to " + state + " on Train#" + trainPosition)
-                }
             };
 
             //dyn brake fans

@@ -124,6 +124,10 @@ $(document).ready(function() {
             //RELEASE BRAKES
             console.debug("BRAKES RELEASE MODE")
             brake.eqReservoirPSI = brake.feedValvePSI; //charge up the EQ reservoir to release the brakes and begin charging the train reservoirs
+            train.all[cab.current].dcc.f.airDump.set(true);
+            setTimeout(function(){
+                train.all[cab.current].dcc.f.airDump.set(false);
+            }, 1000);
         }
         //SERVICE
         else if ($(this).val() <= 80) {
@@ -441,7 +445,18 @@ gauge = {
         val = val + "psi"; //add units
         $("#gauge-mainReservoir").html(val);
     },
-    rpm: function(val) {
+    amps: function(val) {
         //does nothing, simply a placeholder for the future
+        val = Math.round(val) + "A"; //add units
+        $("#gauge-amps").html(val);
+    }
+}
+
+toast = {
+    brakeNotification: function(string) {
+        if (cfg.brakes.notifications) {
+            //if brake notifications enabled
+            Materialize.toast(string, 3000);
+        }
     }
 }
