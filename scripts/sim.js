@@ -161,11 +161,12 @@ sim.accel = function() {
                     TASKS
                     3. Find compressor output flow rate (in cubic feet per physics cycle).
                     */
-                    var flowratePerCycle = (rpm * cfmRpmRatio) / 600; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms). Store this locally only since we won't need it again
+                    var flowratePerCycle = ((rpm * cfmRpmRatio) / 600) * compressor.running; //we divide this by 600 to change it from cubic feet per minute to cubic feet per 100ms (since sim.js recalculates every 100ms). Store this locally only since we won't need it again. Also note that it's multiplied by compressor.running to nullify it when the compressor is off
 
                     //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
                     //This huge long statement really just says (currentAtmAirVolume = currentAtmAirVolume + flowratePerCycle)
                     train.all[i].prototype.air.reservoir.main.currentAtmAirVolume = train.all[i].prototype.air.reservoir.main.currentAtmAirVolume + flowratePerCycle;
+                    console.debug("FLOW RATE PER CYCLE FOR i=" + i + " IS " + flowratePerCycle)
 
                     //Subtract leak rate in cubic feet before calculating pressure
                     var volumeInTank = train.all[i].prototype.air.reservoir.main.currentAtmAirVolume;
