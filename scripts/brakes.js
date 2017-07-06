@@ -136,3 +136,8 @@ brake = {
         return avg;
     },
 }
+
+indBrake = {
+    refPSI:0,
+    
+}
