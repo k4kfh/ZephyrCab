@@ -148,6 +148,21 @@ $(document).ready(function() {
             brake.eqReservoirPSI = brake.findEQpressure().fullServiceReduction;
         }
     })
+    
+    //Ind. Brake Valve
+    $("#indbrake").change(function(){
+        console.log("Ind Brake = " + $(this).val())
+    })
+    
+    $("#indbrake").on("input", function(){
+        $("#indbrake-indicator").html($(this).val() + "psi")
+    })
+    
+    //Bail Off
+    $("#bailoff").mousedown(function(){
+        //just call the bail off method, it's that simple
+        indBrake.bailOff();
+    })
 
     //Horn
     //Mousedown event starts the horn

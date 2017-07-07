@@ -138,6 +138,46 @@ brake = {
 }
 
 indBrake = {
-    refPSI:0,
-    
+    indValvePSI:0, //the PSI the independent brake valve wants it to be
+    lastBailOffPSI:brake.feedValvePSI, //train brake pipe psi at the last time the bailoff button was pressed
+    effectiveAutoBrakePSI:0, //how much the automatic brake has increased (if at all) since the last bail off
+    effectiveIndPSI:0, //the actual PSI, determined by favoring the independent or automatic brake valve
+    bailOff: function(){
+        indBrake.lastBailOffPSI = brake.eqReservoirPSI; //remember the PSI we bail off at
+        indBrake.calcEffIndPSI(); //run this to calculate the new pressure
+    },
+    calcEffAutoBrakePSI: function() {
+        //if the automatic brake has been released recently
+        if ((indBrake.lastBailOffPSI - brake.eqReservoirPSI) <= 0) {
+            //say the last time we bailed off was 70psi, then we released. 70-90=-20, but our effective autobrake PSI would be 0
+            indBrake.effectiveAutoBrakePSI = 0;
+        }
+        //the normal math
+        else {
+            indBrake.effectiveAutoBrakePSI = indBrake.lastBailOffPSI - brake.eqReservoirPSI; //otherwise we calculate it the normal way
+            // for example, last bailed off at 80, we drop to 70psi. 80psi - 70psi = 10psi effective brake pressure.
+        }
+        
+        return indBrake.effectiveAutoBrakePSI;
+    },
+    calcEffIndPSI: function() {
+        //make sure the values we're about to use are up to date by calling this
+        indBrake.calcEffAutoBrakePSI();
+        //figure out which brake pressure is greater and favor it
+        var indBrakePSI = indBrake.indValvePSI;
+        var autoBrakePSI = indBrake.effectiveAutoBrakePSI;
+        if (indBrakePSI < autoBrakePSI) {
+            console.debug("indBrake: Favoring automatic brake for independent brake pressure; "+ autoBrakePSI + "PSI")
+            indBrake.effectiveIndPSI = autoBrakePSI;
+            //now we let the user know a bailoff is possible
+            ui.bailoff.set(true);
+        }
+        else {
+            console.debug("indBrake: Favoring independent brake valve for independent brake pressure; "+ indBrakePSI + "PSI")
+            indBrake.effectiveIndPSI = indBrakePSI;
+            //now we let the user know a bailoff will have no immediate effect since the ind. brake valve is favored
+            ui.bailoff.set(false)
+        }
+        return indBrake.effectiveIndPSI;
+    }
 }

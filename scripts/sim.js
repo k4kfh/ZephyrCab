@@ -205,6 +205,8 @@ sim.accel = function() {
                 }
 
                 //BRAKES
+                //This calculates the new pressure for the independent brake system
+                indBrake.calcEffIndPSI();
 
 
                 /*Locomotive-Only Totaling Math
