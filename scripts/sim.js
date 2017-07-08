@@ -205,8 +205,14 @@ sim.accel = function() {
                 }
 
                 //BRAKES
+                //If the auto brakes are released we make sure to call this so bail-off behaves
+                if (brake.eqReservoirPSI == brake.feedValvePSI) {
+                    indBrake.bailOff();
+                }
                 //This calculates the new pressure for the independent brake system
                 indBrake.calcEffIndPSI();
+                //calculate the cylinder pressure (responsibility of relay valve) and the braking force of your locomotive
+                train.all[i].prototype.brake.ind.calcForce(i, indBrake.effectiveIndPSI);
 
 
                 /*Locomotive-Only Totaling Math
@@ -216,7 +222,7 @@ sim.accel = function() {
                 3. Add braking force to total braking force (TODO)
                 */
                 train.total.weight = train.total.weight + train.all[i].prototype.weight; //weight = weight + element.weight
-                train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance;
+                train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance + train.all[i].prototype.brake.brakingForce;
 
             }
             if (train.all[i].type == "rollingstock") {

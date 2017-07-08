@@ -62,11 +62,6 @@ brake = {
         }
         return output;
     },
-    //change the brake pipe pressure, 
-    propagate : function(newPressure) {
-        var baseTime = 0;
-        
-    },
     //Send an emergency brake signal, which travels faster than the normal signals
     emergency : function() {
         
@@ -141,7 +136,8 @@ indBrake = {
     indValvePSI:0, //the PSI the independent brake valve wants it to be
     lastBailOffPSI:brake.feedValvePSI, //train brake pipe psi at the last time the bailoff button was pressed
     effectiveAutoBrakePSI:0, //how much the automatic brake has increased (if at all) since the last bail off
-    effectiveIndPSI:0, //the actual PSI, determined by favoring the independent or automatic brake valve
+    effectiveIndPSI:0, //the actual PSI in the reference pipe, determined by favoring the independent or automatic brake valve
+    maxPressure:undefined, //the maximum amount we can apply the ind. brake. See indBrake.calcMaxPressure() for more info
     bailOff: function(){
         indBrake.lastBailOffPSI = brake.eqReservoirPSI; //remember the PSI we bail off at
         indBrake.calcEffIndPSI(); //run this to calculate the new pressure
@@ -168,7 +164,7 @@ indBrake = {
         var autoBrakePSI = indBrake.effectiveAutoBrakePSI;
         if (indBrakePSI < autoBrakePSI) {
             console.debug("indBrake: Favoring automatic brake for independent brake pressure; "+ autoBrakePSI + "PSI")
-            indBrake.effectiveIndPSI = autoBrakePSI;
+            indBrake.effectiveIndPSI = Number(autoBrakePSI);
             //now we let the user know a bailoff is possible
             ui.bailoff.set(true);
         }
@@ -179,5 +175,11 @@ indBrake = {
             ui.bailoff.set(false)
         }
         return indBrake.effectiveIndPSI;
+    },
+    calcMaxPressure: function(){
+        //there's a 250% pressure increase in the automatic brake system. ie 10lb reduction = 25lb cylinder pressure
+        var maxPressure = 2.5 * brake.findEQpressure(brake.feedValvePSI).fullServiceReduction; //we find the max pressure we can remove from the auto brake then multiply that by 2.5 to get the right pressure for this (since ind. brake is a straight air brake instead of the Westinghouse voodoo)
+        indBrake.maxPressure = maxPressure;
+        return maxPressure;
     }
 }

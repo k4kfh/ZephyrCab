@@ -110,7 +110,7 @@ bundles.locomotives = {
                     var maxTE = train.all[trainPosition].prototype.startingTE;
                     var speed = train.total.accel.speed.mph;
                     var currentTE = train.all[trainPosition].prototype.calc.te(speed, trainPosition, true); //calls this with override option
-                    train.all[trainPosition].prototype.realtime.amps = (currentTE/maxTE) * maxAmps;
+                    train.all[trainPosition].prototype.realtime.amps = (currentTE / maxTE) * maxAmps;
                 }
             },
 
@@ -165,8 +165,18 @@ bundles.locomotives = {
             brake: {
                 //we separate the independent brake info
                 ind: {
-                    cylinderPSI:0,
-                    maxPSI:0,
+                    //return effective brake force (linear force at the wheels) and cylinder pressure as an object, plus set them in the train object
+                    calcForce: function(trainPosition, refPSI) {
+                        train.all[trainPosition].prototype.brake.cylinderPSI = indBrake.effectiveIndPSI; //this is dependent on your locomotive's relay valve
+                        //if we're sitting still...
+                        if (train.total.accel.speed.mph == 0) {
+                            train.all[trainPosition].prototype.brake.brakingForce = 0;
+                            return 0;
+                        }
+                        //calculate this your own way, developers, this math is highly debatable
+                        train.all[trainPosition].prototype.brake.brakingForce = indBrake.effectiveIndPSI * 350 * -1 * sim.direction; //the crude "magic number" linear method
+                        return train.all[trainPosition].prototype.brake.brakingForce;
+                    }
                 },
                 //air brake equipment information
                 latency: 100, //time it takes to propagate a signal through the car, in milliseconds
@@ -174,30 +184,6 @@ bundles.locomotives = {
                 reservoirPSI: 90, //reservoir psi
                 cylinderPSI: 0, //brake cylinder psi
                 linePSI: 90, //brake pipe psi
-                tripleValve: "R", //can be "R"elease,  "A"pply, or "L"ap
-                waitingOnChange: false, //tells brake.cycle() whether or not this car is already undergoing a change
-                applicationRate: 0.5, //in psi/sec FROM RESERVOIR
-                tripleValveCycle: function(trainPosition) {
-                    var reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI;
-                    var linePSI = train.all[trainPosition].prototype.brake.linePSI;
-                    if (reservoirPSI > linePSI) {
-
-                        //Figure out how much of a reduction is needed
-                        var reductionAmount = reservoirPSI - linePSI;
-                        console.debug("Need to make a " + reductionAmount + "psi reduction on element " + trainPosition)
-
-                        //triple valve APPLY
-                        train.all[trainPosition].prototype.brake.tripleValve = "A";
-                    } else if (reservoirPSI < linePSI) {
-                        //triple valve RELEASE
-                        train.all[trainPosition].prototype.brake.tripleValve = "R";
-
-                    } else if (reservoirPSI == linePSI) {
-                        //triple valve LAP
-                        train.all[trainPosition].prototype.brake.tripleValve = "L";
-
-                    }
-                }
             },
         },
     },

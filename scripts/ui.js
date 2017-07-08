@@ -150,8 +150,10 @@ $(document).ready(function() {
     })
     
     //Ind. Brake Valve
+    //set up the independent brake valve range
+    $("#indbrake").attr("max",indBrake.calcMaxPressure())
     $("#indbrake").change(function(){
-        console.log("Ind Brake = " + $(this).val())
+        indBrake.indValvePSI = Number($(this).val());
     })
     
     $("#indbrake").on("input", function(){
@@ -448,7 +450,7 @@ gauge = {
             },
             cylinder: function(val) {
                 val = val + "psi"; //add units
-                $("#gauge-brake").html(val);
+                $("#gauge-brakeCylinder").html(val);
             }
         }
     },
