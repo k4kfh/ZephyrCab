@@ -213,8 +213,9 @@ sim.accel = function() {
                 indBrake.calcEffIndPSI();
                 //calculate the cylinder pressure (responsibility of relay valve) and the braking force of your locomotive
                 train.all[i].prototype.brake.ind.calcForce(i, indBrake.effectiveIndPSI);
-
-
+                
+                //Now we find/store the net force for the locomotive
+                train.all[i].prototype.realtime.netForce = train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance + train.all[i].prototype.brake.brakingForce;
                 /*Locomotive-Only Totaling Math
                 Steps:
                 1. Add weight to total weight
@@ -222,7 +223,7 @@ sim.accel = function() {
                 3. Add braking force to total braking force (TODO)
                 */
                 train.total.weight = train.total.weight + train.all[i].prototype.weight; //weight = weight + element.weight
-                train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance + train.all[i].prototype.brake.brakingForce;
+                train.total.netForce = train.total.netForce + train.all[i].prototype.realtime.netForce;
 
             }
             if (train.all[i].type == "rollingstock") {
