@@ -113,6 +113,22 @@ bundles.locomotives = {
                     train.all[trainPosition].prototype.realtime.amps = (currentTE / maxTE) * maxAmps;
                 }
             },
+            
+            wheelSlip:{//this contains all the wheel slip functions and calculations. ultimately the TE calculator will draw from this, and so will the brakes (no braking effort if wheels are slipping)
+                internalForces:0,
+                externalForces:0,
+                calcInternalForces: function(trainPosition){
+                    //add up TE and locomotive brakes
+                    train.all[trainPosition].prototype.wheelSlip.internalForces = train.all[trainPosition].prototype.realtime.te + train.all[trainPosition].prototype.brake.brakingForce;
+                    return train.all[trainPosition].prototype.wheelSlip.internalForces;
+                },
+                calcExternalForces: function(trainPosition){
+                    //this is a shorter, more efficient way to add up all the net forces of every element in the train EXCEPT this one
+                    var extForces = Math.abs(train.total.netForce - train.all[trainPosition].prototype.realtime.netForce);
+                    train.all[trainPosition].prototype.wheelSlip.externalForces = extForces;
+                    return extForces;
+                }
+            },
 
             air: //holds static and realtime data about pneumatics
             {
@@ -342,8 +358,7 @@ bundles.rollingstock = {
                 releaseRate: 0.001, //psi per millisecond rate of release. Should be tiny, but larger than the charge rate
             },
             coeff: {
-                rollingResistance: 0.005, //rolling resistance
-                genResistance: 0, //arbitrary other resistance value that is left to account for friction bearings/roller bearings etc.
+                rollingResistance: 0.009, //rolling resistance
             },
             tmp: { //junk for intervals and such to use as storage
             }
