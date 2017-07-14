@@ -175,6 +175,7 @@ var decoders = {
     "generic": {
         "generic": function(address, trainPosition) {
             'use strict';
+            console.debug("DECODER: Using 'generic' for " + trainPosition)
             //GENERIC FALLBACK
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate());
 
