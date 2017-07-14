@@ -23,7 +23,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 The screenshots below are from a machine running Linux, so they may look a little different, but the procedure will be essentially the same for Windows, Mac, and Linux.
 
-1. [**Download the latest ZephyrCab release here.**](https://github.com/k4kfh/ZephyrCab/archive/master.zip)
+1. [**Download the latest ZephyrCab release here.**](https://github.com/k4kfh/ZephyrCab/releases)
 2. **Find your JMRI profile directory.** You can do this by opening JMRI and clicking Help > Locations, as shown below.
 
     ![](http://imgur.com/enSiiful.png)
