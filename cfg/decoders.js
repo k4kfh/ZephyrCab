@@ -14,9 +14,9 @@ foo, WebSocket, $, Materialize, console, cfg, train, jmri, ui, air, sim
 
 var decoders = {
     //product "LokSound Select"
-    "ESU LokSound Select": {
+    "ESU LokSound Blardy Blar Select": {
         //sound project "emd567"
-        "LokSound Select EMD 567" : function (address, trainPosition) {
+        "LokSound Select Blardy Blar EMD 567" : function (address, trainPosition) {
             //ESU LokSound Select V4
             //decoder object for ESU official EMD 567 Sound project
             //By Hampton Morgan - k4kfh@github - Originally written in May 2015
@@ -70,11 +70,11 @@ var decoders = {
             };
 
             //dyn brake fans
-            this.f.dynbrakes = {};
-            this.f.dynbrakes.set = function (state) {
+            this.f.dynBrakes = {};
+            this.f.dynBrakes.set = function (state) {
 
             };
-            this.f.dynbrakes.state = false;
+            this.f.dynBrakes.state = false;
 
             //engine on/off
             this.f.engine = {};
