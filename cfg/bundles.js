@@ -88,6 +88,7 @@ bundles.locomotives = {
                     } else if (speed < 8.9 && overrideMaxSpeedForAmperage) {
                         teLbs = 56500 * (notch.state / 8)
                     }
+                    
 
                     return teLbs; //the abs is to protect against returning -0, //returns tractive effort in lbs
                 },
@@ -113,20 +114,49 @@ bundles.locomotives = {
                     train.all[trainPosition].prototype.realtime.amps = (currentTE / maxTE) * maxAmps;
                 }
             },
-            
-            wheelSlip:{//this contains all the wheel slip functions and calculations. ultimately the TE calculator will draw from this, and so will the brakes (no braking effort if wheels are slipping)
-                internalForces:0,
-                externalForces:0,
-                calcInternalForces: function(trainPosition){
+
+            wheelSlip: { //this contains all the wheel slip functions and calculations. ultimately the TE calculator will draw from this, and so will the brakes (no braking effort if wheels are slipping)
+                internalForces: 0,
+                externalForces: 0,
+                adhesion: 0.30, //adhesion factor (in percent)
+                adhesionDuringSlip: 0.25, //adhesion factor for slipping wheels
+                slipping: false,
+                calcInternalForces: function(trainPosition) {
                     //add up TE and locomotive brakes
-                    train.all[trainPosition].prototype.wheelSlip.internalForces = train.all[trainPosition].prototype.realtime.te + train.all[trainPosition].prototype.brake.brakingForce;
+                    train.all[trainPosition].prototype.wheelSlip.internalForces = train.all[trainPosition].prototype.realtime.teIgnoreSlip + train.all[trainPosition].prototype.brake.brakingForce; //store em in a variable and return it too
                     return train.all[trainPosition].prototype.wheelSlip.internalForces;
                 },
-                calcExternalForces: function(trainPosition){
+                calcExternalForces: function(trainPosition) {
                     //this is a shorter, more efficient way to add up all the net forces of every element in the train EXCEPT this one
-                    var extForces = Math.abs(train.total.netForce - train.all[trainPosition].prototype.realtime.netForce);
+                    var extForces = Math.abs(train.total.netForce - train.all[trainPosition].prototype.realtime.netForceIgnoreSlip);
+                    console.log("WHEELSLIP: Local Net Force = " + train.all[trainPosition].prototype.realtime.netForceIgnoreSlip)
                     train.all[trainPosition].prototype.wheelSlip.externalForces = extForces;
                     return extForces;
+                },
+                slipCalc: function(trainPosition) {
+                    var el = train.all[trainPosition].prototype;
+                    var threshold; //go ahead and define this for scope purposes
+                    //if we're already slipping
+                    if (el.wheelSlip.slipping) {
+                        threshold = el.weight * el.wheelSlip.adhesionDuringSlip; //lower threshold once we start slipping
+                    } else { //if we're not slipping already
+                        threshold = el.weight * el.wheelSlip.adhesion; //normal threshold
+                    }
+                    console.log("WHEELSLIP: ---------")
+                    console.log("WHEELSLIP: Threshold = " + threshold);
+                    
+                    var loadOnWheels = el.wheelSlip.calcInternalForces(trainPosition) + el.wheelSlip.calcExternalForces(trainPosition); 
+                    //calculate the load on the wheels
+                    console.log("WHEELSLIP: Load on wheels = " + loadOnWheels)
+                    console.log("WHEELSLIP: Internal Forces = " + el.wheelSlip.calcInternalForces(trainPosition))
+                    console.log("WHEELSLIP: External Forces = " + el.wheelSlip.calcExternalForces(trainPosition))
+                    if (loadOnWheels >= threshold) {
+                        el.wheelSlip.slipping = true;
+                    } else {
+                        el.wheelSlip.slipping = false;
+                    }
+                    console.log("WHEELSLIP: Slipping = " + el.wheelSlip.slipping)
+                    return el.wheelSlip.slipping;
                 }
             },
 
@@ -167,11 +197,14 @@ bundles.locomotives = {
             },
 
             "realtime": {
+                netForceIgnoreSlip: 0, //this is a pseudo-value before slip factors in
                 netForce: 0, //defined to make it work later
                 speed: 0, //This is defined just to be safe.
                 rollingResistance: 0, //this is pretty much a constant but we keep it here just cause
                 exceedingMaxSpeed: 1, //This is a boolean stored as a number by .prototype.calc.maxSpeed . If the locomotive has reached its max speed, this becomes zero to nullify the tractive effort. If not, it remains 1.
                 horsepower: 0, //This is the OUTPUT HP
+                te:0,
+                teIgnoreSlip:0, //this will still register a value despite slipping
             },
 
             "coeff": {
@@ -226,6 +259,8 @@ bundles.rollingstock = {
             realtime: {
                 //realtime data for things like braking and coupler slack goes in here
                 rollingResistance: 0,
+                netForce: 0,
+                netForceBeforeSlip: 0,
             },
             brake: {
                 //air brake equipment information

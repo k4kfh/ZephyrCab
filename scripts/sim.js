@@ -93,7 +93,7 @@ sim.accel = function() {
                     }
 
                     //call the tractive effort calculation function of the locomotive's bundle
-                    train.all[i].prototype.realtime.te = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i);
+                    train.all[i].prototype.realtime.teIgnoreSlip = train.all[i].prototype.calc.te(train.total.accel.speed.mph, i); //this is before we take slip into consideration
                     
                     //Now that we've calculated TE, we calculate amps!
                     train.all[i].prototype.calc.amps(i);
@@ -214,7 +214,19 @@ sim.accel = function() {
                 //calculate the cylinder pressure (responsibility of relay valve) and the braking force of your locomotive
                 train.all[i].prototype.brake.ind.calcForce(i, indBrake.effectiveIndPSI);
                 
-                //Now we find/store the net force for the locomotive
+                //WHEEL SLIP
+                //figure out if we're slipping or not
+                var slipping = train.all[i].prototype.wheelSlip.slipCalc(i)
+                ui.wheelSlip.set(slipping)
+                if (slipping) {
+                    train.all[i].prototype.realtime.te = 0; //there's no TE if we're slipping
+                }
+                else {
+                    train.all[i].prototype.realtime.te = train.all[i].prototype.realtime.teIgnoreSlip; //if we're not slipping, just pass the number through
+                }
+                //Find/store net force BEFORE factoring in slip (for the slip calculation)
+                train.all[i].prototype.realtime.netForceIgnoreSlip = train.all[i].prototype.realtime.teIgnoreSlip + train.all[i].prototype.realtime.rollingResistance + train.all[i].prototype.brake.brakingForce;
+                //Now we find/store the net force for the locomotive, factoring in slip
                 train.all[i].prototype.realtime.netForce = train.all[i].prototype.realtime.te + train.all[i].prototype.realtime.rollingResistance + train.all[i].prototype.brake.brakingForce;
                 /*Locomotive-Only Totaling Math
                 Steps:
