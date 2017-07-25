@@ -22,7 +22,7 @@ bundles.locomotives = {
     
     The decoder settings are not here because we can grab those straight from JMRI.
     */
-    "CBQ2": {
+    "notCBQ2": {
         type: "locomotive",
         model: //all functions dealing with virtual-->model physics
         {
@@ -42,11 +42,6 @@ bundles.locomotives = {
             "notchMaxSpeeds": [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
             "startingTE": 56500,
-            fuel: {
-                usage: [3.5, 6.5, 14.5, 23.4, 33.3, 45.7, 59.6, 75.3, 93.1], //array in gal/hr, by notch
-                capacity: 1200, //fuel tank in GAL
-                status: 1200, //updated fuel status
-            },
 
             calc: //this contains functions left open to developers to implement for a given locomotive
             {
@@ -192,7 +187,7 @@ bundles.locomotives = {
                         var cfm = rpm * 0.283; //This is a figure that I got from "255cu ft/min @ 900rpm" from Al Krug.
 
                         return cfm;
-                    },
+                    }, //returns compressor CFM
                 },
             },
 

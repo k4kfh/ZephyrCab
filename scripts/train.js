@@ -19,14 +19,18 @@ This function adds the roster information to the bundles.locomotives file entrie
 train.ui.setup = function() {
     //First we go through the keys of the bundles.locomotives to build a list of available locomotive bundles.locomotives.
     var locomotivesList = new Object();
-    locomotivesList = Object.keys(bundles.locomotives);
+    locomotivesList = Object.keys(bundles.locomotives); //create an array of strings with the locomotive names
     
+    //check for errors to prevent frustration due to naming typos
     
     /*
     This loop goes through each element of the list and finds the corresponding roster entry from the JMRI roster.
     Then it adds that entire roster object to bundles.locomotives.thatThing.roster
     */
-    for(i=0; i < locomotivesList.length; i++) {
+    for(i=0; i < locomotivesList.length; i++) { //now populate .roster subobjects for objects with the names from the array of strings above
+        if (Object.keys(jmri.roster.entries).indexOf(locomotivesList[i]) == -1) {
+            alert("CRITICAL ERROR: You may have a typo in your bundles.js file. \n\nWe are unable to locate a roster entry named '" + locomotivesList[i] + "' in your JMRI system.\n\nPlease check spelling, capitalization, and spaces as the names must match EXACTLY. Once you correct this problem, ZephyrCab should work as normal.")
+        }
         bundles.locomotives[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]];
     }
     
@@ -140,6 +144,7 @@ train.ui.update = function() {
         This loop cycles through every single key from train.ui.locomotives.unused and generates HTML for each one. It will only generate HTML for available locos.
         */
         var currentBundle = bundles.locomotives[train.ui.locomotives.unused[i]] //This will equal the inside of the entire object we're dealing with
+        
         
         /*
         This is my chosen complex-but-functional method of building HTML with JavaScript. I do it one line at a time, splitting it into chunks so I can spend minimal time fighting with quotes and escape characters. At the end of the build process, I combine all those array elements into a single HTML string with .join(''), and in this instance I take the various versions of that (one for each locomotive) and push them into the final HTML variable, which is later combined using .join() and put into the DOM.

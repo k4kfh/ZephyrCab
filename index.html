@@ -1,467 +1,440 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!--import math.js--->
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.1/math.min.js"></script>
-        <!--Import materialize.css-->
-        <link type="text/css" rel="stylesheet" href="thirdparty/materialize/css/materialize-fromSASS.css"/>
 
-        <title>ZephyrCab</title>
+<head>
+    <!--import math.js--->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.1/math.min.js"></script>
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="thirdparty/materialize/css/materialize-fromSASS.css" />
 
-        <!---All Icons/Fonts--->
-        <link rel="stylesheet" href="thirdparty/octicons/octicons.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!--font for EvilGeniusTech logo--->
-        <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+    <title>ZephyrCab</title>
 
-        <!---My custom CSS sheet--->
-        <link rel="stylesheet" href="custom.css">
+    <!---All Icons/Fonts--->
+    <link rel="stylesheet" href="thirdparty/octicons/octicons.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--font for EvilGeniusTech logo--->
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+
+    <!---My custom CSS sheet--->
+    <link rel="stylesheet" href="custom.css">
 
 
-        <!---All ZephyrCab Program scripts--->
+    <!---All ZephyrCab Program scripts--->
 
-        <!---All storage files from /cfg--->
-        <script src="cfg/bundles.js"></script>
-        <script src="cfg/decoders.js"></script>
-        <script src="cfg/settings.json"></script>
+    <!---All storage files from /cfg--->
+    <script src="cfg/bundles.js"></script>
+    <script src="cfg/decoders.js"></script>
+    <script src="cfg/settings.json"></script>
 
-        <!---Now executables--->
+    <!---Now executables--->
 
-        <!--Import jQuery before everything-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!--Import jQuery before everything-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
-        <!---Now MaterializeCSS--->
-        <script type="text/javascript" src="thirdparty/materialize/js/materialize.js"></script>
+    <!---Now MaterializeCSS--->
+    <script type="text/javascript" src="thirdparty/materialize/js/materialize.js"></script>
 
-        <!---Now Buzz sound library--->
-        <script src="scripts/buzz/buzz.js"></script>
-        <script src="scripts/pretty-logs.js"></script>
-        <script src="scripts/websockets.js"></script>
-        <script src="scripts/jmri-core.js"></script>
-        <script src="scripts/ui.js"></script>
-        <script src="scripts/train.js"></script>
-        <script src="scripts/air.js"></script>
-        <script src="scripts/brakes.js"></script>
-        <script src="scripts/sim.js"></script>
-    </head>
+    <!---Now Buzz sound library--->
+    <script src="scripts/buzz/buzz.js"></script>
+    <script src="scripts/pretty-logs.js"></script>
+    <script src="scripts/websockets.js"></script>
+    <script src="scripts/jmri-core.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/train.js"></script>
+    <script src="scripts/air.js"></script>
+    <script src="scripts/brakes.js"></script>
+    <script src="scripts/sim.js"></script>
+</head>
 
-    <body>
-        <div class="container">
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab"><a href="#cab">Cab</a></li>
+                    <li class="tab"><a id="tab_trainsettings" href="#trainsettings">Train Settings</a></li>
+                    <li class="tab"><a id="tab_connection" class="active" href="#connection">Connection</a></li>
+                    <li class="tab"><a href="#layoutcontrol">Layout Control</a></li>
+                    <li class="tab"><a href="#help">Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!---beginning of actual page, this is the drive portion--->
+        <div id="cab">
             <div class="row">
                 <div class="col s12">
-                    <ul class="tabs">
-                        <li class="tab"><a href="#cab">Cab</a></li>
-                        <li class="tab"><a id="tab_trainsettings" href="#trainsettings">Train Settings</a></li>
-                        <li class="tab"><a id="tab_connection" class="active" href="#connection">Connection</a></li>
-                        <li class="tab"><a href="#layoutcontrol">Layout Control</a></li>
-                        <li class="tab"><a href="#help" >Help</a></li>
-                    </ul>
+                    <div class="col s3">
+                        <table class="striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>Speed</b></td>
+                                    <td id="gauge-speed">0mph</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Load (Amperes)</b></td>
+                                    <td id="gauge-amps">N/A</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s3">
+                        <table class="striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>Brake Pipe</b></td>
+                                    <td id="gauge-brakePipe">90psi</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Brake Cylinder</b></td>
+                                    <td id="gauge-brakeCylinder">0psi</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s3">
+                        <table class="striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>Main Reservoir</b></td>
+                                    <td id="gauge-mainReservoir">140psi</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Equalizing Reservoir</b></td>
+                                    <td id="gauge-equalizingReservoir">90psi</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s3 center">
+                        <a class="chip" id="wheel-slip">Wheel Slip</a>
+                        <a class="chip" id="pcs-open">PCS Open</a>
+                        <a class="chip" id="dyn-brake-warning">Dynamic Brake</a>
+                        <a class="chip" id="error">Error</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <div class="col s2">
+                        <a id="horn" class="btn-floating btn-large waves-effect waves-light teal"><i class="material-icons">volume_up</i></a>
+                    </div>
+                    <div class="col s5">
+                        <table class="striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>Bell</b></td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input id="bell" type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Headlight</b></td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input id="headlight" type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s5">
+                        <table class="striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>Sand</b></td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input id="sand" type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Engine</b></td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input id="engine-start" type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div id="autobrake-chip" class="chip">EMERGENCY</div>
+                                <b class="right">Automatic Brake</b>
+                                <input id="autobrake" type="range" value=0 min=0 max=100>
+                                <table>
+                                    <tr>
+                                        <td id="autobrake-table-release" width="20%" class="white-text green center z-depth-2"><b>RELEASE</b></td>
+                                        <td id="autobrake-table-service" width="60%" class="white-text orange center"><b>SERVICE</b></td>
+                                        <td id="autobrake-table-emergency" width="20%" class="white-text red center"><i class="material-icons">new_releases</i></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="left">
+                                    <a id="bailoff" class="chip waves-effect waves-light">BAIL OFF</a>
+                                    <a id="indbrake-indicator" class="chip">0psi</a>
+                                </div>
+                                <b class="right">Independent Brake</b>
+                                <input id="indbrake" type="range" value=0 min=0 max=100>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="chip left"><b>UNAVAILABLE</b></div>
+                                    <b class="right">Dynamic Brake</b>
+                                    <input type="range" min=0 max=8 value=0>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div id="throttle-indicator" class="chip left">IDLE</div>
+                                    <b class="right">Power Throttle</b>
+                                    <input id="throttle" type="range" min=0 max=8 value=0>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <!--builders plate mockup-->
+                            <div class="card">
+                                <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
+                            </div>
+                        </div>
+
+                        <div class="col s6">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="chip left" id="reverser-indicator">NEU</div>
+                                    <b class="right">Reverser</b>
+                                    <input id="reverser" type="range" min="-1" max="1" value=0>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="container">
-            <!---beginning of actual page, this is the drive portion--->
-            <div id="cab">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="col s3">
-                            <table class="striped">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Speed</b></td>
-                                        <td id="gauge-speed">0mph</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Load (Amperes)</b></td>
-                                        <td id="gauge-amps">N/A</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col s3">
-                            <table class="striped">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Brake Pipe</b></td>
-                                        <td id="gauge-brakePipe">90psi</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Brake Cylinder</b></td>
-                                        <td id="gauge-brakeCylinder">0psi</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col s3">
-                            <table class="striped">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Main Reservoir</b></td>
-                                        <td id="gauge-mainReservoir">140psi</td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Equalizing Reservoir</b></td>
-                                        <td id="gauge-equalizingReservoir">90psi</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col s3 center">
-                            <a class="chip" id="wheel-slip">Wheel Slip</a>
-                            <a class="chip" id="pcs-open">PCS Open</a>
-                            <a class="chip" id="dyn-brake-warning">Dynamic Brake</a>
-                            <a class="chip" id="error">Error</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <div class="col s2">
-                            <a id="horn" class="btn-floating btn-large waves-effect waves-light teal"><i class="material-icons">volume_up</i></a>
-                        </div>
-                        <div class="col s5">
-                            <table class="striped">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Bell</b></td>
-                                        <td>
-                                            <div class="switch">
-                                                <label>
-                                                    <input id="bell" type="checkbox">
-                                                    <span class="lever"></span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Headlight</b></td>
-                                        <td>
-                                            <div class="switch">
-                                                <label>
-                                                    <input id="headlight" type="checkbox">
-                                                    <span class="lever"></span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col s5">
-                            <table class="striped">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Sand</b></td>
-                                        <td>
-                                            <div class="switch">
-                                                <label>
-                                                    <input id="sand" type="checkbox">
-                                                    <span class="lever"></span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Engine</b></td>
-                                        <td>
-                                            <div class="switch">
-                                                <label>
-                                                    <input id="engine-start" type="checkbox">
-                                                    <span class="lever"></span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col s12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div id="autobrake-chip" class="chip">EMERGENCY</div>
-                                    <b class="right">Automatic Brake</b>
-                                    <input id="autobrake" type="range" value=0 min=0 max=100>
-                                    <table>
-                                        <tr>
-                                            <td id="autobrake-table-release" width="20%" class="white-text green center z-depth-2"><b>RELEASE</b></td>
-                                            <td id="autobrake-table-service" width="60%" class="white-text orange center"><b>SERVICE</b></td>
-                                            <td id="autobrake-table-emergency" width="20%" class="white-text red center"><i class="material-icons">new_releases</i></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col s12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="left">
-                                        <a id="bailoff" class="chip waves-effect waves-light">BAIL OFF</a>
-                                        <a id="indbrake-indicator" class="chip">0psi</a>
-                                    </div>
-                                    <b class="right">Independent Brake</b>
-                                    <input id="indbrake" type="range" value=0 min=0 max=100>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s6">
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div class="chip left"><b>UNAVAILABLE</b></div>
-                                        <b class="right">Dynamic Brake</b>
-                                        <input type="range" min=0 max=8 value=0>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div id="throttle-indicator" class="chip left">IDLE</div>
-                                        <b class="right">Power Throttle</b>
-                                        <input id="throttle" type="range" min=0 max=8 value=0>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s6">
-                                <!--builders plate mockup-->
-                                <div class="card">
-                                    <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
-                                </div>
-                            </div>
-
-                            <div class="col s6">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div class="chip left" id="reverser-indicator">NEU</div>
-                                        <b class="right">Reverser</b>
-                                        <input id="reverser" type="range" min="-1" max="1" value=0>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--connection settings area--->
-            <div id="connection">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="section">
-                                    <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
-                                    <p>Configure the connection to JMRI. Unless you have changed it, you may leave the port on 12080 (the default JMRI web server port). You are currently: <a id="connectionStatus" style="color:red">Not Connected</a> via WebSockets.</p>
-                                </div>
-                                <div class="row">
-                                    <form class="col s12">
-                                        <div class="input-field col s6">
-                                            <div class="row">
-                                                <input id="link-ip" type="text" class="validate">
-                                                <label for="link-ip">IP Address</label>
-                                            </div>
-                                        </div>
-                                        <div class="input-field col s2">
-                                            <div class="row">
-                                                <input id="link-port" value="12080" type="number" class="validate">
-                                                <label for="link-port">Port</label>
-                                            </div>
-                                        </div>
-
-
-
-
-                                    </form>
-                                    <a class="btn-large waves-effect waves-light" id="link-connect">Connect<i class="material-icons right">trending_flat</i></a>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <!--throttle settings area--->
-            <div id="trainsettings">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <h4><i class="material-icons left medium">directions_railway</i>Train Settings:</h4>
-                                <p>Here you can select a throttle, adjust the settings, name the throttle, configure your train, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!---train builder--->
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title black-text">Train Builder</span>
-
-                                <!---the actual display of the train we've built--->
-                                <div class="col s12">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            Select a cab by clicking the blue locomotive name on each train element.
-                                            <hr style="opacity:0">
-                                            <a class="black-text" id="trainDisplay"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!---palette--->
-                                <div class="col s6">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <span class="card-title black-text">Locomotives</span>
-                                            <div id="locomotivePalette">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col s6">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <span class="card-title black-text">Rolling Stock</span>
-                                            <div id="rollingstockPalette">
-                                                <b>Something goofed...we couldn't build you a rolling stock palette.</b>
-                                                <p>In light of this, we have provided you with this excellent big red button that does absolutely nothing.</p>
-                                                <a class="btn red waves-light waves-effect">Useless Big Red Button</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!---unfinished layout control tab--->
-            <div id="layoutcontrol">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <h4><i class="material-icons left medium">settings</i>Layout Control</h4>
-                                <p>This page allows control of various aspects of your layout, most importantly, the track power.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <div class="card">
-                            <div class="card-content">
-                                <h5><i class="material-icons left small">power</i>Power Settings</h5>
-                                <p>This toggles track power on and off for your whole layout. It also keeps up to date with any changes made on the layout, so if this switch is off, your track power is off. Use with caution!</p>
-                                <div class="section">
-                                    <div class="switch">
-                                        <label>
-                                            <input id="track-power" type="checkbox">
-                                            <span class="lever"></span>Track Power
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s6">
-                        <div class="card">
-                            <div class="card-content">
-                                <h5>Turnout Control</h5>
-                                <p><i class="material-icons small left">error</i>Unfortunately, this feature is still in development.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!---help/docs tab--->
-            <div id="help">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title black-text"><i class="material-icons left small">help</i>Help/Documentation</span>
-
-                                <p>Visit our documentation, or post an issue on our GitHub page!</p>
-
-                                <br>
-
-                                <a class="btn btn-flat blue white-text waves-effect waves-light" target="_blank" href="http://k4kfh.github.io/ZephyrCab/docs"><i class="material-icons left">help</i>Visit our Documentation</a>
-
-                                <a href="http://github.com/k4kfh/ZephyrCab" target="_blank" class="btn-flat blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
-                                <a href="http://k4kfh.github.io/ZephyrCab" target="_blank" class="blue btn-flat white-text waves-effect"><i class="material-icons left">code</i>Project Website</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title black-text">Announcements Feed</span>
-                                <p>This feature provides a live "news feed" style announcements system, updated regularly from the project site at <code><a href="http://k4kfh.github.io/ZephyrCab" target="_blank">http://k4kfh.github.io/ZephyrCab</a></code></p>
-
-                                <hr style="opacity:0">
-
-                                <div id="hubDisplay">
-                                    <div class="row">
-                                        <div class="col s6">
-                                            <h5 class="light">Release</h5>
-                                            Function soon to be added using GitHub API.
-                                        </div>
-                                        <div class="col s6">
-                                            <h5 class="light">Alerts</h5>
-                                            There are no alerts in effect at this time.
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s6">
-                                            <h5 class="light">User Poll</h5>
-                                            On occasion, we may conduct an optional user poll to gather opinions on certain things. When that happens, it will appear here.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-            <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
+        <!--connection settings area--->
+        <div id="connection">
             <div class="row">
                 <div class="col s12">
                     <div class="card">
-                        <a target="_blank" href="https://github.com/k4kfh/LocoThrottleJS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
                         <div class="card-content">
-                            <i class="material-icons left small">info_outline</i>
-                            <p><a class="zephyr black-text waves-effect waves-light" target="_blank" href="http://k4kfh.github.io/ZephyrCab">ZephyrCab</a> is free software, released with no license. Find out more on <a href="https://github.com/k4kfh/ZephyrCab" target="_blank">our GitHub page.</a></p>
                             <div class="section">
-                                <p><a href="http://blog.evilgeniustech.com" target="_blank">K4KFH's Blog</a></p>
+                                <h4><i class="material-icons left medium">settings_input_antenna</i>Connection Settings</h4>
+                                <p>Configure the connection to JMRI. Unless you have changed it, you may leave the port on 12080 (the default JMRI web server port). You are currently: <a id="connectionStatus" style="color:red">Not Connected</a> via WebSockets.</p>
+                            </div>
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="input-field col s6">
+                                        <div class="row">
+                                            <input id="link-ip" type="text" class="validate">
+                                            <label for="link-ip">IP Address</label>
+                                        </div>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <div class="row">
+                                            <input id="link-port" value="12080" type="number" class="validate">
+                                            <label for="link-port">Port</label>
+                                        </div>
+                                    </div>
 
-                                <div class="section">
-                                    <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS,</a> and powered by <a href="http://jmri.org" target="_blank">JMRI.</a></p>
-                                    <p>Special thanks to <a href="http://brucekmodeltrains.com" target="_blank">Mr. Bruce Kingsley</a> for help with the physics engine.</p>
+
+
+
+                                </form>
+                                <a class="btn-large waves-effect waves-light" id="link-connect">Connect<i class="material-icons right">trending_flat</i></a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!--throttle settings area--->
+        <div id="trainsettings">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4><i class="material-icons left medium">directions_railway</i>Train Settings:</h4>
+                            <p>Here you can select a throttle, adjust the settings, name the throttle, configure your train, and more! Remember, before you use this, you must be connected to your layout via WebSockets. You can find out if your WebSockets connection is up and running on the Connection page.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!---train builder--->
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title black-text">Train Builder</span>
+
+                            <!---the actual display of the train we've built--->
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        Select a cab by clicking the blue locomotive name on each train element.
+                                        <hr style="opacity:0">
+                                        <a class="black-text" id="trainDisplay"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---palette--->
+                            <div class="col s6">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <span class="card-title black-text">Locomotives</span>
+                                        <div id="locomotivePalette">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s6">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <span class="card-title black-text">Rolling Stock</span>
+                                        <div id="rollingstockPalette">
+                                            <b>Something goofed...we couldn't build you a rolling stock palette.</b>
+                                            <p>In light of this, we have provided you with this excellent big red button that does absolutely nothing.</p>
+                                            <a class="btn red waves-light waves-effect">Useless Big Red Button</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!---unfinished layout control tab--->
+        <div id="layoutcontrol">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4><i class="material-icons left medium">settings</i>Layout Control</h4>
+                            <p>This page allows control of various aspects of your layout, most importantly, the track power.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <div class="card">
+                        <div class="card-content">
+                            <h5><i class="material-icons left small">power</i>Power Settings</h5>
+                            <p>This toggles track power on and off for your whole layout. It also keeps up to date with any changes made on the layout, so if this switch is off, your track power is off. Use with caution!</p>
+                            <div class="section">
+                                <div class="switch">
+                                    <label>
+                                        <input id="track-power" type="checkbox">
+                                        <span class="lever"></span>Track Power
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div class="card">
+                        <div class="card-content">
+                            <h5>Turnout Control</h5>
+                            <p><i class="material-icons small left">error</i>Unfortunately, this feature is still in development.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!---help/docs tab--->
+        <div id="help">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title black-text"><i class="material-icons left small">help</i>Help/Documentation</span>
+
+                            <p>Visit our documentation, or post an issue on our GitHub page!</p>
+
+                            <br>
+
+                            <a class="btn btn-flat blue white-text waves-effect waves-light" target="_blank" href="http://k4kfh.github.io/ZephyrCab/docs"><i class="material-icons left">help</i>Visit our Documentation</a>
+
+                            <a href="http://github.com/k4kfh/ZephyrCab" target="_blank" class="btn-flat blue white-text waves-effect"><i class="octicon octicon-mark-github"></i> GitHub</a>
+                            <a href="http://k4kfh.github.io/ZephyrCab" target="_blank" class="blue btn-flat white-text waves-effect"><i class="material-icons left">code</i>Project Website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title black-text">Announcements Feed</span>
+                            <p>This feature provides a live "news feed" style announcements system, updated regularly from the project site at <code><a href="http://k4kfh.github.io/ZephyrCab" target="_blank">http://k4kfh.github.io/ZephyrCab</a></code></p>
+
+                            <hr style="opacity:0">
+
+                            <div id="hubDisplay">
+                                <div class="row">
+                                    <div class="col s6">
+                                        <h5 class="light">Release</h5> Function soon to be added using GitHub API.
+                                    </div>
+                                    <div class="col s6">
+                                        <h5 class="light">Alerts</h5> There are no alerts in effect at this time.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s6">
+                                        <h5 class="light">User Poll</h5> On occasion, we may conduct an optional user poll to gather opinions on certain things. When that happens, it will appear here.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -469,13 +442,39 @@
                 </div>
             </div>
         </div>
-        <script>
-            link.autoconnect();
-        </script>
 
-        <!---And lastly, the centralized script from the Pages repo--->
-        <script src="http://k4kfh.github.io/ZephyrCab/hub/hub.js"></script>
-    </body>
+
+
+
+        <!---THIS IS THE CREDIT CARD! DO NOT PUT ANYTHING BELOW THIS OR IT WILL DO STUPID CRAP--->
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <a target="_blank" href="https://github.com/k4kfh/LocoThrottleJS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+                    <div class="card-content">
+                        <i class="material-icons left small">info_outline</i>
+                        <p><a class="zephyr black-text waves-effect waves-light" target="_blank" href="http://k4kfh.github.io/ZephyrCab">ZephyrCab</a> is free software, released with no license. Find out more on <a href="https://github.com/k4kfh/ZephyrCab" target="_blank">our GitHub page.</a></p>
+                        <div class="section">
+                            <p><a href="http://blog.evilgeniustech.com" target="_blank">K4KFH's Blog</a></p>
+
+                            <div class="section">
+                                <p>Proudly built with <a target="_blank" href="http://materializecss.com">MaterializeCSS,</a> and powered by <a href="http://jmri.org" target="_blank">JMRI.</a></p>
+                                <p>Special thanks to <a href="http://brucekmodeltrains.com" target="_blank">Mr. Bruce Kingsley</a> for help with the physics engine.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        link.autoconnect();
+    </script>
+
+    <!---And lastly, the centralized script from the Pages repo--->
+    <script src="http://k4kfh.github.io/ZephyrCab/hub/hub.js"></script>
+
+</body>
 
 
 
