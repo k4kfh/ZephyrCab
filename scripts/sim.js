@@ -79,7 +79,6 @@ sim.accel = function() {
                     train.all[i].prototype.realtime.rpm = train.all[i].prototype.engineRunning * train.all[i].prototype.notchRPM[notch.state];
                     //SETTING NOTCHING SOUNDS
                     if (train.all[i].dcc.f.notch.state != notch.state) {
-                        //console.debug("TRIGGERED")
                         //We know it's changed, now we have to figure out which direction (up or down) to move it.
                         var difference = notch.state - train.all[i].dcc.f.notch.state; //This will equal 1 or -1, telling us the    direction to notch
                         //console.log("Difference in notch: " + difference)
@@ -166,7 +165,7 @@ sim.accel = function() {
                     //Add flowrate (in cubic feet per cycle) to the airVolumeInTank variable.
                     //This huge long statement really just says (currentAtmAirVolume = currentAtmAirVolume + flowratePerCycle)
                     train.all[i].prototype.air.reservoir.main.currentAtmAirVolume = train.all[i].prototype.air.reservoir.main.currentAtmAirVolume + flowratePerCycle;
-                    console.debug("FLOW RATE PER CYCLE FOR i=" + i + " IS " + flowratePerCycle)
+                    log.Sim.air("FLOW RATE PER CYCLE FOR i=" + i + " IS " + flowratePerCycle)
 
                     //Subtract leak rate in cubic feet before calculating pressure
                     var volumeInTank = train.all[i].prototype.air.reservoir.main.currentAtmAirVolume;

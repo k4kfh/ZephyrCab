@@ -69,7 +69,7 @@ var link = {
             $("#connectionStatus").html("Connected!").css("color", "green");
 
             //enter it in the log
-            console.log("Connection opened with " + cfg.ip + ":" + cfg.port);
+            log.websockets("Connection opened with " + cfg.ip + ":" + cfg.port);
 
             //TODO - fix global
             //start the heartbeats to keep it alive
@@ -80,7 +80,7 @@ var link = {
                 },
                 6000
             );
-            console.log("Beginning heartbeats...");
+            log.websockets("Beginning heartbeats...");
 
             /*
             LISTENERS - Send a blank command as a request, and JMRI will continually update us on the status of whatever thing...
@@ -105,7 +105,7 @@ var link = {
                 stringified;
             if (cfg.logallmessages === true) {
                 stringified = JSON.stringify(data);
-                console.debug("WS: [" + link.logTimestamp() + "] RECEIVED : " + stringified);
+                log.websockets("[" + link.logTimestamp() + "] RECEIVED : " + stringified);
             }
             link.process(data);
         };
@@ -125,7 +125,7 @@ var link = {
             link.socket.send(command);
             //If logging is enabled, make a console.log entry
             if (cfg.logallmessages === true) {
-                console.debug("WS: [" + link.logTimestamp() + "] SENT : " + command);
+                log.websockets("[" + link.logTimestamp() + "] SENT : " + command);
             }
 
             //If we're not connected, throw an error
@@ -157,7 +157,7 @@ var link = {
 
                 //If not, tell the user to connect manually
             } else if (cfg.ip === undefined) {
-                console.log("No autoconnection settings found!");
+                log.websockets("No autoconnection settings found!");
                 Materialize.toast("<i class='material-icons left'>info</i>Couldn't find any settings for auto-connection, please connect manually.");
 
                 //These two lines go over to the trainsettings tab and scroll up to the top of the page.

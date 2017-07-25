@@ -8,7 +8,7 @@ brake = {
     eqReservoirPSI: 90, //set both of these to the same thing ^^^
     //changing the feed valve resets the brake system to fully charged and 0% braking
     charge :  function () {
-        console.log("Stopping sim to reset brake system...");
+        log.Sim.brakes("Stopping sim to reset brake system...");
         sim.stop(); //pause the sim while we do this to keep it from screwing with the physics
         for (var i=0; i < train.all.length; i++) {
             var car = train.all[i].prototype;
@@ -24,9 +24,9 @@ brake = {
             //Run updated force calculation to reflect no braking pressure
             //THIS FUNCTIONALITY NOT IMPLEMENTED YET
         }
-        console.log("Starting sim after brake reset...");
+        log.Sim.brakes("Starting sim after brake reset...");
         sim.start(100); //TODO, some kind of a setting
-        console.log("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi");
+        log.Sim.brakes("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi");
         Materialize.toast("Reset Brake System | Feed Valve: " + brake.feedValvePSI + "psi", 3000);
     },
     //finds the equalization pressure AND full service brake application for a brake pipe with feed valve set at ARG psi
@@ -82,13 +82,13 @@ brake = {
             var frontNeighbor = train.all[(carNumber - 1)]; //represents the car in front of us (or locomotive in  front of us)
             var car = train.all[carNumber]; //represents the car specified in the car argument
             //Check to see if frontNeighbor has a different pipe pressure than us
-            //console.debug("frontNeighbor number = " + (carNumber - 1))
+            //log.Sim.brakes("frontNeighbor number = " + (carNumber - 1))
             if (frontNeighbor.prototype.brake.linePSI != car.prototype.brake.linePSI) {
                 //if there is a pressure difference, setTimeout for when we should change this car's PSI
                 var timeToWait = car.prototype.brake.latency; //the time it takes for the car to propagate the signal
                 car.prototype.tmp.brakePSIchangeTimeout = setTimeout(function() {
                     //code to run after the proper time has elapsed
-                    console.debug("Changing linePSI on " + carNumber + " to " + frontNeighbor.prototype.brake.linePSI, 2000);
+                    log.Sim.brakes("Changing linePSI on " + carNumber + " to " + frontNeighbor.prototype.brake.linePSI, 2000);
                     car.prototype.brake.linePSI = frontNeighbor.prototype.brake.linePSI;
                     car.prototype.brake.waitingOnChange = false;
                     //now we change the triple valve state
@@ -111,13 +111,13 @@ brake = {
     //called by the train builder whenever a new car is added to fix the pressure on it
     fixNewElement : function(elNumber) {
         //pause the sim
-        console.log("Pausing sim to set up new brakes on element " + elNumber + "...")
+        log.Sim.brakes("Pausing sim to set up new brakes on element " + elNumber + "...")
         sim.stop();
         //set the reservoirPSI
         train.all[elNumber].prototype.brake.linePSI = brake.eqReservoirPSI //set to the equalizing reservoir PSI just to be easy and simple
         train.all[elNumber].prototype.brake.reservoirPSI = brake.eqReservoirPSI //same as above
         //cylinder psi should already be zero on a fresh element, so no need to set that
-        console.log("Completed brake setup for element " + elNumber + ". Restarting sim...");
+        log.Sim.brakes("Completed brake setup for element " + elNumber + ". Restarting sim...");
         sim.start();
     },
     //when called, takes the average of all the localized brake pipe pressures and combines them into one average, which will show on the engineer's gauge.
@@ -163,13 +163,13 @@ indBrake = {
         var indBrakePSI = indBrake.indValvePSI;
         var autoBrakePSI = indBrake.effectiveAutoBrakePSI;
         if (indBrakePSI < autoBrakePSI) {
-            console.debug("indBrake: Favoring automatic brake for independent brake pressure; "+ autoBrakePSI + "PSI")
+            log.Sim.brakes("indBrake: Favoring automatic brake for independent brake pressure; "+ autoBrakePSI + "PSI")
             indBrake.effectiveIndPSI = Number(autoBrakePSI);
             //now we let the user know a bailoff is possible
             ui.bailoff.set(true);
         }
         else {
-            console.debug("indBrake: Favoring independent brake valve for independent brake pressure; "+ indBrakePSI + "PSI")
+            log.Sim.brakes("indBrake: Favoring independent brake valve for independent brake pressure; "+ indBrakePSI + "PSI")
             indBrake.effectiveIndPSI = indBrakePSI;
             //now we let the user know a bailoff will have no immediate effect since the ind. brake valve is favored
             ui.bailoff.set(false)

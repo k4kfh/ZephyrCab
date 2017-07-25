@@ -97,7 +97,7 @@ bundles.locomotives = {
                     var maxSpeed = speedPerNotch * notch.state;
                     //This is a simple linear calculation that seemed 'good enough' to me, but if you find actual numbers you could create a better way.
                     var actualSpeed = Math.abs(train.total.accel.speed.mph) //TODO: Once coupler slack is implemented, this must change to the individual element's speed
-                    console.debug("Actual Speed: " + actualSpeed)
+                    log.sim("Actual Speed: " + actualSpeed)
                     if (actualSpeed > maxSpeed) {
                         //if we're exceeding it
                         train.all[trainPosition].prototype.realtime.exceedingMaxSpeed = 0;
@@ -129,7 +129,7 @@ bundles.locomotives = {
                 calcExternalForces: function(trainPosition) {
                     //this is a shorter, more efficient way to add up all the net forces of every element in the train EXCEPT this one
                     var extForces = Math.abs(train.total.netForce - train.all[trainPosition].prototype.realtime.netForceIgnoreSlip);
-                    console.log("WHEELSLIP: Local Net Force = " + train.all[trainPosition].prototype.realtime.netForceIgnoreSlip)
+                    log.Sim.wheelslip("Local Net Force = " + train.all[trainPosition].prototype.realtime.netForceIgnoreSlip)
                     train.all[trainPosition].prototype.wheelSlip.externalForces = extForces;
                     return extForces;
                 },
@@ -142,20 +142,20 @@ bundles.locomotives = {
                     } else { //if we're not slipping already
                         threshold = el.weight * el.wheelSlip.adhesion; //normal threshold
                     }
-                    console.log("WHEELSLIP: ---------")
-                    console.log("WHEELSLIP: Threshold = " + threshold);
+                    log.Sim.wheelslip("---------")
+                    log.Sim.wheelslip("Threshold = " + threshold);
                     
                     var loadOnWheels = el.wheelSlip.calcInternalForces(trainPosition) + el.wheelSlip.calcExternalForces(trainPosition); 
                     //calculate the load on the wheels
-                    console.log("WHEELSLIP: Load on wheels = " + loadOnWheels)
-                    console.log("WHEELSLIP: Internal Forces = " + el.wheelSlip.calcInternalForces(trainPosition))
-                    console.log("WHEELSLIP: External Forces = " + el.wheelSlip.calcExternalForces(trainPosition))
+                    log.Sim.wheelslip("Load on wheels = " + loadOnWheels)
+                    log.Sim.wheelslip("Internal Forces = " + el.wheelSlip.calcInternalForces(trainPosition))
+                    log.Sim.wheelslip("External Forces = " + el.wheelSlip.calcExternalForces(trainPosition))
                     if (loadOnWheels >= threshold) {
                         el.wheelSlip.slipping = true;
                     } else {
                         el.wheelSlip.slipping = false;
                     }
-                    console.log("WHEELSLIP: Slipping = " + el.wheelSlip.slipping)
+                    log.Sim.wheelslip("Slipping = " + el.wheelSlip.slipping)
                     return el.wheelSlip.slipping;
                 }
             },
@@ -299,7 +299,7 @@ bundles.rollingstock = {
                     //Code for gradual application
                     //TODO - temporarily using setTimeout
                     var timeToWait = 1000 * (psi / train.all[trainPosition].prototype.brake.applicationRate);
-                    console.debug("Application will take " + timeToWait + "ms")
+                    log.Sim.brakes("Application will take " + timeToWait + "ms")
                     train.all[trainPosition].prototype.brake.waitingOnApplication = true;
                     $({
                         n: train.all[trainPosition].prototype.brake.cylinderPSI
@@ -332,12 +332,12 @@ bundles.rollingstock = {
                                 clearInterval(chargeInterval);
                                 train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.linePSI;
                                 train.all[trainPosition].prototype.brake.tripleValveCycle(trainPosition);
-                                console.log("ELEMENT " + trainPosition + " FINISHED RELEASING; RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
+                                log.Sim.brakes("ELEMENT " + trainPosition + " FINISHED RELEASING; RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
                                 return undefined; //break out of the function here
                             }
                             //gradually increase the brake pressure
                             train.all[trainPosition].prototype.brake.reservoirPSI = train.all[trainPosition].prototype.brake.reservoirPSI + (train.all[trainPosition].prototype.brake.chargeRate * 100);
-                            console.log("ELEMENT #" + trainPosition + " NEW RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
+                            log.Sim.brakes("ELEMENT #" + trainPosition + " NEW RESERVOIR PRESSURE = " + train.all[trainPosition].prototype.brake.reservoirPSI)
 
                         }, 100);
                 },
@@ -346,7 +346,7 @@ bundles.rollingstock = {
                     var linePSI = train.all[trainPosition].prototype.brake.linePSI;
                     if (reservoirPSI > linePSI) {
                         //triple valve APPLY
-                        console.debug("Element " + trainPosition + ": Triple Valve APPLY")
+                        log.Sim.brakes("Element " + trainPosition + ": Triple Valve APPLY")
                         toast.brakeNotification("Applying brakes on #" + trainPosition);
                         train.all[trainPosition].prototype.brake.tripleValve = "A";
                         //Figure out how much of a reduction is needed
@@ -356,13 +356,13 @@ bundles.rollingstock = {
                         //triple valve RELEASE
                         train.all[trainPosition].prototype.brake.tripleValve = "R";
                         train.all[trainPosition].prototype.brake.release(trainPosition);
-                        console.debug("Element " + trainPosition + ": Triple Valve RELEASE");
+                        log.Sim.brakes("Element " + trainPosition + ": Triple Valve RELEASE");
                         toast.brakeNotification("Releasing brakes on #" + trainPosition);
 
                     } else if (reservoirPSI == linePSI) {
                         //triple valve LAP
                         train.all[trainPosition].prototype.brake.tripleValve = "L";
-                        console.debug("Element " + trainPosition + ": Triple Valve LAP")
+                        log.Sim.brakes("Element " + trainPosition + ": Triple Valve LAP")
                         toast.brakeNotification("Lapping brakes on #" + trainPosition);
                     }
                 },

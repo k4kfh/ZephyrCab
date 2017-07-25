@@ -56,7 +56,7 @@ $(document).ready(function() {
             reverser = -1;
         }
         //DEBUGGING
-        console.debug("Change event fired with reverser handle in " + $(this).val() + " position. Set reverser global to " + reverser);
+        log.Ui.input("Change event fired with reverser handle in " + $(this).val() + " position. Set reverser global to " + reverser);
     });
 
     //Throttle
@@ -68,8 +68,8 @@ $(document).ready(function() {
 
         //Debugging
         /*
-        console.debug("Setting notch to " + $(this).val());
-        console.debug("notch.set returned " + returned);
+        log.Ui.input("Setting notch to " + $(this).val());
+        log.Ui.input("notch.set returned " + returned);
         */
 
         $("#throttle").val(returned);
@@ -101,8 +101,8 @@ $(document).ready(function() {
             var fullServiceReduction = brake.findEQpressure(brake.feedValvePSI).fullServiceReduction;
             var targetReduction = Math.round(servicePercentageDecimal * fullServiceReduction);
 
-            console.debug("Service Application Percentage: " + servicePercentageInt);
-            console.debug("Target Reduction : " + targetReduction)
+            log.Ui.input("Service Application Percentage: " + servicePercentageInt);
+            log.Ui.input("Target Reduction : " + targetReduction)
 
             $("#autobrake-chip").html("SERVICE (" + targetReduction + "PSI)")
         }
@@ -122,7 +122,7 @@ $(document).ready(function() {
         //RELEASE
         if ($(this).val() <= 20) {
             //RELEASE BRAKES
-            console.debug("BRAKES RELEASE MODE")
+            log.Ui.input("BRAKES RELEASE MODE")
             brake.eqReservoirPSI = brake.feedValvePSI; //charge up the EQ reservoir to release the brakes and begin charging the train reservoirs
             train.all[cab.current].dcc.f.airDump.set(true);
             setTimeout(function(){
@@ -131,7 +131,7 @@ $(document).ready(function() {
         }
         //SERVICE
         else if ($(this).val() <= 80) {
-            console.debug("BRAKES SERVICE MODE")
+            log.Ui.input("BRAKES SERVICE MODE")
             //do this math again so we can actually apply it
             var servicePercentageInt = Math.round((($(this).val() - 20) / 60) * 100);
             var servicePercentageDecimal = servicePercentageInt / 100;
@@ -143,7 +143,7 @@ $(document).ready(function() {
         }
         //EMERGENCY
         else {
-            console.debug("BRAKES EMERGENCY MODE")
+            log.Ui.input("BRAKES EMERGENCY MODE")
             //for now we'll just have EMERGENCY be a full service reduction
             brake.eqReservoirPSI = brake.findEQpressure().fullServiceReduction;
         }
@@ -176,7 +176,7 @@ $(document).ready(function() {
             train.all[cab.current].dcc.f.horn.set(true);
         } else {
             //just let the debug console know
-            console.error("Horn mousedown method called; doing nothing since we have no cab locomotive!")
+            log.Ui.input("Horn mousedown method called; doing nothing since we have no cab locomotive!")
         }
     });
     //Mouseup event starts the horn
@@ -198,7 +198,7 @@ $(document).ready(function() {
             train.all[cab.current].dcc.f.bell.set($('#bell').is(":checked"))
         } else {
             //just let the debug console know
-            console.log("UI: Bell function called; doing nothing since we have no cab locomotive.");
+            log.Ui.input("Bell function called; doing nothing since we have no cab locomotive!");
             $('#bell').prop('checked', false);
         }
     });
@@ -223,7 +223,7 @@ $(document).ready(function() {
             var element = train.all[i]
             if (element.type == "locomotive") {
                 element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
-                console.log("UI: Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
+                log.Ui.input("Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
 
                 /*
                 FUEL USAGE RELATED CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
@@ -231,7 +231,7 @@ $(document).ready(function() {
                 This if statement would handle denying engine start when out of fuel.
                 if (!(element.prototype.realtime.fuel.status <= 0)) { //make sure there's fuel before we allow it to start
                     element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
-                    console.log("UI: UI: Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
+                    log.Ui.input("UI: Calling .dcc.f.engine.set(" + $('#engine-start').is(":checked") + ") on element #" + i + "...");
                 }
                 else { //if we can't start because of no fuel then flip the switch back over
                     $( "#engine-start" ).prop( "checked", false ); //uncheck the switch

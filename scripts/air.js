@@ -40,7 +40,7 @@ var air = {
             },
             
             take : function(cfeet, atPressure, locomotive) {
-                console.log("AIR: Taking " + cfeet + "@" + atPressure + "PSI from Main Reservoir on train.all[" + locomotive + "]");
+                log.air("Taking " + cfeet + "@" + atPressure + "PSI from Main Reservoir on train.all[" + locomotive + "]");
                 //Define some shorthand variables
                 var mainReservoir = {};
                 mainReservoir.psi = train.all[locomotive].prototype.reservoir.main.psi.g;
@@ -50,12 +50,12 @@ var air = {
                 //using Boyle's law, figure out how much cubic feet @ the reservoir pressure is equal to cfeet @ atPressure
                 var cfeetToTake = (cfeet * atPressure) / mainReservoir.psi;
                 
-                console.log("AIR: cfeetToTake = " + cfeetToTake);
+                log.air("cfeetToTake = " + cfeetToTake);
                 
                 //subtract the amount of air (in cubic feet) we determined
                 mainReservoir.newVol = mainReservoir.atmAirVol - cfeetToTake;
                 
-                console.log("AIR: New Main Reservoir Volume : " + mainReservoir.newVol);
+                log.air("New Main Reservoir Volume : " + mainReservoir.newVol);
                 
                 train.all[locomotive].prototype.reservoir.main.currentAtmAirVolume = mainReservoir.newVol;
                 

@@ -20,7 +20,7 @@ jmri.throttle = function(address, throttleName) {
     if (link.status === true) {
         //this second if statement makes sure we have our decoder.js script loaded, because this is super duper important and yeah
         link.send('{"type":"throttle","data":{"throttle":"' + throttleName + '","address":' + address + '}}')
-        console.log("Requested throttle " + throttleName + " for locomotive #" + address)
+        log.jmri("Requested throttle " + throttleName + " for locomotive #" + address)
         this.address = address
         this.name = throttleName; //throttle name should always be the train position just for ease-of-development purposes
         this.speed = {}; //same reason as this.f for existing as a seemingly stupid object
@@ -57,8 +57,6 @@ jmri.throttle = function(address, throttleName) {
             
             var finalString = finalCommand.join(", ");
             link.send('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
-            //Uncomment the below line to see every outgoing DCC function command as a console error
-            //console.error('{"type":"throttle","data":{"address":' + address + ', "throttle":"' + throttleName + '",' + finalString + '}}')
         }
         
         //TODO - add command here so that when a throttle is acquired, all functions are set to off and the speed to 0
@@ -74,23 +72,23 @@ jmri.throttle = function(address, throttleName) {
 jmri.trkpower = function(option) {
     if (option == true) {
         link.send('{"type":"power","data":{"state":2}}')
-        console.log("Track power set to ON")
+        log.jmri("Track power set to ON")
     }
     else if (option == false) {
         link.send('{"type":"power","data":{"state":4}}')
-        console.log("Track power set to OFF")
+        log.jmri("Track power set to OFF")
     }
     
     else if (option == "toggle") {
         //if track power is currently on, turn it off
         if (layoutTrackPower_state == true) {
             link.send('{"type":"power","data":{"state":4}}')
-            console.log("Track power set to OFF")
+            log.jmri("Track power set to OFF")
         }
         //if its currently off, turn it on
         else if (layoutTrackPower_state == false) {
             link.send('{"type":"power","data":{"state":2}}')
-            console.log("Track power set to ON")
+            log.jmri("Track power set to ON")
         }
     }
 }
@@ -103,12 +101,12 @@ jmri.handleType.power = function(string) {
     var json = string
     if (json.data.state == 2) {
         jmri.trkpower.state = true;
-        console.log("Updated layout track power status to TRUE");
+        log.jmri("Updated layout track power status to TRUE");
         $("#track-power").prop("checked", true);
     }
     else if (json.data.state == 4) {
         jmri.trkpower.state = false;
-        console.log("Updated layout track power status to FALSE");
+        log.jmri("Updated layout track power status to FALSE");
         $("#track-power").prop("checked", false);
     }
 }

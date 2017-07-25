@@ -80,7 +80,7 @@ train.ui.update = function() {
         
         //LOCOMOTIVES ONLY: This builds the "enter cab" link.
         if (train.all[i].type == "locomotive") {
-            console.log("MARKER FOR TYPE==LOCOMOTIVE")
+            log.trainbuilder("MARKER FOR TYPE==LOCOMOTIVE")
             var newHTMLstring = "<i class='material-icons left'>train</i>"
             newHTML.push(newHTMLstring)
             var newHTMLstring = "<a onclick='";
@@ -106,7 +106,7 @@ train.ui.update = function() {
         }
         //This only shows the name, it doesn't bother with any kind of clickable links, at least not yet.
         else if (train.all[i].type == "rollingstock") {
-            console.log("MARKER FOR TYPE==ROLLINGSTOCK")
+            log.trainbuilder("MARKER FOR TYPE==ROLLINGSTOCK")
             var newHTMLstring = train.all[i].roster.name;
             newHTML.push(newHTMLstring)
         }
@@ -197,7 +197,7 @@ train.ui.update = function() {
         var newHTML = '>add</i>' + name + "</div>";
         finalHTML.push(newHTML)
     }
-    console.log("FINAL HTML: " + finalHTML.join(''))
+    log.trainbuilder("FINAL HTML: " + finalHTML.join(''))
     $("#rollingstockPalette").html(finalHTML.join(''))
     
     

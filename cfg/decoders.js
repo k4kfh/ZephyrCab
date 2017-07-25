@@ -21,7 +21,7 @@ var decoders = {
             //decoder object for ESU official EMD 567 Sound project
             //By Hampton Morgan - k4kfh@github - Originally written in May 2015
             //evilgeniustech.com
-            console.debug("DECODER: Using 'LokSound Select EMD 567' for " + trainPosition)
+            log.decoder("Using 'LokSound Select EMD 567' for " + trainPosition)
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate()); //we use the train position as the throttle name for future lookup purposes
 
             //FUNCTIONS
@@ -33,7 +33,7 @@ var decoders = {
                     "F0": state
                 });
                 train.all[trainPosition].dcc.f.headlight.state = state;
-                console.log("DCC: Setting headlight to " + state + " on Train#" + trainPosition)
+                log.decoder(" Setting headlight to " + state + " on Train#" + trainPosition)
             };
             //bell
             this.f.bell = {};
@@ -42,7 +42,7 @@ var decoders = {
                     "F1": state
                 });
                 train.all[trainPosition].dcc.f.bell.state = state;
-                console.log("DCC: Setting bell to " + state + " on Train#" + trainPosition)
+                log.decoder(" Setting bell to " + state + " on Train#" + trainPosition)
             };
             this.f.bell.state = false;
 
@@ -53,7 +53,7 @@ var decoders = {
                     "F2": state
                 });
                 train.all[trainPosition].dcc.f.horn.state = state;
-                console.log("DCC: Setting headlight to " + state + " on Train#" + trainPosition)
+                log.decoder("Setting headlight to " + state + " on Train#" + trainPosition)
             };
             this.f.horn.state = false;
 
@@ -65,7 +65,7 @@ var decoders = {
                         "F20": state
                     });
                     train.all[trainPosition].dcc.f.compressor.state = state;
-                    console.log("DCC: Setting compressor to " + state + " on Train#" + trainPosition)
+                    log.decoder("Setting compressor to " + state + " on Train#" + trainPosition)
                 }
             };
             this.f.compressor.state = false;
@@ -76,7 +76,7 @@ var decoders = {
                 train.all[trainPosition].throttle.f.set({
                     "F19": state
                 });
-                console.log("DCC: Setting airDump to " + state + " on Train#" + trainPosition)
+                log.decoder("Setting airDump to " + state + " on Train#" + trainPosition)
             };
 
             //dyn brake fans
@@ -95,7 +95,7 @@ var decoders = {
                         "F8": state
                     });
                     train.all[trainPosition].dcc.f.engine.state = state;
-                    console.log("DCC: Setting engine to " + state + " on Train#" + trainPosition)
+                    log.decoder("Setting engine to " + state + " on Train#" + trainPosition)
                         //This code sets engineRunning to 0 or 1 depending on the state
                     if (state === true) {
                         train.all[trainPosition].prototype.engineRunning = 1;
@@ -121,7 +121,7 @@ var decoders = {
                     var newNotch = (train.all[trainPosition].dcc.f.notch.state + 1);
                     if (newNotch <= 8) {
                         train.all[trainPosition].dcc.f.notch.state++; //THIS HAS TO RUN INSTANTLY OR SIM.JS IS STUPID
-                        console.log("DCC: Increasing notch on Train#" + trainPosition)
+                        log.decoder("Increasing notch on Train#" + trainPosition)
                         setTimeout(function() {
                             train.all[trainPosition].throttle.f.set({
                                 "F9": true
@@ -140,7 +140,7 @@ var decoders = {
                     var newNotch = (train.all[trainPosition].dcc.f.notch.state - 1);
                     if (newNotch >= 0) {
                         train.all[trainPosition].dcc.f.notch.state--; //THIS MUST RUN INSTANTLY OR SIM.JS DOES WEIRD STUFF
-                        console.log("DCC: Decreasing notch on Train#" + trainPosition)
+                        log.decoder("Decreasing notch on Train#" + trainPosition)
                         setTimeout(function() {
                             train.all[trainPosition].throttle.f.set({
                                 "F10": true
@@ -175,7 +175,7 @@ var decoders = {
     "generic": {
         "generic": function(address, trainPosition) {
             'use strict';
-            console.debug("DECODER: Using 'generic' for " + trainPosition)
+            log.decoder("Using 'generic' for " + trainPosition)
             //GENERIC FALLBACK
             train.all[trainPosition].throttle = new jmri.throttle(address, jmri.throttleName.generate());
 
