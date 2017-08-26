@@ -1,10 +1,10 @@
-# Configuring Basic Settings with ``settings.json``
+# Configuring ZephyrCab
 
-ZephyrCab has a few basic configuration options in ``/cfg/settings.json``.
+ZephyrCab is configured with ``/cfg/settings.json``.
 
-The config file _does not_ require any programming knowledge to edit; simply follow this guide. Be sure to match the syntax exactly (i.e. put quotes where there are quotes, semicolons where there are semicolons, etc)
+You don't need any programming knowledge, simply follow this guide. If you run into a problem, join the Gitter chat and I'll help you.
 
-## Automatic Layout Connection
+### Automatic Layout Connection
 
 **_Not recommended for most users!_**
 
@@ -16,7 +16,7 @@ cfg.ip = "192.168.1.10"; //your JMRI PC's IP address
 cfg.port = 12080; //your JMRI web server's port
 ```
 
-## Default Brake System Pressure (feed valve)
+### Default Brake System Pressure (feed valve)
 
 North American freight train brakes operate based on an inverse relationship between brake line pressure and brake cylinder pressure. When the brake line pressure decreases, the brake cylinder pressure increases, applying the brakes.
 
@@ -28,10 +28,6 @@ All brake systems have a maximum brake line pressure, which will release the bra
 cfg.brakes.defaultFeedValveSetting = 110;
 ```
 _Do not include "psi" on the end of your number!_
-
-## Disable Push Notifications
-
-_This is an experimental feature and has not been documented yet, as it may be removed in future releases._
 
 ## Developer Options
 The options below are specifically geared towards developers tinkering with the program. Normal users shouldn't need these features.
