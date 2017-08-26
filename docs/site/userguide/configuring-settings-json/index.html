@@ -1,383 +1,607 @@
+
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
-<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
-<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
-<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<html lang="en" class="no-js">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.8.1">
+    
     
       
         <title>Basic Configuration - ZephyrCab Docs</title>
       
-      
-      
-      
-    
-    <meta property="og:url" content="None">
-    <meta property="og:title" content="ZephyrCab Docs">
-    <meta property="og:image" content="None/../../">
-    <meta name="apple-mobile-web-app-title" content="ZephyrCab Docs">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     
-    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
-    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon-e565ddfa3b.ico">
-    <style>
-      @font-face {
-      	font-family: 'Icon';
-      	src: url('../../assets/fonts/icon.eot?52m981');
-      	src: url('../../assets/fonts/icon.eot?#iefix52m981')
-               format('embedded-opentype'),
-      		   url('../../assets/fonts/icon.woff?52m981')
-               format('woff'),
-      		   url('../../assets/fonts/icon.ttf?52m981')
-               format('truetype'),
-      		   url('../../assets/fonts/icon.svg?52m981#icon')
-               format('svg');
-      	font-weight: normal;
-      	font-style: normal;
-      }
-    </style>
-    <link rel="stylesheet" href="../../assets/stylesheets/application-a422ff04cc.css">
+      <script src="../../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-bfecc7305d.css">
+      
     
     
       
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
-      
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
-      <style>
-        body, input {
-          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
-        }
-        pre, code {
-          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
-        }
-      </style>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     
     
-    <script src="../../assets/javascripts/modernizr-4ab42b99fd.js"></script>
     
   </head>
   
   
   
-  <body class=" ">
-    
-    <div class="backdrop">
-      <div class="backdrop-paper"></div>
-    </div>
-    <input class="toggle" type="checkbox" id="toggle-drawer">
-    <input class="toggle" type="checkbox" id="toggle-search">
-    <label class="toggle-button overlay" for="toggle-drawer"></label>
-    <header class="header">
-      <nav aria-label="Header">
-  <div class="bar default">
-    <div class="button button-menu" role="button" aria-label="Menu">
-      <label class="toggle-button icon icon-menu" for="toggle-drawer">
-        <span></span>
-      </label>
-    </div>
-    <div class="stretch">
-      <div class="title">
-        
-          <span class="path">
-            
-          </span>
-        
-        Basic Configuration
-      </div>
-    </div>
-    
-    
-    <div class="button button-search" role="button" aria-label="Search">
-      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
-    </div>
-  </div>
-  <div class="bar search">
-    <div class="button button-close" role="button" aria-label="Close">
-      <label class="toggle-button icon icon-back" for="toggle-search"></label>
-    </div>
-    <div class="stretch">
-      <div class="field">
-        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
-      </div>
-    </div>
-    <div class="button button-reset" role="button" aria-label="Search">
-      <button class="toggle-button icon icon-close" id="reset-search"></button>
-    </div>
-  </div>
-</nav>
-    </header>
-    <main class="main">
-      
-      <div class="drawer">
-        <nav aria-label="Navigation">
   
-  <a href="/" class="project">
-    <div class="banner">
-      
-      <div class="name">
-        <strong>
-          ZephyrCab Docs
-          <span class="version">
-            
-          </span>
-        </strong>
+    <body>
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../.." title="ZephyrCab Docs" class="md-icon md-icon--home md-header-nav__button">
+          </a>
         
       </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Getting Started
+                </span>
+              
+            
+            Basic Configuration
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/k4kfh/ZephyrCab" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      k4kfh/ZephyrCab
     </div>
   </a>
-  <div class="scrollable">
-    <div class="wrapper">
+
+          </div>
+        </div>
       
-      <div class="toc">
-        <ul>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
           
             
-  <li>
-    <a class="" title="Quick Start" href="../..">
-      Quick Start
-    </a>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
     
+      <i class="md-icon md-icon--home md-nav__button"></i>
+    
+    ZephyrCab Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/k4kfh/ZephyrCab" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      k4kfh/ZephyrCab
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Welcome" class="md-nav__link">
+      Welcome
+    </a>
   </li>
 
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Getting Started
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Getting Started
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
           
-            
-  <li>
-    <a class="current" title="Basic Configuration" href="./">
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../quick-start/" title="Quick Start" class="md-nav__link">
+      Quick Start
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Basic Configuration
+      </label>
+    
+    <a href="./" title="Basic Configuration" class="md-nav__link md-nav__link--active">
       Basic Configuration
     </a>
     
       
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-layout-connection" title="Automatic Layout Connection" class="md-nav__link">
+    Automatic Layout Connection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-brake-system-pressure-feed-valve" title="Default Brake System Pressure (feed valve)" class="md-nav__link">
+    Default Brake System Pressure (feed valve)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-options" title="Developer Options" class="md-nav__link">
+    Developer Options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-all-websockets-messages" title="Log All WebSockets Messages" class="md-nav__link">
+    Log All WebSockets Messages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-toasts" title="Debugging Toasts" class="md-nav__link">
+    Debugging Toasts
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
         
+          <li class="md-nav__item">
+  <a href="#what-are-debug-toasts" title="What are debug toasts?" class="md-nav__link">
+    What are debug toasts?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" title="Troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-requests" title="Feature Requests" class="md-nav__link">
+    Feature Requests
+  </a>
+  
+</li>
       
       
-        <ul>
-          
-            <li class="anchor">
-              <a title="Automatic Layout Connection" href="#automatic-layout-connection">
-                Automatic Layout Connection
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Default Brake System Pressure (feed valve)" href="#default-brake-system-pressure-feed-valve">
-                Default Brake System Pressure (feed valve)
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Disable Push Notifications" href="#disable-push-notifications">
-                Disable Push Notifications
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Developer Options" href="#developer-options">
-                Developer Options
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Log All WebSockets Messages" href="#log-all-websockets-messages">
-                Log All WebSockets Messages
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Debugging Toasts" href="#debugging-toasts">
-                Debugging Toasts
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Troubleshooting" href="#troubleshooting">
-                Troubleshooting
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Feature Requests" href="#feature-requests">
-                Feature Requests
-              </a>
-            </li>
-          
-        </ul>
       
+    </ul>
+  
+</nav>
     
   </li>
 
+        
           
-            
-  <li>
-    <a class="" title="How ZephyrCab works" href="../how-it-works/">
-      How ZephyrCab works
-    </a>
-    
-  </li>
+          
+          
 
-          
-            
-  <li>
-    <a class="" title="Adding your Locomotives" href="../configuring-bundles-json/">
+
+  <li class="md-nav__item">
+    <a href="../configuring-bundles-json/" title="Adding your Locomotives" class="md-nav__link">
       Adding your Locomotives
     </a>
-    
   </li>
 
-          
-            
-  <li>
-    <a class="" title="Supported Locomotives/Decoders" href="../../reference/supported/">
-      Supported Locomotives/Decoders
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../reference/supported/" title="Supported Models" class="md-nav__link">
+      Supported Models
     </a>
-    
   </li>
 
-          
-            
-  <li>
-    <a class="" title="Developer Reference" href="../../dev-reference/">
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../how-it-works/" title="How It Works" class="md-nav__link">
+      How It Works
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../dev-reference/" title="Developer Reference" class="md-nav__link">
       Developer Reference
     </a>
-    
   </li>
 
-          
-        </ul>
-        
-      </div>
-    </div>
-  </div>
+    
+  </ul>
 </nav>
-      </div>
-      <article class="article">
-        <div class="wrapper">
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-layout-connection" title="Automatic Layout Connection" class="md-nav__link">
+    Automatic Layout Connection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-brake-system-pressure-feed-valve" title="Default Brake System Pressure (feed valve)" class="md-nav__link">
+    Default Brake System Pressure (feed valve)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-options" title="Developer Options" class="md-nav__link">
+    Developer Options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-all-websockets-messages" title="Log All WebSockets Messages" class="md-nav__link">
+    Log All WebSockets Messages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-toasts" title="Debugging Toasts" class="md-nav__link">
+    Debugging Toasts
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-are-debug-toasts" title="What are debug toasts?" class="md-nav__link">
+    What are debug toasts?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" title="Troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-requests" title="Feature Requests" class="md-nav__link">
+    Feature Requests
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
-          <h1 id="configuring-basic-settings-with-settingsjson">Configuring Basic Settings with <code>settings.json</code><a class="headerlink" href="#configuring-basic-settings-with-settingsjson" title="Permanent link">#</a></h1>
-<p>ZephyrCab has a few basic configuration options in <code>/cfg/settings.json</code>.</p>
-<p>The config file <em>does not</em> require any programming knowledge to edit; simply follow this guide. Be sure to match the syntax exactly (i.e. put quotes where there are quotes, semicolons where there are semicolons, etc)</p>
-<h2 id="automatic-layout-connection">Automatic Layout Connection<a class="headerlink" href="#automatic-layout-connection" title="Permanent link">#</a></h2>
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="configuring-zephyrcab">Configuring ZephyrCab<a class="headerlink" href="#configuring-zephyrcab" title="Permanent link">#</a></h1>
+<p>ZephyrCab is configured with <code class="code">/cfg/settings.json</code>.</p>
+<p>You don't need any programming knowledge, simply follow this guide. If you run into a problem, join the Gitter chat and I'll help you.</p>
+<h3 id="automatic-layout-connection">Automatic Layout Connection<a class="headerlink" href="#automatic-layout-connection" title="Permanent link">#</a></h3>
 <p><strong><em>Not recommended for most users!</em></strong></p>
 <p>By default, ZephyrCab assumes it's running on a JMRI web server, and it will automatically connect to that. If for some reason you're running ZephyrCab on an external web server, you can configure automatic connection by setting the following values:</p>
-<pre class="code"><code>cfg.webServer = &quot;external&quot;; //not setting this or setting it to &quot;jmri&quot; invokes the default behavior
-cfg.ip = &quot;192.168.1.10&quot;; //your JMRI PC's IP address
-cfg.port = 12080; //your JMRI web server's port</code></pre>
+<div class="code"><pre><span></span>cfg.webServer = &quot;external&quot;; //not setting this or setting it to &quot;jmri&quot; invokes the default behavior
+cfg.ip = &quot;192.168.1.10&quot;; //your JMRI PC&#39;s IP address
+cfg.port = 12080; //your JMRI web server&#39;s port
+</pre></div>
 
-
-<h2 id="default-brake-system-pressure-feed-valve">Default Brake System Pressure (feed valve)<a class="headerlink" href="#default-brake-system-pressure-feed-valve" title="Permanent link">#</a></h2>
+<h3 id="default-brake-system-pressure-feed-valve">Default Brake System Pressure (feed valve)<a class="headerlink" href="#default-brake-system-pressure-feed-valve" title="Permanent link">#</a></h3>
 <p>North American freight train brakes operate based on an inverse relationship between brake line pressure and brake cylinder pressure. When the brake line pressure decreases, the brake cylinder pressure increases, applying the brakes.</p>
 <p>All brake systems have a maximum brake line pressure, which will release the brakes completely. This is set via the feed valve in the locomotive cab. ZephyrCab's default feed valve setting is 90psi, the most common pressure. However, some railroads use different pressures, and if you are modeling such a railroad it may be inconvenient for you to change the feed valve pressure every time you use ZephyrCab.</p>
-<p><strong>By adjusting the <code>cfg.brakes.defaultFeedValveSetting</code> option, you can change the default feed valve pressure of 90psi.</strong> Simply edit the integer value. In the example below, we change the default feed valve pressure to 110psi.</p>
-<pre class="code"><code class="language-javascript">cfg.brakes.defaultFeedValveSetting = 110;</code></pre>
-
-
-<p><em>Do not include "psi" on the end of your number!</em></p>
-<h2 id="disable-push-notifications">Disable Push Notifications<a class="headerlink" href="#disable-push-notifications" title="Permanent link">#</a></h2>
-<p><em>This is an experimental feature and has not been documented yet, as it may be removed in future releases.</em></p>
+<p><strong>By adjusting the <code class="code">cfg.brakes.defaultFeedValveSetting</code> option, you can change the default feed valve pressure of 90psi.</strong> Simply edit the integer value. In the example below, we change the default feed valve pressure to 110psi.</p>
+<p><div class="code"><pre><span></span><span class="nx">cfg</span><span class="p">.</span><span class="nx">brakes</span><span class="p">.</span><span class="nx">defaultFeedValveSetting</span> <span class="o">=</span> <span class="mi">110</span><span class="p">;</span>
+</pre></div>
+<em>Do not include "psi" on the end of your number!</em></p>
 <h2 id="developer-options">Developer Options<a class="headerlink" href="#developer-options" title="Permanent link">#</a></h2>
 <p>The options below are specifically geared towards developers tinkering with the program. Normal users shouldn't need these features.</p>
 <h2 id="log-all-websockets-messages">Log All WebSockets Messages<a class="headerlink" href="#log-all-websockets-messages" title="Permanent link">#</a></h2>
-<p>This is useful in debugging communication between JMRI and ZephyrCab. When <code>cfg.logallmessages === true</code>, ZephyrCab will dump all WebSockets messages to the console via <code>console.log()</code>. A timestamp is also included for each log entry.</p>
-<p>To enable WebSockets logging, set <code>cfg.logallmessages</code> to <code>true</code>, as shown below.</p>
-<pre class="code"><code class="language-javascript">cfg.logallmessages = true;</code></pre>
+<p>This is useful in debugging communication between JMRI and ZephyrCab. When <code class="code">cfg.logallmessages === true</code>, ZephyrCab will dump all WebSockets messages to the console via <code class="code">console.log()</code>. A timestamp is also included for each log entry.</p>
+<p>To enable WebSockets logging, set <code class="code">cfg.logallmessages</code> to <code class="code">true</code>, as shown below.</p>
+<div class="code"><pre><span></span><span class="nx">cfg</span><span class="p">.</span><span class="nx">logallmessages</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</pre></div>
 
-
-<p>It is not recommended to enable this unless you need it, as it sometimes creates an absurd amount of <code>console.log()</code> calls, and may bog down your browser.</p>
+<p>It is not recommended to enable this unless you need it, as it sometimes creates an absurd amount of <code class="code">console.log()</code> calls, and may bog down your browser.</p>
 <h2 id="debugging-toasts">Debugging Toasts<a class="headerlink" href="#debugging-toasts" title="Permanent link">#</a></h2>
-<p>ZephyrCab utilizes the excellent <a href="http://materializecss.org">MaterializeCSS Framework</a>, which provides a notification function called a toast. You can create a toast with <code>Materialize.toast()</code>. See this page on the Materialize documentation to learn more.</p>
+<p>ZephyrCab utilizes the excellent <a href="http://materializecss.org">MaterializeCSS Framework</a>, which provides a notification function called a toast. You can create a toast with <code class="code">Materialize.toast()</code>. See this page on the Materialize documentation to learn more.</p>
 <h3 id="what-are-debug-toasts">What are debug toasts?<a class="headerlink" href="#what-are-debug-toasts" title="Permanent link">#</a></h3>
-<p>ZephyrCab has a small global function called <code>debugToast</code> that is a wrapper for the toast function. It is used to give the user information in instances where <code>console.log</code> is not ideal. When the <code>cfg.debugToasts</code> boolean is <code>false</code>, the function simply does nothing. However, when <code>cfg.debugToasts</code> is set to <code>true</code>, the debug toasts are passed through to <code>Materialize.toast()</code> as normal.</p>
-<p><strong>In short, setting <code>cfg.debugToasts</code> to <code>true</code> will turn on small pop-up debugging messages built in to some parts of the ZephyrCab code.</strong> If you are using ZephyrCab locally in a development environment, I recommend leaving debugToasts on, as they are relatively unobtrusive and provide useful information.</p>
-<pre class="code"><code class="language-javascript">cfg.logallmessages = true; //enables debug toasts
+<p>ZephyrCab has a small global function called <code class="code">debugToast</code> that is a wrapper for the toast function. It is used to give the user information in instances where <code class="code">console.log</code> is not ideal. When the <code class="code">cfg.debugToasts</code> boolean is <code class="code">false</code>, the function simply does nothing. However, when <code class="code">cfg.debugToasts</code> is set to <code class="code">true</code>, the debug toasts are passed through to <code class="code">Materialize.toast()</code> as normal.</p>
+<p><strong>In short, setting <code class="code">cfg.debugToasts</code> to <code class="code">true</code> will turn on small pop-up debugging messages built in to some parts of the ZephyrCab code.</strong> If you are using ZephyrCab locally in a development environment, I recommend leaving debugToasts on, as they are relatively unobtrusive and provide useful information.</p>
+<div class="code"><pre><span></span><span class="nx">cfg</span><span class="p">.</span><span class="nx">logallmessages</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">//enables debug toasts</span>
 
-cfg.logallmessages = false; //disables debug toasts</code></pre>
-
+<span class="nx">cfg</span><span class="p">.</span><span class="nx">logallmessages</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">//disables debug toasts</span>
+</pre></div>
 
 <hr />
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
 <p>If ZephyrCab misbehaves after an edit to the config file, please double check your syntax.</p>
 <p>If you encounter a problem with your config file, please <a href="https://github.com/k4kfh/ZephyrCab/issues/new">make an issue on GitHub</a> and I will do my best to assist you.</p>
 <h2 id="feature-requests">Feature Requests<a class="headerlink" href="#feature-requests" title="Permanent link">#</a></h2>
-<p>If you have something you'd like to add to <code>settings.json</code>, please <a href="https://github.com/k4kfh/ZephyrCab/issues/new">make an issue on GitHub</a> with your feature request, or better yet build it yourself and fork/pull request. All contributions are welcome!</p>
-          <aside class="copyright" role="note">
-            
-              ZephyrCab is free software, released with no license. &ndash;
-            
-            Documentation built with
-            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
-            using the
-            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
-              Material
-            </a>
-            theme.
-          </aside>
-          
-            <footer class="footer">
+<p>If you have something you'd like to add to <code class="code">settings.json</code>, please <a href="https://github.com/k4kfh/ZephyrCab/issues/new">make an issue on GitHub</a> with your feature request, or better yet build it yourself and fork/pull request. All contributions are welcome!</p>
+                
+                  
+                
               
-  <nav class="pagination" aria-label="Footer">
-    <div class="previous">
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
       
-        <a href="../.." title="Quick Start">
-          <span class="direction">
-            Previous
-          </span>
-          <div class="page">
-            <div class="button button-previous" role="button" aria-label="Previous">
-              <i class="icon icon-back"></i>
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../quick-start/" title="Quick Start" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
-            <div class="stretch">
-              <div class="title">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
                 Quick Start
-              </div>
+              </span>
             </div>
-          </div>
-        </a>
-      
+          </a>
+        
+        
+          <a href="../configuring-bundles-json/" title="Adding your Locomotives" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Adding your Locomotives
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
     </div>
-    <div class="next">
-      
-        <a href="../how-it-works/" title="How ZephyrCab works">
-          <span class="direction">
-            Next
-          </span>
-          <div class="page">
-            <div class="stretch">
-              <div class="title">
-                How ZephyrCab works
-              </div>
-            </div>
-            <div class="button button-next" role="button" aria-label="Next">
-              <i class="icon icon-forward"></i>
-            </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            ZephyrCab is free software, released with no license.
           </div>
-        </a>
-      
-    </div>
-  </nav>
-
-            </footer>
-          
-        </div>
-      </article>
-      <div class="results" role="status" aria-live="polite">
-        <div class="scrollable">
-          <div class="wrapper">
-            <div class="meta"></div>
-            <div class="list"></div>
-          </div>
-        </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
       </div>
-    </main>
-    <script>
-      var base_url = '../..';
-      var repo_id  = '';
-    </script>
-    <script src="../../assets/javascripts/application-997097ee0c.js"></script>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
     
+      <script src="../../assets/javascripts/application-6940329b9f.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+    
+    
+      
     
   </body>
 </html>
