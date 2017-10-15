@@ -4,7 +4,7 @@
 
 * [Visit Main Project Site](http://k4kfh.github.io/ZephyrCab)
 * [Project Documentation](http://k4kfh.github.io/ZephyrCab/docs/site)
-* [Development Blog](http://zephyrcab.tumblr.com)
+* [Development Blog](http://blog.evilgeniustech.com)
 * [*The Idiot's Guide to Railroad Physics*](http://k4kfh.github.io/idiotsGuideToRailroadPhysics)
 
 [![Join the chat at https://gitter.im/k4kfh/LocoThrottleJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k4kfh/LocoThrottleJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
