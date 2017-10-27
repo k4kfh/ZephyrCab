@@ -11,18 +11,18 @@ bundles = new Object();
 bundles.locomotives = {
     /*
     Example entry for my Athearn Genesis GP15-1 is shown below
-    
+
     "GP15-1 #1379":{
         model:{
             speed:function(mph) {} this is a function that returns a speed in percent from a speed in mph. it is model-specific due to gearing.
         },
-        
+
         prototype:"EMD GP15-1"
     }
-    
+
     The decoder settings are not here because we can grab those straight from JMRI.
     */
-    "notCBQ2": {
+    "CBQ2": {
         type: "locomotive",
         model: //all functions dealing with virtual-->model physics
         {
@@ -48,7 +48,7 @@ bundles.locomotives = {
                 te: function(speed, trainPosition, overrideMaxSpeedForAmperage) {
                     /*
                                         This example uses an equation from a Virginia Tech paper.
-                                        
+
                                         It is important to note that the value from this function will be used, unaltered, in the physics engine. You cannot forget to take into account the reverser. This is easy; all you have to do is multiply your calculated value by the global variable: reverser . If we're in neutral, this will yield 0. In forward, it will do nothing. In reverse, it will make your number negative. Simple, but very important.
                                         */
                     if (overrideMaxSpeedForAmperage == undefined) { //this option will not send a TE of 0 even if we're exceeding the maximum speed
@@ -63,7 +63,7 @@ bundles.locomotives = {
                     /*
                     Now we must actually use the formula from the Virginia Tech paper. It states:
                     T = 2650((np/v))
-    
+
                     T is tractive effort in Newtons.
                     n is the efficiency coefficient (unitless)
                     p is the output horsepower
@@ -83,7 +83,7 @@ bundles.locomotives = {
                     } else if (speed < 8.9 && overrideMaxSpeedForAmperage) {
                         teLbs = 56500 * (notch.state / 8)
                     }
-                    
+
 
                     return teLbs; //the abs is to protect against returning -0, //returns tractive effort in lbs
                 },
@@ -139,8 +139,8 @@ bundles.locomotives = {
                     }
                     log.Sim.wheelslip("---------")
                     log.Sim.wheelslip("Threshold = " + threshold);
-                    
-                    var loadOnWheels = el.wheelSlip.calcInternalForces(trainPosition) + el.wheelSlip.calcExternalForces(trainPosition); 
+
+                    var loadOnWheels = el.wheelSlip.calcInternalForces(trainPosition) + el.wheelSlip.calcExternalForces(trainPosition);
                     //calculate the load on the wheels
                     log.Sim.wheelslip("Load on wheels = " + loadOnWheels)
                     log.Sim.wheelslip("Internal Forces = " + el.wheelSlip.calcInternalForces(trainPosition))
@@ -239,9 +239,9 @@ bundles.rollingstock = {
     "Generic Boxcar": {
         /*
         This is rather misleading. As of 3/16/16, there is ZERO integration with the JMRI roster for rolling stock.
-        
+
         This object only has such a misleading naming convention to maintain backwards compatibility with some train.build stuff. If we specify the name inside .roster.name, it eliminates the need for a cumbersome if statement to deal with naming in train.ui HTML generation. It just works.
-        
+
         In the future, integration with JMRI's OperationsPro is planned, and will likely make use of .roster to contain its information for a specific car.
         */
         roster: {
@@ -365,7 +365,7 @@ bundles.rollingstock = {
                 calcForce: function(trainPosition, psi) {
                     /*
                     This "Magic Number" variable is an interesting concept. It's essentially an approximate constant for converting from pressure in the cylinders to brake force at the wheels. I found it by looking at a study on "brake ratio" for loaded vs empty cars. Brake ratio is a ratio of the braking force to the car's weight, and Load/Empty Sensors (explained on Al Krug's page) adjust the brake system to modify this ratio to avoid slipping when the car is not loaded. I basically took data from this study (which included 4 similar 1970s steel hoppers) and used my knowledge of the cylinder pressure during the tests, and algebra-ed my way to a constant for converting cylinder pressure to braking force. I did it for each car and then averaged the factors together (they didn't differ much) and got 404.
-                    
+
                     Whether the above method is totally accurate is not conclusively proven, but it's a heck of a lot easier than the alternative and it SEEMS mathematically sound, so I'm trying it for now. Results so far seem to indicate that 404 may be a little high.
                     */
                     var magicNumber = 350;
