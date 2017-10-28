@@ -287,6 +287,38 @@ $(document).ready(function() {
             Materialize.toast("You need to input an IP address!", 2000); //If they didn't type an IP, let them know
         }
     });
+    
+    //fullscreen button on cab page
+    $('#fullscreen-toggle').bind("click", function(){
+        console.log("FIRE!")
+        
+        //if we're not fullscreened right now...
+        if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+            var cabDiv = document.getElementById("cab-fullscreen-container");
+            if (cabDiv.requestFullscreen) {
+                cabDiv.requestFullscreen();
+            } else if (cabDiv.msRequestFullscreen) {
+                cabDiv.msRequestFullscreen();
+            } else if (cabDiv.mozRequestFullScreen) {
+                cabDiv.mozRequestFullScreen();
+            } else if (cabDiv.webkitRequestFullscreen) {
+                cabDiv.webkitRequestFullscreen();
+            }
+            $("#cab-fullscreen-container").addClass("fullscreen")
+            //if we are fullscreened now
+        } else {  
+            if (document.cancelFullScreen) {  
+                document.cancelFullScreen();  
+            } else if (document.mozCancelFullScreen) {  
+                document.mozCancelFullScreen();  
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();  
+            }
+            $("#cab-fullscreen-container").removeClass("fullscreen")
+        }  
+    });
+    
+    
 });
 
 ui = {

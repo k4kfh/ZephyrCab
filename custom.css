@@ -15,3 +15,28 @@ This keeps the scrollbar on the longer pages from screwing with the alignment of
 html {
   overflow-y: scroll;
 }
+
+#cab-fullscreen-container.fullscreen {
+    z-index: 9999;
+    width:100vw;
+    height:100vh;
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    background-color:white;
+    padding-top:2vh;
+    padding-bottom:2vh;
+    padding-left:5vh;
+    padding-right:5vh;
+}
+
+.square-btn {
+    padding-top:5px;
+    padding-right:5px;
+    padding-left:5px;
+    border-radius:6px;
+}
+
+body {
+    background-color:white;
+}
