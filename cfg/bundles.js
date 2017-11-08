@@ -42,7 +42,7 @@ bundles.locomotives = {
             "notchMaxSpeeds": [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
             "startingTE": 56500,
-
+            "drivetrainEfficiency":0.72
             calc: //this contains functions left open to developers to implement for a given locomotive
             {
                 te: function(speed, trainPosition, overrideMaxSpeedForAmperage) {
@@ -55,10 +55,11 @@ bundles.locomotives = {
                         overrideMaxSpeedForAmperage = false;
                     }
                     //First we need to convert the speed to KM/HR.
-                    var efficiency = 0.72
+                    var efficiency = train.all[trainPosition].prototype.drivetrainEfficiency;
                     var horsepower = train.all[trainPosition].prototype.maxHP * (notch.state / 8)
                     train.all[trainPosition].prototype.realtime.horsepower = horsepower; //just so it's stored
                     var speedSI = speed * 1.60934
+                    var startingTe = train.all[trainPosition].prototype.startingTE
 
                     /*
                     Now we must actually use the formula from the Virginia Tech paper. It states:
@@ -79,9 +80,9 @@ bundles.locomotives = {
                     }
                     //This is a measure of protection since the equation creates a curve that moves upwards too sharply
                     if (speed < 8.9 && overrideMaxSpeedForAmperage !== true) {
-                        teLbs = 56500 * (notch.state / 8) * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
+                        teLbs = startingTe * (notch.state / 8) * reverser * train.all[trainPosition].prototype.realtime.exceedingMaxSpeed;
                     } else if (speed < 8.9 && overrideMaxSpeedForAmperage) {
-                        teLbs = 56500 * (notch.state / 8)
+                        teLbs = startingTe * (notch.state / 8)
                     }
 
 
