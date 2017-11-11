@@ -42,7 +42,7 @@ bundles.locomotives = {
             "notchMaxSpeeds": [null, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60],
             "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
             "startingTE": 56500,
-            "drivetrainEfficiency":0.72
+            "drivetrainEfficiency":0.72,
             calc: //this contains functions left open to developers to implement for a given locomotive
             {
                 te: function(speed, trainPosition, overrideMaxSpeedForAmperage) {

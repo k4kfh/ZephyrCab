@@ -318,7 +318,9 @@ $(document).ready(function() {
         }  
     });
     
-    
+    $('#setup-loco-select').change(function(){
+        setup.generate()
+    })
 });
 
 ui = {

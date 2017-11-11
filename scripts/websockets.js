@@ -3,6 +3,7 @@
 foo, WebSocket, $, Materialize, console, cfg, train, jmri, ui, air, sim
 */
 /*jslint browser:true, white:true, plusplus:true*/
+var train; //declare this just to solve some scoping issues in the Setup app
 var link = {
     status: false,
     latestMessage: "",
@@ -97,6 +98,8 @@ var link = {
                 //If this connection attempt was not automatic
                 Materialize.toast("Connected manually to ws://" + cfg.ip + ":" + cfg.port, 3000);
             }
+            
+            setTimeout(function(){setup.onConnect();}, 500); //wait 500ms to give JMRI time to send info before we load the setup page info
         };
 
         //Upon receiving a message, log it if logging is enabled, then send it off to the handler
@@ -222,9 +225,11 @@ var link = {
                 jmri.roster.raw = ev;
                 jmri.roster.entries = jmri.roster.reformat(jmri.roster.raw); //rebuild the reformatted roster every time we get new roster data
 
-                //Now that the roster has been edited, we need to update the UI for the train
-                train.ui.setup();
-                train.ui.update();
+                //Now that the roster has been edited, we need to update the UI for the train, but only if we're in the main app not the setup page
+                if (train != undefined) {
+                    train.ui.setup();
+                    train.ui.update();
+                }
             }
         }
     }

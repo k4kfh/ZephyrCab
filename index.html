@@ -44,8 +44,9 @@
     <script src="scripts/air.js"></script>
     <script src="scripts/brakes.js"></script>
     <script src="scripts/sim.js"></script>
+    <script src="scripts/setup.js"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
@@ -55,7 +56,7 @@
                 <ul class="tabs">
                     <li class="tab"><a href="#cab">Cab</a></li>
                     <li class="tab"><a id="tab_trainsettings" href="#trainsettings">Train Settings</a></li>
-                    <li class="tab"><a id="tab_connection" class="active" href="#connection">Connection</a></li>
+                    <li class="tab"><a id="tab_connection" class="active" href="#setup">setup</a></li>
                     <li class="tab"><a href="#layoutcontrol">Layout Control</a></li>
                     <li class="tab"><a href="#help">Help</a></li>
                 </ul>
@@ -66,191 +67,192 @@
     <div class="container">
         <!---beginning of actual page, this is the drive portion with the container that makes the fullscreen styling work--->
         <div id="cab-fullscreen-container">
-        <div id="cab">
-            <div class="row">
-                <div class="">
-                    <div class="col s3">
-                        <table class="striped">
-                            <tbody>
-                                <tr>
-                                    <td><b>Speed</b></td>
-                                    <td id="gauge-speed">0mph</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Load (Amperes)</b></td>
-                                    <td id="gauge-amps">N/A</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col s3">
-                        <table class="striped">
-                            <tbody>
-                                <tr>
-                                    <td><b>Brake Pipe</b></td>
-                                    <td id="gauge-brakePipe">90psi</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Brake Cylinder</b></td>
-                                    <td id="gauge-brakeCylinder">0psi</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col s3">
-                        <table class="striped">
-                            <tbody>
-                                <tr>
-                                    <td><b>Main Reservoir</b></td>
-                                    <td id="gauge-mainReservoir">140psi</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Equalizing Reservoir</b></td>
-                                    <td id="gauge-equalizingReservoir">90psi</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col s3">
-                        <div>
-                            <a class="right teal square-btn" id="fullscreen-toggle"><i class="material-icons white-text">fullscreen</i></a>
+            <div id="cab">
+                <div class="row">
+                    <div class="">
+                        <div class="col s3">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Speed</b></td>
+                                        <td id="gauge-speed">0mph</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Load (Amperes)</b></td>
+                                        <td id="gauge-amps">N/A</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div>
-                            <a class="chip" id="wheel-slip">Wheel Slip</a>
-                            <a class="chip" id="pcs-open">PCS Open</a>
-                            <a class="chip" id="dyn-brake-warning">Dynamic Brake</a>
-                            <a class="chip" id="error">Error</a>
+                        <div class="col s3">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Brake Pipe</b></td>
+                                        <td id="gauge-brakePipe">90psi</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Brake Cylinder</b></td>
+                                        <td id="gauge-brakeCylinder">0psi</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s3">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Main Reservoir</b></td>
+                                        <td id="gauge-mainReservoir">140psi</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Equalizing Reservoir</b></td>
+                                        <td id="gauge-equalizingReservoir">90psi</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s3">
+                            <div>
+                                <a class="right teal square-btn" id="fullscreen-toggle"><i class="material-icons white-text">fullscreen</i></a>
+                            </div>
+                            <div>
+                                <a class="chip" id="wheel-slip">Wheel Slip</a>
+                                <a class="chip" id="pcs-open">PCS Open</a>
+                                <a class="chip" id="dyn-brake-warning">Dynamic Brake</a>
+                                <a class="chip" id="error">Error</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s6">
-                    <div class="col s2">
-                        <a id="horn" class="btn-floating btn-large waves-effect waves-light teal"><i class="material-icons">volume_up</i></a>
-                    </div>
-                    <div class="col s5">
-                        <table class="striped">
-                            <tbody>
-                                <tr>
-                                    <td><b>Bell</b></td>
-                                    <td>
-                                        <div class="switch">
-                                            <label>
+                <div class="row">
+                    <div class="col s6">
+                        <div class="col s2">
+                            <a id="horn" class="btn-floating btn-large waves-effect waves-light teal"><i class="material-icons">volume_up</i></a>
+                        </div>
+                        <div class="col s5">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Bell</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
                                                 <input id="bell" type="checkbox">
                                                 <span class="lever"></span>
                                             </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><b>Headlight</b></td>
-                                    <td>
-                                        <div class="switch">
-                                            <label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Headlight</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
                                                 <input id="headlight" type="checkbox">
                                                 <span class="lever"></span>
                                             </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col s5">
-                        <table class="striped">
-                            <tbody>
-                                <tr>
-                                    <td><b>Sand</b></td>
-                                    <td>
-                                        <div class="switch">
-                                            <label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col s5">
+                            <table class="striped">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Sand</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
                                                 <input id="sand" type="checkbox">
                                                 <span class="lever"></span>
                                             </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><b>Engine</b></td>
-                                    <td>
-                                        <div class="switch">
-                                            <label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Engine</b></td>
+                                        <td>
+                                            <div class="switch">
+                                                <label>
                                                 <input id="engine-start" type="checkbox">
                                                 <span class="lever"></span>
                                             </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div id="autobrake-chip" class="chip">EMERGENCY</div>
-                                <b class="right">Automatic Brake</b>
-                                <input id="autobrake" type="range" value=0 min=0 max=100>
-                                <table>
-                                    <tr>
-                                        <td id="autobrake-table-release" width="20%" class="white-text green center z-depth-2"><b>RELEASE</b></td>
-                                        <td id="autobrake-table-service" width="60%" class="white-text orange center"><b>SERVICE</b></td>
-                                        <td id="autobrake-table-emergency" width="20%" class="white-text red center"><i class="material-icons">new_releases</i></td>
+                                            </div>
+                                        </td>
                                     </tr>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="left">
-                                    <a id="bailoff" class="chip waves-effect waves-light">BAIL OFF</a>
-                                    <a id="indbrake-indicator" class="chip">0psi</a>
-                                </div>
-                                <b class="right">Independent Brake</b>
-                                <input id="indbrake" type="range" value=0 min=0 max=100>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="row">
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="chip left"><b>UNAVAILABLE</b></div>
-                                    <b class="right">Dynamic Brake</b>
-                                    <input type="range" min=0 max=8 value=0>
+                                    <div id="autobrake-chip" class="chip">EMERGENCY</div>
+                                    <b class="right">Automatic Brake</b>
+                                    <input id="autobrake" type="range" value=0 min=0 max=100>
+                                    <table>
+                                        <tr>
+                                            <td id="autobrake-table-release" width="20%" class="white-text green center z-depth-2"><b>RELEASE</b></td>
+                                            <td id="autobrake-table-service" width="60%" class="white-text orange center"><b>SERVICE</b></td>
+                                            <td id="autobrake-table-emergency" width="20%" class="white-text red center"><i class="material-icons">new_releases</i></td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div id="throttle-indicator" class="chip left">IDLE</div>
-                                    <b class="right">Power Throttle</b>
-                                    <input id="throttle" type="range" min=0 max=8 value=0>
+                                    <div class="left">
+                                        <a id="bailoff" class="chip waves-effect waves-light">BAIL OFF</a>
+                                        <a id="indbrake-indicator" class="chip">0psi</a>
+                                    </div>
+                                    <b class="right">Independent Brake</b>
+                                    <input id="indbrake" type="range" value=0 min=0 max=100>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col s6">
-                            <!--builders plate mockup-->
-                            <div class="card">
-                                <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
+                    <div class="col s6">
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="chip left"><b>UNAVAILABLE</b></div>
+                                        <b class="right">Dynamic Brake</b>
+                                        <input type="range" min=0 max=8 value=0>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div id="throttle-indicator" class="chip left">IDLE</div>
+                                        <b class="right">Power Throttle</b>
+                                        <input id="throttle" type="range" min=0 max=8 value=0>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <!--builders plate mockup-->
+                                <div class="card">
+                                    <img class="responsive-img" src="http://static1.1.sqspcdn.com/static/f/464063/12952150/1309304050647/EMD+Plate.png? token=sZ1O9%2FC0mUI9AGJFrHGlurdskZM%3D">
+                                </div>
+                            </div>
 
-                        <div class="col s6">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="chip left" id="reverser-indicator">NEU</div>
-                                    <b class="right">Reverser</b>
-                                    <input id="reverser" type="range" min="-1" max="1" value=0>
+                            <div class="col s6">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="chip left" id="reverser-indicator">NEU</div>
+                                        <b class="right">Reverser</b>
+                                        <input id="reverser" type="range" min="-1" max="1" value=0>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -258,10 +260,9 @@
                 </div>
             </div>
         </div>
-    </div>
 
-        <!--connection settings area--->
-        <div id="connection">
+        <!--connection settings and setup area--->
+        <div id="setup">
             <div class="row">
                 <div class="col s12">
                     <div class="card">
@@ -294,6 +295,199 @@
 
                         </div>
 
+                    </div>
+                </div>
+            </div>
+            <!---bundles setup area--->
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title black-text">Bundles Setup</span>
+                            <p>Before you can use ZephyrCab, you need to bind JMRI roster entries to locomotive data files. We call these bundles, and they tell ZephyrCab how to simulate your prototype locomotive and how to control the sound functions on your decoder.</p>
+
+                            <p><b>It is recommended to do this from your JMRI so you can copy and paste data into files easily.</b></p>
+
+                            <br>
+                            <p>You have <b id="setup-num-unbundled">...</b> unbundled locomotives. Choose one to configure below.</p>
+                            <div class="row">
+                                <select id="setup-loco-select" class="browser-default"></select>
+                            </div>
+                            <div class="row">
+                                <h5 class="light">Prototype Info</h5>
+                                <p>Some of these values (weight, horsepower, powertrain efficiency) are <i>very</i> important to ensure an accurate simulation, but with more obscure numbers like adhesion factor, it's safe to use the example values listed below.</p>
+                            </div>
+                            <div id="setup-form">
+                                <!---builder info--->
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="EMD" id="setupForm-builder" type="text">
+                                        <label for="setupForm-builder">Builder</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input placeholder="F7-A" id="setupForm-name" type="text">
+                                        <label for="setupForm-name">Name</label>
+                                    </div>
+                                </div>
+                                <!--beginning of real specs-->
+                                <div class="row">
+                                    <div class="input-field col s2">
+                                        <input placeholder="250000" id="setupForm-weight" type="number">
+                                        <label for="setupForm-weight">Weight (lbs)</label>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <input placeholder="1500" id="setupForm-maxHP" type="number">
+                                        <label for="setupForm-maxHP">Horsepower</label>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <input placeholder="900" id="setupForm-maxAmps" type="number">
+                                        <label for="setupForm-maxAmps">Max. Current</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="56500" id="setupForm-startingTE" type="number">
+                                        <label for="setupForm-startingTE">Starting Tractive Effort (lbs)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="0.72" id="setupForm-drivetrainEfficiency" type="number">
+                                        <label for="setupForm-drivetrainEfficiency">Powertrain Efficiency (decimal)</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s3">
+                                        <input placeholder="0.30" id="setupForm-adhesion" type="number">
+                                        <label for="setupForm-adhesion">Normal Adhesion Factor</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="0.25" id="setupForm-adhesionDuringSlip" type="number">
+                                        <label for="setupForm-adhesionDuringSlip">Slipping Adhesion Factor</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="0.25" id="setupForm-adhesion" type="number">
+                                        <label for="setupForm-adhesion">Normal Adhesion Factor</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="0.0015" id="setupForm-rollingResistance" type="number">
+                                        <label for="setupForm-rollingResistance">Coeff. of Rolling Resistance</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s3">
+                                        <input placeholder="130" id="setupForm-compressorLowerLimit" type="number">
+                                        <label for="setupForm-compressorLowerLimit">Compressor Lower Limit (psi)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="140" id="setupForm-compressorUpperLimit" type="number">
+                                        <label for="setupForm-compressorUpperLimit">Compressor Upper Limit (psi)</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input placeholder="0.28" id="setupForm-flowRateCoeff" type="number">
+                                        <label for="setupForm-flowRateCoeff">Compressor Flow Rate Coefficient (cfm per engine rpm)</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s3">
+                                        <input placeholder="100" id="setupForm-brakeLatency" type="number">
+                                        <label for="setupForm-brakeLatency">Brake Latency (milliseconds)</label>
+                                    </div>
+                                    <div class="input-field col s5">
+                                        <input placeholder="0 (assumes ideal tank)" id="setupForm-mainReservoirLeakRate" type="number">
+                                        <label for="setupForm-mainReservoirLeakRate">Main Reservoir Leak Rate (cubic feet per 100ms)</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="46.8" id="setupForm-mainReservoirCapacity" type="number">
+                                        <label for="setupForm-mainReservoirCapacity">Main Reservoir Capacity (cubic feet)</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h6 style="padding-left:10px"><b>Prime Mover RPM</b></h6>
+                                    <p style="padding-left:10px">The example values listed below are for an EMD 567 16cyl engine.</p>
+                                    <br>
+                                    <div class="input-field col s4">
+                                        <input placeholder="300" id="setupForm-notch0-rpm" type="number">
+                                        <label for="setupForm-notch0-rpm">Idle RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="362" id="setupForm-notch1-rpm" type="number">
+                                        <label for="setupForm-notch1-rpm">RUN1 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="425" id="setupForm-notch2-rpm" type="number">
+                                        <label for="setupForm-notch2-rpm">RUN2 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="487" id="setupForm-notch3-rpm" type="number">
+                                        <label for="setupForm-notch3-rpm">RUN3 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="550" id="setupForm-notch4-rpm" type="number">
+                                        <label for="setupForm-notch4-rpm">RUN4 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="613" id="setupForm-notch5-rpm" type="number">
+                                        <label for="setupForm-notch5-rpm">RUN5 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="675" id="setupForm-notch6-rpm" type="number">
+                                        <label for="setupForm-notch6-rpm">RUN6 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="738" id="setupForm-notch7-rpm" type="number">
+                                        <label for="setupForm-notch7-rpm">RUN7 RPM</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="800" id="setupForm-notch8-rpm" type="number">
+                                        <label for="setupForm-notch8-rpm">RUN8 RPM</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h6 style="padding-left:10px"><b>Maximum Speed per Throttle Notch</b></h6>
+                                    <p style="padding-left:10px">This has to do with the electronics of the motors, the gear ratio of your locomotive, and the effects of back-EMF. The example values listed below are for an F7-A with the 62:15 gear ratio.</p>
+                                    <br>
+                                    <div class="input-field col s3">
+                                        <input placeholder="7.5" id="setupForm-notch1-maxSpeed" type="number">
+                                        <label for="setupForm-notch1-maxSpeed">RUN1 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="15" id="setupForm-notch2-maxSpeed" type="number">
+                                        <label for="setupForm-notch2-maxSpeed">RUN2 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="22.5" id="setupForm-notch3-maxSpeed" type="number">
+                                        <label for="setupForm-notch3-maxSpeed">RUN3 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="30" id="setupForm-notch4-maxSpeed" type="number">
+                                        <label for="setupForm-notch4-maxSpeed">RUN4 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="37.5" id="setupForm-notch5-maxSpeed" type="number">
+                                        <label for="setupForm-notch5-maxSpeed">RUN5 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="45" id="setupForm-notch6-maxSpeed" type="number">
+                                        <label for="setupForm-notch6-maxSpeed">RUN6 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="52.5" id="setupForm-notch7-maxSpeed" type="number">
+                                        <label for="setupForm-notch7-maxSpeed">RUN7 Max. Speed (mph)</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <input placeholder="60" id="setupForm-notch8-maxSpeed" type="number">
+                                        <label for="setupForm-notch8-maxSpeed">RUN8 Max. Speed (mph)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h5>Generated Data File (JSON)</h5>
+                                <pre>
+                                <code id="setup-generated-output">
+Type data into the form above and the output will show here.
+                                </code>
+                                </pre>
+                            </div>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -478,6 +672,7 @@
     </div>
     <script>
         link.autoconnect();
+
     </script>
 
     <!---And lastly, the centralized script from the Pages repo--->
