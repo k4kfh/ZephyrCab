@@ -11,9 +11,6 @@
 
 ZephyrCab is a web app that simulates prototypically accurate controls for model trains, built on the JMRI model train control software.
 
-> Note: This project is still heavily under development. It is not recommended to try to use the project unless you are the adventurous type, and/or you understand JavaScript/JSON and are willing to tinker.
->
-> Read more on [my blog.](http://zephyrcab.tumblr.com)
 
 # Getting Started
 
