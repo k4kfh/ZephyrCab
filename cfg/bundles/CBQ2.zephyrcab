@@ -1,0 +1,61 @@
+tmp = {"CBQ2" : {
+    "type": "locomotive",
+    "prototype": {
+        "builder": "EMD",
+        "name": "F7-A",
+        "weight": 250000,
+        "maxHP": 1500,
+        "maxAmps": 900,
+        "scaleSpeedCoefficient": 0.7268,
+        "notchRPM": [
+            300,
+            362,
+            425,
+            487,
+            550,
+            613,
+            675,
+            738,
+            800
+        ],
+        "notchMaxSpeeds": [
+            null,
+            7.5,
+            15,
+            22.5,
+            30,
+            37.5,
+            45,
+            52.5,
+            60
+        ],
+        "engineRunning": 0,
+        "startingTE": 56500,
+        "drivetrainEfficiency": 0.72,
+        "wheelSlip": {
+            "adhesion": 0.3,
+            "adhesionDuringSlip": 0.25
+        },
+        "air": {
+            "reservoir": {
+                "main": {
+                    "capacity": 46.8,
+                    "leakRate": 0
+                }
+            },
+            "compressor": {
+                "limits": {
+                    "lower": 130,
+                    "upper": 140
+                },
+                "flowrateCoeff": 0.28
+            }
+        },
+        "coeff": {
+            "rollingResistance": 0.0015
+        },
+        "brake": {
+            "latency": 100
+        }
+    }
+}};

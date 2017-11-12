@@ -18,9 +18,7 @@ This function adds the roster information to the bundles.locomotives file entrie
 */
 train.ui.setup = function() {
     //First we go through the keys of the bundles.locomotives to build a list of available locomotive bundles.locomotives.
-    var locomotivesList = new Object();
-    locomotivesList = Object.keys(bundles.locomotives); //create an array of strings with the locomotive names
-    
+    var locomotivesList = Object.keys(bundles.locomotives); //create an array of strings with the locomotive names
     //check for errors to prevent frustration due to naming typos
     
     /*
@@ -42,7 +40,8 @@ train.ui.setup = function() {
     
     Now we need to start building the HTML for the train builder. We will store this in an array because it is easier to add to those than a string. At the end, we'll use .join() to combine all of it into a single string and publish it to the DOM.
     */
-    
+    //update this variable since bundles is dynamic now
+    train.ui.locomotives.unused = Object.keys(bundles.locomotives);
     train.ui.update()
     
     
@@ -53,7 +52,7 @@ These new objects here are for making sure you can't add a locomotive twice. One
 */
 train.ui.locomotives = new Object();
 train.ui.locomotives.used = [];
-train.ui.locomotives.unused = Object.keys(bundles.locomotives); //we set it to this initially because obviously when this script is first loaded, no locomotives from bundles.locomotives have been used
+train.ui.locomotives.unused = Object.keys(bundles.locomotives); //this actually has to be updated later on
 
 /*
 This function updates the entire train builder area. It should be called whenever a part of the train is edited, or whenever bundles.locomotives.json is edited.

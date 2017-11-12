@@ -320,7 +320,9 @@ $(document).ready(function() {
     
     $('#setup-loco-select').change(function(){
         setup.generate()
-    })
+    });
+    
+    bundles.tools.load(); //now that we're done binding events and stuff, load our bundles
 });
 
 ui = {

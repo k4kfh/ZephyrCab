@@ -9,6 +9,11 @@ log = {
     bundles : function(string) {
         console.log("BUNDLES: " + string)
     },
+    Bundles: {
+        generator : function(string){
+            console.log("BUNDLES.GENERATOR: " + string)
+        }
+    },
     trainbuilder: function(string) {
         console.log("TRAINBUILDER: " + string)
     },
@@ -62,6 +67,7 @@ console.info("LOGGING KEYWORDS:")
 console.info("• JMRI")
 console.info("• WEBSOCKETS")
 console.info("• BUNDLES")
+console.info("  • BUNDLES.GENERATOR")
 console.info("• TRAINBUILDER")
 console.info("• UI")
 console.info("  • UI.GAUGES")

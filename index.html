@@ -22,7 +22,8 @@
     <!---All ZephyrCab Program scripts--->
 
     <!---All storage files from /cfg--->
-    <script src="cfg/bundles.js"></script>
+    <script src="cfg/bundles.list.json"></script>
+    <script src="scripts/bundles.js"></script>
     <script src="cfg/decoders.js"></script>
     <script src="cfg/settings.json"></script>
 
@@ -314,8 +315,8 @@
                                 <select id="setup-loco-select" class="browser-default"></select>
                             </div>
                             <div class="row">
-                                <h5 class="light">Prototype Info</h5>
-                                <p>Some of these values (weight, horsepower, powertrain efficiency) are <i>very</i> important to ensure an accurate simulation, but with more obscure numbers like adhesion factor, it's safe to use the example values listed below.</p>
+                                <h5 style="padding-left:10px" class="light">Prototype Info</h5>
+                                <p style="padding-left:10px" >Some of these values (weight, horsepower, powertrain efficiency) are <i>very</i> important to ensure an accurate simulation, but with more obscure numbers like adhesion factor, it's safe to use the example values listed below.</p>
                             </div>
                             <div id="setup-form">
                                 <!---builder info--->
@@ -353,19 +354,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col s3">
+                                    <div class="input-field col s4">
                                         <input placeholder="0.30" id="setupForm-adhesion" type="number">
                                         <label for="setupForm-adhesion">Normal Adhesion Factor</label>
                                     </div>
-                                    <div class="input-field col s3">
+                                    <div class="input-field col s4">
                                         <input placeholder="0.25" id="setupForm-adhesionDuringSlip" type="number">
                                         <label for="setupForm-adhesionDuringSlip">Slipping Adhesion Factor</label>
                                     </div>
-                                    <div class="input-field col s3">
-                                        <input placeholder="0.25" id="setupForm-adhesion" type="number">
-                                        <label for="setupForm-adhesion">Normal Adhesion Factor</label>
-                                    </div>
-                                    <div class="input-field col s3">
+                                    <div class="input-field col s4">
                                         <input placeholder="0.0015" id="setupForm-rollingResistance" type="number">
                                         <label for="setupForm-rollingResistance">Coeff. of Rolling Resistance</label>
                                     </div>
@@ -476,14 +473,24 @@
                                         <label for="setupForm-notch8-maxSpeed">RUN8 Max. Speed (mph)</label>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <h6 style="padding-left:10px"><b>Scale Speed Information</b></h6>
+                                    <p style="padding-left:10px">This coefficient should convert a speed in mph to a speed in DCC speed steps (0-128). The value listed below is an example for a Bachmann FT-A, but you will need to determine this value for your own model using a scale speedometer and some math. If you use the wrong coefficient for your model, ZephyrCab will still work as normal, but the model will not run at the scale speed shown on your ZephyrCab speedometer.</p>
+                                    <br>
+                                    <div class="input-field col s3">
+                                        <input placeholder="0.7268" id="setupForm-scaleSpeedCoefficient" type="number">
+                                        <label for="setupForm-scaleSpeedCoefficient">Scale Speed Coefficient</label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
-                                <h5>Generated Data File (JSON)</h5>
-                                <pre>
-                                <code id="setup-generated-output">
-Type data into the form above and the output will show here.
-                                </code>
-                                </pre>
+                                <a id="setup-download-bundle" class="btn waves-effect">Download Generated Bundle</a>
+                                <h5 style="padding-left:10px" >How to install your bundle:</h5>
+                                <ol>
+                                    <li>Download the bundle file. It will be in the format <code>your-loco-name.zephyrcab</code> (the contents are JSON).</li>
+                                    <li>Copy the file into your ZephyrCab installation folder (on your JMRI PC). Place it in the <code>/cfg/bundles</code> folder, otherwise ZephyrCab will not load it correctly.</li>
+                                    <li>Add the filename (the <code>your-loco-name.zephyrcab</code>) to the <code>bundles.list.json</code> file (in the cfg folder). If you don't do this, ZephyrCab won't load the new bundle. There are notes in the file about syntax, and all you need to open it is a text editor (Notepad++ recommended on Windows).</li>
+                                </ol>
                             </div>
 
 

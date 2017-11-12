@@ -1,0 +1,15 @@
+bundles = new Object();
+/*
+BUNDLES LIST:
+You can store all your bundles files in /cfg/bundles. All you need to do here is add the filenames so that ZephyrCab knows where to find them.
+
+EXAMPLE: If you have the files CBQ2.zephyrcab and SW1000.zephyrcab, you should do this:
+
+bundles.files = [
+    "CBQ2.zephyrcab",
+    "SW1000.zephyrcab",
+]
+*/
+bundles.files = [
+    "CBQ2.zephyrcab",
+]

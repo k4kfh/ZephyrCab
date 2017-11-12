@@ -69,6 +69,7 @@ setup = {
                     "engineRunning": 0, //0 or 1 - 1 is on, 0 is off
                     "startingTE": Number($("#setupForm-startingTE").val()),
                     "drivetrainEfficiency": Number($("#setupForm-drivetrainEfficiency").val()),
+                    scaleSpeedCoefficient: Number($("#setupForm-scaleSpeedCoefficient").val()),
 
                     wheelSlip: {
                         adhesion: Number($("#setupForm-adhesion").val()), //adhesion factor (in percent)
@@ -103,11 +104,21 @@ setup = {
                     },
                 },
             };
-            console.log("GENERATED BUNDLE:")
-            console.dir(generatedBundle)
             var locoName = $('#setup-loco-select').find(":selected").text();
-            console.log("Loco Name:" +locoName)
-            $("#setup-generated-output").html('"' + locoName + '" : ' +JSON.stringify(generatedBundle, null, 4));
+        
+            var finishedBundle = 'tmp = {"' + locoName + '" : ' +JSON.stringify(generatedBundle, null, 4) + "};";
+            
+            var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(finishedBundle);
+            var linkElement = document.getElementById("setup-download-bundle");
+            //if the user forgot to select a locomotive for the bundle to apply to
+            if (locoName == "Choose a locomotive to configure.") {
+                linkElement.setAttribute('onclick', "alert('You need to choose a locomotive from your JMRI roster!')")
+            }
+            else {
+                linkElement.setAttribute('onclick', undefined)
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', locoName+".zephyrcab")
+            }
             return generatedBundle;
     
     }

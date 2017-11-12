@@ -326,7 +326,7 @@ sim.accel = function() {
             if (train.all[x].type == "locomotive") {
                 //set direction first
                 train.all[x].throttle.direction.set(sim.direction);
-                train.all[x].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph)); //we use ABS here because the direction is set separately from the actual speed
+                train.all[x].dcc.speed.setMPH(Math.abs(train.total.accel.speed.mph), x); //we use ABS here because the direction is set separately from the actual speed. and we pass the train position because reasons
             }
         }
     }
