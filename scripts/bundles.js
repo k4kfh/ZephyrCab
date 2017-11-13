@@ -173,12 +173,18 @@ bundles.tools.requiredFunctionsTemplate = {
         },
     },
 };
-
+bundles.tools.getBaseUrl = function(){
+    //borrowed this off stackoverflow but hey, it works
+    var re = new RegExp(/^.*\//);
+    return re.exec(window.location.href);
+}
 bundles.tools.load = function(){
     var tmp; //each file stores all its data inside var tmp, so we scope it here so it doesn't become a global mess
     bundles.files.forEach(function(filename) {
         log.bundles("Trying to load bundle " + filename)
-        $.get("/cfg/bundles/" + filename, function(rawdata, status){
+        var url = (bundles.tools.getBaseUrl() + "cfg/bundles/") + filename;
+        log.bundles("Requesting URL " + url)
+        $.get(url, function(rawdata, status){
             data = new Object();
             data.unvalidated = eval(rawdata)
             data.validated;
