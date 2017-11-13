@@ -8,6 +8,7 @@
 * [*The Idiot's Guide to Railroad Physics*](http://k4kfh.github.io/idiotsGuideToRailroadPhysics)
 
 [![Join the chat at](https://badges.gitter.im/k4kfh/ZephyrCab.svg)](https://gitter.im/k4kfh/ZephyrCab?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 ZephyrCab is a web app that simulates prototypically accurate controls for model trains, built on the JMRI model train control software.
 
