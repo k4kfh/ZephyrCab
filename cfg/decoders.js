@@ -1,4 +1,21 @@
 /*
+    ZephyrCab - Realistic Model Train Simulation/Control System
+    Copyright (C) 2017 Hampton Morgan (K4KFH)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
 DECODERS
 
 This file is user-editable. It contains all the decoder objects. For developers: these objects are constructors that are called any time a locomotive is added to the train with a corresponding decoder. The decoder functions all go in train.all[number].dcc . These decoder objects provide the necessary abstraction layer for the rest of ZephyrCab to have easy access to all the sound features, such as compressors, air dumps, bells, and horns. Decoder information is not ingested from manual user input anymore; it is automatically fetched from the  JMRI roster. The corresponding decoder object is looked up in this file using JMRI's naming convention. This means it is imperative that the names of your decoder objects be precisely correct.

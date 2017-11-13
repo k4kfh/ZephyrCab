@@ -1,4 +1,21 @@
 /*
+    ZephyrCab - Realistic Model Train Simulation/Control System
+    Copyright (C) 2017 Hampton Morgan (K4KFH)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
 TRAIN
 
 This file contains all the functions for manipulating and constructing the train. This includes the train builder UI and its backbone! Also defined at the top of this file are the base train objects themselves; they are defined here for organizational purposes.
