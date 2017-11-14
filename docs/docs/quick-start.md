@@ -46,8 +46,14 @@ The screenshots below are from a machine running Linux, so they may look a littl
     - Otherwise, the URL will be ``http://your-jmri-ip-address:12080/web/zephyrcab`` if you've followed this guide correctly.
     - If you don't know your JMRI PC's IP address, [click here to learn how to find it.](http://www.howtogeek.com/236838/how-to-find-any-devices-ip-address-mac-address-and-other-network-connection-details/) It will probably be in the form ``192.168.1.something`` or ``172.16.something.something``, but could be different.
     
-9. **Configure ``bundles.json`` with your locomotive roster and DCC decoder information.** This requires some knowledge of JSON syntax, and I am in the process of rewriting docs for this. Currently, the only supported locomotive is the EMD F7-A. For now, [click here to  learn how to set this up.](userguide/configuring-bundles-json/)
+9. **Create bundles for your locomotives.** Bundles are the small data files that tell ZephyrCab all the physics information about your locomotive. They also bind it to an actual model on your JMRI roster. You'll need to create a new bundle for your first locomotive, which will probably require a data sheet for information like weight, tractive effort, and horsepower. The "Setup" page within ZephyrCab has an easy tool for creating bundles.
 
+10. **Install your bundles.** Once you've created and downloaded the bundle files, you'll need to place them in the ``/cfg/bundles`` folder within ZephyrCab. You _also_ need to add the file names to the ``/cfg/bundles.list.json`` file, otherwise ZephyrCab won't know to load them. So for example, if I created a bundles file called ``BN1379.zephyrcab``, I would first place it in the ``/cfg/bundles`` folder. Then I would edit the list at the bottom of ``bundles.list.json`` to look like this.
 
+```javascript
+bundles.files = [
+    "BN1379.zephyrcab",
+]
+```
 
-Once you have your ``bundles.json`` set up, you should be able to use the program normally. Connect to your JMRI PC (if you don't know the IP, you will need to find that) using the "Connection" tab, and everything should work. If you run into problems, post an issue on [the project's GitHub page](http://github.com/k4kfh/ZephyrCab).
+Once you get your bundles set up, ZephyrCab should be ready to go. Simply go to the "Train Settings" tab and add your locomotive/cars. Note that some locomotives have more advanced sound support than others (for example, ZephyrCab knows how to use the prime mover manual notching feature on certain ESU decoders). All decoders will work, but you may only get speed/direction/lighting control on decoders that I haven't had a chance to properly code for yet. If you run into problems, post an issue on [the project's GitHub page](http://github.com/k4kfh/ZephyrCab), or join the support chat [on Gitter](https://gitter.im/k4kfh/ZephyrCab).
