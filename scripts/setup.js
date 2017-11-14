@@ -136,6 +136,7 @@ setup = {
                 linkElement.setAttribute('href', dataUri);
                 var filename = locoName;
                 filename = filename.replace(" ", ""); //strip out spaces
+                filename = filename.replace(/[^a-zA-Z ]/g, ""); //strip out special chars
                 linkElement.setAttribute('download', filename+".zephyrcab")
             }
             return generatedBundle;
