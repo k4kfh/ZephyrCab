@@ -210,8 +210,8 @@ bundles.tools.load = function(){
             else if (data.unvalidated[name].type == "rollingstock") {
                 bundles.rollingstock[name] = data.unvalidated[name];
             }
+            bundles.tools.onLoad();
         })
-        bundles.tools.onLoad();
     });
 }
 
