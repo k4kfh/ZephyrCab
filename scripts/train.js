@@ -43,9 +43,6 @@ train.ui.setup = function() {
     Then it adds that entire roster object to bundles.locomotives.thatThing.roster
     */
     for(i=0; i < locomotivesList.length; i++) { //now populate .roster subobjects for objects with the names from the array of strings above
-        if (Object.keys(jmri.roster.entries).indexOf(locomotivesList[i]) == -1) {
-            alert("CRITICAL ERROR: You may have a typo in your bundles.js file. \n\nWe are unable to locate a roster entry named '" + locomotivesList[i] + "' in your JMRI system.\n\nPlease check spelling, capitalization, and spaces as the names must match EXACTLY. Once you correct this problem, ZephyrCab should work as normal.")
-        }
         bundles.locomotives[locomotivesList[i]].roster = jmri.roster.entries[locomotivesList[i]];
     }
     
