@@ -296,20 +296,7 @@ var decoders = {
                 train.all[trainPosition].dcc.speed.state = speed;
             };
             this.speed.setMPH = function(mph) {
-                var speed = train.all[trainPosition].model.speed(mph);
-                train.all[trainPosition].dcc.speed.set(speed);
-            };
-
-
-            //SPEED SETTING
-            this.speed = {};
-            this.speed.state = 0;
-            this.speed.set = function(speed) {
-                train.all[trainPosition].throttle.speed.set(speed);
-                train.all[trainPosition].dcc.speed.state = speed;
-            };
-            this.speed.setMPH = function(mph) {
-                var speed = train.all[trainPosition].model.speed(mph);
+                var speed = train.all[trainPosition].model.speed(mph, trainPosition);
                 train.all[trainPosition].dcc.speed.set(speed);
             };
         }

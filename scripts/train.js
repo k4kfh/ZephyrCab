@@ -264,7 +264,7 @@ train.build.add = function(objectSource) {
     
         This series of IF/ELSE statements is the mechanism for generic decoder fallback. If ZephyrCab doesn't have a specific object file for a given decoderModel/decoderFamily, it falls back to generic/generic. Otherwise, it just sets the variable decoderConstructor to the appropriate constructor object.
         */
-        if (decoders[decoderFamily] == undefined) {
+        if (decoders[decoderFamily][decoderModel] == undefined) {
             decoderConstructor = decoders["generic"]["generic"]
         }
         else {
