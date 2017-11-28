@@ -27,5 +27,3 @@ hub.pushNotification = function(toast, duration) {
         
     }
 }
-
-hub.pushNotification("Hello locoThrottle.js user! We hope you enjoy our new HUB notification system.")
