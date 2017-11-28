@@ -97,6 +97,18 @@ $(document).ready(function() {
             $("#throttle-indicator").html("RUN" + returned);
         }
     });
+    
+    $('#throttle-plus').click(function(){
+        var throttle = $("#throttle")
+        throttle.val(Number(throttle.val())+1)
+        throttle.change();
+    })
+    
+    $('#throttle-minus').click(function(){
+        var throttle = $("#throttle")
+        throttle.val(Number(throttle.val())-1)
+        throttle.change();
+    })
 
 
     $("#autobrake").on("input", function() {
@@ -165,18 +177,18 @@ $(document).ready(function() {
             brake.eqReservoirPSI = brake.findEQpressure().fullServiceReduction;
         }
     })
-    
+
     //Ind. Brake Valve
     //set up the independent brake valve range
     $("#indbrake").attr("max",indBrake.calcMaxPressure())
     $("#indbrake").change(function(){
         indBrake.indValvePSI = Number($(this).val());
     })
-    
+
     $("#indbrake").on("input", function(){
         $("#indbrake-indicator").html($(this).val() + "psi")
     })
-    
+
     //Bail Off
     $("#bailoff").mousedown(function(){
         //just call the bail off method, it's that simple
@@ -244,7 +256,7 @@ $(document).ready(function() {
 
                 /*
                 FUEL USAGE RELATED CODE - Commented out for now since this is a high-maintenance, low-priority feature. I'm leaving behind the existing codebase, which when commented out is rather unobtrusive and doesn't bother anything else, and could easily be picked up by someone else in the future.
-                
+
                 This if statement would handle denying engine start when out of fuel.
                 if (!(element.prototype.realtime.fuel.status <= 0)) { //make sure there's fuel before we allow it to start
                     element.dcc.f.engine.set($('#engine-start').is(":checked")); //use the state of the checkbox as the boolean argument
@@ -304,11 +316,11 @@ $(document).ready(function() {
             Materialize.toast("You need to input an IP address!", 2000); //If they didn't type an IP, let them know
         }
     });
-    
+
     //fullscreen button on cab page
     $('#fullscreen-toggle').bind("click", function(){
         console.log("FIRE!")
-        
+
         //if we're not fullscreened right now...
         if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
             var cabDiv = document.getElementById("cab-fullscreen-container");
@@ -323,23 +335,29 @@ $(document).ready(function() {
             }
             $("#cab-fullscreen-container").addClass("fullscreen")
             //if we are fullscreened now
-        } else {  
-            if (document.cancelFullScreen) {  
-                document.cancelFullScreen();  
-            } else if (document.mozCancelFullScreen) {  
-                document.mozCancelFullScreen();  
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
             } else if (document.webkitCancelFullScreen) {
-                document.webkitCancelFullScreen();  
+                document.webkitCancelFullScreen();
             }
             $("#cab-fullscreen-container").removeClass("fullscreen")
-        }  
+        }
     });
-    
+
     $('#setup-loco-select').change(function(){
         setup.generate()
     });
-    
+
     bundles.tools.load(); //now that we're done binding events and stuff, load our bundles
+
+    setTimeout(function(){
+      if (!cfg.disableAnonymousUsageData) {
+        stats.send();
+      }
+    }, 5000)
 });
 
 ui = {

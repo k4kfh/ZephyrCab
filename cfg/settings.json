@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 cfg = new Object();
+cfg.brakes = new Object();
 /*
 ZEPHYRCAB CONFIGURATION
 
@@ -34,13 +35,14 @@ cfg.webServer="external";
 cfg.ip = "jmri"; //ignored when cfg.webServer is set to "jmri"
 cfg.port = 12080; //ignored when cfg.webServer is set to "jmri"
 
-cfg.disablePushNotifications = true;
+cfg.disablePushNotifications = false; //disable push notifications from a central source (on GitHub)
+cfg.disableAnonymousUsageData = false; //by default, when this is set to false, ZephyrCab will send some anonymous data (your browser version, how many locomotives you have, etc) back to the developers to gain insight on who is using the program and how to improve it.
+cfg.usageDataUsername = "none"; //if you are a developer, you can set this to your GitHub username so that we know which statistics come from your installations
 
-cfg.debugToasts = false;
+cfg.debugToasts = false; //enable debugging notifications (developers only)
 
 cfg.logallmessages = false; //This will log EVERY WebSockets message that is sent or recieved to the console as a string. This is meant for copying/pasting into GitHub issues and such. It prefaces messages we send with "SENT : " and messages from JMRI with "RECIEVED : "
 
-cfg.brakes = new Object();
 cfg.brakes.defaultFeedValveSetting = 90; //integer, in psi, for the feed valve to default to. The feed valve can be adjusted once you enter the cab, this just provides an easy way to set a preferred default.
 cfg.brakes.notifications = true; //enable this to give you detailed notifications about the brakes on each car (ie "Car #2 brakes finished charging")
 

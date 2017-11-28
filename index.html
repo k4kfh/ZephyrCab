@@ -63,6 +63,8 @@
     <script src="scripts/brakes.js"></script>
     <script src="scripts/sim.js"></script>
     <script src="scripts/setup.js"></script>
+    <script src="scripts/github.js"></script>
+    <script src="scripts/stats.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
@@ -249,7 +251,9 @@
                             <div class="col s12">
                                 <div class="card">
                                     <div class="card-content">
-                                        <div id="throttle-indicator" class="chip left">IDLE</div>
+                                        <div id="throttle-minus" class="btn-flat red white-text left" style="padding-left:15px;padding-right:15px;">-</div>
+                                        <div id="throttle-indicator" class="btn-flat grey lighten-2 black-text left" style="padding-left:10px;padding-right:10px">IDLE</div>
+                                        <div id="throttle-plus" class="btn-flat red white-text green" style="padding-left:15px;padding-right:15px;">+</div>
                                         <b class="right">Power Throttle</b>
                                         <input id="throttle" type="range" min=0 max=8 value=0>
                                     </div>
@@ -652,7 +656,10 @@
                             <div id="hubDisplay">
                                 <div class="row">
                                     <div class="col s6">
-                                        <h5 class="light">Release</h5> Function soon to be added using GitHub API.
+                                        <h5 class="light">Release</h5>
+                                        <p><b>Version:</b> <a id="github-release-name"><code>Loading...</code></a></p>
+                                        <p><b>Type:</b> <a id="github-release-prerelease">Loading...</a></p>
+                                        <p><b>Status:</b> <a id="update-available">Loading...</a></p>
                                     </div>
                                     <div class="col s6">
                                         <h5 class="light">Alerts</h5> There are no alerts in effect at this time.

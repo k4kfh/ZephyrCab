@@ -65,8 +65,11 @@ log = {
     },
     decoder : function(string){
         console.log("DECODER: "+string)
+    },
+    stats : function(string){
+      console.log("STATS: " + string)
     }
-    
+
 }
 
 //dump an initial log message to the console for debugging info
@@ -95,4 +98,5 @@ console.info("  • SIM.AIR")
 console.info("  • SIM.BRAKES")
 console.info("  • SIM.TRACTIVEEFFORT")
 console.info("• DECODER")
+console.info("• STATS")
 console.info("-----------------------------------------------------")
