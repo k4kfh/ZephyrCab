@@ -1,13 +1,11 @@
 [![ZephyrCab Logo](http://i.imgur.com/n07xxtI.png)](http://k4kfh.github.io/ZephyrCab)
 
-*Formerly locoThrottle.js*
+# Project Status:
+> I am no longer actively maintaining this project (as of 2024), due to a lack of public interest and my own movement away from the hobby (for now...it probably won't last). If you are interested in picking up the project, please get in touch with me via GitHub.
+> - Hampton
 
-* [Visit Main Project Site](http://k4kfh.github.io/ZephyrCab)
-* [Project Documentation](http://k4kfh.github.io/ZephyrCab/docs/site)
-* [Development Blog](http://blog.evilgeniustech.com)
-* [*The Idiot's Guide to Railroad Physics*](http://k4kfh.github.io/idiotsGuideToRailroadPhysics)
+For information on the underlying physics math I used, please see: [*The Idiot's Guide to Railroad Physics*](http://k4kfh.github.io/idiotsGuideToRailroadPhysics)
 
-[![Join the chat at](https://badges.gitter.im/k4kfh/ZephyrCab.svg)](https://gitter.im/k4kfh/ZephyrCab?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 ZephyrCab is a web app that simulates prototypically accurate controls for model trains, built on the JMRI model train control software.
